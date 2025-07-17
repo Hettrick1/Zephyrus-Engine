@@ -30,6 +30,8 @@ void LVLDoom::Start(IRenderer* renderer)
 {
 	Scene::Start(renderer);
 	
+	Scene::GetRenderer()->GetDebugRenderer()->SetDrawDebug(true);
+
 	mPlayer = new DoomPlayer();
 	mPlayer->SetPosition(Vector3D(-48, 0, 0));
 	mPlayer->RotateZ(-90);
