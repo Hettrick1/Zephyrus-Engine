@@ -1,8 +1,8 @@
 -- premake5.lua
-workspace "New Project"
-   architecture "x64"
+workspace "Zephyrus Engine"
+   architecture "x86"
    configurations { "Debug", "Release", "Dist" }
-   startproject "App"
+   startproject "ZephyrusEngine-Runtime"
 
    -- Workspace-wide build options for MSVC
    filter "system:windows"
@@ -11,7 +11,8 @@ workspace "New Project"
 OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 
 group "Core"
-	include "Core/Build-Core.lua"
+	include "ZephyrusEngine-Core/Build-Core.lua"
 group ""
 
-include "App/Build-App.lua"
+include "ZephyrusEngine-Editor/Build-Editor.lua"
+include "ZephyrusEngine-Runtime/Build-Runtime.lua"
