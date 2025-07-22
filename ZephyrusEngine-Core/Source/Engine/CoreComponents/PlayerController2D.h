@@ -11,9 +11,9 @@ public:
 	PlayerController2D(const PlayerController2D&) = delete;
 	PlayerController2D& operator=(const PlayerController2D&) = delete;
 public:
-	void OnActionStarted(InputActions* action) override;
-	void OnActionTriggered(InputActions* action) override;
-	void OnActionEnded(InputActions* action) override;
+	void OnActionStarted(InputActions* pAction) override;
+	void OnActionTriggered(InputActions* pAction) override;
+	void OnActionEnded(InputActions* pAction) override;
 public:
 	void Update() override;
 public:

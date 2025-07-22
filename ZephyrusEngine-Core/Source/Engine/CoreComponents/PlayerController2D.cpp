@@ -16,21 +16,21 @@ PlayerController2D::PlayerController2D(Actor* pOwner, int pUpdateOrder)
 	inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
 }
 
-void PlayerController2D::OnActionStarted(InputActions* action)
+void PlayerController2D::OnActionStarted(InputActions* pAction)
 {
-	if (action->GetType() == ActionType::Boolean) {
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(action);
+	if (pAction->GetType() == ActionType::Boolean) {
+		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction);
 		if (Triggeredaction && Triggeredaction->GetName() == "jump") {
 			std::cout << "JUMP!\n";
 		}
 	}
 }
 
-void PlayerController2D::OnActionTriggered(InputActions* action)
+void PlayerController2D::OnActionTriggered(InputActions* pAction)
 {
-	if (action->GetType() == ActionType::Boolean) 
+	if (pAction->GetType() == ActionType::Boolean)
 	{
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(action);
+		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction);
 		if (Triggeredaction && Triggeredaction->GetName() == "up") 
 		{
 			if (mCanGoUp)
@@ -74,10 +74,10 @@ void PlayerController2D::OnActionTriggered(InputActions* action)
 	}
 }
 
-void PlayerController2D::OnActionEnded(InputActions* action)
+void PlayerController2D::OnActionEnded(InputActions* pAction)
 {
-	if (action->GetType() == ActionType::Boolean) {
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(action);
+	if (pAction->GetType() == ActionType::Boolean) {
+		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction);
 		if (Triggeredaction && Triggeredaction->GetName() == "up")
 		{
 			SetSpeedY(0);
