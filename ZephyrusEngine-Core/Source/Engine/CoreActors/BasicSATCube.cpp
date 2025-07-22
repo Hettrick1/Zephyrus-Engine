@@ -5,8 +5,8 @@
 #include "Scene.h"
 #include "BoxSATComponent.h"
 
-BasicSATCube::BasicSATCube(Vector3D pPos, Vector3D pSize, Quaternion pRotation, ShaderProgram * program)
-	: Actor(pPos, pSize, pRotation), mShaderProgram(program)
+BasicSATCube::BasicSATCube(Vector3D pPos, Vector3D pSize, Quaternion pRotation, ShaderProgram * pProgram)
+	: Actor(pPos, pSize, pRotation), mShaderProgram(pProgram)
 {
 }
 
@@ -43,14 +43,14 @@ void BasicSATCube::Destroy()
 	Actor::Destroy();
 }
 
-void BasicSATCube::OnTriggerEnter(ColliderComponent* collider, HitResult* infos)
+void BasicSATCube::OnTriggerEnter(ColliderComponent* pCollider, HitResult* pInfos)
 {
 }
 
-void BasicSATCube::OnTriggerStay(ColliderComponent* collider, HitResult* infos)
+void BasicSATCube::OnTriggerStay(ColliderComponent* pCollider, HitResult* pInfos)
 {
 }
 
-void BasicSATCube::OnTriggerExit(ColliderComponent* collider, HitResult* infos)
+void BasicSATCube::OnTriggerExit(ColliderComponent* pCollider, HitResult* pInfos)
 {
 }

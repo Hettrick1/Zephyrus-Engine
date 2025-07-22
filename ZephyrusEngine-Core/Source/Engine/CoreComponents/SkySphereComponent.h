@@ -12,11 +12,11 @@
 class SkySphereComponent : public Component
 {
 public:
-	SkySphereComponent(Actor* pOwner, bool isSphere = false, std::vector<std::string> textures = {}, ShaderProgram* pProgram = nullptr);
+	SkySphereComponent(Actor* pOwner, bool pIsSphere = false, std::vector<std::string> pTextures = {}, ShaderProgram* pProgram = nullptr);
 	virtual ~SkySphereComponent();
 
 	// Draws the sky sphere or skybox using the given view-projection matrix
-	virtual void Draw(Matrix4DRow viewProj);
+	virtual void Draw(Matrix4DRow pViewProj);
 
 	virtual void SetMesh(Mesh& pMesh);
 
@@ -40,14 +40,14 @@ public:
 	static int index;
 
 protected:
-	Mesh* mMesh;
+	Mesh* mMesh = nullptr;
 	Shader mVertexShader, mFragmentShader, mTessellationControlShader, mTessellationEvalShader;
 	ShaderProgram mShaderProgram;
 	CubeTextureMap mCubeMap;
 	Vector2D mTiling;
-	unsigned int mTextureIndex;
-	bool mIsSphere;
-	VertexArray* mVao;
+	unsigned int mTextureIndex = 0;
+	bool mIsSphere = false;
+	VertexArray* mVao = nullptr;
 	GLenum mTextureType;
 	std::vector<std::string> mTextureToLoad;
 };

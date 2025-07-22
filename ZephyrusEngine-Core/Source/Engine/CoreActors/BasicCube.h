@@ -13,7 +13,7 @@
 class BasicCube : public Actor, public ICollisionListener
 {
 public:
-	BasicCube(Vector3D pPos = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), ShaderProgram* program = nullptr);
+	BasicCube(Vector3D pPos = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), ShaderProgram* pProgram = nullptr);
 	~BasicCube();
 
 	void Start() override;
@@ -22,13 +22,13 @@ public:
 
 public:
 	// Called when another collider enters this cube's trigger
-	void OnTriggerEnter(ColliderComponent* collider, HitResult* infos) override;
+	void OnTriggerEnter(ColliderComponent* pCollider, HitResult* pInfos) override;
 
 	// Called when another collider stays within this cube's trigger
-	void OnTriggerStay(ColliderComponent* collider, HitResult* infos) override;
+	void OnTriggerStay(ColliderComponent* pCollider, HitResult* pInfos) override;
 
 	// Called when another collider exits this cube's trigger
-	void OnTriggerExit(ColliderComponent* collider, HitResult* infos) override;
+	void OnTriggerExit(ColliderComponent* pCollider, HitResult* pInfos) override;
 
 private:
 	ShaderProgram* mShaderProgram;

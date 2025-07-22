@@ -11,9 +11,9 @@ public:
 	PlayerController3D(const PlayerController3D&) = delete;
 	PlayerController3D& operator=(const PlayerController3D&) = delete;
 public:
-	void OnActionStarted(InputActions* action) override;
-	void OnActionTriggered(InputActions* action) override;
-	void OnActionEnded(InputActions* action) override;
+	void OnActionStarted(InputActions* pAction) override;
+	void OnActionTriggered(InputActions* pAction) override;
+	void OnActionEnded(InputActions* pAction) override;
 public:
 	void Update() override;
 public:
@@ -21,7 +21,9 @@ public:
 	void DisableDirection(Vector3D pDirection);
 	void SetMovementSpeed(float pSpeed);
 private:
-	bool mCanGoRight, mCanGoLeft, mCanGoUp, mCanGoDown, mCanGoForward, mCanGoBackward;
-	float mSpeed, mYaw, mPitch;
+	//temp
+	bool mCanGoRight = false, mCanGoLeft = false, mCanGoUp = false, 
+		 mCanGoDown = false, mCanGoForward = false, mCanGoBackward = false;
+	float mSpeed = 0.0, mYaw = 0.0, mPitch = 0.0;
 };
 

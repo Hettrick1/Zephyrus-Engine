@@ -1,8 +1,8 @@
 #include "SkySphere.h"
 #include "SceneManager.h"
 
-SkySphere::SkySphere(bool isSphere,std::vector<std::string> textures, ShaderProgram* program)
-	:Actor(), mShaderProgram(program), mSkySphereComponent(nullptr), mTextureToLoad(textures), mIsSphere(isSphere)
+SkySphere::SkySphere(bool pIsSphere,std::vector<std::string> pTextures, ShaderProgram* pProgram)
+	:Actor(), mShaderProgram(pProgram), mSkySphereComponent(nullptr), mTextureToLoad(pTextures), mIsSphere(pIsSphere)
 {
 	Start();
 	mScene.AddActor(this);

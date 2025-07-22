@@ -5,8 +5,8 @@
 #include "Scene.h"
 #include "BoxAABBComponent.h"
 
-BasicCube::BasicCube(Vector3D pPos, Vector3D pSize, Quaternion pRotation, ShaderProgram* program)
-	: Actor(pPos, pSize, pRotation), mShaderProgram(program)
+BasicCube::BasicCube(Vector3D pPos, Vector3D pSize, Quaternion pRotation, ShaderProgram* pProgram)
+	: Actor(pPos, pSize, pRotation), mShaderProgram(pProgram)
 {
 	Start();
 	mScene.AddActor(this);
@@ -43,14 +43,14 @@ void BasicCube::Destroy()
 	Actor::Destroy();
 }
 
-void BasicCube::OnTriggerEnter(ColliderComponent* collider, HitResult* infos)
+void BasicCube::OnTriggerEnter(ColliderComponent* pCollider, HitResult* pInfos)
 {
 }
 
-void BasicCube::OnTriggerStay(ColliderComponent* collider, HitResult* infos)
+void BasicCube::OnTriggerStay(ColliderComponent* pCollider, HitResult* pInfos)
 {
 }
 
-void BasicCube::OnTriggerExit(ColliderComponent* collider, HitResult* infos)
+void BasicCube::OnTriggerExit(ColliderComponent* pCollider, HitResult* pInfos)
 {
 }

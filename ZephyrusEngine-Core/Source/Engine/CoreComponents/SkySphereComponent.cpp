@@ -8,13 +8,13 @@
 
 int SkySphereComponent::index = 0;
 
-SkySphereComponent::SkySphereComponent(Actor* pOwner, bool isSphere, std::vector<std::string> textures, ShaderProgram* pProgram)
-	: Component(pOwner), mMesh(nullptr), mTextureIndex(0), mTiling(1), mIsSphere(isSphere), mTextureType(GL_TEXTURE_2D), mVao(nullptr), mTextureToLoad(textures)
+SkySphereComponent::SkySphereComponent(Actor* pOwner, bool pIsSphere, std::vector<std::string> pTextures, ShaderProgram* pProgram)
+	: Component(pOwner), mMesh(nullptr), mTextureIndex(0), mTiling(1), mIsSphere(pIsSphere), mTextureType(GL_TEXTURE_2D), mVao(nullptr), mTextureToLoad(pTextures)
 {
 	mOwner->GetScene().GetRenderer()->AddSkySphere(this);
 	if (pProgram == nullptr)
 	{
-		if (isSphere) 
+		if (pIsSphere) 
 		{
 			mVertexShader.Load("VertFrag/SkySphere.vert", ShaderType::VERTEX);
 			mFragmentShader.Load("VertFrag/SkySphere.frag", ShaderType::FRAGMENT);
@@ -33,7 +33,7 @@ SkySphereComponent::SkySphereComponent(Actor* pOwner, bool isSphere, std::vector
 	else {
 		mShaderProgram = *pProgram;
 	}
-	if (isSphere)
+	if (pIsSphere)
 	{
 		Texture* tex = nullptr;
 		if (mTextureToLoad.empty()) {
@@ -79,7 +79,7 @@ SkySphereComponent::~SkySphereComponent()
 {
 }
 
-void SkySphereComponent::Draw(Matrix4DRow viewProj)
+void SkySphereComponent::Draw(Matrix4DRow pViewProj)
 {
 }
 

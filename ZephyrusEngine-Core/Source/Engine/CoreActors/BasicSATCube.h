@@ -8,15 +8,15 @@
 class BasicSATCube : public Actor, public ICollisionListener
 {
 public:
-	BasicSATCube(Vector3D pPos = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), ShaderProgram* program = nullptr);
+	BasicSATCube(Vector3D pPos = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), ShaderProgram* pProgram = nullptr);
 	~BasicSATCube();
 	void Start() override;
 	void Update() override;
 	void Destroy() override;
 public:
-	void OnTriggerEnter(ColliderComponent* collider, HitResult* infos) override;
-	void OnTriggerStay(ColliderComponent* collider, HitResult* infos) override;
-	void OnTriggerExit(ColliderComponent* collider, HitResult* infos) override;
+	void OnTriggerEnter(ColliderComponent* pCollider, HitResult* pInfos) override;
+	void OnTriggerStay(ColliderComponent* pCollider, HitResult* pInfos) override;
+	void OnTriggerExit(ColliderComponent* pCollider, HitResult* pInfos) override;
 private:
 	ShaderProgram* mShaderProgram;
 };

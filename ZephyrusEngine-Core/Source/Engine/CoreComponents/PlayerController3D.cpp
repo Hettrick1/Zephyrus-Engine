@@ -22,16 +22,16 @@ PlayerController3D::PlayerController3D(Actor* pOwner, int pUpdateOrder)
 	inputManager.CreateNewAxis2DBinding(this, "Mouse");
 }
 
-void PlayerController3D::OnActionStarted(InputActions* action)
+void PlayerController3D::OnActionStarted(InputActions* pAction)
 {
 	
 }
 
-void PlayerController3D::OnActionTriggered(InputActions* action)
+void PlayerController3D::OnActionTriggered(InputActions* pAction)
 {
-	if (action->GetType() == ActionType::Boolean)
+	if (pAction->GetType() == ActionType::Boolean)
 	{
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(action);
+		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction);
 		if (Triggeredaction && Triggeredaction->GetName() == "forward")
 		{
 			if (mCanGoUp)
@@ -95,31 +95,24 @@ void PlayerController3D::OnActionTriggered(InputActions* action)
 			}
 		}
 	}
-	else if (action->GetType() == ActionType::Axis2D)
+	else if (pAction->GetType() == ActionType::Axis2D)
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "1", SDL_HINT_OVERRIDE); 
-		Axis2DAction* axisAction = static_cast<Axis2DAction*>(action);
+		Axis2DAction* axisAction = static_cast<Axis2DAction*>(pAction);
 		Vector2D axis = axisAction->GetAxis();
 
 		float sensitivity = 0.1f;
 
 		axis.x *= sensitivity;
-		axis.y *= sensitivity;
-
-		//mOwner->GetTransformComponent().RotateZ(axis.x);
-		//mOwner->GetTransformComponent().RotateX(-axis.y);
-
-		//mOwner->GetTransformComponent().GetRotation().Normalize(); 
-
-		//Log::Info(std::to_string(axis.x));
+		axis.y *= sensitivity;;
 	}
 }
 
-void PlayerController3D::OnActionEnded(InputActions* action)
+void PlayerController3D::OnActionEnded(InputActions* pAction)
 {
-	if (action->GetType() == ActionType::Boolean) { 
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(action); 
+	if (pAction->GetType() == ActionType::Boolean) { 
+		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction); 
 		if (Triggeredaction && Triggeredaction->GetName() == "up") 
 		{
 			SetSpeedY(0);
