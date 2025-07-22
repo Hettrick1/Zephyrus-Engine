@@ -1,6 +1,5 @@
 #include "SDL.h"
 #include "Engine/Editor/Game.h"
-#include "Childs/SpaceInvader.h"
 #include "Childs/BowlingOpenGl.h"
 #include "Childs/LVLDoom.h"
 #include "Childs/LVLAdvancedOpenGL.h"
