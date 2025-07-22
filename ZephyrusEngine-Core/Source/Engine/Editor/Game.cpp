@@ -6,7 +6,7 @@
 #include "TextRenderer.h"
 #include "SplashScreen.h"
 
-Game::Game(std::string title, Scene* pStartupScene)
+Game::Game(std::string pTitle, Scene* pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
     , mCameraManager(CameraManager::Instance())
 {

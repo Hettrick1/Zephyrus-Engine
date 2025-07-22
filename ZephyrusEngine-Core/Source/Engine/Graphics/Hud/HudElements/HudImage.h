@@ -14,7 +14,7 @@ class HudImage :
 public:
     HudImage(Texture& pTexture, Vector2D pPosition, Vector2D pSize = 1, Vector2D pOrigin = 0);
         
-    void Draw(RendererOpenGl& renderer) override; // Draws the image on the HUD using the given renderer.
+    void Draw(RendererOpenGl& pRenderer) override; // Draws the image on the HUD using the given renderer.
 
     void SetTexture(Texture& pTexture); // Sets the texture to display.
 

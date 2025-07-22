@@ -7,7 +7,7 @@ HudElement::HudElement()
 	SceneManager::ActiveScene->GetRenderer()->GetHud()->AddElement(this);
 }
 
-void HudElement::SetPosition(float x, float y)
+void HudElement::SetPosition(float pX, float pY)
 {
 	mPositionX = x; mPositionY = y;
 }

@@ -1,14 +1,14 @@
 #include "HudManager.h"
 
-void HudManager::AddElement(HudElement* element)
+void HudManager::AddElement(HudElement* pElement)
 {
-    mHudElements.push_back(element);
+    mHudElements.push_back(pElement);
 }
 
-void HudManager::Draw(RendererOpenGl& renderer)
+void HudManager::Draw(RendererOpenGl& pRenderer)
 {
     for (auto& element : mHudElements) {
-        element->Draw(renderer);
+        element->Draw(pRenderer);
     }
 }
 

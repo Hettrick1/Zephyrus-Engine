@@ -13,10 +13,10 @@ class HudElement
 public:
     HudElement();
     virtual ~HudElement() = default;
-    virtual void Draw(RendererOpenGl& renderer) = 0;
+    virtual void Draw(RendererOpenGl& pRenderer) = 0;
 
     // Sets the position of the HUD element.
-    void SetPosition(float x, float y);
+    void SetPosition(float pX, float pY);
 
     inline Vector2D GetPosition() const { return { mPositionX, mPositionY }; }
 

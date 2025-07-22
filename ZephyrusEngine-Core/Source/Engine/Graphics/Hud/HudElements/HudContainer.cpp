@@ -5,14 +5,14 @@ HudContainer::HudContainer()
 {
 }
 
-void HudContainer::AddElement(HudElement* element)
+void HudContainer::AddElement(HudElement* pElement)
 {
-    mElements.push_back(element);
+    mElements.push_back(pElement);
 }
 
-void HudContainer::Draw(RendererOpenGl& renderer)
+void HudContainer::Draw(RendererOpenGl& pRenderer)
 {
     for (auto& element : mElements) {
-        element->Draw(renderer);
+        element->Draw(pRenderer);
     }
 }

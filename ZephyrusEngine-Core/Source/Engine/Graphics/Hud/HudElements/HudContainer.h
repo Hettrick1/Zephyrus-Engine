@@ -13,9 +13,9 @@ class HudContainer
 public:
     HudContainer();
     // Adds a HUD element to the container
-    void AddElement(HudElement* element);
+    void AddElement(HudElement* pElement);
 
-    void Draw(RendererOpenGl& renderer) override;
+    void Draw(RendererOpenGl& pRenderer) override;
 
 private:
     std::vector<HudElement*> mElements;

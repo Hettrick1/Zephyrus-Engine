@@ -9,7 +9,7 @@
 class Window
 {
 public :
-	Window(int width = 800, int height = 700); // Constructs a window with the given width and height.
+	Window(int pWidth = 800, int pHseight = 700); // Constructs a window with the given width and height.
 	Window(const Window&) = delete;
 	void operator = (const Window&) = delete;
 
@@ -21,6 +21,6 @@ public :
 	void Close(); // Closes and destroys the SDL window.
 
 private:
-	SDL_Window* mSdlWindow;
+	SDL_Window* mSdlWindow = nullptr;
 	Vector2D mDimensions;
 };

@@ -12,17 +12,17 @@ class HudText :
     public HudElement
 {
 public:
-    HudText(const std::string& text, float x, float y, float scale, Vector4D color,TextAlignment alignment = TextAlignment::LEFT, Font* pFont = nullptr);
+    HudText(const std::string& pText, float pX, float pY, float pScale, Vector4D pColor,TextAlignment pAlignment = TextAlignment::LEFT, Font* pFont = nullptr);
     ~HudText();
 
     // Draws the text on the HUD using the specified renderer.
-    void Draw(RendererOpenGl& renderer) override;
+    void Draw(RendererOpenGl& pRenderer) override;
 
     // Sets the text to display.
     void SetText(std::string pText);
 
     // Sets the color of the text.
-    void SetColor(Vector4D color);
+    void SetColor(Vector4D pColor);
 
     inline Vector4D GetColor() const { return mColor; }
 
@@ -31,9 +31,9 @@ public:
 
 private:
     std::string mText;
-    float mScale;
+    float mScale = 0;
     Vector4D mColor;
     TextAlignment mAlignment;
-    Font* mFont;
-    ShaderProgram* mShaderProgram;
+    Font* mFont = nullptr;
+    ShaderProgram* mShaderProgram = nullptr;
 };

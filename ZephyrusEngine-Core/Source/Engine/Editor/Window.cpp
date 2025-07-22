@@ -1,6 +1,7 @@
 #include "Window.h"
 
-Window::Window(int width, int height) : mSdlWindow(nullptr), mDimensions({ (float)width, (float)height })
+Window::Window(int pWidth, int pHeight) : 
+    mSdlWindow(nullptr), mDimensions({ (float)pWidth, (float)pHeight })
 {
 }
 

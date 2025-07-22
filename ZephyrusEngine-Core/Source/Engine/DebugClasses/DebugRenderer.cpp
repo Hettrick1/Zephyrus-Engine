@@ -139,12 +139,12 @@ void DebugRenderer::DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWo
 	glDrawArrays(GL_LINES, 0, 24);
 }
 
-void DebugRenderer::DrawDebugLine(const Vector3D& start, const Vector3D& end, const HitResult& hit)
+void DebugRenderer::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, mDebugLineVbo);
 	float lineVertices[] = {
-		start.x, start.y, start.z,
-		end.x, end.y, end.z
+		pStart.x, pStart.y, pStart.z,
+		pEnd.x, pEnd.y, pEnd.z
 	};
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(lineVertices), lineVertices);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -153,7 +153,7 @@ void DebugRenderer::DrawDebugLine(const Vector3D& start, const Vector3D& end, co
 	Matrix4DRow worldTransform = Matrix4DRow::Identity;
 	mDebugShaderProgram.setMatrix4Row("uWorldTransform", worldTransform);
 
-	if (hit.HitActor) {
+	if (pHit.HitActor) {
 		mDebugShaderProgram.setVector3f("uColor", Vector3D(1, 0, 0));
 	}
 	else {
@@ -164,12 +164,12 @@ void DebugRenderer::DrawDebugLine(const Vector3D& start, const Vector3D& end, co
 	glDrawArrays(GL_LINES, 0, 2);
 	glBindVertexArray(0);
 
-	if (hit.HitActor) // draw a box where it was hit
+	if (pHit.HitActor) // draw a box where it was hit
 	{
 		const float size = 0.1f;
 
 		Matrix4DRow wt = Matrix4DRow::CreateScale(size * 2);
-		wt *= Matrix4DRow::CreateTranslation(hit.HitPoint - size);
+		wt *= Matrix4DRow::CreateTranslation(pHit.HitPoint - size);
 
 		mDebugShaderProgram.Use();
 		mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);

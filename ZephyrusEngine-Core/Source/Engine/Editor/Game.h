@@ -16,7 +16,7 @@
 class Game
 {
 public:
-	Game(std::string title, Scene* pStartupScene);
+	Game(std::string pTitle, Scene* pStartupScene);
 	~Game();
 
 	// Initializes the game systems and window
@@ -35,11 +35,11 @@ public:
 private:
 	SDL_Event mSdlEvent;
 	std::string mTitle;
-	Window* mGameWindow;
-	IRenderer* mRenderer;
-	Scene* mStartUpScene;
+	Window* mGameWindow = nullptr;
+	IRenderer* mRenderer = nullptr;
+	Scene* mStartUpScene = nullptr;
 	InputManager& mInputManager;
 	PhysicManager& mPhysicManager;
 	CameraManager& mCameraManager;
-	bool mIsRunning;
+	bool mIsRunning = true;
 };
