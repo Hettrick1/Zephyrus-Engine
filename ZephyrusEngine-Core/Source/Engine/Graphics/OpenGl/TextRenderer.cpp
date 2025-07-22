@@ -39,25 +39,25 @@ bool TextRenderer::Init(Window& pWindow)
     return true;
 }
 
-void TextRenderer::RenderText(std::string text, float x, float y, float scale, Vector4D color, Font pFont ,TextAlignment alignment, ShaderProgram* pShaderProgram)
+void TextRenderer::RenderText(std::string pText, float pX, float pY, float pScale, Vector4D pColor, Font pFont ,TextAlignment pAlignment, ShaderProgram* pShaderProgram)
 {
-    float textWidth = ComputeTextWidth(text, scale, pFont);
+    float textWidth = ComputeTextWidth(pText, pScale, pFont);
 
     ShaderProgram* shaderProgram = pShaderProgram == nullptr ? &mShaderProgram : pShaderProgram;
 
-    if (alignment == TextAlignment::CENTER)
+    if (pAlignment == TextAlignment::CENTER)
     {
-        x -= textWidth / 2.0f;
+        pX -= textWidth / 2.0f;
     }
-    else if (alignment == TextAlignment::RIGHT)
+    else if (pAlignment == TextAlignment::RIGHT)
     {
-        x -= textWidth;
+        pX -= textWidth;
     }
 
     // activate corresponding render state	
     shaderProgram->Use();
     shaderProgram->setMatrix4Row("projection", mProjection);
-    shaderProgram->setVector4f("textColor", color);
+    shaderProgram->setVector4f("textColor", pColor);
     shaderProgram->setFloat("time", SDL_GetTicks());
     shaderProgram->setFloat("screenWidth", mWindow->GetDimensions().x);
     shaderProgram->setFloat("screenHeight", mWindow->GetDimensions().y);
@@ -67,15 +67,15 @@ void TextRenderer::RenderText(std::string text, float x, float y, float scale, V
 
     // iterate through all characters
     std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++)
+    for (c = pText.begin(); c != pText.end(); c++)
     {
         Character ch = pFont.GetCharacters()[*c];
 
-        float xpos = x + ch.Bearing.x * scale;
-        float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+        float xpos = pX + ch.Bearing.x * pScale;
+        float ypos = pY - (ch.Size.y - ch.Bearing.y) * pScale;
 
-        float w = ch.Size.x * scale;
-        float h = ch.Size.y * scale;
+        float w = ch.Size.x * pScale;
+        float h = ch.Size.y * pScale;
         // update VBO for each character
         float vertices[6][4] = {
             { xpos,     ypos + h,   0.0f, 0.0f },
@@ -96,20 +96,20 @@ void TextRenderer::RenderText(std::string text, float x, float y, float scale, V
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        pX += (ch.Advance >> 6) * pScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-float TextRenderer::ComputeTextWidth(const std::string& text, float scale, Font pFont)
+float TextRenderer::ComputeTextWidth(const std::string& pText, float pScale, Font pFont)
 {
     float width = 0.0f;
-    for (char c : text)
+    for (char c : pText)
     {
         if (pFont.GetCharacters().find(c) != pFont.GetCharacters().end())
         {
-            width += (pFont.GetCharacters()[c].Advance >> 6) * scale;  // Convertit 1/64 pixels en pixels
+            width += (pFont.GetCharacters()[c].Advance >> 6) * pScale;  // Convertit 1/64 pixels en pixels
         }
     }
     return width;

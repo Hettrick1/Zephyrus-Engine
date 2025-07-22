@@ -21,17 +21,17 @@ public:
     // Initializes the text renderer with the given window
     bool Init(Window& pWindow);
 
-    void RenderText(std::string text, float x, float y, float scale, Vector4D color, Font pFont, TextAlignment alignment, ShaderProgram* pShaderProgram = nullptr);
+    void RenderText(std::string pText, float pX, float pY, float pScale, Vector4D pColor, Font pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram = nullptr);
 
     // Computes the width of the given text string at the specified scale and font
-    float ComputeTextWidth(const std::string& text, float scale, Font pFont);
+    float ComputeTextWidth(const std::string& pText, float pScale, Font pFont);
 private:
     ~TextRenderer();
     TextRenderer() = default;
     TextRenderer(const TextRenderer&) = delete;
     TextRenderer& operator=(const TextRenderer&) = delete;
     unsigned int VAO, VBO;
-    Window* mWindow;
+    Window* mWindow = nullptr;
     Shader mVertexShader, mFragmentShader;
     ShaderProgram mShaderProgram;
     Matrix4DRow mProjection;

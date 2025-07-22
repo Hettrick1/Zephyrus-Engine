@@ -188,9 +188,9 @@ void RendererOpenGl::DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pW
 	mDebugRenderer->DrawDebugBox(pMin, pMax, pWorldTransform);
 }
 
-void RendererOpenGl::DrawDebugLine(const Vector3D& start, const Vector3D& end, const HitResult& hit)
+void RendererOpenGl::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit)
 {
-	mDebugRenderer->DrawDebugLine(start, end, hit);
+	mDebugRenderer->DrawDebugLine(pStart, pEnd, pHit);
 }
 
 void RendererOpenGl::DrawSkySphere()

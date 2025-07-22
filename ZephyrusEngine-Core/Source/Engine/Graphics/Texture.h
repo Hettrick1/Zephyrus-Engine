@@ -34,7 +34,7 @@ public:
  
 private:
 	std::string mFilePath;
-	SDL_Texture* mSdlTexture;
+	SDL_Texture* mSdlTexture = nullptr;
 	int mWidth, mHeight;
 	unsigned int mTextureId;
 	// Loads a texture using SDL renderer

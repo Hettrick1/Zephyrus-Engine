@@ -7,13 +7,13 @@ HudImage::HudImage(Texture& pTexture, Vector2D pPosition, Vector2D pSize, Vector
     SetPosition(pPosition.x, pPosition.y);
 }
 
-void HudImage::Draw(RendererOpenGl& renderer)
+void HudImage::Draw(RendererOpenGl& pRenderer)
 {
     Rectangle rect;
     rect.dimensions = { mWidth, mHeight };
     rect.position = { mPositionX, mPositionY };
     glDisable(GL_CULL_FACE);
-    renderer.DrawHudImage(mTexture, rect, mOrigin, mTint);
+    pRenderer.DrawHudImage(mTexture, rect, mOrigin, mTint);
 }
 
 void HudImage::SetTexture(Texture& pTexture)

@@ -53,7 +53,7 @@ public:
 	// Draws a debug box using min/max points and a world transform
 	void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) override;
 	// Draws a debug line between two points with hit information
-	void DrawDebugLine(const Vector3D& start, const Vector3D& end, const HitResult& hit) override;
+	void DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit) override;
 
 	void DrawSkySphere();
 	void DrawMeshes();

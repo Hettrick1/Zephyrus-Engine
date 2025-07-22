@@ -11,9 +11,9 @@ RendererSdl::RendererSdl()
 
 }
 
-bool RendererSdl::Initialize(Window& rWindow)
+bool RendererSdl::Initialize(Window& pWindow)
 {
-    mSdlRenderer = SDL_CreateRenderer(rWindow.GetSdlWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    mSdlRenderer = SDL_CreateRenderer(pWindow.GetSdlWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!mSdlRenderer)
     {
         Log::Error(LogType::Video, "Failed to create Renderer");
@@ -80,10 +80,10 @@ void RendererSdl::RemoveSkySphere()
 {
 }
 
-void RendererSdl::DrawRect(Rectangle& rRect)
+void RendererSdl::DrawRect(Rectangle& pRect)
 {
     SDL_SetRenderDrawColor(mSdlRenderer, 255, 255, 255, 255);
-    SDL_Rect sdlRect = rRect.ToSdlRect();
+    SDL_Rect sdlRect = pRect.ToSdlRect();
     SDL_RenderFillRect(mSdlRenderer, &sdlRect);
 }
 

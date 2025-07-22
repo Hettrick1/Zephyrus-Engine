@@ -7,7 +7,7 @@ class CubeTextureMap
 public:
 
 	// Loads and creates a cube texture map from the provided file paths for each face.
-	bool CreateCubeTextureMap(const std::vector<std::string>& cube_face_paths);
+	bool CreateCubeTextureMap(const std::vector<std::string>& pCubePaths);
 	inline unsigned int GetID() const { return mTextureId; }
 	void SetActive() const;
 private:

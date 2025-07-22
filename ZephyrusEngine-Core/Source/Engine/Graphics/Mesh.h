@@ -38,5 +38,5 @@ public:
 private:
 	std::vector<Texture*> mTextures;
 	std::vector<Vertex> mVertices;
-	VertexArray* mVao;
+	VertexArray* mVao = nullptr;
 };

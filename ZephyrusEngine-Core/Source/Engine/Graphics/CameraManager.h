@@ -29,6 +29,6 @@ public:
 	inline CameraComponent* GetCurrentCamera() const { return mActiveCamera; }
 private:
 	CameraManager();
-	CameraComponent* mActiveCamera;
+	CameraComponent* mActiveCamera = nullptr;
 	std::vector<CameraComponent*> mCameras;
 };

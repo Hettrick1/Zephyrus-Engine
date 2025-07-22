@@ -1,7 +1,7 @@
 #include "CubeTextureMap.h"
 #include "RendererOpenGl.h"
 
-bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& cube_face_paths)
+bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubePaths)
 {
 	unsigned char* data;
 	int width, height, channels;
@@ -9,9 +9,9 @@ bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& cube_f
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureId);
 
-	mCubeFacePaths = cube_face_paths;
+	mCubeFacePaths = pCubePaths;
 
-	for (int i = 0; i < cube_face_paths.size(); i++) // retrieve the skybox textures
+	for (int i = 0; i < pCubePaths.size(); i++) // retrieve the skybox textures
 	{
 		SDL_Surface* surface = IMG_Load(mCubeFacePaths[i].c_str());
 		if (!surface)

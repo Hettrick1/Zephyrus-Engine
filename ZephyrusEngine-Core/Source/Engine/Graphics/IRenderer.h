@@ -52,13 +52,13 @@ public:
 	virtual void AddDebugCollider(ColliderComponent* pCol) {} // DEBUG PURPOSE ONLY
 	virtual void AddDebugLine(DebugLine* pLine) {} // DEBUG PURPOSE ONLY
 
-	virtual void SetSpriteShaderProgram(class ShaderProgram& shaderProgram) {}
+	virtual void SetSpriteShaderProgram(class ShaderProgram& pShaderProgram) {}
 	virtual void SetViewMatrix(Matrix4DRow pViewMatrix) {}
 
 	virtual RendererType GetType() const = 0;
 	virtual void DrawSprite(Actor& pActor, Texture& pTex, Rectangle pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
 	virtual void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) {}
-	virtual void DrawDebugLine(const Vector3D& start, const Vector3D& end, const HitResult& hit) {}
+	virtual void DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit) {}
 	virtual SDL_Renderer* ToSdlRenderer() { return nullptr; }
 
 	virtual void SetHud(HudManager* pHud) {};

@@ -12,13 +12,13 @@ void ShaderProgram::Unload()
 	glDeleteProgram(mId);
 }
 
-void ShaderProgram::Compose(std::vector<Shader*> shaders)
+void ShaderProgram::Compose(std::vector<Shader*> pShaders)
 {
 	mId = glCreateProgram();
 	mShaderProgramType = 0;
-	for (int s = 0; s < static_cast<int>(shaders.size()); s++)
+	for (int s = 0; s < static_cast<int>(pShaders.size()); s++)
 	{
-		switch (shaders[s]->GetType()) {
+		switch (pShaders[s]->GetType()) {
 		case ShaderType::VERTEX:
 			mShaderProgramType += ShaderProgramType::VERTEX;
 			break;
@@ -35,7 +35,7 @@ void ShaderProgram::Compose(std::vector<Shader*> shaders)
 			mShaderProgramType += ShaderProgramType::GEOMETRY;
 			break;
 		}
-		glAttachShader(mId, shaders[s]->GetID());
+		glAttachShader(mId, pShaders[s]->GetID());
 	}
 	glLinkProgram(mId);
 	Use();

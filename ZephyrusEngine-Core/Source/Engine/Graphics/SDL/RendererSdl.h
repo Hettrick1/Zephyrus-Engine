@@ -20,7 +20,7 @@ public:
 	RendererSdl& operator = (const RendererSdl&) = delete;
 
 	// Initialize the SDL renderer with the given window
-	bool Initialize(Window& rWindow);
+	bool Initialize(Window& pWindow);
 	void BeginDraw() override;
 	void Draw() override;
 	void EndDraw() override;
@@ -36,7 +36,7 @@ public:
 	RendererType GetType() const override { return IRenderer::RendererType::SDL; }
 
 	// Draw a rectangle using SDL
-	void DrawRect(Rectangle& rRect);
+	void DrawRect(Rectangle& pRect);
 	// Draw a sprite for the given actor and texture
 	void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
 	// Returns the underlying SDL_Renderer pointer

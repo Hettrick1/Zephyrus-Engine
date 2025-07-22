@@ -9,5 +9,5 @@ HudElement::HudElement()
 
 void HudElement::SetPosition(float pX, float pY)
 {
-	mPositionX = x; mPositionY = y;
+	mPositionX = pX; mPositionY = pY;
 }

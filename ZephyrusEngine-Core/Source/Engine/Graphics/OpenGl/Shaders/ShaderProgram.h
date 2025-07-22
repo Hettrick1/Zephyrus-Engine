@@ -27,7 +27,7 @@ public:
 	void Unload();
 
 	// Composes the shader program from a list of shaders
-	void Compose(std::vector<Shader*> shaders);
+	void Compose(std::vector<Shader*> pShaders);
 
 	unsigned int GetID();
 	inline uint8_t GetType() const { return mShaderProgramType; }
