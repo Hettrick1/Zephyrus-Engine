@@ -22,9 +22,9 @@ public :
 	void ApplyForce(Vector3D pForce); // Applies a continuous force to the rigidbody
 	void AddImpulse(Vector3D pImpulse); // Applies an instant impulse to the rigidbody
 	void ResolveCollision(Vector3D pResolveForce); // Resolves a collision by applying a force
-	void OnCollisionEnter(ColliderComponent* otherCollider); // Called when a collision starts
-	void OnCollisionStay(ColliderComponent* otherCollider); // Called while a collision persists
-	void OnCollisionExit(ColliderComponent* otherCollider); // Called when a collision ends
+	void OnCollisionEnter(ColliderComponent* pOtherCollider); // Called when a collision starts
+	void OnCollisionStay(ColliderComponent* pOtherCollider); // Called while a collision persists
+	void OnCollisionExit(ColliderComponent* pOtherCollider); // Called when a collision ends
 public:
 	void SetVelocity(Vector3D pVelocity);
 	void SetMass(float pMass);
@@ -35,19 +35,19 @@ public:
 	Vector3D GetVelocity() const { return mVelocity; }
 	float GetMass() const { return mMass; }
 	bool GetIsGrounded() const { return mIsGrounded; }
-	void SetBounciness(float bounce) { bounce <= 1 ? mBounciness = bounce : mBounciness = 1.0f; }
+	void SetBounciness(float pBounce) { pBounce <= 1 ? mBounciness = pBounce : mBounciness = 1.0f; }
 	float GetBounciness() const { return mBounciness; }
 
-	void SetIsStatic(bool isStatic); // Sets whether the rigidbody is static (non-movable)
+	void SetIsStatic(bool pIsStatic); // Sets whether the rigidbody is static (non-movable)
 	bool IsStatic() const { return mIsStatic; }
 
 private:
 	Vector3D mVelocity;
 	Vector3D mAcceleration;
-	float mMass;
-	float mFriction;
-	bool mUseGravity;
-	float mGravity;
-	float mBounciness;
-	bool mIsGrounded, mIsStatic;
+	float mMass = 0.0;
+	float mFriction = 0.0;
+	bool mUseGravity = false;
+	float mGravity = 0.0;
+	float mBounciness = 0.0;
+	bool mIsGrounded = false, mIsStatic = false;
 };

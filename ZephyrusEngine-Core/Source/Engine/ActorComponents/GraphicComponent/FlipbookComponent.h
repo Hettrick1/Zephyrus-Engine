@@ -26,9 +26,9 @@ public:
 	inline bool IsAnimationEnded() const { return mHasFinished; }
 
 	// Enables or disables animation playback
-	void SetCanPlay(bool canPlay);
+	void SetCanPlay(bool pCanPlay);
 	// Sets whether the animation should loop
-	void SetIsLooping(bool looping);
+	void SetIsLooping(bool pLooping);
 
 	void Update() override;
 private:

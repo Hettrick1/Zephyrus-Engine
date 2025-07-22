@@ -6,7 +6,7 @@
 #include <iostream>
 
 BoxAABBComponent::BoxAABBComponent(Actor* pOwner, int pUpdateOder, Vector3D pSize, Vector3D pRelativePosition)
-    : ColliderComponent(pOwner, pUpdateOder), mShowInGame(true)
+    : ColliderComponent(pOwner, pUpdateOder)
 {
     //pOwner->AddComponent(this);
     SetRelativePosition(pRelativePosition);
@@ -33,10 +33,10 @@ void BoxAABBComponent::OnEnd()
 {
 }
 
-bool BoxAABBComponent::CheckCollisionWith(ColliderComponent* other, ContactManifold& infosOut)
+bool BoxAABBComponent::CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut)
 {
-    if (BoxAABBComponent* boxCollider = dynamic_cast<BoxAABBComponent*>(other)) {
-        if (CheckCollisionWithBoxAABB(boxCollider, infosOut)) {
+    if (BoxAABBComponent* boxCollider = dynamic_cast<BoxAABBComponent*>(pOther)) {
+        if (CheckCollisionWithBoxAABB(boxCollider, pInfosOut)) {
             return true;
         }
         return false;
@@ -44,13 +44,13 @@ bool BoxAABBComponent::CheckCollisionWith(ColliderComponent* other, ContactManif
     return false;
 }
 
-bool BoxAABBComponent::CheckCollisionWithBoxAABB(BoxAABBComponent* other, ContactManifold& infosOut)
+bool BoxAABBComponent::CheckCollisionWithBoxAABB(BoxAABBComponent* pOther, ContactManifold& pInfosOut)
 {
     mLastPosition = mPosition;
     mPosition = mOwner->GetTransformComponent().GetPosition() + GetRelativePosition();
 
     Vector3D delta = mPosition - mLastPosition;
-    Vector3D otherDelta = (other->GetOwner()->GetTransformComponent().GetPosition() + other->GetRelativePosition()) - other->GetLastPosition();
+    Vector3D otherDelta = (pOther->GetOwner()->GetTransformComponent().GetPosition() + pOther->GetRelativePosition()) - pOther->GetLastPosition();
 
     float maxDelta = std::max(delta.Length(), otherDelta.Length());
     int steps = std::max(1, static_cast<int>(maxDelta / 0.05f));
@@ -60,12 +60,12 @@ bool BoxAABBComponent::CheckCollisionWithBoxAABB(BoxAABBComponent* other, Contac
     {
         float t = i * stepSize;
         Vector3D predictedPosition = mLastPosition + delta * t;
-        Vector3D otherPredictedPosition = other->GetLastPosition() + otherDelta * t;
+        Vector3D otherPredictedPosition = pOther->GetLastPosition() + otherDelta * t;
 
         Vector3D minA = predictedPosition - (mSize);
         Vector3D maxA = predictedPosition + (mSize);
-        Vector3D minB = otherPredictedPosition - (other->mSize);
-        Vector3D maxB = otherPredictedPosition + (other->mSize);
+        Vector3D minB = otherPredictedPosition - (pOther->mSize);
+        Vector3D maxB = otherPredictedPosition + (pOther->mSize);
 
         if ((minA.x <= maxB.x && maxA.x >= minB.x) &&
             (minA.y <= maxB.y && maxA.y >= minB.y) &&
@@ -92,7 +92,7 @@ void BoxAABBComponent::SetSize(Vector3D pSize)
 	mSize = pSize;
 }
 
-void BoxAABBComponent::DebugDraw(IRenderer& renderer)
+void BoxAABBComponent::DebugDraw(IRenderer& pRenderer)
 {
     if (mOwner->GetState() == ActorState::Active)
     {
@@ -103,7 +103,7 @@ void BoxAABBComponent::DebugDraw(IRenderer& renderer)
         wt = Matrix4DRow::CreateScale(mSize * 2);
         wt *= Matrix4DRow::CreateTranslation(mPosition - mSize);
 
-        renderer.DrawDebugBox(aabb.min, aabb.max, wt);
+        pRenderer.DrawDebugBox(aabb.min, aabb.max, wt);
     }
 }
 

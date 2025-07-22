@@ -3,17 +3,17 @@
 #include "IRenderer.h"
 #include "Physics/ContactManifold.h"
 
-BoxSATComponent::BoxSATComponent(Actor* owner, int updateOrder, Vector3D size, Vector3D relativePosition)
-    :ColliderComponent(owner, updateOrder)
+BoxSATComponent::BoxSATComponent(Actor* pOwner, int pUpdateOrder, Vector3D pSize, Vector3D pRelativePosition)
+    :ColliderComponent(pOwner, pUpdateOrder)
 {
-    SetRelativePosition(relativePosition);
-    mSize = size;
+    SetRelativePosition(pRelativePosition);
+    mSize = pSize;
 }
 
-bool BoxSATComponent::CheckCollisionWith(ColliderComponent* other, ContactManifold& infosOut)
+bool BoxSATComponent::CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut)
 {
-    if (other->GetColliderType() == ColliderType::BoxSAT) {
-        return CheckCollisionWithBoxSAT(static_cast<BoxSATComponent*>(other), infosOut);
+    if (pOther->GetColliderType() == ColliderType::BoxSAT) {
+        return CheckCollisionWithBoxSAT(static_cast<BoxSATComponent*>(pOther), pInfosOut);
     }
     return false;
 }
@@ -47,7 +47,7 @@ std::vector<Vector3D> BoxSATComponent::GetVertices()
     return vertices;
 }
 
-void BoxSATComponent::DebugDraw(IRenderer& renderer)
+void BoxSATComponent::DebugDraw(IRenderer& pRenderer)
 {
     if (mOwner->GetState() == ActorState::Active)
     {
@@ -57,18 +57,18 @@ void BoxSATComponent::DebugDraw(IRenderer& renderer)
         //wt *= Matrix4DRow::CreateFromQuaternion(mOwner->GetTransformComponent().GetRotation());
         wt *= Matrix4DRow::CreateTranslation(GetWorldPosition() - mSize);
 
-        renderer.DrawDebugBox(aabb.min, aabb.max, wt);
+        pRenderer.DrawDebugBox(aabb.min, aabb.max, wt);
     }
 }
 
-bool BoxSATComponent::CheckCollisionWithBoxSAT(BoxSATComponent* other, ContactManifold& infosOut)
+bool BoxSATComponent::CheckCollisionWithBoxSAT(BoxSATComponent* pOther, ContactManifold& pInfosOut)
 {
     Vector3D axesA[3], axesB[3];
     GetAxes(axesA);
-    other->GetAxes(axesB);
+    pOther->GetAxes(axesB);
 
     Vector3D centerA = GetWorldPosition();
-    Vector3D centerB = other->GetWorldPosition();
+    Vector3D centerB = pOther->GetWorldPosition();
     Vector3D t = centerB - centerA;
 
     float minOverlap = FLT_MAX;
@@ -80,7 +80,7 @@ bool BoxSATComponent::CheckCollisionWithBoxSAT(BoxSATComponent* other, ContactMa
         if (axis.LengthSq() < 0.001f) continue; // éviter des axes nuls
 
         float overlap;
-        if (!OverlapOnAxis(other, axis, overlap))
+        if (!OverlapOnAxis(pOther, axis, overlap))
             return false;
 
         if (overlap < minOverlap) {
@@ -95,7 +95,7 @@ bool BoxSATComponent::CheckCollisionWithBoxSAT(BoxSATComponent* other, ContactMa
         if (axis.LengthSq() < 0.001f) continue;
 
         float overlap;
-        if (!OverlapOnAxis(other, axis, overlap))
+        if (!OverlapOnAxis(pOther, axis, overlap))
             return false;
 
         if (overlap < minOverlap) {
@@ -113,7 +113,7 @@ bool BoxSATComponent::CheckCollisionWithBoxSAT(BoxSATComponent* other, ContactMa
             axis = Vector3D::Normalize(axis);
 
             float overlap;
-            if (!OverlapOnAxis(other, axis, overlap))
+            if (!OverlapOnAxis(pOther, axis, overlap))
                 return false;
 
             if (overlap < minOverlap) {
@@ -124,7 +124,7 @@ bool BoxSATComponent::CheckCollisionWithBoxSAT(BoxSATComponent* other, ContactMa
     }
 
     centerA = GetWorldPosition();
-    centerB = other->GetWorldPosition();
+    centerB = pOther->GetWorldPosition();
     Vector3D direction = centerB - centerA;
 
     Vector3D newDir = Vector3D(direction.x, direction.y, 0);
@@ -137,43 +137,43 @@ bool BoxSATComponent::CheckCollisionWithBoxSAT(BoxSATComponent* other, ContactMa
 
     Vector3D newNorm = Vector3D(finalNormal.x, finalNormal.y, 0); // Normale en 2D car je n'ai pas implémenté la gravité encore donc ca évite que des quilles s'envolent
 
-    infosOut.normal = Vector3D::Normalize(newNorm);
-    infosOut.penetrationDepth = minOverlap;
+    pInfosOut.normal = Vector3D::Normalize(newNorm);
+    pInfosOut.penetrationDepth = minOverlap;
 
     return true;
 }
 
-bool BoxSATComponent::OverlapOnAxis(BoxSATComponent* other, const Vector3D& axis, float& overlapOut) {
-    auto projA = CalculateProjection(axis);
-    auto projB = other->CalculateProjection(axis);
+bool BoxSATComponent::OverlapOnAxis(BoxSATComponent* pOther, const Vector3D& pAxis, float& pOverlapOut) {
+    auto projA = CalculateProjection(pAxis);
+    auto projB = pOther->CalculateProjection(pAxis);
 
     if (projA.second < projB.first || projB.second < projA.first)
         return false;
 
     // Calcul du overlap réel
-    overlapOut = std::min(projA.second, projB.second) - std::max(projA.first, projB.first);
+    pOverlapOut = std::min(projA.second, projB.second) - std::max(projA.first, projB.first);
     return true;
 }
 
-void BoxSATComponent::GetAxes(Vector3D axes[3])
+void BoxSATComponent::GetAxes(Vector3D pAxes[3])
 {
     Matrix4DRow transform = GetWorldTransform();
-    axes[0] = Vector3D::Normalize(transform.GetXAxis()); // Right
-    axes[1] = Vector3D::Normalize(transform.GetYAxis()); // Forward
-    axes[2] = Vector3D::Normalize(transform.GetZAxis()); // Up
+    pAxes[0] = Vector3D::Normalize(transform.GetXAxis()); // Right
+    pAxes[1] = Vector3D::Normalize(transform.GetYAxis()); // Forward
+    pAxes[2] = Vector3D::Normalize(transform.GetZAxis()); // Up
 }
 
-std::pair<float, float> BoxSATComponent::CalculateProjection(const Vector3D& axis)
+std::pair<float, float> BoxSATComponent::CalculateProjection(const Vector3D& pAxis)
 {
     Vector3D axes[3];
     GetAxes(axes);
     Vector3D scaledExtents = GetScaledSize();
 
-    float proj = Vector3D::Dot(GetWorldPosition(), axis);
+    float proj = Vector3D::Dot(GetWorldPosition(), pAxis);
     float radius =
-        scaledExtents.x * std::abs(Vector3D::Dot(axes[0], axis)) +
-        scaledExtents.y * std::abs(Vector3D::Dot(axes[1], axis)) +
-        scaledExtents.z * std::abs(Vector3D::Dot(axes[2], axis));
+        scaledExtents.x * std::abs(Vector3D::Dot(axes[0], pAxis)) +
+        scaledExtents.y * std::abs(Vector3D::Dot(axes[1], pAxis)) +
+        scaledExtents.z * std::abs(Vector3D::Dot(axes[2], pAxis));
 
     return { proj - radius, proj + radius };
 }

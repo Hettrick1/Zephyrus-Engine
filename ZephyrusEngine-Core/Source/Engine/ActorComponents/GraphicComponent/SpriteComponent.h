@@ -33,12 +33,12 @@ public:
 	Texture& GetTexture();
 protected:
 	Texture mTexture;
-	int mDrawOrder;
-	int mTexWidth;
-	int mTexHeight;
-	int mTexWidthOverride;
-	int mTexHeightOverride;
-	IRenderer::Flip mFlipMethode;
-	bool mCullOff;
-	float aspectRatio, aspectRatioInv;
+	int mDrawOrder = 0;
+	int mTexWidth = 0;
+	int mTexHeight = 0;
+	int mTexWidthOverride = 0;
+	int mTexHeightOverride = 0;
+	IRenderer::Flip mFlipMethode = IRenderer::Flip::None;
+	bool mCullOff = false;
+	float aspectRatio = 0.0, aspectRatioInv = 0.0;
 };

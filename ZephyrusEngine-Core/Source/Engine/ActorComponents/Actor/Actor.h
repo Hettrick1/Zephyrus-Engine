@@ -14,17 +14,17 @@ class Scene;
 class Actor
 {
 public:
-	Actor(Vector3D position = 0, Vector3D size = 1, Quaternion rotation = Quaternion(0, 0));
+	Actor(Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0));
 	~Actor();
 
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	virtual void Destroy() = 0;
 
-	void AttachScene(Scene& scene);
-	void AddComponent(Component* component);
-	void RemoveComponent(Component* component);
-	void SetActive(ActorState state);
+	void AttachScene(Scene& pScene);
+	void AddComponent(Component* pComponent);
+	void RemoveComponent(Component* pComponent);
+	void SetActive(ActorState pState);
 	void SetPosition(Vector3D pPosition);
 	void SetSize(Vector3D pSize);
 	void RotateX(float pAnle);
@@ -41,7 +41,7 @@ public:
 	void SetRigidBody(RigidbodyComponent* pRigidbody);
 	void SetTag(std::string pTag);
 	inline std::string GetTag() const { return mTag; }
-	bool HasTag(std::string tag);
+	bool HasTag(std::string pTag);
 
 	// Get the first component of a specific type
 	template<typename  C>
@@ -67,9 +67,9 @@ protected:
 	ActorState mState;
 	TransformComponent mTransformComponent;
 	RigidbodyComponent* mRigidbody;
-	bool mIsUpdatingComponents;
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mPendingComponents;
-	std::string mTag;
-	float mLod;
+	bool mIsUpdatingComponents = false;
+	std::string mTag = "";
+	float mLod = 0;
 };

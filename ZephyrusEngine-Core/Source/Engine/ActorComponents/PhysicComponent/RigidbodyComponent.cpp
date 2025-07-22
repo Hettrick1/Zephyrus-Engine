@@ -56,17 +56,17 @@ void RigidbodyComponent::ResolveCollision(Vector3D pResolveForce)
 	mAcceleration = pResolveForce;
 }
 
-void RigidbodyComponent::OnCollisionEnter(ColliderComponent* otherCollider)
+void RigidbodyComponent::OnCollisionEnter(ColliderComponent* pOtherCollider)
 {
     
 }
 
-void RigidbodyComponent::OnCollisionStay(ColliderComponent* otherCollider)
+void RigidbodyComponent::OnCollisionStay(ColliderComponent* pOtherCollider)
 {
 
 }
 
-void RigidbodyComponent::OnCollisionExit(ColliderComponent* otherCollider)
+void RigidbodyComponent::OnCollisionExit(ColliderComponent* pOtherCollider)
 {
    
 }
@@ -101,7 +101,7 @@ void RigidbodyComponent::SetGravity(float pGravity)
     mGravity = pGravity;
 }
 
-void RigidbodyComponent::SetIsStatic(bool isStatic)
+void RigidbodyComponent::SetIsStatic(bool pIsStatic)
 {
-    mIsStatic = isStatic;
+    mIsStatic = pIsStatic;
 }

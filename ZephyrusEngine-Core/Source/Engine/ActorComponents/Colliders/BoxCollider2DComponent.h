@@ -23,11 +23,11 @@ public:
 
 public:
 	// Checks collision with another collider and fills contact information
-	bool CheckCollisionWith(ColliderComponent* other, ContactManifold& infosOut) override;
+	bool CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut) override;
 
 public:
 	// Checks collision specifically with another BoxCollider2DComponent
-	bool CheckCollisionWithBox(BoxCollider2DComponent* other);
+	bool CheckCollisionWithBox(BoxCollider2DComponent* pOther);
 
 public:
 	// Sets whether the collider should be shown in game (for debug)
@@ -36,5 +36,5 @@ public:
 private:
 	Vector3D mPosition;
 	Vector3D mSize;
-	bool mShowInGame;
+	bool mShowInGame = true;
 };

@@ -4,12 +4,12 @@
 #include "SceneManager.h"
 #include <algorithm>
 
-Actor::Actor(Vector3D position, Vector3D size, Quaternion rotation) : 
+Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation) : 
     mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mTag(""), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
 {
-    mTransformComponent.SetPosition(position);
-    mTransformComponent.SetSize(size);
-    mTransformComponent.SetRotation(rotation);
+    mTransformComponent.SetPosition(pPosition);
+    mTransformComponent.SetSize(pSize);
+    mTransformComponent.SetRotation(pRotation);
     mTransformComponent.SetOwner(this);
 }
 
@@ -24,32 +24,32 @@ void Actor::Start()
     }
 }
 
-void Actor::AttachScene(Scene& scene)
+void Actor::AttachScene(Scene& pScene)
 {
-    mScene = scene;
+    mScene = pScene;
 }
 
-void Actor::AddComponent(Component* component)
+void Actor::AddComponent(Component* pComponent)
 {
     if (mIsUpdatingComponents) 
     {
-        mPendingComponents.emplace_back(component);
+        mPendingComponents.emplace_back(pComponent);
     }
     else 
     {
-        mComponents.emplace_back(component);
+        mComponents.emplace_back(pComponent);
     }
 }
 
-void Actor::RemoveComponent(Component* component)
+void Actor::RemoveComponent(Component* pComponent)
 {
-    std::vector<Component*>::iterator it = find(mPendingComponents.begin(), mPendingComponents.end(), component);
+    std::vector<Component*>::iterator it = find(mPendingComponents.begin(), mPendingComponents.end(), pComponent);
     if (it != mPendingComponents.end())
     {
         iter_swap(it, mPendingComponents.end() - 1);
         mPendingComponents.pop_back();
     }
-    it = find(mComponents.begin(), mComponents.end(), component);
+    it = find(mComponents.begin(), mComponents.end(), pComponent);
     if (it != mComponents.end())
     {
         iter_swap(it, mComponents.end() - 1);
@@ -57,9 +57,9 @@ void Actor::RemoveComponent(Component* component)
     }
 }
 
-void Actor::SetActive(ActorState state)
+void Actor::SetActive(ActorState pState)
 {
-    mState = state;
+    mState = pState;
 }
 
 void Actor::SetPosition(Vector3D pPosition)
@@ -159,9 +159,9 @@ void Actor::SetTag(std::string pTag)
     mTag = pTag;
 }
 
-bool Actor::HasTag(std::string tag)
+bool Actor::HasTag(std::string pTag)
 {
-    if (mTag == tag) 
+    if (mTag == pTag) 
     {
         return true;
     }

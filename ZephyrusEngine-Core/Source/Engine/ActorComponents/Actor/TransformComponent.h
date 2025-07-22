@@ -15,7 +15,7 @@ class Actor;
 class TransformComponent
 {
 public:
-	TransformComponent(Actor* pOwner, Vector3D position, Vector3D size, Quaternion rotation);
+	TransformComponent(Actor* pOwner, Vector3D pPosition, Vector3D pSize, Quaternion pRotation);
 	TransformComponent();
 
 	Vector3D GetPosition();
@@ -23,10 +23,10 @@ public:
 	Quaternion GetRotation();
 	Matrix4DRow GetWorldTransform();
 
-	void SetPosition(Vector3D newPosition);
+	void SetPosition(Vector3D pNewPosition);
 	void Translate(Vector3D pTranslation);
-	void SetSize(Vector3D newSize);
-	void SetRotation(Quaternion newRotation);
+	void SetSize(Vector3D pNewSize);
+	void SetRotation(Quaternion pNewRotation);
 	void SetOwner(Actor* pOwner);
 
 	// Rotates the component around the X axis
@@ -50,8 +50,8 @@ private:
 	Vector3D mPosition;
 	Vector3D mSize;
 	Quaternion mRotation;
-	Matrix4DRow mWorldTransform;
-	Actor* mOwner;
-	bool mNeedsToUpdate;
-	float mRoll, mPitch, mYaw;
+	Matrix4DRow mWorldTransform = Matrix4DRow::Identity;
+	Actor* mOwner = nullptr;
+	bool mNeedsToUpdate = false;
+	float mRoll = 0, mPitch = 0, mYaw = 0;
 };

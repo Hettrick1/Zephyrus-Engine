@@ -13,7 +13,7 @@ class Component
 {
 public:
 	Component() = delete;
-	Component(Actor* owner, int updateOder = 0);
+	Component(Actor* pOwner, int pUpdateOder = 0);
 	virtual ~Component();
 
 	virtual void OnStart();
@@ -65,10 +65,10 @@ public:
 	Actor* GetOwner();
 
 protected:
-	bool mIsActive;
-	Actor* mOwner;
-	int mUpdateOrder;
-	Matrix4DRow mRelativeTransform;
+	bool mIsActive = true;
+	Actor* mOwner = nullptr;
+	int mUpdateOrder = 0;
+	Matrix4DRow mRelativeTransform = Matrix4DRow::Identity;
 	Vector3D mRelativePosition;
 	Vector3D mRelativeSize;
 	Quaternion mRelativeRotation;

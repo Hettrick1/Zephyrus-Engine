@@ -28,7 +28,7 @@ public:
 	void SetSize(Vector3D pSize);
 
 	// Draws the debug representation of the box collider
-	void DebugDraw(IRenderer& renderer) override;
+	void DebugDraw(IRenderer& pRenderer) override;
 
 	Vector3D GetLastPosition();
 
@@ -41,11 +41,11 @@ public:
 
 private:
 	// Checks collision specifically with another BoxAABBComponent
-	bool CheckCollisionWithBoxAABB(BoxAABBComponent* other, ContactManifold& infosOut);
+	bool CheckCollisionWithBoxAABB(BoxAABBComponent* pOther, ContactManifold& pInfosOut);
 
 private:
 	Vector3D mPosition;
 	Vector3D mLastPosition;
 	std::pair<Vector3D, Vector3D> mCollisionPosition;
-	bool mShowInGame;
+	bool mShowInGame = true;
 };

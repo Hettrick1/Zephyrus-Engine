@@ -6,7 +6,7 @@
 #include "Physics/ContactManifold.h"
 
 ColliderComponent::ColliderComponent(Actor* pOwner, int pUpdateOder)
-	: Component(pOwner, pUpdateOder), mIsQuerry(false), mIsActive(true)
+	: Component(pOwner, pUpdateOder)
 {
 	PhysicManager::Instance().RegisterCollider(pOwner, this);
 	mOwner->GetScene().GetRenderer()->AddDebugCollider(this);
@@ -20,7 +20,7 @@ void ColliderComponent::Update()
 {
 }
 
-bool ColliderComponent::CheckCollisionWith(ColliderComponent* other, ContactManifold& infosOut)
+bool ColliderComponent::CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut)
 {
 	return true;
 }
@@ -30,7 +30,7 @@ std::pair<Vector3D, Vector3D> ColliderComponent::GetCollisionPosition() const
 	return std::pair<Vector3D, Vector3D>();
 }
 
-void ColliderComponent::DebugDraw(IRenderer& renderer)
+void ColliderComponent::DebugDraw(IRenderer& pRenderer)
 {
 }
 
@@ -39,52 +39,52 @@ bool ColliderComponent::GetIsQuerry()
 	return mIsQuerry;
 }
 
-void ColliderComponent::SetIsQuerry(bool isQuerry)
+void ColliderComponent::SetIsQuerry(bool pIsQuerry)
 {
-	mIsQuerry = isQuerry;
+	mIsQuerry = pIsQuerry;
 }
 
-void ColliderComponent::AddListener(ICollisionListener* listener)
+void ColliderComponent::AddListener(ICollisionListener* pListener)
 {
-	mListeners.push_back(listener);
+	mListeners.push_back(pListener);
 }
 
-void ColliderComponent::RemoveListener(ICollisionListener* listenerToRemove)
+void ColliderComponent::RemoveListener(ICollisionListener* pListener)
 {
-	mListeners.erase(std::remove(mListeners.begin(), mListeners.end(), listenerToRemove), mListeners.end());
+	mListeners.erase(std::remove(mListeners.begin(), mListeners.end(), pListener), mListeners.end());
 }
 
-void ColliderComponent::NotifyListenersStarted(HitResult* infos)
+void ColliderComponent::NotifyListenersStarted(HitResult* pInfos)
 {
 	if (mListeners.size() > 0) {
 		for (ICollisionListener* listener : mListeners) {
 			if (listener != nullptr)
 			{
-				listener->OnTriggerEnter(this, infos);
+				listener->OnTriggerEnter(this, pInfos);
 			}
 		}
 	}
 }
 
-void ColliderComponent::NotifyListenersStay(HitResult* infos)
+void ColliderComponent::NotifyListenersStay(HitResult* pInfos)
 {
 	if (mListeners.size() > 0) {
 		for (ICollisionListener* listener : mListeners) {
 			if (listener != nullptr)
 			{
-				listener->OnTriggerStay(this, infos);
+				listener->OnTriggerStay(this, pInfos);
 			}
 		}
 	}
 }
 
-void ColliderComponent::NotifyListenersEnded(HitResult* infos)
+void ColliderComponent::NotifyListenersEnded(HitResult* pInfos)
 {
 	if (mListeners.size() > 0) {
 		for (ICollisionListener* listener : mListeners) {
 			if (listener != nullptr)
 			{
-				listener->OnTriggerExit(this, infos);
+				listener->OnTriggerExit(this, pInfos);
 			}
 		}
 	}

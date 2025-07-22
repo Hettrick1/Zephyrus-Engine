@@ -1,8 +1,8 @@
 #include "Component.h"
 #include "Actor.h"
 
-Component::Component(Actor* owner, int updateOder) 
-    : mIsActive(true), mOwner(owner), mUpdateOrder(updateOder), mRelativePosition(0),
+Component::Component(Actor* pOwner, int pUpdateOder) 
+    : mIsActive(true), mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
     mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1)
 {
 	mOwner->AddComponent(this);

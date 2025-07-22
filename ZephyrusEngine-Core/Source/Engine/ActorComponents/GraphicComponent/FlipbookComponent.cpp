@@ -41,14 +41,14 @@ void FlipbookComponent::PlayAnimation()
 	mPlayOnce = true;
 }
 
-void FlipbookComponent::SetCanPlay(bool canPlay)
+void FlipbookComponent::SetCanPlay(bool pCanPlay)
 {
-	mCanPlayPending = !canPlay;
+	mCanPlayPending = !pCanPlay;
 }
 
-void FlipbookComponent::SetIsLooping(bool looping)
+void FlipbookComponent::SetIsLooping(bool pLooping)
 {
-	mIsLooping = looping;
+	mIsLooping = pLooping;
 }
 
 void FlipbookComponent::Update()

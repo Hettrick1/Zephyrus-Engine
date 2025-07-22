@@ -2,8 +2,8 @@
 #include "Actor.h"
 #include "Log.h"
 
-TransformComponent::TransformComponent(Actor* pOwner, Vector3D position, Vector3D size, Quaternion rotation)
-    : mOwner(pOwner), mPosition(position), mSize(size), mRotation(rotation)
+TransformComponent::TransformComponent(Actor* pOwner, Vector3D pPosition, Vector3D pSize, Quaternion pRotation)
+    : mOwner(pOwner), mPosition(pPosition), mSize(pSize), mRotation(pRotation)
 {
 }
 
@@ -68,9 +68,6 @@ void TransformComponent::RotateX(float pAngle)
     mPitch += pAngle;
     Quaternion newX(Vector3D::unitX, piAngle);
     mRotation = Quaternion::Concatenate(newX, mRotation);
-    /*Log::Info("x : " + std::to_string(Maths::ToDeg(mRotation.x)));
-    Log::Info("y : " + std::to_string(Maths::ToDeg(mRotation.y)));
-    Log::Info("z : " + std::to_string(Maths::ToDeg(mRotation.z)));*/
     ComputeWorldTransform();
 }
 
@@ -80,9 +77,6 @@ void TransformComponent::RotateY(float pAngle)
     mRoll += pAngle;
     Quaternion newY(Vector3D::unitY, piAngle);
     mRotation = Quaternion::Concatenate(newY, mRotation);
-    /*Log::Info("x : " + std::to_string(Maths::ToDeg(mRotation.x)));
-    Log::Info("y : " + std::to_string(Maths::ToDeg(mRotation.y)));
-    Log::Info("z : " + std::to_string(Maths::ToDeg(mRotation.z)));*/
     ComputeWorldTransform();
 } 
 
@@ -92,9 +86,6 @@ void TransformComponent::RotateZ(float pAngle)
     mYaw += pAngle;
     Quaternion newZ(Vector3D::unitZ, piAngle);
     mRotation = Quaternion::Concatenate(newZ, mRotation);
-    /*Log::Info("x : " + std::to_string(Maths::ToDeg(mRotation.x)));
-    Log::Info("y : " + std::to_string(Maths::ToDeg(mRotation.y)));
-    Log::Info("z : " + std::to_string(Maths::ToDeg(mRotation.z)));*/
     ComputeWorldTransform(); 
 }
 

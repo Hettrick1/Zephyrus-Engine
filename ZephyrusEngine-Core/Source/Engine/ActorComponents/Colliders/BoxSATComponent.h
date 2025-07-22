@@ -12,20 +12,20 @@
 class BoxSATComponent : public ColliderComponent {
 public :
     BoxSATComponent() = delete;
-    BoxSATComponent(Actor* owner, int updateOrder, Vector3D size = 1, Vector3D relativePosition = Vector3D::zero);
+    BoxSATComponent(Actor* pOwner, int pUpdateOrder, Vector3D pSize = 1, Vector3D pRelativePosition = Vector3D::zero);
 
     ColliderType GetColliderType() const override { return ColliderType::BoxSAT; }
-    bool CheckCollisionWith(ColliderComponent* other, ContactManifold& infosOut) override;
+    bool CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut) override;
     AABB GetAABB() override;
     void Update() override;
-    void DebugDraw(IRenderer& renderer) override;
+    void DebugDraw(IRenderer& pRenderer) override;
 
     std::vector<Vector3D> GetVertices();
 
 private : 
-    bool CheckCollisionWithBoxSAT(BoxSATComponent* other, ContactManifold& infosOut);
-    void GetAxes(Vector3D axes[3]);
-    bool OverlapOnAxis(BoxSATComponent* other, const Vector3D& axis, float& overlapOut);
-    std::pair<float, float> CalculateProjection(const Vector3D& axis);
+    bool CheckCollisionWithBoxSAT(BoxSATComponent* pOther, ContactManifold& pInfosOut);
+    void GetAxes(Vector3D pAxes[3]);
+    bool OverlapOnAxis(BoxSATComponent* pOther, const Vector3D& pAxis, float& pOverlapOut);
+    std::pair<float, float> CalculateProjection(const Vector3D& pAxis);
     Vector3D GetScaledSize();
 };

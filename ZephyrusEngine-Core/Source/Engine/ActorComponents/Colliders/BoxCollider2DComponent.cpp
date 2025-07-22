@@ -4,7 +4,7 @@
 #include "Actor.h"
 
 BoxCollider2DComponent::BoxCollider2DComponent(Actor* pOwner, int pUpdateOder, Vector3D pSize) 
-    : ColliderComponent(pOwner, pUpdateOder), mSize(pSize), mShowInGame(true)
+    : ColliderComponent(pOwner, pUpdateOder), mSize(pSize)
 {
     mPosition = pOwner->GetTransformComponent().GetPosition();
     if (mShowInGame) {
@@ -31,9 +31,9 @@ void BoxCollider2DComponent::OnEnd()
 {
 }
 
-bool BoxCollider2DComponent::CheckCollisionWith(ColliderComponent* other, ContactManifold& infosOut)
+bool BoxCollider2DComponent::CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut)
 {
-    if (BoxCollider2DComponent* boxCollider = dynamic_cast<BoxCollider2DComponent*>(other)) {
+    if (BoxCollider2DComponent* boxCollider = dynamic_cast<BoxCollider2DComponent*>(pOther)) {
         if (CheckCollisionWithBox(boxCollider)) {
             return true;
         }
@@ -42,17 +42,17 @@ bool BoxCollider2DComponent::CheckCollisionWith(ColliderComponent* other, Contac
     return false;
 }
 
-bool BoxCollider2DComponent::CheckCollisionWithBox(BoxCollider2DComponent* other)
+bool BoxCollider2DComponent::CheckCollisionWithBox(BoxCollider2DComponent* pOther)
 {
     float left1 = mPosition.x - mSize.x / 2;
     float right1 = mPosition.x + mSize.x / 2;
     float top1 = mPosition.y - mSize.y / 2;
     float bottom1 = mPosition.y + mSize.y / 2;
 
-    float left2 = other->mPosition.x - other->mSize.x / 2;
-    float right2 = other->mPosition.x + other->mSize.x / 2;
-    float top2 = other->mPosition.y - other->mSize.y / 2;
-    float bottom2 = other->mPosition.y + other->mSize.y / 2;
+    float left2 = pOther->mPosition.x - pOther->mSize.x / 2;
+    float right2 = pOther->mPosition.x + pOther->mSize.x / 2;
+    float top2 = pOther->mPosition.y - pOther->mSize.y / 2;
+    float bottom2 = pOther->mPosition.y + pOther->mSize.y / 2;
 
     bool xOverlap = (left1 < right2) && (right1 > left2);
     bool yOverlap = (top1 < bottom2) && (bottom1 > top2);
@@ -61,9 +61,9 @@ bool BoxCollider2DComponent::CheckCollisionWithBox(BoxCollider2DComponent* other
     return xOverlap && yOverlap;
 }
 
-void BoxCollider2DComponent::SetShowInGame(bool showInGame)
+void BoxCollider2DComponent::SetShowInGame(bool pShowInGame)
 {
-    mShowInGame = showInGame;
+    mShowInGame = pShowInGame;
 }
 
 void BoxCollider2DComponent::SetSize(Vector3D pSize)

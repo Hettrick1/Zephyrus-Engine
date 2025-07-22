@@ -4,8 +4,7 @@
 #include "../../Scenes/Scene.h"
 
 SpriteComponent::SpriteComponent(Actor* pOwner, Texture& pTexture, int pDrawOrder, Vector3D pSizeOverride)
-	: Component(pOwner), mTexture(pTexture), mDrawOrder(pDrawOrder), mFlipMethode(IRenderer::Flip::None), mCullOff(false)
-	, aspectRatio(0), aspectRatioInv(0), mTexWidthOverride(0), mTexHeightOverride(0)
+	: Component(pOwner), mTexture(pTexture), mDrawOrder(pDrawOrder), mFlipMethode(IRenderer::Flip::None)
 {
 	if (pSizeOverride.x == 0 || pSizeOverride.y == 0) {
 		mTexWidth = static_cast<int>(pTexture.GetTextureSize().x);
