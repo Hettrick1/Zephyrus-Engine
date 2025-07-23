@@ -6,10 +6,10 @@ class Axis2DAction : public InputActions
 {
 public:
     // Constructor for axis with specific key bindings.
-    Axis2DAction(SDL_Keycode positiveX, SDL_Keycode negativeX, SDL_Keycode positiveY, SDL_Keycode negativeY, std::string name);
+    Axis2DAction(SDL_Keycode pPositiveX, SDL_Keycode pNegativeX, SDL_Keycode pPositiveY, SDL_Keycode pNegativeY, std::string pName);
 
     // Constructor for axis with only a name.
-    Axis2DAction(std::string name);
+    Axis2DAction(std::string pName);
 
     ActionType GetType() const override;
 
@@ -20,7 +20,7 @@ public:
 private:
     bool mUseMouse;
     SDL_Keycode mPositiveX, mNegativeX, mPositiveY, mNegativeY;
-    float x, y;
+    float mX, mY;
     // Checks if a specific key is currently pressed.
-    bool IsKeyPressed(SDL_Keycode key) const;
+    bool IsKeyPressed(SDL_Keycode pKey) const;
 };

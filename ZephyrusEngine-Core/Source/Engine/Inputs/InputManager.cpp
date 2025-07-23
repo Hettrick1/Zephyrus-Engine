@@ -26,18 +26,18 @@ InputManager::~InputManager()
     mActionKeyBindings.clear();
 }
 
-void InputManager::CreateNewBooleanKeyBinding(IActionListener* listener, std::string name, SDL_Keycode key)
+void InputManager::CreateNewBooleanKeyBinding(IActionListener* pListener, std::string pName, SDL_Keycode pKey)
 {
-    if (mActionKeyBindings.find(key) != mActionKeyBindings.end()) {
-        std::vector<InputActions*> actionsToBind = mActionKeyBindings[key];
+    if (mActionKeyBindings.find(pKey) != mActionKeyBindings.end()) {
+        std::vector<InputActions*> actionsToBind = mActionKeyBindings[pKey];
         for (InputActions* action : actionsToBind) {
-            action->AddListener(listener);
+            action->AddListener(pListener);
         }
     }
     else {
-        BooleanActions* newAction = new BooleanActions(key, name);
-        newAction->AddListener(listener);
-        BindActionToKeys(newAction, { key });
+        BooleanActions* newAction = new BooleanActions(pKey, pName);
+        newAction->AddListener(pListener);
+        BindActionToKeys(newAction, { pKey });
     }
 }
 

@@ -1,8 +1,8 @@
 #include "InputActions.h"
 #include "IActionListener.h"
 
-InputActions::InputActions(std::string name)
-	: mName(name)
+InputActions::InputActions(std::string pName)
+	: mName(pName)
 {
 }
 
@@ -11,19 +11,19 @@ std::string InputActions::GetName()
 	return mName;
 }
 
-void InputActions::SetName(std::string newName)
+void InputActions::SetName(std::string pNewName)
 {
-	mName = newName;
+	mName = pNewName;
 }
 
-void InputActions::AddListener(IActionListener* listener)
+void InputActions::AddListener(IActionListener* pListener)
 {
-	mListeners.push_back(listener);
+	mListeners.push_back(pListener);
 }
 
-void InputActions::RemoveListener(IActionListener* listenerToRemove)
+void InputActions::RemoveListener(IActionListener* pListener)
 {
-	mListeners.erase(std::remove(mListeners.begin(), mListeners.end(), listenerToRemove), mListeners.end());
+	mListeners.erase(std::remove(mListeners.begin(), mListeners.end(), pListener), mListeners.end());
 }
 
 void InputActions::ClearListeners()

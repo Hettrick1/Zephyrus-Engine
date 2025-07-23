@@ -10,19 +10,19 @@ class IActionListener;
 class InputActions
 {
 public :
-	InputActions(std::string name);
+	InputActions(std::string pName);
 	virtual ~InputActions() = default;
 
 	virtual ActionType GetType() const = 0;
 	virtual void Update() = 0;
 
 	std::string GetName();
-	void SetName(std::string newName);
+	void SetName(std::string pNewName);
 
 	// Adds a listener to be notified of action events
-	void AddListener(IActionListener* listener);
+	void AddListener(IActionListener* pListener);
 	// Removes a listener from the notification list
-	void RemoveListener(IActionListener* listener);
+	void RemoveListener(IActionListener* pListener);
 	// Removes all listeners
 	void ClearListeners();
 protected:

@@ -7,8 +7,8 @@ class BooleanActions :
     public InputActions
 {
 public :
-    BooleanActions(SDL_Keycode key, std::string name); // Constructor for keyboard key action
-    BooleanActions(Uint8 mouseButton, std::string name); // Constructor for mouse button action
+    BooleanActions(SDL_Keycode pKey, std::string pName); // Constructor for keyboard key action
+    BooleanActions(Uint8 pMouseButton, std::string pName); // Constructor for mouse button action
 
     ActionType GetType() const override;
 
@@ -21,7 +21,7 @@ private :
     Uint8 mMouseButton;
 
     // Checks if the specified key is currently pressed
-    bool IsKeyPressed(SDL_Keycode key) const;
+    bool IsKeyPressed(SDL_Keycode pKey) const;
     // Checks if the specified mouse button is currently pressed
-    bool IsMouseButtonPressed(Uint8 mouseButton) const;
+    bool IsMouseButtonPressed(Uint8 pMouseButton) const;
 };

@@ -1,14 +1,14 @@
 #include "Axis2DAction.h"
 
-Axis2DAction::Axis2DAction(SDL_Keycode positiveX, SDL_Keycode negativeX, SDL_Keycode positiveY, SDL_Keycode negativeY, std::string name)
-    : mPositiveX(positiveX), mNegativeX(negativeX), mPositiveY(positiveY), mNegativeY(negativeY),
-      x(0), y(0), InputActions(name), mUseMouse(false)
+Axis2DAction::Axis2DAction(SDL_Keycode pPositiveX, SDL_Keycode pNegativeX, SDL_Keycode pPositiveY, SDL_Keycode pNegativeY, std::string pName)
+    : mPositiveX(pPositiveX), mNegativeX(pNegativeX), mPositiveY(pPositiveY), mNegativeY(pNegativeY),
+      mX(0), mY(0), InputActions(pName), mUseMouse(false)
 {
 }
 
-Axis2DAction::Axis2DAction(std::string name)
+Axis2DAction::Axis2DAction(std::string pName)
     : mPositiveX(SDLK_UNKNOWN), mNegativeX(SDLK_UNKNOWN), mPositiveY(SDLK_UNKNOWN), mNegativeY(SDLK_UNKNOWN),
-      x(0), y(0), mUseMouse(true), InputActions(name)
+    mX(0), mY(0), mUseMouse(true), InputActions(pName)
 {
 }
 
@@ -32,12 +32,12 @@ void Axis2DAction::Update()
         newY = static_cast<float>((IsKeyPressed(mPositiveY) ? 1 : 0) - (IsKeyPressed(mNegativeY) ? 1 : 0));
     }
 
-    bool hasChanged = (newX != x || newY != y);
+    bool hasChanged = (newX != mX || newY != mY);
     bool isActive = (newX != 0 || newY != 0);
 
     if (hasChanged) {
-        x = newX;
-        y = newY;
+        mX = newX;
+        mY = newY;
 
         if (isActive) {
             NotifyListenersStarted();
@@ -49,19 +49,19 @@ void Axis2DAction::Update()
     }
 
     if (isActive) {
-        x = newX;
-        y = newY;
+        mX = newX;
+        mY = newY;
         NotifyListenersTriggered();
     }
 }
 
 Vector2D Axis2DAction::GetAxis() const
 {
-    return {x, y};
+    return { mX, mY };
 }
 
-bool Axis2DAction::IsKeyPressed(SDL_Keycode key) const
+bool Axis2DAction::IsKeyPressed(SDL_Keycode pKey) const
 {
     const Uint8* keyState = SDL_GetKeyboardState(nullptr);
-    return keyState[SDL_GetScancodeFromKey(key)] != 0;
+    return keyState[SDL_GetScancodeFromKey(pKey)] != 0;
 }

@@ -11,13 +11,13 @@ public:
     ~InputManager();
 
     // Creates a new boolean key binding for a listener.
-    void CreateNewBooleanKeyBinding(IActionListener* listener, std::string name, SDL_Keycode key);
+    void CreateNewBooleanKeyBinding(IActionListener* pListener, std::string pName, SDL_Keycode pKey);
 
     // Creates a new boolean mouse button binding for a listener.
-    void CreateNewBooleanBtnBinding(IActionListener* listener, std::string name, Uint8 mouseButton);
+    void CreateNewBooleanBtnBinding(IActionListener* pListener, std::string pName, Uint8 pMouseButton);
 
     // Creates a new 2D axis binding for a listener.
-    void CreateNewAxis2DBinding(IActionListener* listener, std::string name, SDL_Keycode positiveX = SDLK_UNKNOWN, SDL_Keycode negativeX = SDLK_UNKNOWN, SDL_Keycode positiveY = SDLK_UNKNOWN, SDL_Keycode negativeY = SDLK_UNKNOWN);
+    void CreateNewAxis2DBinding(IActionListener* pListener, std::string pName, SDL_Keycode pPositiveX = SDLK_UNKNOWN, SDL_Keycode pNegativeX = SDLK_UNKNOWN, SDL_Keycode pPositiveY = SDLK_UNKNOWN, SDL_Keycode pNegativeY = SDLK_UNKNOWN);
 
     void Update();
     void Unload();
