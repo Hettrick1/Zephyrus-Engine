@@ -8,14 +8,14 @@
 #include "InputManager.h"
 
 
-Scene::Scene(std::string title) 
-	: mTitle(title), mIsUpdatingActor(false), mRenderer(nullptr)
+Scene::Scene(std::string pTitle) 
+	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr)
 {
 }
 
-void Scene::Start(IRenderer* renderer)
+void Scene::Start(IRenderer* pRenderer)
 {
-	mRenderer = renderer;
+	mRenderer = pRenderer;
 }
 
 void Scene::Load()
@@ -71,16 +71,16 @@ void Scene::Close()
 	}
 }
 
-void Scene::AddActor(Actor* actor)
+void Scene::AddActor(Actor* pActor)
 {
-	actor->AttachScene(*this);
+	pActor->AttachScene(*this);
 	if (mIsUpdatingActor) 
 	{ 
-		mPendingActors.emplace_back(actor); 
+		mPendingActors.emplace_back(pActor); 
 	}
 	else
 	{
-		mAllActors.emplace_back(actor);
+		mAllActors.emplace_back(pActor);
 	}
 }
 
@@ -122,15 +122,15 @@ void Scene::UpdateAllActors()
 	}
 }
 
-void Scene::RemoveActor(Actor* actor)
+void Scene::RemoveActor(Actor* pActor)
 {
-	std::vector<Actor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), actor); 
+	std::vector<Actor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), pActor); 
 	if (it != mPendingActors.end())
 	{
 		iter_swap(it, mPendingActors.end() - 1);
 		mPendingActors.pop_back();
 	}
-	it = find(mAllActors.begin(), mAllActors.end(), actor);
+	it = find(mAllActors.begin(), mAllActors.end(), pActor);
 	if (it != mAllActors.end())
 	{
 		iter_swap(it, mAllActors.end() - 1);

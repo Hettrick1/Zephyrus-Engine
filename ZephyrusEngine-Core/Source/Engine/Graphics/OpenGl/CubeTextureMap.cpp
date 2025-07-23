@@ -3,15 +3,15 @@
 
 bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubePaths)
 {
-	unsigned char* data;
-	int width, height, channels;
+	unsigned char* data = nullptr;
+	int width = 0, height = 0, channels = 0;
 
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureId);
 
 	mCubeFacePaths = pCubePaths;
 
-	for (int i = 0; i < pCubePaths.size(); i++) // retrieve the skybox textures
+	for (unsigned int i = 0; i < pCubePaths.size(); i++) // retrieve the skybox textures
 	{
 		SDL_Surface* surface = IMG_Load(mCubeFacePaths[i].c_str());
 		if (!surface)

@@ -33,7 +33,7 @@ public:
 	// Converts the mesh's vertices to a float array.
 	float* ToVerticeArray();
 
-	inline int GetTextureArraySize() const { return mTextures.size(); }
+	inline unsigned int GetTextureArraySize() const { return mTextures.size(); }
 
 private:
 	std::vector<Texture*> mTextures;

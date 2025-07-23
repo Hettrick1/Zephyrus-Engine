@@ -78,7 +78,7 @@ void FlipbookComponent::Update()
 	}
 	else if (!mCanPlay)
 	{
-		mCurrentFrame = mAnimationTextures.size() - 1;
+		mCurrentFrame = static_cast<float>(mAnimationTextures.size() - 1);
 		SetTexture(*mAnimationTextures[static_cast<int>(mCurrentFrame)]);
 	}
 }

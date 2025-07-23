@@ -20,9 +20,9 @@ SplashScreen::~SplashScreen()
 	delete mStudioText;
 }
 
-void SplashScreen::Start(IRenderer* renderer)
+void SplashScreen::Start(IRenderer* pRenderer)
 {
-	Scene::Start(renderer);
+	Scene::Start(pRenderer);
 
 	mTime = 0;
 

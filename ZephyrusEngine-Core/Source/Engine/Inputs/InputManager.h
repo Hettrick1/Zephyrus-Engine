@@ -23,10 +23,10 @@ public:
     void Unload();
 private:
     // Binds an action to a set of keyboard keys.
-    void BindActionToKeys(InputActions* action, const std::vector<SDL_Keycode>& keys);
+    void BindActionToKeys(InputActions* pAction, const std::vector<SDL_Keycode>& pKeys);
 
     // Binds an action to mouse buttons.
-    void BindActionToMouse(InputActions* action);
+    void BindActionToMouse(InputActions* pAction);
 
     std::unordered_map<SDL_Keycode, std::vector<InputActions*>> mActionKeyBindings;
     std::vector<InputActions*> mActionMouseBindings;

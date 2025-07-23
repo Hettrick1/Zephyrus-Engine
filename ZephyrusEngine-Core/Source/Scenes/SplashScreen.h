@@ -9,7 +9,7 @@ class SplashScreen : public Scene
 public:
 	SplashScreen(Scene* pNextScene);
 	~SplashScreen();
-	void Start(IRenderer* renderer) override;
+	void Start(IRenderer* pRenderer) override;
 	void Update() override;
 	void Render() override;
 	void Close() override;

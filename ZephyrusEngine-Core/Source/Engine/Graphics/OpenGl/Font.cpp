@@ -86,4 +86,5 @@ bool Font::Load(std::string pFileName)
     // destroy FreeType once we're finished
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
+    return true;
 }
