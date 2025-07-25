@@ -44,25 +44,9 @@ project "ZephyrusEngine-Runtime"
       "../ZephyrusEngine-Core/Source/Engine/Graphics/Hud",
    }
 
-   libdirs 
-   {  
-    "../Vendor/Dependencies/GL/SDL/lib/x86",
-    "../Vendor/Dependencies/glew-2.2.0-win32/glew-2.2.0/bin/Release/Win32",
-    "../Vendor/Dependencies/glew-2.2.0-win32/glew-2.2.0/lib/Release/Win32",
-    "../Vendor/Dependencies/SDL2_image-2.8.2/lib/x86",
-    "../Vendor/Dependencies/freetype-2.6.1/objs/vc2010/Win32",
-   }
-
    links
    {
       "ZephyrusEngine-Core",
-      "glu32", 
-      "glew32",
-      "opengl32",
-      "SDL2",
-      "SDL2main",
-      "SDL2_image",
-      "freetype261",
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

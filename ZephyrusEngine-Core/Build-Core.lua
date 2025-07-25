@@ -48,7 +48,6 @@ project "ZephyrusEngine-Core"
     "../Vendor/Dependencies/freetype-2.6.1/objs/vc2010/Win32",
    }
 
-
    links
    {
       "glu32", 
