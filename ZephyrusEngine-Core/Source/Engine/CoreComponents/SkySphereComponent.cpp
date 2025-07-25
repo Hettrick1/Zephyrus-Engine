@@ -8,8 +8,8 @@
 
 int SkySphereComponent::index = 0;
 
-SkySphereComponent::SkySphereComponent(Actor* pOwner, bool pIsSphere, std::vector<std::string> pTextures, ShaderProgram* pProgram)
-	: Component(pOwner), mMesh(nullptr), mTextureIndex(0), mTiling(1), mIsSphere(pIsSphere), mTextureType(GL_TEXTURE_2D), mVao(nullptr), mTextureToLoad(pTextures)
+SkySphereComponent::SkySphereComponent(Actor* pOwner, bool pIsSphere, const std::vector<std::string>& pTextures, ShaderProgram* pProgram)
+	: Component(pOwner), mMesh(nullptr), mTiling(1), mIsSphere(pIsSphere), mTextureType(GL_TEXTURE_2D), mVao(nullptr), mTextureToLoad(pTextures)
 {
 	mOwner->GetScene().GetRenderer()->AddSkySphere(this);
 	if (pProgram == nullptr)
@@ -79,22 +79,17 @@ SkySphereComponent::~SkySphereComponent()
 {
 }
 
-void SkySphereComponent::Draw(Matrix4DRow pViewProj)
-{
-}
-
-void SkySphereComponent::SetMesh(Mesh& pMesh)
-{
-}
-
 void SkySphereComponent::SetTextureIndex(unsigned int pTextureIndex)
 {
+	mTextureIndex = pTextureIndex;
 }
 
-void SkySphereComponent::SetShaderProgram(ShaderProgram pShaderProgram)
+void SkySphereComponent::SetShaderProgram(const ShaderProgram& pShaderProgram)
 {
+	mShaderProgram = pShaderProgram;
 }
 
-void SkySphereComponent::SetTiling(Vector2D pTiling)
+void SkySphereComponent::SetTiling(const Vector2D& pTiling)
 {
+	mTiling = pTiling;
 }

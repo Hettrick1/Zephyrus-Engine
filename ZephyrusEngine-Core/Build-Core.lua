@@ -11,7 +11,7 @@ project "ZephyrusEngine-Core"
    {
       "Source",
 
-       "../Imports",
+      "../Imports",
 
       "../Vendor/Dependencies/glew-2.2.0-win32/glew-2.2.0/include/GL",
       "../Vendor/Dependencies/GL/SDL/include",

@@ -11,6 +11,15 @@ class Actor;
  */
 class Component
 {
+protected:
+	bool mIsActive = true;
+	Actor* mOwner = nullptr;
+	int mUpdateOrder = 0;
+	Matrix4DRow mRelativeTransform = Matrix4DRow::Identity;
+	Vector3D mRelativePosition;
+	Vector3D mRelativeSize;
+	Quaternion mRelativeRotation;
+
 public:
 	Component() = delete;
 	Component(Actor* pOwner, int pUpdateOder = 0);
@@ -20,9 +29,9 @@ public:
 	virtual void Update();
 	virtual void OnEnd();
 
-	void SetRelativePosition(Vector3D pPosition);
-	void SetRelativeSize(Vector3D pSize);
-	void SetRelativeRotation(Quaternion pRotation);
+	void SetRelativePosition(const Vector3D& pPosition);
+	void SetRelativeSize(const Vector3D& pSize);
+	void SetRelativeRotation(const Quaternion& pRotation);
 	void RelativeRotateX(float pAngle);
 	void RelativeRotateY(float pAngle);
 	void RelativeRotateZ(float pAngle);
@@ -33,43 +42,25 @@ public:
 	// Computes the relative transform matrix based on position, size, and rotation
 	virtual void ComputeRelativeTransform();
 
-	Matrix4DRow GetRelativeTransform() const { return mRelativeTransform; }
+	inline Matrix4DRow GetRelativeTransform() const { return mRelativeTransform; }
 
-	Vector3D RelativeRight() const
+	inline Vector3D RelativeRight() const
 	{
 		return Vector3D(-mRelativeTransform.mat[0][0], -mRelativeTransform.mat[1][0], -mRelativeTransform.mat[2][0]);
 	}
 
-	Vector3D RelativeForward() const
+	inline Vector3D RelativeForward() const
 	{
 		return Vector3D(mRelativeTransform.mat[0][1], mRelativeTransform.mat[1][1], mRelativeTransform.mat[2][1]);
 	}
 
-	Vector3D RelativeUp() const
+	inline Vector3D RelativeUp() const
 	{
 		return Vector3D(mRelativeTransform.mat[0][2], mRelativeTransform.mat[1][2], mRelativeTransform.mat[2][2]);
 	}
 
-	Vector3D GetRelativePosition() const
-	{
-		return mRelativePosition;
-	}
-	Vector3D GetRelativeSize() const
-	{
-		return mRelativeSize;
-	}
-
-	// Returns the world position of the component
-	Vector3D GetWorldPosition();
-
-	Actor* GetOwner();
-
-protected:
-	bool mIsActive = true;
-	Actor* mOwner = nullptr;
-	int mUpdateOrder = 0;
-	Matrix4DRow mRelativeTransform = Matrix4DRow::Identity;
-	Vector3D mRelativePosition;
-	Vector3D mRelativeSize;
-	Quaternion mRelativeRotation;
+	inline Vector3D GetRelativePosition() const { return mRelativePosition; }
+	inline Vector3D GetRelativeSize() const { return mRelativeSize; }
+	Actor* GetOwner() const;
+	Vector3D GetWorldPosition() const;
 };

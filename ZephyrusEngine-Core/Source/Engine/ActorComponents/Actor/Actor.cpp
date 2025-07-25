@@ -24,7 +24,7 @@ void Actor::Start()
     }
 }
 
-void Actor::AttachScene(Scene& pScene)
+void Actor::AttachScene(const Scene& pScene)
 {
     mScene = pScene;
 }
@@ -57,17 +57,17 @@ void Actor::RemoveComponent(Component* pComponent)
     }
 }
 
-void Actor::SetActive(ActorState pState)
+void Actor::SetActive(const ActorState& pState)
 {
     mState = pState;
 }
 
-void Actor::SetPosition(Vector3D pPosition)
+void Actor::SetPosition(const Vector3D& pPosition)
 {
     mTransformComponent.SetPosition(pPosition);
 }
 
-void Actor::SetSize(Vector3D pSize)
+void Actor::SetSize(const Vector3D& pSize)
 {
     mTransformComponent.SetSize(pSize);
 }
@@ -122,26 +122,6 @@ void Actor::Destroy()
     mPendingComponents.clear();
 }
 
-std::vector<Component*> Actor::GetComponents() const
-{
-    return mComponents;
-}
-
-ActorState Actor::GetState()
-{
-    return mState;
-}
-
-Scene& Actor::GetScene()
-{
-    return mScene;
-}
-
-TransformComponent& Actor::GetTransformComponent()
-{
-    return mTransformComponent;
-}
-
 void Actor::SetRigidBody(RigidbodyComponent* pRigidbody)
 {
     if (mRigidbody == nullptr)
@@ -154,12 +134,12 @@ void Actor::SetRigidBody(RigidbodyComponent* pRigidbody)
     }
 }
 
-void Actor::SetTag(std::string pTag)
+void Actor::SetTag(const std::string& pTag)
 {
     mTag = pTag;
 }
 
-bool Actor::HasTag(std::string pTag)
+bool Actor::HasTag(const std::string& pTag)
 {
     if (mTag == pTag) 
     {

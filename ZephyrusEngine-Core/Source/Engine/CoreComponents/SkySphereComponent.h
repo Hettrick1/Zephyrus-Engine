@@ -11,34 +11,6 @@
  */
 class SkySphereComponent : public Component
 {
-public:
-	SkySphereComponent(Actor* pOwner, bool pIsSphere = false, std::vector<std::string> pTextures = {}, ShaderProgram* pProgram = nullptr);
-	virtual ~SkySphereComponent();
-
-	// Draws the sky sphere or skybox using the given view-projection matrix
-	virtual void Draw(Matrix4DRow pViewProj);
-
-	virtual void SetMesh(Mesh& pMesh);
-
-	// Sets the index of the texture to use
-	void SetTextureIndex(unsigned int pTextureIndex);
-
-	inline Mesh* GetMesh() const { return mMesh; }
-
-	// Sets the shader program used for rendering
-	void SetShaderProgram(ShaderProgram pShaderProgram);
-
-	inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
-	inline CubeTextureMap& GetCubeMap() { return mCubeMap; }
-	inline unsigned int& GetTextureIndex() { return mTextureIndex; }
-	inline VertexArray* GetVao() const { return mVao; }
-	inline GLenum& GetTextureType() { return mTextureType; }
-
-	// Sets the tiling factor for the sky texture
-	void SetTiling(Vector2D pTiling);
-
-	static int index;
-
 protected:
 	Mesh* mMesh = nullptr;
 	Shader mVertexShader, mFragmentShader, mTessellationControlShader, mTessellationEvalShader;
@@ -50,4 +22,25 @@ protected:
 	VertexArray* mVao = nullptr;
 	GLenum mTextureType;
 	std::vector<std::string> mTextureToLoad;
+public:
+	SkySphereComponent(Actor* pOwner, bool pIsSphere = false, const std::vector<std::string>& pTextures = {}, ShaderProgram* pProgram = nullptr);
+	virtual ~SkySphereComponent();
+
+	// Sets the index of the texture to use
+	void SetTextureIndex(unsigned int pTextureIndex);
+
+	// Sets the shader program used for rendering
+	void SetShaderProgram(const ShaderProgram& pShaderProgram);
+
+	// Sets the tiling factor for the sky texture
+	void SetTiling(const Vector2D& pTiling);
+
+	inline Mesh* GetMesh() const { return mMesh; }
+	inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
+	inline CubeTextureMap& GetCubeMap() { return mCubeMap; }
+	inline unsigned int& GetTextureIndex() { return mTextureIndex; }
+	inline VertexArray* GetVao() const { return mVao; }
+	inline GLenum& GetTextureType() { return mTextureType; }
+
+	static int index;
 };

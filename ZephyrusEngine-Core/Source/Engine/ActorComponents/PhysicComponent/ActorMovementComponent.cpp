@@ -7,7 +7,7 @@ ActorMovementComponent::ActorMovementComponent(Actor* pOwner, int pUpdateOrder)
 {
 }
 
-void ActorMovementComponent::SetSpeed(Vector3D pSpeed)
+void ActorMovementComponent::SetSpeed(const Vector3D& pSpeed)
 {
 	mSpeed = pSpeed;
 }

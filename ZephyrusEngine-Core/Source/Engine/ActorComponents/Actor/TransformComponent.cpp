@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "Log.h"
 
-TransformComponent::TransformComponent(Actor* pOwner, Vector3D pPosition, Vector3D pSize, Quaternion pRotation)
+TransformComponent::TransformComponent(Actor* pOwner, const Vector3D& pPosition, const Vector3D& pSize, const Quaternion& pRotation)
     : mOwner(pOwner), mPosition(pPosition), mSize(pSize), mRotation(pRotation)
 {
 }
@@ -13,45 +13,25 @@ TransformComponent::TransformComponent()
 
 }
 
-Vector3D TransformComponent::GetPosition()
-{
-    return mPosition;
-}
-
-Vector3D TransformComponent::GetSize()
-{
-    return mSize;
-}
-
-Quaternion TransformComponent::GetRotation()
-{
-    return mRotation;
-}
-
-Matrix4DRow TransformComponent::GetWorldTransform()
-{
-    return mWorldTransform;
-}
-
-void TransformComponent::SetPosition(Vector3D newPosition)
+void TransformComponent::SetPosition(const Vector3D& newPosition)
 {
     mPosition = newPosition;
     ComputeWorldTransform();
 }
 
-void TransformComponent::Translate(Vector3D pTranslation)
+void TransformComponent::Translate(const Vector3D& pTranslation)
 {
     mPosition += pTranslation;
     ComputeWorldTransform();
 }
 
-void TransformComponent::SetSize(Vector3D newSize)
+void TransformComponent::SetSize(const Vector3D& newSize)
 {
     mSize = newSize;
     ComputeWorldTransform();
 }
 
-void TransformComponent::SetRotation(Quaternion newRotation)
+void TransformComponent::SetRotation(const Quaternion& newRotation)
 {
     mRotation = newRotation;
     ComputeWorldTransform();

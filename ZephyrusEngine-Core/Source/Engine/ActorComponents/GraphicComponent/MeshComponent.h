@@ -5,25 +5,24 @@
 
 class MeshComponent : public Component
 {
-public:
-	MeshComponent(Actor* pOwner, Mesh* pMesh, ShaderProgram* pProgram = nullptr);
-	virtual ~MeshComponent();
-	virtual void Draw(Matrix4DRow pViewProj);
-	virtual void SetMesh(Mesh& pMesh);
-	void SetTextureIndex(unsigned int pTextureIndex);
-	inline Mesh* GetMesh() const { return mMesh; }
-
-	void SetShaderProgram(ShaderProgram pShaderProgram);
-
-	inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
-
-	void SetTiling(Vector2D pTiling);
-
 protected:
 	Mesh* mMesh = nullptr;
 	Shader mVertexShader, mFragmentShader;
 	ShaderProgram mShaderProgram;
 	Vector2D mTiling;
 	unsigned int mTextureIndex = 0;
+public:
+	MeshComponent(Actor* pOwner, Mesh* pMesh, ShaderProgram* pProgram = nullptr);
+	virtual ~MeshComponent();
+	virtual void Draw(const Matrix4DRow& pViewProj);
+	virtual void SetMesh(Mesh& pMesh);
+	void SetTextureIndex(unsigned int pTextureIndex);
+
+	void SetShaderProgram(const ShaderProgram& pShaderProgram);
+
+	void SetTiling(const Vector2D& pTiling);
+
+	inline Mesh* GetMesh() const { return mMesh; }
+	inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
 };
 

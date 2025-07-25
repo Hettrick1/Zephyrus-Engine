@@ -12,6 +12,8 @@ class Actor;
  */
 class ActorMovementComponent : public Component
 {
+protected:
+	Vector3D mSpeed;
 public:
 	ActorMovementComponent(Actor* pOwner, int pUpdateOrder = 100);
 	ActorMovementComponent() = delete;
@@ -21,7 +23,7 @@ public:
 	Vector3D GetSpeed() const { return mSpeed; }
 
 	// Sets the speed vector
-	void SetSpeed(Vector3D pSpeed);
+	void SetSpeed(const Vector3D& pSpeed);
 	// Sets the X component of the speed
 	void SetSpeedX(float pSpeedX);
 	// Sets the Y component of the speed
@@ -31,6 +33,4 @@ public:
 
 	// Updates the Actor's position based on the current speed
 	void Update() override;
-protected:
-	Vector3D mSpeed;
 };

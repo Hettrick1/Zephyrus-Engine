@@ -118,7 +118,7 @@ void PlayerController2D::Update()
 	}
 }
 
-void PlayerController2D::EnableDirection(Vector2D pDirection)
+void PlayerController2D::EnableDirection(const Vector2D& pDirection)
 {
 	if (pDirection.x < 0)
 	{
@@ -138,7 +138,7 @@ void PlayerController2D::EnableDirection(Vector2D pDirection)
 	}
 }
 
-void PlayerController2D::DisableDirection(Vector2D pDirection)
+void PlayerController2D::DisableDirection(const Vector2D& pDirection)
 {
 	if (pDirection.x < 0)
 	{

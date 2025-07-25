@@ -24,7 +24,7 @@ MeshComponent::~MeshComponent()
 {
 }
 
-void MeshComponent::Draw(Matrix4DRow pViewProj)
+void MeshComponent::Draw(const Matrix4DRow& pViewProj)
 {
 	if (mMesh)
 	{
@@ -68,12 +68,12 @@ void MeshComponent::SetTextureIndex(unsigned int pTextureIndex)
 	}
 }
 
-void MeshComponent::SetShaderProgram(ShaderProgram pShaderProgram)
+void MeshComponent::SetShaderProgram(const ShaderProgram& pShaderProgram)
 {
 	mShaderProgram = pShaderProgram;
 }
 
-void MeshComponent::SetTiling(Vector2D pTiling)
+void MeshComponent::SetTiling(const Vector2D& pTiling)
 {
 	mTiling = pTiling;
 }

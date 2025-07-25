@@ -10,7 +10,7 @@ CubeMapMeshComponent::~CubeMapMeshComponent()
 {
 }
 
-void CubeMapMeshComponent::Draw(Matrix4DRow viewProj)
+void CubeMapMeshComponent::Draw(const Matrix4DRow& viewProj)
 {
 	if (mMesh)
 	{

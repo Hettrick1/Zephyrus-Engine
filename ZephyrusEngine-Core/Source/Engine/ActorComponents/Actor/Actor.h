@@ -13,6 +13,16 @@ class Scene;
  */
 class Actor
 {
+protected:
+	Scene& mScene;
+	ActorState mState;
+	TransformComponent mTransformComponent;
+	RigidbodyComponent* mRigidbody;
+	std::vector<Component*> mComponents;
+	std::vector<Component*> mPendingComponents;
+	bool mIsUpdatingComponents = false;
+	std::string mTag = "";
+	float mLod = 0;
 public:
 	Actor(Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0));
 	~Actor();
@@ -21,27 +31,27 @@ public:
 	virtual void Update() = 0;
 	virtual void Destroy() = 0;
 
-	void AttachScene(Scene& pScene);
+	void AttachScene(const Scene& pScene);
 	void AddComponent(Component* pComponent);
 	void RemoveComponent(Component* pComponent);
-	void SetActive(ActorState pState);
-	void SetPosition(Vector3D pPosition);
-	void SetSize(Vector3D pSize);
+	void SetActive(const ActorState& pState);
+	void SetPosition(const Vector3D& pPosition);
+	void SetSize(const Vector3D& pSize);
 	void RotateX(float pAnle);
 	void RotateY(float pAngle);
 	void RotateZ(float pAngle);
-	std::vector<Component*> GetComponents() const;
-	ActorState GetState();
-	Scene& GetScene();
-	TransformComponent& GetTransformComponent();
-
-	// Get the rigidbody component if it exists
-	inline RigidbodyComponent* GetRigidBody() const { return mRigidbody; }
 
 	void SetRigidBody(RigidbodyComponent* pRigidbody);
-	void SetTag(std::string pTag);
+	void SetTag(const std::string& pTag);
+	bool HasTag(const std::string& pTag);
+
+	inline std::vector<Component*> GetComponents() const { return mComponents; }
+	inline ActorState GetState() const { return mState; }
+	inline Scene& GetScene() const { return mScene; }
+	inline TransformComponent& GetTransformComponent() { return mTransformComponent; }
+	inline RigidbodyComponent* GetRigidBody() const { return mRigidbody; }
 	inline std::string GetTag() const { return mTag; }
-	bool HasTag(std::string pTag);
+	inline float GetLod() const { return mLod; }
 
 	// Get the first component of a specific type
 	template<typename  C>
@@ -58,18 +68,4 @@ public:
 
 	// Update the transform of all components
 	void UpdateComponentsTransform();
-
-	// Get the level of detail value
-	inline float GetLod() const { return mLod; }
-
-protected:
-	Scene& mScene;
-	ActorState mState;
-	TransformComponent mTransformComponent;
-	RigidbodyComponent* mRigidbody;
-	std::vector<Component*> mComponents;
-	std::vector<Component*> mPendingComponents;
-	bool mIsUpdatingComponents = false;
-	std::string mTag = "";
-	float mLod = 0;
 };

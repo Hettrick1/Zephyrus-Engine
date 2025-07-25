@@ -2,7 +2,7 @@
 #include "Actor.h"
 
 Component::Component(Actor* pOwner, int pUpdateOder) 
-    : mIsActive(true), mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
+    : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
     mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1)
 {
 	mOwner->AddComponent(this);
@@ -25,19 +25,19 @@ void Component::OnEnd()
     mOwner = nullptr;
 }
 
-void Component::SetRelativePosition(Vector3D pPosition)
+void Component::SetRelativePosition(const Vector3D& pPosition)
 {
     mRelativePosition = pPosition;
     ComputeRelativeTransform();
 }
 
-void Component::SetRelativeSize(Vector3D pSize)
+void Component::SetRelativeSize(const Vector3D& pSize)
 {
     mRelativeSize = pSize;
     ComputeRelativeTransform();
 }
 
-void Component::SetRelativeRotation(Quaternion pRotation)
+void Component::SetRelativeRotation(const Quaternion& pRotation)
 {
     mRelativeRotation = pRotation;
     ComputeRelativeTransform();
@@ -90,12 +90,12 @@ void Component::ComputeRelativeTransform()
     }
 }
 
-Vector3D Component::GetWorldPosition()
+Actor* Component::GetOwner() const
 {
-    return mOwner->GetTransformComponent().GetPosition() + mRelativePosition;
+    return mOwner;
 }
 
-Actor* Component::GetOwner()
+Vector3D Component::GetWorldPosition() const
 {
-	return mOwner;
+    return mOwner->GetTransformComponent().GetPosition() + mRelativePosition;
 }

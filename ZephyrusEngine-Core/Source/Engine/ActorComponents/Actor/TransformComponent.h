@@ -14,19 +14,23 @@ class Actor;
  */
 class TransformComponent
 {
+private:
+	Vector3D mPosition;
+	Vector3D mSize;
+	Quaternion mRotation;
+	Matrix4DRow mWorldTransform = Matrix4DRow::Identity;
+	Actor* mOwner = nullptr;
+	bool mNeedsToUpdate = false;
+	float mRoll = 0, mPitch = 0, mYaw = 0;
+
 public:
-	TransformComponent(Actor* pOwner, Vector3D pPosition, Vector3D pSize, Quaternion pRotation);
+	TransformComponent(Actor* pOwner, const Vector3D& pPosition, const Vector3D& pSize, const Quaternion& pRotation);
 	TransformComponent();
 
-	Vector3D GetPosition();
-	Vector3D GetSize();
-	Quaternion GetRotation();
-	Matrix4DRow GetWorldTransform();
-
-	void SetPosition(Vector3D pNewPosition);
-	void Translate(Vector3D pTranslation);
-	void SetSize(Vector3D pNewSize);
-	void SetRotation(Quaternion pNewRotation);
+	void SetPosition(const Vector3D& pNewPosition);
+	void Translate(const Vector3D& pTranslation);
+	void SetSize(const Vector3D& pNewSize);
+	void SetRotation(const Quaternion& pNewRotation);
 	void SetOwner(Actor* pOwner);
 
 	// Rotates the component around the X axis
@@ -36,22 +40,17 @@ public:
 	// Rotates the component around the Z axis
 	void RotateZ(float pAngle);
 
-	Vector3D Right() const { return Vector3D(-mRotation.AsMatrixRow().mat[0][0], -mRotation.AsMatrixRow().mat[1][0], -mRotation.AsMatrixRow().mat[2][0]); }
-	Vector3D Forward() const { return Vector3D(mRotation.AsMatrixRow().mat[0][1], mRotation.AsMatrixRow().mat[1][1], mRotation.AsMatrixRow().mat[2][1]); }
-	Vector3D Up() const { return Vector3D(mRotation.AsMatrixRow().mat[0][2], mRotation.AsMatrixRow().mat[1][2], mRotation.AsMatrixRow().mat[2][2]); }
-
 	float Pitch() const { return mPitch; }
 	float Roll() const { return mRoll; }
 	float Yaw() const { return mYaw; }
 	// Computes the world transform matrix for the component
 	void ComputeWorldTransform();
 
-private:
-	Vector3D mPosition;
-	Vector3D mSize;
-	Quaternion mRotation;
-	Matrix4DRow mWorldTransform = Matrix4DRow::Identity;
-	Actor* mOwner = nullptr;
-	bool mNeedsToUpdate = false;
-	float mRoll = 0, mPitch = 0, mYaw = 0;
+	inline Vector3D GetPosition() const { return mPosition; }
+	inline Vector3D GetSize() const { return mSize; }
+	inline Quaternion GetRotation() const { return mRotation; }
+	inline Matrix4DRow GetWorldTransform() const { return mWorldTransform; }
+	inline Vector3D Right() const { return Vector3D(-mRotation.AsMatrixRow().mat[0][0], -mRotation.AsMatrixRow().mat[1][0], -mRotation.AsMatrixRow().mat[2][0]); }
+	inline Vector3D Forward() const { return Vector3D(mRotation.AsMatrixRow().mat[0][1], mRotation.AsMatrixRow().mat[1][1], mRotation.AsMatrixRow().mat[2][1]); }
+	inline Vector3D Up() const { return Vector3D(mRotation.AsMatrixRow().mat[0][2], mRotation.AsMatrixRow().mat[1][2], mRotation.AsMatrixRow().mat[2][2]); }
 };

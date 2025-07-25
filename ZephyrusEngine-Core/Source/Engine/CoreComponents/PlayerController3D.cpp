@@ -145,14 +145,6 @@ void PlayerController3D::Update()
 	ActorMovementComponent::Update();
 }
 
-void PlayerController3D::EnableDirection(Vector3D pDirection)
-{
-}
-
-void PlayerController3D::DisableDirection(Vector3D pDirection)
-{
-}
-
 void PlayerController3D::SetMovementSpeed(float pSpeed)
 {
 	mSpeed = pSpeed;

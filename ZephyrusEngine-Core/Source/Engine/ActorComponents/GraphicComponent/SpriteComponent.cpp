@@ -46,7 +46,7 @@ void SpriteComponent::SetFlipMethode(IRenderer::Flip pFlipMethode)
 	mFlipMethode = pFlipMethode;
 }
 
-void SpriteComponent::Draw(IRenderer& pRenderer)
+void SpriteComponent::Draw(const IRenderer& pRenderer)
 {
 	if (mOwner->GetState() == ActorState::Active)
 	{
@@ -89,9 +89,4 @@ Matrix4DRow SpriteComponent::GetWorldTransform()
 	}
 
 	return mRelativeTransform;
-}
-
-Texture& SpriteComponent::GetTexture()
-{
-	return mTexture;
 }
