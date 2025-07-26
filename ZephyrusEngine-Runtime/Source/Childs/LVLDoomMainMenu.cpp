@@ -31,7 +31,7 @@ void LVLDoomMainMenu::Start(IRenderer* renderer)
 	mDoomMenu = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
 	mDoomMenu->SetTint(Vector4D(1.0, 1.0, 1.0, 1.0));
 
-	mPressEnter = new HudText("Press Enter To Begin", 0, -800, 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), TextAlignment::CENTER);
+	mPressEnter = new HudText("Press Enter To Begin", Vector2D(0.0f, -800.0f), 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), TextAlignment::CENTER);
 
 	EmptyActor* defaultPawn = new EmptyActor();
 	defaultPawn->AddComponent(new DoomMenuPC(defaultPawn, 1));

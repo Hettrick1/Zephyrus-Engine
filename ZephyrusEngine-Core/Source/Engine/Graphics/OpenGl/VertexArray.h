@@ -12,6 +12,11 @@ constexpr float spriteVertices[] = {
 // Manages an OpenGL Vertex Array Object (VAO) and its associated Vertex Buffer Object (VBO)
 class VertexArray
 {
+private:
+	unsigned int mVerticeCount;
+
+	unsigned int mVertexArrayId;
+	unsigned int mVertexBufferId;
 public:
 	// Creates a vertex array with the given vertices and count
 	VertexArray(const float* pVertices, unsigned int pVerticeCount);
@@ -24,9 +29,4 @@ public:
 	{
 		return mVerticeCount;
 	}
-private:
-	unsigned int mVerticeCount;
-
-	unsigned int mVertexArrayId;
-	unsigned int mVertexBufferId;
 };

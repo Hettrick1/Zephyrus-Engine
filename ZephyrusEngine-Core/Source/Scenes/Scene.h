@@ -12,6 +12,12 @@ class Actor;
  */
 class Scene
 {
+protected:
+	std::string mTitle;
+	IRenderer* mRenderer;
+	std::vector<Actor*> mAllActors;
+	std::vector<Actor*> mPendingActors;
+	bool mIsUpdatingActor;
 public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(IRenderer* pRenderer); // Initializes the scene with the given renderer
@@ -27,12 +33,5 @@ public:
 	virtual void RemoveActor(Actor* pActor); // Removes an actor from the scene
 
 public : 
-	IRenderer* GetRenderer() const { return mRenderer; }
-
-protected:
-	std::string mTitle;
-	IRenderer* mRenderer;
-	std::vector<Actor*> mAllActors;
-	std::vector<Actor*> mPendingActors;
-	bool mIsUpdatingActor;
+	inline IRenderer* GetRenderer() const { return mRenderer; }
 };

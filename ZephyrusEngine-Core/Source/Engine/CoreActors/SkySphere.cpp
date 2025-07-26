@@ -1,7 +1,7 @@
 #include "SkySphere.h"
 #include "SceneManager.h"
 
-SkySphere::SkySphere(bool pIsSphere,std::vector<std::string> pTextures, ShaderProgram* pProgram)
+SkySphere::SkySphere(bool pIsSphere, const std::vector<std::string>& pTextures, ShaderProgram* pProgram)
 	:Actor(), mShaderProgram(pProgram), mSkySphereComponent(nullptr), mTextureToLoad(pTextures), mIsSphere(pIsSphere)
 {
 	Start();

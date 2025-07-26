@@ -9,15 +9,19 @@ class IActionListener;
 /// Base class for input actions, manages listeners and notifies them of action events.
 class InputActions
 {
+private:
+	std::vector<IActionListener*> mListeners;
+	std::string mName;
+
 public :
-	InputActions(std::string pName);
+	InputActions(const std::string& pName);
 	virtual ~InputActions() = default;
 
 	virtual ActionType GetType() const = 0;
 	virtual void Update() = 0;
 
 	std::string GetName();
-	void SetName(std::string pNewName);
+	void SetName(const std::string& pName);
 
 	// Adds a listener to be notified of action events
 	void AddListener(IActionListener* pListener);
@@ -32,7 +36,4 @@ protected:
 	void NotifyListenersTriggered();
 	// Notifies listeners that the action has ended
 	void NotifyListenersEnded();
-private:
-	std::vector<IActionListener*> mListeners;
-	std::string mName;
 };

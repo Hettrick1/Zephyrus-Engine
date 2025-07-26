@@ -14,7 +14,7 @@ Font::~Font()
 {
 }
 
-bool Font::Load(std::string pFileName)
+bool Font::Load(const std::string& pFileName)
 {
     FT_Library ft;
     if (FT_Init_FreeType(&ft))

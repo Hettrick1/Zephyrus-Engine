@@ -10,13 +10,13 @@
 class HudContainer
 	: public HudElement
 {
+
+private:
+    std::vector<HudElement*> mElements;
 public:
     HudContainer();
     // Adds a HUD element to the container
     void AddElement(HudElement* pElement);
 
     void Draw(RendererOpenGl& pRenderer) override;
-
-private:
-    std::vector<HudElement*> mElements;
 };

@@ -61,11 +61,6 @@ void Texture::OverrideTextureSize(int width, int height)
 	mHeight = height;
 }
 
-Vector3D Texture::GetTextureSize()
-{
-	return {static_cast<float>(mWidth), static_cast<float>(mHeight), 0};
-}
-
 bool Texture::LoadSdl(RendererSdl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface)
 {
 	mSdlTexture = SDL_CreateTextureFromSurface(pRenderer->ToSdlRenderer(), pSurface);

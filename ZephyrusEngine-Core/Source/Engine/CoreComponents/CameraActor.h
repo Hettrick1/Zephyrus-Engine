@@ -10,7 +10,5 @@ public:
 	void Start() override;
 	void Update() override;
 	void Destroy() override;
-private:
-
 };
 

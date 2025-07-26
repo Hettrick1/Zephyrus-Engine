@@ -14,14 +14,13 @@ struct Character {
 
 class Font
 {
+private:
+    std::map<GLchar, Character> mCharacters;
 public:
 	Font();
 	~Font();
 
-    bool Load(std::string pFileName);
+    bool Load(const std::string& pFileName);
 
     inline std::map<GLchar, Character>& GetCharacters() { return mCharacters; }
-
-private:
-    std::map<GLchar, Character> mCharacters;
 };

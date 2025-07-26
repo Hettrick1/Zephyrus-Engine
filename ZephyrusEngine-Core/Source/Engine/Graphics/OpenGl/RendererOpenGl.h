@@ -17,6 +17,23 @@ class Texture;
  */
 class RendererOpenGl : public IRenderer
 {
+private:
+	Window* mWindow;
+	VertexArray* mVAO;
+	SDL_GLContext mContext;
+	std::vector<SpriteComponent*> mSprites;
+	std::vector<MeshComponent*> mMeshes;
+	ShaderProgram* mSpriteShaderProgram;
+	Matrix4DRow mSpriteViewProj;
+	Matrix4DRow mView, mProj;
+	Shader mSpriteVertexShader;
+	Shader mSpriteFragmentShader;
+	ShaderProgram mSpriteShaderProgramTemp;
+	HudManager* mHud;
+	DebugRenderer* mDebugRenderer;
+	bool mWireFrameMode;
+	SkySphereComponent* mSkySphereComponent;
+
 public:
 	RendererOpenGl();
 	virtual ~RendererOpenGl();
@@ -46,7 +63,7 @@ public:
 	void AddDebugLine(DebugLine* pLine) override;
 
 	// Sets the view matrix for rendering
-	void SetViewMatrix(Matrix4DRow pViewMatrix) override;
+	void SetViewMatrix(const Matrix4DRow& pViewMatrix) override;
 
 	// Draws a sprite for the given actor with the specified parameters
 	void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
@@ -75,21 +92,4 @@ public:
 	// Enables or disables wireframe rendering mode
 	void SetWireFrameMode(bool pWireframe) override;
 	inline bool GetWireFrame() const override { return mWireFrameMode; }
-
-private:
-	Window* mWindow;
-	VertexArray* mVAO;
-	SDL_GLContext mContext;
-	std::vector<SpriteComponent*> mSprites;
-	std::vector<MeshComponent*> mMeshes;
-	ShaderProgram* mSpriteShaderProgram;
-	Matrix4DRow mSpriteViewProj;
-	Matrix4DRow mView, mProj;
-	Shader mSpriteVertexShader;
-	Shader mSpriteFragmentShader;
-	ShaderProgram mSpriteShaderProgramTemp;
-	HudManager* mHud;
-	DebugRenderer* mDebugRenderer;
-	bool mWireFrameMode;
-	SkySphereComponent* mSkySphereComponent;
 };

@@ -17,7 +17,7 @@ public :
 
 	SDL_Window* GetSdlWindow() const; // Returns the underlying SDL_Window pointer.
 
-	bool Open(); // Opens the SDL window.
+	bool Open(const std::string& pTitle); // Opens the SDL window.
 	void Close(); // Closes and destroys the SDL window.
 
 private:

@@ -5,12 +5,12 @@
 const std::string Shader::SHADER_PATH = "../Imports/Shaders/";
 
 Shader::Shader()
-	: mId(0), mCode(""), mType(ShaderType::VERTEX), mSource("")
+	: mId(0), mCode(""), mType(ShaderType::VERTEX)
 {
 }
 
-Shader::Shader(int pId, std::string pCode, ShaderType pShaderType)
-	: mId(pId), mCode(pCode), mType(pShaderType), mSource("")
+Shader::Shader(int pId, const std::string& pCode, ShaderType pShaderType)
+	: mId(pId), mCode(pCode), mType(pShaderType)
 {
 
 }
@@ -19,7 +19,7 @@ Shader::~Shader()
 {
 }
 
-void Shader::Load(std::string pFileName, ShaderType pShaderType)
+void Shader::Load(const std::string& pFileName, ShaderType pShaderType)
 {
 	mType = pShaderType;
 	std::ifstream myFile;

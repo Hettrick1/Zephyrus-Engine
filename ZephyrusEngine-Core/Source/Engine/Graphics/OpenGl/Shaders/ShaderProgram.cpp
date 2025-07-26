@@ -48,11 +48,6 @@ void ShaderProgram::Compose(std::vector<Shader*> pShaders)
 	}
 }
 
-unsigned int ShaderProgram::GetID()
-{
-	return mId;
-}
-
 void ShaderProgram::Use()
 {
 	glUseProgram(mId);

@@ -39,19 +39,21 @@ bool TextRenderer::Init(Window& pWindow)
     return true;
 }
 
-void TextRenderer::RenderText(std::string pText, float pX, float pY, float pScale, Vector4D pColor, Font pFont ,TextAlignment pAlignment, ShaderProgram* pShaderProgram)
+void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Font pFont ,TextAlignment pAlignment, ShaderProgram* pShaderProgram)
 {
     float textWidth = ComputeTextWidth(pText, pScale, pFont);
 
     ShaderProgram* shaderProgram = pShaderProgram == nullptr ? &mShaderProgram : pShaderProgram;
 
+    Vector2D position = pPos;
+
     if (pAlignment == TextAlignment::CENTER)
     {
-        pX -= textWidth / 2.0f;
+        position.x -= textWidth / 2.0f;
     }
     else if (pAlignment == TextAlignment::RIGHT)
     {
-        pX -= textWidth;
+        position.y -= textWidth;
     }
 
     // activate corresponding render state	
@@ -71,8 +73,8 @@ void TextRenderer::RenderText(std::string pText, float pX, float pY, float pScal
     {
         Character ch = pFont.GetCharacters()[*c];
 
-        float xpos = pX + ch.Bearing.x * pScale;
-        float ypos = pY - (ch.Size.y - ch.Bearing.y) * pScale;
+        float xpos = position.x + ch.Bearing.x * pScale;
+        float ypos = position.y - (ch.Size.y - ch.Bearing.y) * pScale;
 
         float w = ch.Size.x * pScale;
         float h = ch.Size.y * pScale;
@@ -96,7 +98,7 @@ void TextRenderer::RenderText(std::string pText, float pX, float pY, float pScal
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        pX += (ch.Advance >> 6) * pScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        position.x += (ch.Advance >> 6) * pScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);

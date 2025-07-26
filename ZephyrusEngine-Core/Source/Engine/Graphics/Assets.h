@@ -12,6 +12,18 @@
  */
 class Assets
 {
+private:
+	Assets() = default;
+
+	// Loads a texture from file (internal use)
+	static Texture LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath);
+
+	// Loads a mesh from file (internal use)
+	static Mesh* LoadMeshFromFile(const std::string& pFilePath);
+
+	// Loads a font from file (internal use)
+	static Font LoadFontFromFile(const std::string& pFilePath);
+
 public:
 	static std::map<std::string, Texture> mTextures;
 	static std::map<std::string, Mesh*> mMeshes;
@@ -34,16 +46,4 @@ public:
 
 	// Clears all loaded assets
 	static void Clear();
-private:
-	Assets() = default;
-
-	// Loads a texture from file (internal use)
-	static Texture LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath);
-
-	// Loads a mesh from file (internal use)
-	static Mesh* LoadMeshFromFile(const std::string& pFilePath);
-
-	// Loads a font from file (internal use)
-	static Font LoadFontFromFile(const std::string& pFilePath);
-
 };

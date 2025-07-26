@@ -166,7 +166,7 @@ void RendererOpenGl::AddDebugLine(DebugLine* pLine)
 	mDebugRenderer->AddDebugLine(pLine);
 }
 
-void RendererOpenGl::SetViewMatrix(Matrix4DRow pViewMatrix)
+void RendererOpenGl::SetViewMatrix(const Matrix4DRow& pViewMatrix)
 {
 	mView = pViewMatrix;
 	mDebugRenderer->SetViewMatrix(pViewMatrix);

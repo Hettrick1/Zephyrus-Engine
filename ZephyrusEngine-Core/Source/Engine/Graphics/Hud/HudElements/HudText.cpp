@@ -1,13 +1,13 @@
 #include "HudText.h"
 #include "Assets.h"
 
-HudText::HudText(const std::string& pText, float pX, float pY, float pScale, Vector4D pColor, TextAlignment pAlignment, Font* pFont)
+HudText::HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment, Font* pFont)
     : HudElement(), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
 {
     if (pFont == nullptr) {
         mFont = Assets::LoadFont("../Imports/Fonts/RoadPixel.ttf", "RoadPixel");
     }
-    SetPosition(pX, pY);
+    SetPosition(pPos);
 }
 
 HudText::~HudText()
@@ -20,7 +20,7 @@ HudText::~HudText()
 
 void HudText::Draw(RendererOpenGl& pRenderer)
 {
-    TextRenderer::Instance().RenderText(mText, mPositionX, mPositionY, mScale, mColor, *mFont, mAlignment, mShaderProgram);
+    TextRenderer::Instance().RenderText(mText, mPosition, mScale, mColor, *mFont, mAlignment, mShaderProgram);
 }
 
 void HudText::SetText(std::string pText)

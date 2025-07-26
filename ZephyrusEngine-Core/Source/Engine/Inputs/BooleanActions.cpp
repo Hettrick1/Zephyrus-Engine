@@ -1,12 +1,12 @@
 #include "BooleanActions.h"
 #include <iostream>
 
-BooleanActions::BooleanActions(SDL_Keycode pKey, std::string pName)
+BooleanActions::BooleanActions(SDL_Keycode pKey, const std::string& pName)
 	: mKey(pKey), mMouseButton(0), mState(false), InputActions(pName)
 {
 }
 
-BooleanActions::BooleanActions(Uint8 pMouseButton, std::string pName)
+BooleanActions::BooleanActions(Uint8 pMouseButton, const std::string& pName)
 	: mKey(0), mMouseButton(pMouseButton), mState(false), InputActions(pName)
 {
 }

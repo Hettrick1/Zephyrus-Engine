@@ -14,6 +14,9 @@ class Texture;
  */
 class RendererSdl : public IRenderer
 {
+private:
+	SDL_Renderer* mSdlRenderer = nullptr;
+	std::vector<SpriteComponent*> mSprites;
 public:
 	RendererSdl();
 	RendererSdl(const RendererSdl&) = delete;
@@ -41,7 +44,4 @@ public:
 	void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
 	// Returns the underlying SDL_Renderer pointer
 	SDL_Renderer* ToSdlRenderer() override;
-private:
-	SDL_Renderer* mSdlRenderer;
-	std::vector<SpriteComponent*> mSprites;
 };

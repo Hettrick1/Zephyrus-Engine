@@ -5,7 +5,7 @@
 class ICollisionListener {
 public:
 	virtual ~ICollisionListener() = default;
-	virtual void OnTriggerEnter(ColliderComponent* collider, HitResult* infos) = 0;
-	virtual void OnTriggerStay(ColliderComponent* collider, HitResult* infos) = 0;
-	virtual void OnTriggerExit(ColliderComponent* collider, HitResult* infos) = 0;
+	virtual void OnTriggerEnter(ColliderComponent* collider, HitResult* infos) {};
+	virtual void OnTriggerStay(ColliderComponent* collider, HitResult* infos) {};
+	virtual void OnTriggerExit(ColliderComponent* collider, HitResult* infos) {};
 };

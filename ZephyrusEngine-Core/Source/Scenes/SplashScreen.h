@@ -6,6 +6,11 @@
 
 class SplashScreen : public Scene
 {
+private:
+	HudText* mZephyrusText;
+	HudText* mStudioText;
+	Scene* mNextScene;
+	float mTime;
 public:
 	SplashScreen(Scene* pNextScene);
 	~SplashScreen();
@@ -13,9 +18,4 @@ public:
 	void Update() override;
 	void Render() override;
 	void Close() override;
-private:
-	HudText* mZephyrusText;
-	HudText* mStudioText;
-	Scene* mNextScene;
-	float mTime;
 };

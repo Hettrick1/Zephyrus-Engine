@@ -75,11 +75,11 @@ void BowlingOpenGl::Start(IRenderer* renderer)
 	AddActor(camera);
 	camera->Start();
 
-	HudText* text = new HudText("Tab - Change view", -1800, 900, 0.5f, Vector4D(0.5, 0.5, 6.0, 1.0), TextAlignment::LEFT);
+	HudText* text = new HudText("Tab - Change view", Vector2D(-1800.0f, 900.0f), 0.5f, Vector4D(0.5, 0.5, 6.0, 1.0), TextAlignment::LEFT);
 	renderer->GetHud()->AddElement(text);
-	HudText* text2 = new HudText("Space - Shoot", -1800, 800, 0.5f, Vector4D(0.5, 0.5, 6.0, 1.0), TextAlignment::LEFT);
+	HudText* text2 = new HudText("Space - Shoot", Vector2D(-1800.0f, 800.0f), 0.5f, Vector4D(0.5, 0.5, 6.0, 1.0), TextAlignment::LEFT);
 	renderer->GetHud()->AddElement(text2);
-	HudText* text3 = new HudText("Q/D - Move", -1800, 700, 0.5f, Vector4D(0.5, 0.5, 6.0, 1.0), TextAlignment::LEFT);
+	HudText* text3 = new HudText("Q/D - Move", Vector2D(-1800.0f, 700.0f), 0.5f, Vector4D(0.5, 0.5, 6.0, 1.0), TextAlignment::LEFT);
 	renderer->GetHud()->AddElement(text3);
 }
 

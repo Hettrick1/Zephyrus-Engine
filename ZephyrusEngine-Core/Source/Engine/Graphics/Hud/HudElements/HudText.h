@@ -11,8 +11,15 @@
 class HudText :
     public HudElement
 {
+private:
+    std::string mText;
+    float mScale = 0;
+    Vector4D mColor;
+    TextAlignment mAlignment;
+    Font* mFont = nullptr;
+    ShaderProgram* mShaderProgram = nullptr;
 public:
-    HudText(const std::string& pText, float pX, float pY, float pScale, Vector4D pColor,TextAlignment pAlignment = TextAlignment::LEFT, Font* pFont = nullptr);
+    HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Font* pFont = nullptr);
     ~HudText();
 
     // Draws the text on the HUD using the specified renderer.
@@ -28,12 +35,4 @@ public:
 
     // Sets the shader program used for rendering the text.
     void SetShaderProgram(ShaderProgram* pShaderProgram);
-
-private:
-    std::string mText;
-    float mScale = 0;
-    Vector4D mColor;
-    TextAlignment mAlignment;
-    Font* mFont = nullptr;
-    ShaderProgram* mShaderProgram = nullptr;
 };

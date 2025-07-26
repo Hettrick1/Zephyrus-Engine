@@ -8,6 +8,8 @@
  */
 class HudManager
 {
+private:
+    std::vector<HudElement*> mHudElements;
 public:
     // Adds a HUD element to the manager.
     void AddElement(HudElement* pElement);
@@ -16,6 +18,4 @@ public:
 
     // Unloads all HUD elements managed by this manager.
     void Unload();
-private:
-    std::vector<HudElement*> mHudElements;
 };

@@ -92,10 +92,10 @@ void DoomPlayer::Start()
 	HudImage* doomHudImage = new HudImage(*doomHud, Vector2D(0, -920), Vector2D(10, 10));
 	mWeaponIconImage = new HudImage(gunIcon, Vector2D(400, -980), Vector2D(10, 10));
 
-	mFpsText = new HudText("AAAAAAAAA", -1900, 1000, 0.5f, Vector4D(1, 0, 1, 1));
-	mGunAmoText = new HudText(std::to_string(mGunAmo), -825, -930, 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
-	mHealthText = new HudText(std::to_string(mHealth), -325, -930, 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
-	mArmorText = new HudText(std::to_string(mArmor), 840, -930, 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);;
+	mFpsText = new HudText("AAAAAAAAA", Vector2D(-1900.0f, 1000.0f), 0.5f, Vector4D(1, 0, 1, 1));
+	mGunAmoText = new HudText(std::to_string(mGunAmo), Vector2D(-825.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
+	mHealthText = new HudText(std::to_string(mHealth), Vector2D(-325.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
+	mArmorText = new HudText(std::to_string(mArmor), Vector2D(840.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);;
 
 	Texture* damageIndicator = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/Doom/DamageIndicator.png", "DamageIndicator");
 	mDamageIndicatorImage = new HudImage(*damageIndicator, Vector2D(0, 0), 2);

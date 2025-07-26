@@ -1,12 +1,12 @@
 #include "Axis2DAction.h"
 
-Axis2DAction::Axis2DAction(SDL_Keycode pPositiveX, SDL_Keycode pNegativeX, SDL_Keycode pPositiveY, SDL_Keycode pNegativeY, std::string pName)
+Axis2DAction::Axis2DAction(SDL_Keycode pPositiveX, SDL_Keycode pNegativeX, SDL_Keycode pPositiveY, SDL_Keycode pNegativeY, const std::string& pName)
     : mPositiveX(pPositiveX), mNegativeX(pNegativeX), mPositiveY(pPositiveY), mNegativeY(pNegativeY),
       mX(0), mY(0), InputActions(pName), mUseMouse(false)
 {
 }
 
-Axis2DAction::Axis2DAction(std::string pName)
+Axis2DAction::Axis2DAction(const std::string& pName)
     : mPositiveX(SDLK_UNKNOWN), mNegativeX(SDLK_UNKNOWN), mPositiveY(SDLK_UNKNOWN), mNegativeY(SDLK_UNKNOWN),
     mX(0), mY(0), mUseMouse(true), InputActions(pName)
 {

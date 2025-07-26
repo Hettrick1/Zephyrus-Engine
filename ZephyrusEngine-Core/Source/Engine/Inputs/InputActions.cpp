@@ -1,7 +1,7 @@
 #include "InputActions.h"
 #include "IActionListener.h"
 
-InputActions::InputActions(std::string pName)
+InputActions::InputActions(const std::string& pName)
 	: mName(pName)
 {
 }
@@ -11,9 +11,9 @@ std::string InputActions::GetName()
 	return mName;
 }
 
-void InputActions::SetName(std::string pNewName)
+void InputActions::SetName(const std::string& pName)
 {
-	mName = pNewName;
+	mName = pName;
 }
 
 void InputActions::AddListener(IActionListener* pListener)

@@ -16,7 +16,7 @@ DebugRenderer::~DebugRenderer()
 	glDeleteVertexArrays(1, &mDebugLineVao);
 }
 
-void DebugRenderer::Initialize(Window& pWindow)
+void DebugRenderer::Initialize(const Window& pWindow)
 {
 	glLineWidth(4);
 	mDebugVertex.Load("Debug.vert", ShaderType::VERTEX);
@@ -127,7 +127,7 @@ void DebugRenderer::AddDebugLine(DebugLine* pLine)
 	mLines.push_back(pLine);
 }
 
-void DebugRenderer::DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform)
+void DebugRenderer::DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, const Matrix4DRow& pWorldTransform)
 {
 	glBindVertexArray(mDebugBoxVao);
 
@@ -181,7 +181,7 @@ void DebugRenderer::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, 
 	}
 }
 
-void DebugRenderer::SetViewMatrix(Matrix4DRow pViewMatrix)
+void DebugRenderer::SetViewMatrix(const Matrix4DRow& pViewMatrix)
 {
 	mView = pViewMatrix;
 }

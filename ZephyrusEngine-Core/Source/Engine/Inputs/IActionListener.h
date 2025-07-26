@@ -4,7 +4,7 @@
 class IActionListener {
 public:
 	virtual ~IActionListener() = default;
-	virtual void OnActionStarted(InputActions* pAction) = 0;
-	virtual void OnActionTriggered(InputActions* pAction) = 0;
-	virtual void OnActionEnded(InputActions* pAction) = 0;
+	virtual void OnActionStarted(InputActions* pAction) {}
+	virtual void OnActionTriggered(InputActions* pAction) {}
+	virtual void OnActionEnded(InputActions* pAction) {}
 };

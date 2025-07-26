@@ -1,7 +1,7 @@
 #include "EmptyActor.h"
 #include "SceneManager.h"
 
-EmptyActor::EmptyActor(Vector3D pPos, Vector3D pSize, Quaternion pRotation)
+EmptyActor::EmptyActor(const Vector3D& pPos, const Vector3D& pSize, const Quaternion& pRotation)
 	: Actor(pPos, pSize, pRotation)
 {
 	Start();

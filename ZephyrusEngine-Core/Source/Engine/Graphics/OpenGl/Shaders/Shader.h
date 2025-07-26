@@ -19,13 +19,17 @@ enum class ShaderType {
  */
 class Shader
 {
+protected:
+	std::string mCode;
+	unsigned int mId;
+	ShaderType mType;
 public:
 	static const std::string SHADER_PATH;
 	Shader();
-	Shader(int pId, std::string pCode, ShaderType pShaderType);
+	Shader(int pId, const std::string& pCode, ShaderType pShaderType);
 	~Shader();
 
-	void Load(std::string pFileName, ShaderType pShaderType);
+	void Load(const std::string& pFileName, ShaderType pShaderType);
 
 	int GetID() const 
 	{
@@ -34,10 +38,5 @@ public:
 
 	std::string& GetCode();
 
-	inline ShaderType GetType() const { return mType; }
-protected:
-	std::string mCode;
-	unsigned int mId;
-	ShaderType mType;
-	const char* mSource;    
+	inline ShaderType GetType() const { return mType; }   
 };

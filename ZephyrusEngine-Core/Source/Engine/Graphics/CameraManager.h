@@ -10,6 +10,10 @@ class CameraComponent;
  */
 class CameraManager
 {
+private:
+	CameraManager();
+	CameraComponent* mActiveCamera = nullptr;
+	std::vector<CameraComponent*> mCameras;
 public:
 	static CameraManager& Instance();
 	~CameraManager();
@@ -27,8 +31,4 @@ public:
 	void SetCurrentCamera(CameraComponent* pCameraToActivate);
 
 	inline CameraComponent* GetCurrentCamera() const { return mActiveCamera; }
-private:
-	CameraManager();
-	CameraComponent* mActiveCamera = nullptr;
-	std::vector<CameraComponent*> mCameras;
 };

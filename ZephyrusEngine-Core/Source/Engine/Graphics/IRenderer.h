@@ -53,7 +53,7 @@ public:
 	virtual void AddDebugLine(DebugLine* pLine) {} // DEBUG PURPOSE ONLY
 
 	virtual void SetSpriteShaderProgram(class ShaderProgram& pShaderProgram) {}
-	virtual void SetViewMatrix(Matrix4DRow pViewMatrix) {}
+	virtual void SetViewMatrix(const Matrix4DRow& pViewMatrix) {}
 
 	virtual RendererType GetType() const = 0;
 	virtual void DrawSprite(Actor& pActor, Texture& pTex, Rectangle pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;

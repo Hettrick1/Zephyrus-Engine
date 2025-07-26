@@ -15,6 +15,16 @@ class RendererOpenGl;
  */
 class Texture
 {
+private:
+	std::string mFilePath;
+	SDL_Texture* mSdlTexture = nullptr;
+	int mWidth, mHeight;
+	unsigned int mTextureId;
+	// Loads a texture using SDL renderer
+	bool LoadSdl(RendererSdl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
+	// Loads a texture using OpenGL renderer
+	bool LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
+
 public:
 	Texture();
 	~Texture();
@@ -28,17 +38,7 @@ public:
 	void UpdateInfo(int& pWidth, int& pHeight);
 	// Overrides the texture size with custom width and height
 	void OverrideTextureSize(int pWidth, int pHeight);
-	Vector3D GetTextureSize();
+	inline Vector3D GetTextureSize() const { return { static_cast<float>(mWidth), static_cast<float>(mHeight), 0 }; }
 	SDL_Texture* GetSdlTexture() const { return mSdlTexture; }
 	inline unsigned int& GetId() { return mTextureId; }
- 
-private:
-	std::string mFilePath;
-	SDL_Texture* mSdlTexture = nullptr;
-	int mWidth, mHeight;
-	unsigned int mTextureId;
-	// Loads a texture using SDL renderer
-	bool LoadSdl(RendererSdl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
-	// Loads a texture using OpenGL renderer
-	bool LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
 };

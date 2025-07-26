@@ -15,8 +15,18 @@
  */
 class Game
 {
+private:
+	SDL_Event mSdlEvent;
+	std::string mTitle;
+	Window* mGameWindow = nullptr;
+	IRenderer* mRenderer = nullptr;
+	Scene* mStartUpScene = nullptr;
+	InputManager& mInputManager;
+	PhysicManager& mPhysicManager;
+	CameraManager& mCameraManager;
+	bool mIsRunning = true;
 public:
-	Game(std::string pTitle, Scene* pStartupScene);
+	Game(const std::string& pTitle, Scene* pStartupScene);
 	~Game();
 
 	// Initializes the game systems and window
@@ -31,15 +41,4 @@ public:
 
 	// Closes and cleans up the game
 	void Close();
-
-private:
-	SDL_Event mSdlEvent;
-	std::string mTitle;
-	Window* mGameWindow = nullptr;
-	IRenderer* mRenderer = nullptr;
-	Scene* mStartUpScene = nullptr;
-	InputManager& mInputManager;
-	PhysicManager& mPhysicManager;
-	CameraManager& mCameraManager;
-	bool mIsRunning = true;
 };
