@@ -51,6 +51,13 @@ project "ZephyrusEngine-Editor"
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
    objdir ("../Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
 
+   postbuildcommands
+   {
+    "{COPY} ../Vendor/Dependencies/GL/SDL/lib/x86/SDL2.dll %{cfg.targetdir}",
+    "{COPY} ../Vendor/Dependencies/glew-2.2.0-win32/glew-2.2.0/bin/Release/Win32/glew32.dll %{cfg.targetdir}",
+    "{COPY} ../Vendor/Dependencies/SDL2_image-2.8.2/lib/x86/SDL2_image.dll %{cfg.targetdir}",
+   }
+
    filter "system:windows"
        systemversion "latest"
        defines { "WINDOWS" }

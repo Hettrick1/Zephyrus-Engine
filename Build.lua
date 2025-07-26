@@ -10,6 +10,19 @@ workspace "Zephyrus Engine"
 
 OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 
+filter "system:windows"
+   postbuildcommands
+   {
+      'rmdir /S /Q "%{cfg.targetdir}\\..\\Imports"',
+      '{COPYDIR} ../Imports "%{cfg.targetdir}\\..\\Imports"'
+   }
+filter "system:linux"
+   postbuildcommands
+   {
+      'rm -rf "%{cfg.targetdir}\\..\\Imports"',
+      '{COPYDIR} ../Imports "%{cfg.targetdir}\\..\\Imports"'
+   }
+
 group "Core"
 	include "ZephyrusEngine-Core/Build-Core.lua"
 group ""
