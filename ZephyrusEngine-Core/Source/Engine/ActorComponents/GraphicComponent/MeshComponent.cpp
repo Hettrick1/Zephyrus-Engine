@@ -11,8 +11,8 @@ MeshComponent::MeshComponent(Actor* pOwner, Mesh* pMesh, ShaderProgram* pProgram
 	mOwner->GetScene().GetRenderer()->AddMesh(this);
 	if (pProgram == nullptr)
 	{
-		mVertexShader.Load("BasicMesh.vert", ShaderType::VERTEX);
-		mFragmentShader.Load("BasicMesh.frag", ShaderType::FRAGMENT);
+		mVertexShader = *Assets::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
+		mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
 		mShaderProgram.Compose({ &mVertexShader, &mFragmentShader });
 	}
 	else {

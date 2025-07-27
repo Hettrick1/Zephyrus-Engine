@@ -9,7 +9,6 @@ BasicCube::BasicCube(const Vector3D& pPos, const Vector3D& pSize, const Quaterni
 	: Actor(pPos, pSize, pRotation), mShaderProgram(pProgram)
 {
 	Start();
-
 	mScene.AddActor(this);
 }
 
@@ -20,10 +19,10 @@ BasicCube::~BasicCube()
 void BasicCube::Start()
 {
 	Actor::Start();
-	Texture* tex1 = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/Doom/268.png", "wallTex");
-	Texture* tex2 = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/Doom/091.png", "groundTex");
-	Texture* tex3 = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/Doom/268bis.png", "wallTex2");
-	Texture* tex4 = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/uv_mapper.jpg", "uvMapper");
+	Texture* tex1 = Assets::LoadTexture("../Imports/Sprites/Doom/268.png", "wallTex");
+	Texture* tex2 = Assets::LoadTexture("../Imports/Sprites/Doom/091.png", "groundTex");
+	Texture* tex3 = Assets::LoadTexture("../Imports/Sprites/Doom/268bis.png", "wallTex2");
+	Texture* tex4 = Assets::LoadTexture("../Imports/Sprites/uv_mapper.jpg", "uvMapper");
 	Mesh* mesh = Assets::LoadMesh("../Imports/Meshes/cube.obj", "cube");
 	mesh->AddTexture(tex1);
 	mesh->AddTexture(tex2); 

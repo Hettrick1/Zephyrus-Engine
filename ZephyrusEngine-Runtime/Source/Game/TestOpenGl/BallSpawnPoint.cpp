@@ -15,7 +15,7 @@ BallSpawnPoint::~BallSpawnPoint()
 void BallSpawnPoint::Start()
 {
 	Actor::Start();
-	Texture* tex = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/collider64x64.png", "red");
+	Texture* tex = Assets::LoadTexture("../Imports/Sprites/collider64x64.png", "red");
 	Mesh* mesh = Assets::LoadMesh("../Imports/Meshes/cube.obj", "cube");
 	mesh->AddTexture(tex);
 	MeshComponent* meshComp = new MeshComponent(this, mesh);

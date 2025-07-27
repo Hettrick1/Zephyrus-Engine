@@ -21,6 +21,8 @@ public:
 	~Font();
 
     bool Load(const std::string& pFileName);
+    
+    void Unload();
 
     inline std::map<GLchar, Character>& GetCharacters() { return mCharacters; }
 };

@@ -21,7 +21,7 @@ HealthPickUp::~HealthPickUp()
 void HealthPickUp::Start()
 {
 	Actor::Start();
-	Texture* tex = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/Doom/lifePu.png", "lifePickUp");
+	Texture* tex = Assets::LoadTexture("../Imports/Sprites/Doom/lifePu.png", "lifePickUp");
 	SpriteComponent* sc = new SpriteComponent(this, *tex);
 	sc->RelativeRotateX(90);
 	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, 0.5);

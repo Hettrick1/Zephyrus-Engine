@@ -9,6 +9,7 @@
 #include "glew.h"
 #include "HudManager.h"
 #include "TextRenderer.h"
+#include "Assets.h"
 
 RendererOpenGl::RendererOpenGl()
 	: mVAO(nullptr), mWindow(nullptr), mSpriteShaderProgram(nullptr), mHud(nullptr), mDebugRenderer(nullptr), mWireFrameMode(false), mSkySphereComponent(nullptr)
@@ -57,9 +58,8 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 	{
 		Log::Error(LogType::Video, "Failed to initialize SDL_Image");
 	}
-
-	mSpriteVertexShader.Load("Simple.vert", ShaderType::VERTEX); 
-	mSpriteFragmentShader.Load("Simple.frag", ShaderType::FRAGMENT);  
+	mSpriteVertexShader = *Assets::LoadShader("Simple.vert", ShaderType::VERTEX, "SimpleVert");
+	mSpriteFragmentShader = *Assets::LoadShader("Simple.frag", ShaderType::FRAGMENT, "SimpleFrag");
 	mSpriteShaderProgramTemp.Compose({ &mSpriteVertexShader, &mSpriteFragmentShader });
 	SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 

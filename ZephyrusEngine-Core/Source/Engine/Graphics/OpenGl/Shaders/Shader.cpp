@@ -69,6 +69,11 @@ void Shader::Load(const std::string& pFileName, ShaderType pShaderType)
 	glCompileShader(mId);
 }
 
+void Shader::Unload()
+{
+	glDeleteShader(mId);
+}
+
 std::string& Shader::GetCode()
 {
 	return mCode;

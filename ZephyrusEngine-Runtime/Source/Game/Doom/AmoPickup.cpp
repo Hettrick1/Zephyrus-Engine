@@ -21,7 +21,7 @@ AmoPickup::~AmoPickup()
 void AmoPickup::Start()
 {
 	Actor::Start();
-	Texture* tex = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/Doom/amoPu.png", "amoPickUp");
+	Texture* tex = Assets::LoadTexture("../Imports/Sprites/Doom/amoPu.png", "amoPickUp");
 	SpriteComponent* sc = new SpriteComponent(this, *tex);
 	sc->RelativeRotateX(90);
 	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, 0.5);

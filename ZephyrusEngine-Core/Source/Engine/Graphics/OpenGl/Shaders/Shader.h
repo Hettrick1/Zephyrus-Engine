@@ -31,10 +31,9 @@ public:
 
 	void Load(const std::string& pFileName, ShaderType pShaderType);
 
-	int GetID() const 
-	{
-		return mId;
-	}
+	void Unload();
+
+	int GetID() const { return mId; }
 
 	std::string& GetCode();
 

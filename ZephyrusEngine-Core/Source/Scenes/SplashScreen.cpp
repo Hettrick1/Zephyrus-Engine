@@ -28,10 +28,8 @@ void SplashScreen::Start(IRenderer* pRenderer)
 
 	CameraActor* cam = new CameraActor();
 
-	Shader vert;
-	vert.Load("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX);
-	Shader frag;
-	frag.Load("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT);
+	Shader vert = *Assets::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
+	Shader frag = *Assets::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
 
 	ShaderProgram* shaderProgram = new ShaderProgram();
 	shaderProgram->Compose({ &vert, &frag });

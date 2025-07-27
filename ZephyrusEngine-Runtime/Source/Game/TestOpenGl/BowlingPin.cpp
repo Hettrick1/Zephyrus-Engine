@@ -19,7 +19,7 @@ BowlingPin::~BowlingPin()
 void BowlingPin::Start()
 {
 	Actor::Start();
-	Texture* tex = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/pin.jpg", "pinTex");
+	Texture* tex = Assets::LoadTexture("../Imports/Sprites/pin.jpg", "pinTex");
 	Mesh* mesh = Assets::LoadMesh("../Imports/Meshes/pin.obj", "pin");
 	mesh->AddTexture(tex);
 	MeshComponent* meshComp = new MeshComponent(this, mesh);

@@ -18,7 +18,7 @@ Sphere::~Sphere()
 void Sphere::Start()
 {
 	Actor::Start();
-	Texture* tex = Assets::LoadTexture(*GetScene().GetRenderer(), "../Imports/Sprites/LakeSkyTexture.png", "sphere");
+	Texture* tex = Assets::LoadTexture("../Imports/Sprites/LakeSkyTexture.png", "sphere");
 	Mesh* mesh = Assets::LoadMesh("../Imports/Meshes/sphere.obj", "sphere");
 	mesh->AddTexture(tex);
 	MeshComponent* meshComp = new MeshComponent(this, mesh);

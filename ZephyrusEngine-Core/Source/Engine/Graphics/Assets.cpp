@@ -4,15 +4,18 @@
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "MeshLoader/tiny_obj_loader.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 std::map<std::string, Texture> Assets::mTextures = {};
 std::map<std::string, Font> Assets::mFonts = {};
 std::map<std::string, Mesh*> Assets::mMeshes = {};
+std::map<std::string, Shader> Assets::mShaders = {};
 
-Texture* Assets::LoadTexture(IRenderer& pRenderer, const std::string& pFilePath, const std::string& pName)
+Texture* Assets::LoadTexture(const std::string& pFilePath, const std::string& pName)
 {
 	if (mTextures.find(pName) == mTextures.end()) {
-		mTextures[pName] = LoadTextureFromFile(pRenderer, pFilePath);
+		mTextures[pName] = LoadTextureFromFile(*SceneManager::ActiveScene->GetRenderer(), pFilePath);
 		return &mTextures[pName];
 	}
 	return &mTextures[pName];
@@ -66,13 +69,48 @@ Font& Assets::GetFont(const std::string& pName)
 	return mFonts[pName];
 }
 
+Shader* Assets::LoadShader(const std::string& pFilePath, ShaderType pType, const std::string& pName)
+{
+	if (mShaders.find(pName) == mShaders.end()) {
+		mShaders[pName] = LoadShaderFromFile(pFilePath, pType);
+		return &mShaders[pName];
+	}
+	return &mShaders[pName];
+}
+
+Shader& Assets::GetShader(const std::string& pName)
+{
+	if (mShaders.find(pName) == mShaders.end()) {
+		std::ostringstream loadError;
+		loadError << "Shader " << pName << " does not exists in assets manager\n";
+		Log::Error(LogType::Application, loadError.str());
+	}
+	return mShaders[pName];
+}
+
 void Assets::Clear()
 {
-	for (std::pair<const std::string, Texture>& iter : mTextures)
+	for (auto& iter : mTextures)
 	{
 		iter.second.Unload(); 
 	}
 	mTextures.clear();
+	for (auto& iter : mMeshes)
+	{
+		iter.second->Unload();
+		delete iter.second;
+	}
+	mMeshes.clear();
+	for (auto& iter : mFonts)
+	{
+		iter.second.Unload();
+	}
+	mFonts.clear();
+	for (auto& iter : mShaders)
+	{
+		iter.second.Unload();
+	}
+	mShaders.clear();
 }
 
 Texture Assets::LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath)
@@ -135,4 +173,12 @@ Font Assets::LoadFontFromFile(const std::string& pFilePath)
 	Font font;
 	font.Load(pFilePath);
 	return font;
+}
+
+Shader Assets::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)
+{
+	Shader shader;
+	shader.Load(pFilePath, pType);
+	std::cout << "Shader Load From assets : " + pFilePath << std::endl;
+	return shader;
 }

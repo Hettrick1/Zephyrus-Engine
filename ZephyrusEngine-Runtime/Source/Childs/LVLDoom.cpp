@@ -46,11 +46,10 @@ void LVLDoom::Start(IRenderer* renderer)
 		});
 
 	Shader vert, frag, tcs, tes = Shader();
-
-	vert.Load("VertFrag/PlanetsNoise.vert", ShaderType::VERTEX);
-	frag.Load("VertFrag/PlanetsNoise.frag", ShaderType::FRAGMENT);
-	tcs.Load("Tesselation/PlanetsNoise.tesc", ShaderType::TESSELLATION_CONTROL);
-	tes.Load("Tesselation/PlanetsNoise.tese", ShaderType::TESSELLATION_EVALUATION);
+	vert = *Assets::LoadShader("VertFrag/PlanetsNoise.vert", ShaderType::VERTEX, "PlanetsNoiseVert");
+	frag = *Assets::LoadShader("VertFrag/PlanetsNoise.frag", ShaderType::FRAGMENT, "PlanetsNoiseFrag");
+	tcs = *Assets::LoadShader("Tesselation/PlanetsNoise.tesc", ShaderType::TESSELLATION_CONTROL, "PlanetsNoiseTesc");
+	tes = *Assets::LoadShader("Tesselation/PlanetsNoise.tese", ShaderType::TESSELLATION_EVALUATION, "PlanetsNoiseTese");
 
 	ShaderProgram* shaderProg5 = new ShaderProgram();
 	shaderProg5->Compose({ &vert, &tcs, &tes, &frag });

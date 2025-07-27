@@ -13,7 +13,7 @@ class SkySphereComponent : public Component
 {
 protected:
 	Mesh* mMesh = nullptr;
-	Shader mVertexShader, mFragmentShader, mTessellationControlShader, mTessellationEvalShader;
+	Shader mVertexShader, mFragmentShader, mTescShader, mTeseShader;
 	ShaderProgram mShaderProgram;
 	CubeTextureMap mCubeMap;
 	Vector2D mTiling;

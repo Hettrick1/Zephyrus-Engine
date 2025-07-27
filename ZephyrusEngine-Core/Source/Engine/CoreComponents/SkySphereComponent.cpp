@@ -16,18 +16,18 @@ SkySphereComponent::SkySphereComponent(Actor* pOwner, bool pIsSphere, const std:
 	{
 		if (pIsSphere) 
 		{
-			mVertexShader.Load("VertFrag/SkySphere.vert", ShaderType::VERTEX);
-			mFragmentShader.Load("VertFrag/SkySphere.frag", ShaderType::FRAGMENT);
+			mVertexShader = *Assets::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
+			mFragmentShader = *Assets::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
 			mShaderProgram.Compose({ &mVertexShader, &mFragmentShader });
 		}
 		else
 		{
-			mVertexShader.Load("VertFrag/SkyBox.vert", ShaderType::VERTEX);
-			mFragmentShader.Load("VertFrag/SkyBox.frag", ShaderType::FRAGMENT);
-			mTessellationControlShader.Load("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL);
-			mTessellationEvalShader.Load("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION);
+			mVertexShader = *Assets::LoadShader("VertFrag/SkyBox.vert", ShaderType::VERTEX, "SkyBoxVert");
+			mFragmentShader = *Assets::LoadShader("VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "SkyBoxFrag");
+			mTescShader = *Assets::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
+			mTeseShader = *Assets::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
 
-			mShaderProgram.Compose({ &mVertexShader, &mTessellationControlShader, &mTessellationEvalShader, &mFragmentShader });
+			mShaderProgram.Compose({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader });
 		}
 	}
 	else {
@@ -37,10 +37,10 @@ SkySphereComponent::SkySphereComponent(Actor* pOwner, bool pIsSphere, const std:
 	{
 		Texture* tex = nullptr;
 		if (mTextureToLoad.empty()) {
-			tex = Assets::LoadTexture(*SceneManager::ActiveScene->GetRenderer(), "../Imports/Sprites/LakeSkyTexture.png", "LakeSkyTexture");
+			tex = Assets::LoadTexture("../Imports/Sprites/LakeSkyTexture.png", "LakeSkyTexture");
 		}
 		else {
-			tex = Assets::LoadTexture(*SceneManager::ActiveScene->GetRenderer(), mTextureToLoad[0], "skysphere" + index);
+			tex = Assets::LoadTexture(mTextureToLoad[0], "skysphere" + index);
 			index++;
 		}
 		mTextureIndex = tex->GetId();

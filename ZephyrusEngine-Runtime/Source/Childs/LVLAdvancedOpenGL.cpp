@@ -1,4 +1,4 @@
-#include "LVLAdvancedOpenGL.h"
+#include "LVLAdvancedOpenGl.h"
 #include "CoreActors/BasicCube.h"
 #include "Shaders/Shader.h"
 #include "Shaders/ShaderProgram.h"
@@ -30,8 +30,6 @@ void LVLAdvancedOpenGl::Start(IRenderer* renderer)
 		"../Imports/Sprites/SkyBox/Stars/front.png",
 		"../Imports/Sprites/SkyBox/Stars/right.png",
 		});
-	skySphere->Start();
-	AddActor(skySphere);
 	SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawBoxes(false);
 
 	CubeTextureMap* cubemap = new CubeTextureMap();
@@ -45,82 +43,64 @@ void LVLAdvancedOpenGl::Start(IRenderer* renderer)
 		});
 
 	Shader vert, frag, tcs, tes, geom = Shader();
-	vert.Load("VertFrag/CubePlanet.vert", ShaderType::VERTEX);
-	frag.Load("VertFrag/CubePlanet.frag", ShaderType::FRAGMENT);
-	tcs.Load("Tesselation/CubePlanet.tesc", ShaderType::TESSELLATION_CONTROL);
-	tes.Load("Tesselation/CubePlanet.tese", ShaderType::TESSELLATION_EVALUATION);
+	vert = *Assets::LoadShader("VertFrag/CubePlanet.vert", ShaderType::VERTEX, "CubePlanetVert");
+	frag = *Assets::LoadShader("VertFrag/CubePlanet.frag", ShaderType::FRAGMENT, "CubePlanetFrag");
+	tcs = *Assets::LoadShader("Tesselation/CubePlanet.tesc", ShaderType::TESSELLATION_CONTROL, "CubePlanetTesc");
+	tes = *Assets::LoadShader("Tesselation/CubePlanet.tese", ShaderType::TESSELLATION_EVALUATION, "CubePlanetTese");
 
 	ShaderProgram* shaderProg = new ShaderProgram();
 	shaderProg->Compose({ &vert, &tcs, &tes, &frag });
 
-	vert.Load("VertFrag/CubeToSphere.vert", ShaderType::VERTEX);
-	frag.Load("VertFrag/CubeToSphere.frag", ShaderType::FRAGMENT);
-	tcs.Load("Tesselation/CubeToSphere.tesc", ShaderType::TESSELLATION_CONTROL);
-	tes.Load("Tesselation/CubeToSphere.tese", ShaderType::TESSELLATION_EVALUATION);
+	vert = *Assets::LoadShader("VertFrag/CubeToSphere.vert", ShaderType::VERTEX, "CubeToSphereVert");
+	frag = *Assets::LoadShader("VertFrag/CubeToSphere.frag", ShaderType::FRAGMENT, "CubeToSphereFrag");
+	tcs = *Assets::LoadShader("Tesselation/CubeToSphere.tesc", ShaderType::TESSELLATION_CONTROL, "CubeToSphereTesc");
+	tes = *Assets::LoadShader("Tesselation/CubeToSphere.tese", ShaderType::TESSELLATION_EVALUATION, "CubeToSphereTese");
 
 	ShaderProgram* shaderProg2 = new ShaderProgram();
 	shaderProg2->Compose({ &vert, &tcs, &tes, &frag });
 
-	vert.Load("VertFrag/FirePlanet.vert", ShaderType::VERTEX);
-	frag.Load("VertFrag/FirePlanet.frag", ShaderType::FRAGMENT);
-	tcs.Load("Tesselation/FirePlanet.tesc", ShaderType::TESSELLATION_CONTROL);
-	tes.Load("Tesselation/FirePlanet.tese", ShaderType::TESSELLATION_EVALUATION);
+	vert = *Assets::LoadShader("VertFrag/FirePlanet.vert", ShaderType::VERTEX, "FirePlanetVert");
+	frag = *Assets::LoadShader("VertFrag/FirePlanet.frag", ShaderType::FRAGMENT, "FirePlanetFrag");
+	tcs = *Assets::LoadShader("Tesselation/FirePlanet.tesc", ShaderType::TESSELLATION_CONTROL, "FirePlanetTesc");
+	tes = *Assets::LoadShader("Tesselation/FirePlanet.tese", ShaderType::TESSELLATION_EVALUATION, "FirePlanetTese");
 
 	ShaderProgram* shaderProg3 = new ShaderProgram(); 
 	shaderProg3->Compose({ &vert, &tcs, &tes, &frag }); 
 
-	vert.Load("VertFrag/EarthPlanet.vert", ShaderType::VERTEX);
-	frag.Load("VertFrag/EarthPlanet.frag", ShaderType::FRAGMENT);
-	tcs.Load("Tesselation/EarthPlanet.tesc", ShaderType::TESSELLATION_CONTROL);
-	tes.Load("Tesselation/EarthPlanet.tese", ShaderType::TESSELLATION_EVALUATION);
+	vert = *Assets::LoadShader("VertFrag/EarthPlanet.vert", ShaderType::VERTEX, "EarthPlanetVert");
+	frag = *Assets::LoadShader("VertFrag/EarthPlanet.frag", ShaderType::FRAGMENT, "EarthPlanetFrag");
+	tcs = *Assets::LoadShader("Tesselation/EarthPlanet.tesc", ShaderType::TESSELLATION_CONTROL, "EarthPlanetTesc");
+	tes = *Assets::LoadShader("Tesselation/EarthPlanet.tese", ShaderType::TESSELLATION_EVALUATION, "EarthPlanetTese");
 
 	ShaderProgram* shaderProg4 = new ShaderProgram();
 	shaderProg4->Compose({ &vert, &tcs, &tes, &frag });
 
-	vert.Load("VertFrag/EarthPlanet.vert", ShaderType::VERTEX); 
-	frag.Load("VertFrag/EarthPlanetTree.frag", ShaderType::FRAGMENT); 
-	tcs.Load("Tesselation/EarthPlanet.tesc", ShaderType::TESSELLATION_CONTROL); 
-	tes.Load("Tesselation/EarthPlanet.tese", ShaderType::TESSELLATION_EVALUATION);
-	geom.Load("Geometry/EarthPlanet.geom", ShaderType::GEOMETRY);
+	vert = *Assets::LoadShader("VertFrag/EarthPlanet.vert", ShaderType::VERTEX, "EarthPlanetVert");
+	frag = *Assets::LoadShader("VertFrag/EarthPlanetTree.frag", ShaderType::FRAGMENT, "EarthPlanetTreeFrag");
+	tcs = *Assets::LoadShader("Tesselation/EarthPlanet.tesc", ShaderType::TESSELLATION_CONTROL, "EarthPlanetTesc");
+	tes = *Assets::LoadShader("Tesselation/EarthPlanet.tese", ShaderType::TESSELLATION_EVALUATION, "EarthPlanetTese");
+	geom = *Assets::LoadShader("Geometry/EarthPlanet.geom", ShaderType::GEOMETRY, "EarthPlanetGeom");
 
 	ShaderProgram* shaderProg5 = new ShaderProgram();
 	shaderProg5->Compose({ &vert, &tcs, &tes, &geom, &frag });
 
 	Planet* planet = new Planet(Vector3D(16, 10, -1), 3, Quaternion(0, 0, 0, 1), shaderProg);
-	AddActor(planet);
-	planet->Start();
 
 	BasicCube* cube2 = new BasicCube(Vector3D(8, 10, -1), 3, Quaternion(0, 0, 0, 1), shaderProg2);
-	AddActor(cube2);
-	cube2->Start();
 
 	Planet* planet2 = new Planet(Vector3D(0, 10, -1), 3);
-	AddActor(planet2);
-	planet2->Start();
 
 	Planet* planet3 = new Planet(Vector3D(-8, 10, -1), 3, Quaternion(0, 0, 0, 1), shaderProg3);
-	AddActor(planet3);
-	planet3->Start();
 
 	Planet* planet4 = new Planet(Vector3D(-28, 10, -1), 3, Quaternion(0, 0, 0, 1), shaderProg5, cubemap);
-	AddActor(planet4);
-	planet4->Start();
 
 	Planet* planet5 = new Planet(Vector3D(-18, 10, -1), 3, Quaternion(0, 0, 0, 1), shaderProg4, cubemap);
-	AddActor(planet5);
-	planet5->Start();
 
 	Planet* planet6 = new Planet(Vector3D(-38, 10, -1), 3, Quaternion(0, 0, 0, 1), shaderProg4, cubemap);
-	AddActor(planet6);
-	planet6->Start();
 
 	Planet* planet7 = new Planet(Vector3D(-38, 10, -1), 3, Quaternion(0, 0, 0, 1), shaderProg5, cubemap);
-	AddActor(planet7);
-	planet7->Start();
 
 	DoomPlayer* player = new DoomPlayer();
-	AddActor(player);
-	player->Start();
 }
 
 void LVLAdvancedOpenGl::Update()

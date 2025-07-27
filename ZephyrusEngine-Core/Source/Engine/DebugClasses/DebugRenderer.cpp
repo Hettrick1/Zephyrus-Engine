@@ -1,6 +1,7 @@
 #include "DebugRenderer.h"
 #include "DebugLine.h"
 #include "ColliderComponent.h"
+#include "Assets.h"
 
 DebugRenderer::DebugRenderer()
 	: mDebugBoxVbo(0), mDebugBoxVao(0), mDebugLineVbo(0), mDebugLineVao(0)
@@ -19,8 +20,8 @@ DebugRenderer::~DebugRenderer()
 void DebugRenderer::Initialize(const Window& pWindow)
 {
 	glLineWidth(4);
-	mDebugVertex.Load("Debug.vert", ShaderType::VERTEX);
-	mDebugFragment.Load("Debug.frag", ShaderType::FRAGMENT);
+	mDebugVertex = *Assets::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
+	mDebugFragment = *Assets::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
 	mDebugShaderProgram.Compose({ &mDebugVertex, &mDebugFragment });
 	mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 	mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, pWindow.GetDimensions().x, pWindow.GetDimensions().y, 0.01f, 10000.0f);

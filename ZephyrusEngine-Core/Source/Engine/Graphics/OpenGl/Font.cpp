@@ -88,3 +88,12 @@ bool Font::Load(const std::string& pFileName)
     FT_Done_FreeType(ft);
     return true;
 }
+
+void Font::Unload()
+{
+    for (const auto& character : mCharacters)
+    {
+        glDeleteTextures(1, &character.second.TextureID);
+    }
+    mCharacters.clear();
+}

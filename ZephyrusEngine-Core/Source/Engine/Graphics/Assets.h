@@ -2,9 +2,12 @@
 
 #include "Texture.h"
 #include "Mesh.h"
+#include "Font.h"
+#include "Shaders/ShaderProgram.h"
+#include "Shaders/Shader.h"
+
 #include <map>
 #include <string>
-#include "Font.h"
 
 /**
  * @brief Manages loading, storing, and retrieving textures, meshes, and fonts for the engine.
@@ -24,13 +27,16 @@ private:
 	// Loads a font from file (internal use)
 	static Font LoadFontFromFile(const std::string& pFilePath);
 
+	static Shader LoadShaderFromFile(const std::string& pFilePath, ShaderType pType);
+
 public:
 	static std::map<std::string, Texture> mTextures;
 	static std::map<std::string, Mesh*> mMeshes;
 	static std::map<std::string, Font> mFonts;
+	static std::map<std::string, Shader> mShaders;
 
 	// Loads a texture from file and stores it with the given name
-	static Texture* LoadTexture(IRenderer& pRenderer, const std::string& pFilePath, const std::string& pName);
+	static Texture* LoadTexture(const std::string& pFilePath, const std::string& pName);
 
 	static Texture& GetTexture(const std::string& pName);
 
@@ -43,6 +49,10 @@ public:
 	static Font* LoadFont(const std::string& pFilePath, const std::string& pName);
 
 	static Font& GetFont(const std::string& pName);
+
+	static Shader* LoadShader(const std::string& pFilePath, ShaderType pType ,const std::string& pName);
+
+	static Shader& GetShader(const std::string& pName);
 
 	// Clears all loaded assets
 	static void Clear();

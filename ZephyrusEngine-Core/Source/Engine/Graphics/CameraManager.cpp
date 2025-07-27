@@ -66,6 +66,6 @@ void CameraManager::SetCurrentCamera(CameraComponent* pCameraToActivate)
 	}
 	else
 	{
-		Log::Error(LogType::Render, "Cameranot found in the camera vector");
+		Log::Error(LogType::Render, "Camera not found in the camera vector");
 	}
 }
