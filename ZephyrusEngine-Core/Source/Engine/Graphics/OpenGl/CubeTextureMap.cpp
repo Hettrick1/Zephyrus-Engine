@@ -1,5 +1,6 @@
 #include "CubeTextureMap.h"
 #include "RendererOpenGl.h"
+#include "Assets.h"
 
 bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubePaths)
 {
@@ -13,7 +14,7 @@ bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubeP
 
 	for (unsigned int i = 0; i < pCubePaths.size(); i++) // retrieve the skybox textures
 	{
-		SDL_Surface* surface = IMG_Load(mCubeFacePaths[i].c_str());
+		SDL_Surface* surface = IMG_Load((Assets::IMPORT_PATH + mCubeFacePaths[i]).c_str());
 		if (!surface)
 		{
 			Log::Info("Failed to load texture file :" + mCubeFacePaths[i]);
@@ -34,7 +35,7 @@ bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubeP
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
 		SDL_FreeSurface(surface);
 
-		Log::Info("Loaded GL texture : " + mCubeFacePaths[i]);
+		Log::Info("Loaded GL texture : " + Assets::IMPORT_PATH + mCubeFacePaths[i]);
 	}
 
 	// Setting some image parameters

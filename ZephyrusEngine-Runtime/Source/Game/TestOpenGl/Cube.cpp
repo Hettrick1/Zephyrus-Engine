@@ -18,10 +18,10 @@ Cube::~Cube()
 void Cube::Start()
 {
 	Actor::Start();
-	Texture* tex1 = Assets::LoadTexture("../Imports/Sprites/Doom/268.png", "wallTex");
-	Texture* tex2 = Assets::LoadTexture("../Imports/Sprites/Doom/091.png", "groundTex");
-	Texture* tex3 = Assets::LoadTexture("../Imports/Sprites/Doom/268bis.png", "wallTex2");
-	Mesh* mesh = Assets::LoadMesh("../Imports/Meshes/cube.obj", "cube");
+	Texture* tex1 = Assets::LoadTexture("Sprites/Doom/268.png", "wallTex");
+	Texture* tex2 = Assets::LoadTexture("Sprites/Doom/091.png", "groundTex");
+	Texture* tex3 = Assets::LoadTexture("Sprites/Doom/268bis.png", "wallTex2");
+	Mesh* mesh = Assets::LoadMesh("cube.obj", "cube");
 	mesh->AddTexture(tex1);
 	mesh->AddTexture(tex2);
 	mesh->AddTexture(tex3);

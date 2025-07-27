@@ -2,8 +2,6 @@
 #include "Log.h"
 #include "glew.h"
 
-const std::string Shader::SHADER_PATH = "../Imports/Shaders/";
-
 Shader::Shader()
 	: mId(0), mCode(""), mType(ShaderType::VERTEX)
 {
@@ -24,7 +22,7 @@ void Shader::Load(const std::string& pFileName, ShaderType pShaderType)
 	mType = pShaderType;
 	std::ifstream myFile;
 
-	myFile.open(SHADER_PATH + pFileName);
+	myFile.open(pFileName);
 	if (myFile.fail())
 	{
 		Log::Info("Error - Failed to open" + pFileName);

@@ -27,7 +27,7 @@ void LVLDoomMainMenu::Start(IRenderer* renderer)
 	Scene::Start(renderer);
 	CameraActor* cam = new CameraActor();
 
-	Texture* damageIndicator = Assets::LoadTexture("../Imports/Sprites/Doom/MainMenu.png", "MainMenu");
+	Texture* damageIndicator = Assets::LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
 	mDoomMenu = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
 	mDoomMenu->SetTint(Vector4D(1.0, 1.0, 1.0, 1.0));
 

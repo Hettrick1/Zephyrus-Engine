@@ -23,23 +23,23 @@ void LVLAdvancedOpenGl::Start(IRenderer* renderer)
 {
 	Scene::Start(renderer);
 	SkySphere* skySphere = new SkySphere(false, {
-		"../Imports/Sprites/SkyBox/Stars/bottom.png",
-		"../Imports/Sprites/SkyBox/Stars/top.png",
-		"../Imports/Sprites/SkyBox/Stars/back.png",
-		"../Imports/Sprites/SkyBox/Stars/left.png",
-		"../Imports/Sprites/SkyBox/Stars/front.png",
-		"../Imports/Sprites/SkyBox/Stars/right.png",
+		"Sprites/SkyBox/Stars/bottom.png",
+		"Sprites/SkyBox/Stars/top.png",
+		"Sprites/SkyBox/Stars/back.png",
+		"Sprites/SkyBox/Stars/left.png",
+		"Sprites/SkyBox/Stars/front.png",
+		"Sprites/SkyBox/Stars/right.png",
 		});
 	SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawBoxes(false);
 
 	CubeTextureMap* cubemap = new CubeTextureMap();
 	cubemap->CreateCubeTextureMap({
-		"../Imports/Sprites/CubeMap/nx1.png",
-		"../Imports/Sprites/CubeMap/px1.png",
-		"../Imports/Sprites/CubeMap/py1.png",
-		"../Imports/Sprites/CubeMap/ny1.png",
-		"../Imports/Sprites/CubeMap/nz1.png",
-		"../Imports/Sprites/CubeMap/pz1.png",
+		"Sprites/CubeMap/nx1.png",
+		"Sprites/CubeMap/px1.png",
+		"Sprites/CubeMap/py1.png",
+		"Sprites/CubeMap/ny1.png",
+		"Sprites/CubeMap/nz1.png",
+		"Sprites/CubeMap/pz1.png",
 		});
 
 	Shader vert, frag, tcs, tes, geom = Shader();

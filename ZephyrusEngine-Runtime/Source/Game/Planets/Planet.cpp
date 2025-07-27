@@ -21,7 +21,7 @@ Planet::~Planet()
 void Planet::Start()
 {
 	Actor::Start();
-	Mesh* mesh = Assets::LoadMesh("../Imports/Meshes/cube.obj", "cube");
+	Mesh* mesh = Assets::LoadMesh("cube.obj", "cube");
 	Shader vert, frag, tcs, tes = Shader();
 	vert = *Assets::LoadShader("VertFrag/PlanetsNoise.vert", ShaderType::VERTEX, "PlanetsNoiseVert");
 	frag = *Assets::LoadShader("VertFrag/PlanetsNoise.frag", ShaderType::FRAGMENT, "PlanetsNoiseFrag");
@@ -39,12 +39,12 @@ void Planet::Start()
 	{
 		mCubemap = new CubeTextureMap();
 		mCubemap->CreateCubeTextureMap({
-			"../Imports/Sprites/CubeMap/nx.png",
-			"../Imports/Sprites/CubeMap/px.png",
-			"../Imports/Sprites/CubeMap/py.png",
-			"../Imports/Sprites/CubeMap/ny.png",
-			"../Imports/Sprites/CubeMap/nz.png",
-			"../Imports/Sprites/CubeMap/pz.png",
+			"Sprites/CubeMap/nx.png",
+			"Sprites/CubeMap/px.png",
+			"Sprites/CubeMap/py.png",
+			"Sprites/CubeMap/ny.png",
+			"Sprites/CubeMap/nz.png",
+			"Sprites/CubeMap/pz.png",
 		});
 	}
 

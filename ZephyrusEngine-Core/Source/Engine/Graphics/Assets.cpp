@@ -12,10 +12,15 @@ std::map<std::string, Font> Assets::mFonts = {};
 std::map<std::string, Mesh*> Assets::mMeshes = {};
 std::map<std::string, Shader> Assets::mShaders = {};
 
+const std::string Assets::IMPORT_PATH = "../Imports/";
+const std::string Assets::MESH_PATH = "../Imports/Meshes/";
+const std::string Assets::FONT_PATH = "../Imports/Fonts/";
+const std::string Assets::SHADER_PATH = "../Imports/Shaders/";
+
 Texture* Assets::LoadTexture(const std::string& pFilePath, const std::string& pName)
 {
 	if (mTextures.find(pName) == mTextures.end()) {
-		mTextures[pName] = LoadTextureFromFile(*SceneManager::ActiveScene->GetRenderer(), pFilePath);
+		mTextures[pName] = LoadTextureFromFile(*SceneManager::ActiveScene->GetRenderer(), IMPORT_PATH + pFilePath);
 		return &mTextures[pName];
 	}
 	return &mTextures[pName];
@@ -34,7 +39,7 @@ Texture& Assets::GetTexture(const std::string& pName)
 Mesh* Assets::LoadMesh(const std::string& pFilePath, const std::string& pName)
 {
 	if (mMeshes.find(pName) == mMeshes.end()) {
-		mMeshes[pName] = LoadMeshFromFile(pFilePath);
+		mMeshes[pName] = LoadMeshFromFile(MESH_PATH + pFilePath);
 		return mMeshes[pName];
 	}
 	return mMeshes[pName];
@@ -53,7 +58,7 @@ Mesh* Assets::GetMesh(const std::string& pName)
 Font* Assets::LoadFont(const std::string& pFilePath, const std::string& pName)
 {
 	if (mFonts.find(pName) == mFonts.end()) {
-		mFonts[pName] = LoadFontFromFile(pFilePath);
+		mFonts[pName] = LoadFontFromFile(FONT_PATH + pFilePath);
 		return &mFonts[pName];
 	}
 	return &mFonts[pName];
@@ -72,7 +77,7 @@ Font& Assets::GetFont(const std::string& pName)
 Shader* Assets::LoadShader(const std::string& pFilePath, ShaderType pType, const std::string& pName)
 {
 	if (mShaders.find(pName) == mShaders.end()) {
-		mShaders[pName] = LoadShaderFromFile(pFilePath, pType);
+		mShaders[pName] = LoadShaderFromFile(SHADER_PATH + pFilePath, pType);
 		return &mShaders[pName];
 	}
 	return &mShaders[pName];

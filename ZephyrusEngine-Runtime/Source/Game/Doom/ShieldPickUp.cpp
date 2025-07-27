@@ -21,7 +21,7 @@ ShieldPickUp::~ShieldPickUp()
 void ShieldPickUp::Start()
 {
 	Actor::Start();
-	Texture* tex = Assets::LoadTexture("../Imports/Sprites/Doom/armorPu.png", "armorPickUp");
+	Texture* tex = Assets::LoadTexture("Sprites/Doom/armorPu.png", "armorPickUp");
 	SpriteComponent* sc = new SpriteComponent(this, *tex);
 	sc->RelativeRotateX(90);
 	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, 0.5);

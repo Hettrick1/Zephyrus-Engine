@@ -24,7 +24,6 @@ protected:
 	unsigned int mId;
 	ShaderType mType;
 public:
-	static const std::string SHADER_PATH;
 	Shader();
 	Shader(int pId, const std::string& pCode, ShaderType pShaderType);
 	~Shader();

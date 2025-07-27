@@ -37,12 +37,12 @@ void LVLDoom::Start(IRenderer* renderer)
 	mPlayer->RotateZ(-90);
 
 	SkySphere* skySphere = new SkySphere(false, {
-		"../Imports/Sprites/Doom/skybox/front.png",
-		"../Imports/Sprites/Doom/skybox/back.png",
-		"../Imports/Sprites/Doom/skybox/top.png",
-		"../Imports/Sprites/Doom/skybox/bottom.png",
-		"../Imports/Sprites/Doom/skybox/left.png",
-		"../Imports/Sprites/Doom/skybox/right.png",
+		"Sprites/Doom/skybox/front.png",
+		"Sprites/Doom/skybox/back.png",
+		"Sprites/Doom/skybox/top.png",
+		"Sprites/Doom/skybox/bottom.png",
+		"Sprites/Doom/skybox/left.png",
+		"Sprites/Doom/skybox/right.png",
 		});
 
 	Shader vert, frag, tcs, tes = Shader();

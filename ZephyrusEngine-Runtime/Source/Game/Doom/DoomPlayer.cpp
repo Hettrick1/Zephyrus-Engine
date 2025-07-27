@@ -55,30 +55,30 @@ void DoomPlayer::Start()
 	SetRigidBody(rigidBody);
 	DoomPC* playerController = new DoomPC(this, 1);
 	playerController->SetPlayerRef(this);
-	Texture* doomHud = Assets::LoadTexture("../Imports/Sprites/Doom/DoomHud.png", "doomHud");
-	gunIcon = *Assets::LoadTexture("../Imports/Sprites/Doom/DoomHudGunIcon.png", "gunIcon");
-	shotgunIcon = *Assets::LoadTexture("../Imports/Sprites/Doom/DoomHudShotGunIcon.png", "shotgunIcon");
+	Texture* doomHud = Assets::LoadTexture("Sprites/Doom/DoomHud.png", "doomHud");
+	gunIcon = *Assets::LoadTexture("Sprites/Doom/DoomHudGunIcon.png", "gunIcon");
+	shotgunIcon = *Assets::LoadTexture("Sprites/Doom/DoomHudShotGunIcon.png", "shotgunIcon");
 
 	mGunAnim = {
-		Assets::LoadTexture("../Imports/Sprites/Doom/gun1.png", "gun1"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/gun2.png", "gun2"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/gun3.png", "gun3"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/gun4.png", "gun4")
+		Assets::LoadTexture("Sprites/Doom/gun1.png", "gun1"),
+		Assets::LoadTexture("Sprites/Doom/gun2.png", "gun2"),
+		Assets::LoadTexture("Sprites/Doom/gun3.png", "gun3"),
+		Assets::LoadTexture("Sprites/Doom/gun4.png", "gun4")
 	};
 	mShotgunAnim = {
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun1.png", "shotgun1"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun2.png", "shotgun2"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun3.png", "shotgun3"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun4.png", "shotgun4"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun4.png", "shotgun5"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun5.png", "shotgun6"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun5.png", "shotgun7"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun6.png", "shotgun8"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun6.png", "shotgun9"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun5.png", "shotgun10"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun5.png", "shotgun11"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun4.png", "shotgun12"),
-		Assets::LoadTexture("../Imports/Sprites/Doom/shotgun4.png", "shotgun13"),
+		Assets::LoadTexture("Sprites/Doom/shotgun1.png", "shotgun1"),
+		Assets::LoadTexture("Sprites/Doom/shotgun2.png", "shotgun2"),
+		Assets::LoadTexture("Sprites/Doom/shotgun3.png", "shotgun3"),
+		Assets::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun4"),
+		Assets::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun5"),
+		Assets::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun6"),
+		Assets::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun7"),
+		Assets::LoadTexture("Sprites/Doom/shotgun6.png", "shotgun8"),
+		Assets::LoadTexture("Sprites/Doom/shotgun6.png", "shotgun9"),
+		Assets::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun10"),
+		Assets::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun11"),
+		Assets::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun12"),
+		Assets::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun13"),
 	};
 
 	CameraComponent* cameraComponent = new CameraComponent(this);
@@ -97,7 +97,7 @@ void DoomPlayer::Start()
 	mHealthText = new HudText(std::to_string(mHealth), Vector2D(-325.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
 	mArmorText = new HudText(std::to_string(mArmor), Vector2D(840.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);;
 
-	Texture* damageIndicator = Assets::LoadTexture("../Imports/Sprites/Doom/DamageIndicator.png", "DamageIndicator");
+	Texture* damageIndicator = Assets::LoadTexture("Sprites/Doom/DamageIndicator.png", "DamageIndicator");
 	mDamageIndicatorImage = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
 	mDamageIndicatorImage->SetTint(Vector4D(1.0, 1.0, 1.0, 0.0));
 

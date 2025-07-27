@@ -37,31 +37,31 @@ SkySphereComponent::SkySphereComponent(Actor* pOwner, bool pIsSphere, const std:
 	{
 		Texture* tex = nullptr;
 		if (mTextureToLoad.empty()) {
-			tex = Assets::LoadTexture("../Imports/Sprites/LakeSkyTexture.png", "LakeSkyTexture");
+			tex = Assets::LoadTexture("Sprites/LakeSkyTexture.png", "LakeSkyTexture");
 		}
 		else {
 			tex = Assets::LoadTexture(mTextureToLoad[0], "skysphere" + index);
 			index++;
 		}
 		mTextureIndex = tex->GetId();
-		mMesh = Assets::LoadMesh("../Imports/Meshes/sphere.obj", "sphere");
+		mMesh = Assets::LoadMesh("sphere.obj", "sphere");
 		mVao = mMesh->GetVao();
 		mTextureType = GL_TEXTURE_2D;
 	}
 	else 
 	{
-		mMesh = Assets::LoadMesh("../Imports/Meshes/cube.obj", "cube");
+		mMesh = Assets::LoadMesh("cube.obj", "cube");
 		mVao = mMesh->GetVao();
 		std::vector<std::string> faces;
 		if (mTextureToLoad.empty() || mTextureToLoad.size() < 6) {
 			faces =
 			{
-				"../Imports/Sprites/SkyBox/DAY_CLOUDS_S.jpg",
-				"../Imports/Sprites/SkyBox/DAY_CLOUDS_N.jpg",
-				"../Imports/Sprites/SkyBox/DAY_CLOUDS_T.jpg",
-				"../Imports/Sprites/SkyBox/DAY_CLOUDS_B.jpg",
-				"../Imports/Sprites/SkyBox/DAY_CLOUDS_W.jpg",
-				"../Imports/Sprites/SkyBox/DAY_CLOUDS_E.jpg",
+				"Sprites/SkyBox/DAY_CLOUDS_S.jpg",
+				"Sprites/SkyBox/DAY_CLOUDS_N.jpg",
+				"Sprites/SkyBox/DAY_CLOUDS_T.jpg",
+				"Sprites/SkyBox/DAY_CLOUDS_B.jpg",
+				"Sprites/SkyBox/DAY_CLOUDS_W.jpg",
+				"Sprites/SkyBox/DAY_CLOUDS_E.jpg",
 			};
 		}
 		else

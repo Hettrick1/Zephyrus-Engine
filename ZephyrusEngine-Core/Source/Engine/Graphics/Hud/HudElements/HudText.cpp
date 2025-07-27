@@ -5,7 +5,7 @@ HudText::HudText(const std::string& pText, const Vector2D& pPos, float pScale, c
     : HudElement(), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
 {
     if (pFont == nullptr) {
-        mFont = Assets::LoadFont("../Imports/Fonts/RoadPixel.ttf", "RoadPixel");
+        mFont = Assets::LoadFont("RoadPixel.ttf", "RoadPixel");
     }
     SetPosition(pPos);
 }

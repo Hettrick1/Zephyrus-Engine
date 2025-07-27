@@ -35,6 +35,11 @@ public:
 	static std::map<std::string, Font> mFonts;
 	static std::map<std::string, Shader> mShaders;
 
+	static const std::string IMPORT_PATH;
+	static const std::string MESH_PATH;
+	static const std::string FONT_PATH;
+	static const std::string SHADER_PATH;
+
 	// Loads a texture from file and stores it with the given name
 	static Texture* LoadTexture(const std::string& pFilePath, const std::string& pName);
 
