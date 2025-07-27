@@ -48,32 +48,28 @@ void LVLAdvancedOpenGl::Start(IRenderer* renderer)
 	tcs = *Assets::LoadShader("Tesselation/CubePlanet.tesc", ShaderType::TESSELLATION_CONTROL, "CubePlanetTesc");
 	tes = *Assets::LoadShader("Tesselation/CubePlanet.tese", ShaderType::TESSELLATION_EVALUATION, "CubePlanetTese");
 
-	ShaderProgram* shaderProg = new ShaderProgram();
-	shaderProg->Compose({ &vert, &tcs, &tes, &frag });
+	ShaderProgram* shaderProg = Assets::LoadShaderProgram({ &vert, &tcs, &tes, &frag }, "cubePlanetSP");
 
 	vert = *Assets::LoadShader("VertFrag/CubeToSphere.vert", ShaderType::VERTEX, "CubeToSphereVert");
 	frag = *Assets::LoadShader("VertFrag/CubeToSphere.frag", ShaderType::FRAGMENT, "CubeToSphereFrag");
 	tcs = *Assets::LoadShader("Tesselation/CubeToSphere.tesc", ShaderType::TESSELLATION_CONTROL, "CubeToSphereTesc");
 	tes = *Assets::LoadShader("Tesselation/CubeToSphere.tese", ShaderType::TESSELLATION_EVALUATION, "CubeToSphereTese");
 
-	ShaderProgram* shaderProg2 = new ShaderProgram();
-	shaderProg2->Compose({ &vert, &tcs, &tes, &frag });
+	ShaderProgram* shaderProg2 = Assets::LoadShaderProgram({ &vert, &tcs, &tes, &frag }, "cubeToSphereSP");
 
 	vert = *Assets::LoadShader("VertFrag/FirePlanet.vert", ShaderType::VERTEX, "FirePlanetVert");
 	frag = *Assets::LoadShader("VertFrag/FirePlanet.frag", ShaderType::FRAGMENT, "FirePlanetFrag");
 	tcs = *Assets::LoadShader("Tesselation/FirePlanet.tesc", ShaderType::TESSELLATION_CONTROL, "FirePlanetTesc");
 	tes = *Assets::LoadShader("Tesselation/FirePlanet.tese", ShaderType::TESSELLATION_EVALUATION, "FirePlanetTese");
 
-	ShaderProgram* shaderProg3 = new ShaderProgram(); 
-	shaderProg3->Compose({ &vert, &tcs, &tes, &frag }); 
+	ShaderProgram* shaderProg3 = Assets::LoadShaderProgram({ &vert, &tcs, &tes, &frag }, "firePlanetSP");
 
 	vert = *Assets::LoadShader("VertFrag/EarthPlanet.vert", ShaderType::VERTEX, "EarthPlanetVert");
 	frag = *Assets::LoadShader("VertFrag/EarthPlanet.frag", ShaderType::FRAGMENT, "EarthPlanetFrag");
 	tcs = *Assets::LoadShader("Tesselation/EarthPlanet.tesc", ShaderType::TESSELLATION_CONTROL, "EarthPlanetTesc");
 	tes = *Assets::LoadShader("Tesselation/EarthPlanet.tese", ShaderType::TESSELLATION_EVALUATION, "EarthPlanetTese");
 
-	ShaderProgram* shaderProg4 = new ShaderProgram();
-	shaderProg4->Compose({ &vert, &tcs, &tes, &frag });
+	ShaderProgram* shaderProg4 = Assets::LoadShaderProgram({ &vert, &tcs, &tes, &frag }, "earthPlanetSP");
 
 	vert = *Assets::LoadShader("VertFrag/EarthPlanet.vert", ShaderType::VERTEX, "EarthPlanetVert");
 	frag = *Assets::LoadShader("VertFrag/EarthPlanetTree.frag", ShaderType::FRAGMENT, "EarthPlanetTreeFrag");
@@ -81,8 +77,7 @@ void LVLAdvancedOpenGl::Start(IRenderer* renderer)
 	tes = *Assets::LoadShader("Tesselation/EarthPlanet.tese", ShaderType::TESSELLATION_EVALUATION, "EarthPlanetTese");
 	geom = *Assets::LoadShader("Geometry/EarthPlanet.geom", ShaderType::GEOMETRY, "EarthPlanetGeom");
 
-	ShaderProgram* shaderProg5 = new ShaderProgram();
-	shaderProg5->Compose({ &vert, &tcs, &tes, &geom, &frag });
+	ShaderProgram* shaderProg5 = Assets::LoadShaderProgram({ &vert, &tcs, &tes, &geom, &frag }, "earthPlanetTreeSP");
 
 	Planet* planet = new Planet(Vector3D(16, 10, -1), 3, Quaternion(0, 0, 0, 1), shaderProg);
 

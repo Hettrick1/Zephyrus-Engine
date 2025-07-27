@@ -20,7 +20,7 @@ bool TextRenderer::Init(Window& pWindow)
     mWindow = &pWindow;
     mVertexShader = *Assets::LoadShader("TextRenderer.vert", ShaderType::VERTEX, "TextRendererVert");
     mFragmentShader = *Assets::LoadShader("TextRenderer.frag", ShaderType::FRAGMENT, "TextRendererFrag");
-    mShaderProgram.Compose({ &mVertexShader, &mFragmentShader });
+    mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "textRendererSP");
     mProjection = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.000001f, 100000);
     mShaderProgram.Use();
     mShaderProgram.setMatrix4Row("projection", mProjection);

@@ -22,7 +22,7 @@ void DebugRenderer::Initialize(const Window& pWindow)
 	glLineWidth(4);
 	mDebugVertex = *Assets::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
 	mDebugFragment = *Assets::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
-	mDebugShaderProgram.Compose({ &mDebugVertex, &mDebugFragment });
+	mDebugShaderProgram = *Assets::LoadShaderProgram({ &mDebugVertex, &mDebugFragment }, "debugSP");
 	mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 	mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, pWindow.GetDimensions().x, pWindow.GetDimensions().y, 0.01f, 10000.0f);
 	GLfloat vertices[] = {

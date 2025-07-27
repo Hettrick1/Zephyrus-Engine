@@ -12,10 +12,6 @@ HudText::HudText(const std::string& pText, const Vector2D& pPos, float pScale, c
 
 HudText::~HudText()
 {
-    if (mShaderProgram)
-    {
-        delete mShaderProgram;
-    }
 }
 
 void HudText::Draw(RendererOpenGl& pRenderer)

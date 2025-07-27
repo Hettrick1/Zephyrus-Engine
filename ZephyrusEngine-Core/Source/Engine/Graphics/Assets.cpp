@@ -11,6 +11,7 @@ std::map<std::string, Texture> Assets::mTextures = {};
 std::map<std::string, Font> Assets::mFonts = {};
 std::map<std::string, Mesh*> Assets::mMeshes = {};
 std::map<std::string, Shader> Assets::mShaders = {};
+std::map<std::string, ShaderProgram> Assets::mShaderPrograms = {};
 
 const std::string Assets::IMPORT_PATH = "../Imports/";
 const std::string Assets::MESH_PATH = "../Imports/Meshes/";
@@ -93,6 +94,17 @@ Shader& Assets::GetShader(const std::string& pName)
 	return mShaders[pName];
 }
 
+ShaderProgram* Assets::LoadShaderProgram(std::vector<Shader*> pShaders, const std::string& pName)
+{
+	if (mShaderPrograms.find(pName) == mShaderPrograms.end()) {
+		ShaderProgram program = ShaderProgram();
+		program.Compose(pShaders);
+		mShaderPrograms[pName] = program;
+		return &mShaderPrograms[pName];
+	}
+	return &mShaderPrograms[pName];
+}
+
 void Assets::Clear()
 {
 	for (auto& iter : mTextures)
@@ -116,6 +128,12 @@ void Assets::Clear()
 		iter.second.Unload();
 	}
 	mShaders.clear();
+	for (auto& iter : mShaderPrograms)
+	{
+		iter.second.Unload();
+	}
+	mShaderPrograms.clear();
+
 }
 
 Texture Assets::LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath)

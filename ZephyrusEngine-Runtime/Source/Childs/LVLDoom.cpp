@@ -45,15 +45,6 @@ void LVLDoom::Start(IRenderer* renderer)
 		"Sprites/Doom/skybox/right.png",
 		});
 
-	Shader vert, frag, tcs, tes = Shader();
-	vert = *Assets::LoadShader("VertFrag/PlanetsNoise.vert", ShaderType::VERTEX, "PlanetsNoiseVert");
-	frag = *Assets::LoadShader("VertFrag/PlanetsNoise.frag", ShaderType::FRAGMENT, "PlanetsNoiseFrag");
-	tcs = *Assets::LoadShader("Tesselation/PlanetsNoise.tesc", ShaderType::TESSELLATION_CONTROL, "PlanetsNoiseTesc");
-	tes = *Assets::LoadShader("Tesselation/PlanetsNoise.tese", ShaderType::TESSELLATION_EVALUATION, "PlanetsNoiseTese");
-
-	ShaderProgram* shaderProg5 = new ShaderProgram();
-	shaderProg5->Compose({ &vert, &tcs, &tes, &frag });
-
 	BasicCube* wall = new BasicCube(Vector3D(0, 50, -0.21), Vector3D(50, 1, 1));
 	wall->RotateX(90);
 	wall->GetComponentOfType<MeshComponent>()->SetTextureIndex(3);

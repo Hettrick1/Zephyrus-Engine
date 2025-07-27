@@ -18,7 +18,7 @@ SkySphereComponent::SkySphereComponent(Actor* pOwner, bool pIsSphere, const std:
 		{
 			mVertexShader = *Assets::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
 			mFragmentShader = *Assets::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
-			mShaderProgram.Compose({ &mVertexShader, &mFragmentShader });
+			mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "skySphereSP");
 		}
 		else
 		{
@@ -27,7 +27,7 @@ SkySphereComponent::SkySphereComponent(Actor* pOwner, bool pIsSphere, const std:
 			mTescShader = *Assets::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
 			mTeseShader = *Assets::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
 
-			mShaderProgram.Compose({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader });
+			mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader }, "skyboxSP");
 		}
 	}
 	else {

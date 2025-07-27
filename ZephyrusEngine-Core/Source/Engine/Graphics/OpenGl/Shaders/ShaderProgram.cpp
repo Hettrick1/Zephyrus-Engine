@@ -12,7 +12,7 @@ void ShaderProgram::Unload()
 	glDeleteProgram(mId);
 }
 
-void ShaderProgram::Compose(std::vector<Shader*> pShaders)
+void ShaderProgram::Compose(std::vector<Shader*>& pShaders)
 {
 	mId = glCreateProgram();
 	mShaderProgramType = 0;

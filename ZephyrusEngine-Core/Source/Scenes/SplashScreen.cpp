@@ -31,11 +31,8 @@ void SplashScreen::Start(IRenderer* pRenderer)
 	Shader vert = *Assets::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
 	Shader frag = *Assets::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
 
-	ShaderProgram* shaderProgram = new ShaderProgram();
-	shaderProgram->Compose({ &vert, &frag });
-
 	mZephyrusText = new HudText("Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), TextAlignment::CENTER, Assets::LoadFont("Chopsic.otf", "Chopsic"));
-	mZephyrusText->SetShaderProgram(shaderProgram);
+	mZephyrusText->SetShaderProgram(Assets::LoadShaderProgram({ &vert, &frag }, "splashScreenSP"));
 
 	mStudioText = new HudText("Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), TextAlignment::CENTER, Assets::LoadFont("Chopsic.otf", "Chopsic"));
 	SDL_SetRelativeMouseMode(SDL_TRUE);

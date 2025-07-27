@@ -13,7 +13,7 @@ MeshComponent::MeshComponent(Actor* pOwner, Mesh* pMesh, ShaderProgram* pProgram
 	{
 		mVertexShader = *Assets::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
 		mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
-		mShaderProgram.Compose({ &mVertexShader, &mFragmentShader });
+		mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
 	}
 	else {
 		mShaderProgram = *pProgram;

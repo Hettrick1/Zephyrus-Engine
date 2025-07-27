@@ -14,7 +14,6 @@ Planet::Planet(Vector3D pPos, Vector3D pSize, Quaternion pRotation, ShaderProgra
 
 Planet::~Planet()
 {
-	delete mShaderProgram;
 	delete mCubemap;
 }
 
@@ -30,9 +29,7 @@ void Planet::Start()
 
 	if (mShaderProgram == nullptr)
 	{
-		ShaderProgram* shaderProg = new ShaderProgram();
-		shaderProg->Compose({ &vert, &tcs, &tes, &frag });
-		mShaderProgram = shaderProg;
+		mShaderProgram = Assets::LoadShaderProgram({ &vert, &tcs, &tes, &frag }, "planetNoiseSP");
 	}
 
 	if (mCubemap == nullptr)

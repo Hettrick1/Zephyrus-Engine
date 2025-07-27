@@ -25,7 +25,6 @@ RendererOpenGl::~RendererOpenGl()
 		SDL_GL_DeleteContext(mContext);
 		mWindow = nullptr;
 	}
-	delete mSpriteShaderProgram;
 	delete mHud;
 	delete mDebugRenderer;
 }
@@ -60,7 +59,7 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 	}
 	mSpriteVertexShader = *Assets::LoadShader("Simple.vert", ShaderType::VERTEX, "SimpleVert");
 	mSpriteFragmentShader = *Assets::LoadShader("Simple.frag", ShaderType::FRAGMENT, "SimpleFrag");
-	mSpriteShaderProgramTemp.Compose({ &mSpriteVertexShader, &mSpriteFragmentShader });
+	mSpriteShaderProgramTemp = *Assets::LoadShaderProgram({ &mSpriteVertexShader, &mSpriteFragmentShader }, "simpleSpriteSP");
 	SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 
 	mVAO = new VertexArray(spriteVertices, 4);
@@ -196,12 +195,12 @@ void RendererOpenGl::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd,
 void RendererOpenGl::DrawSkySphere()
 {
 	if (mSkySphereComponent != nullptr) {
-		glEnable(GL_DEPTH_TEST);
-		glDepthMask(GL_FALSE);
+		glEnable(GL_DEPTH_TEST); 
+		glDepthMask(GL_FALSE); 
 		mSkySphereComponent->GetShaderProgram().Use();
-		mSkySphereComponent->GetShaderProgram().setMatrix4Row("uWorld", Matrix4DRow::Identity);
-		Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView);
-		mSkySphereComponent->GetShaderProgram().setMatrix4Row("uViewProj", skyView * mProj);
+		mSkySphereComponent->GetShaderProgram().setMatrix4Row("uWorld", Matrix4DRow::Identity); 
+		Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView); 
+		mSkySphereComponent->GetShaderProgram().setMatrix4Row("uViewProj", skyView * mProj); 
 		mSkySphereComponent->GetVao()->SetActive();
 		glBindTexture(mSkySphereComponent->GetTextureType(), mSkySphereComponent->GetTextureIndex());
 		GLenum drawMode = mSkySphereComponent->GetTextureType() == GL_TEXTURE_2D ? GL_TRIANGLES : GL_PATCHES;
