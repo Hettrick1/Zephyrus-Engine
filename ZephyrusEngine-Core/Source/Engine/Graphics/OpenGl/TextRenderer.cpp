@@ -36,7 +36,7 @@ bool TextRenderer::Init(Window& pWindow)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    Log::Info("TextRenderer initialized successfully !");
+    ZP_CORE_INFO("TextRenderer initialized successfully !");
     return true;
 }
 

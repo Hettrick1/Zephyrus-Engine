@@ -19,7 +19,7 @@ bool Texture::Load(IRenderer& pRenderer, const std::string& pFilename)
 	SDL_Surface* surface = IMG_Load(mFilePath.c_str());
 	if (!surface) 
 	{
-		Log::Error(LogType::Application, "Failed to load texture file :" + mFilePath);
+		ZP_CORE_ERROR("Failed to load texture file :" + mFilePath);
 		return false;
 	}
 	mWidth = surface->w;
@@ -66,10 +66,9 @@ bool Texture::LoadSdl(RendererSdl* pRenderer, const std::string& pFilePath, SDL_
 	mSdlTexture = SDL_CreateTextureFromSurface(pRenderer->ToSdlRenderer(), pSurface);
 	SDL_FreeSurface(pSurface);
 	if (!mSdlTexture) { 
-		Log::Error(LogType::Render, "Failed to convert surface to texture :" + mFilePath); 
+		ZP_CORE_ERROR("Failed to convert surface to texture :" + mFilePath);
 		return false;
 	}
-	Log::Info("Loaded texture : " + mFilePath);
 	return true;
 }
 
@@ -88,8 +87,6 @@ bool Texture::LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SD
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
 	glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, pSurface->pixels);
 	SDL_FreeSurface(pSurface);
-
-	Log::Info("Loaded GL texture : " + mFilePath);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1.0f);

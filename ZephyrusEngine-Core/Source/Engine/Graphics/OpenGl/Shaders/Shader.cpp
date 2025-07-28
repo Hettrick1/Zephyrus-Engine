@@ -25,7 +25,7 @@ void Shader::Load(const std::string& pFileName, ShaderType pShaderType)
 	myFile.open(pFileName);
 	if (myFile.fail())
 	{
-		Log::Info("Error - Failed to open" + pFileName);
+		ZP_CORE_ERROR("Error - Failed to open" + pFileName);
 
 	}
 	std::string fileText = "";
@@ -56,7 +56,7 @@ void Shader::Load(const std::string& pFileName, ShaderType pShaderType)
 		break;
 	default:
 		{
-			Log::Info("This shader type has not yet been implemented.");
+			ZP_CORE_ERROR("This shader type has not yet been implemented.");
 			mId = glCreateShader(GL_VERTEX_SHADER);
 			break;
 		}

@@ -16,12 +16,12 @@ bool RendererSdl::Initialize(Window& pWindow)
     mSdlRenderer = SDL_CreateRenderer(pWindow.GetSdlWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!mSdlRenderer)
     {
-        Log::Error(LogType::Video, "Failed to create Renderer");
+        ZP_CORE_ERROR("Failed to create Renderer");
         return false;
     }
     if (IMG_Init(IMG_INIT_PNG) == 0) 
     {
-        Log::Error(LogType::Video, "Unable to initialize SDL_Image");
+        ZP_CORE_ERROR("Unable to initialize SDL_Image");
         return false;
     }
     return true;

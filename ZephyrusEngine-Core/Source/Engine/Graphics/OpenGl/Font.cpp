@@ -19,21 +19,21 @@ bool Font::Load(const std::string& pFileName)
     FT_Library ft;
     if (FT_Init_FreeType(&ft))
     {
-        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+        ZP_CORE_ERROR("FREETYPE: Could not init FreeType Library");
         return false;
     }
 
     std::string font_name = pFileName;
     if (font_name.empty())
     {
-        std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
+        ZP_CORE_ERROR("FREETYPE: Failed to load font_name");
         return false;
     }
 
     FT_Face face;
     if (FT_New_Face(ft, font_name.c_str(), 0, &face))
     {
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+        ZP_CORE_ERROR("FREETYPE: Failed to load font");
         return false;
     }
     else {
@@ -49,7 +49,7 @@ bool Font::Load(const std::string& pFileName)
             // Load character glyph 
             if (FT_Load_Char(face, c, FT_LOAD_RENDER))
             {
-                std::cout << "ERROR::FREETYPE: Failed to load GLYPHS" << std::endl;
+                ZP_CORE_ERROR("FREETYPE: Failed to load GLYPHS");
                 continue;
             }
             // generate texture

@@ -44,7 +44,7 @@ void ShaderProgram::Compose(std::vector<Shader*>& pShaders)
 	if (!success) {
 		GLchar infoLog[512];
 		glGetProgramInfoLog(mId, 512, NULL, infoLog);
-		Log::Info("Shader program linking failed: " + std::string(infoLog));
+		ZP_CORE_ERROR("Shader program linking failed: " + std::string(infoLog));
 	}
 }
 

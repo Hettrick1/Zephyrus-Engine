@@ -130,7 +130,7 @@ void Actor::SetRigidBody(RigidbodyComponent* pRigidbody)
     }
     else
     {
-        Log::Error(LogType::System, "You already have a rigidbody attached to this actor !");
+        ZP_WARN("You already have a rigidbody attached to this actor !");
     }
 }
 

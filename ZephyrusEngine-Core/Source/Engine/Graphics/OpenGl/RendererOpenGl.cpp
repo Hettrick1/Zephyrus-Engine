@@ -48,14 +48,14 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
-		Log::Error(LogType::Video, "Failed to initialize glew");
+		ZP_CORE_ERROR("Failed to initialize glew");
 		return false;
 	}
 	glGetError();
 
 	if (IMG_Init(IMG_INIT_PNG) == 0)
 	{
-		Log::Error(LogType::Video, "Failed to initialize SDL_Image");
+		ZP_CORE_ERROR("Failed to initialize SDL_Image");
 	}
 	mSpriteVertexShader = *Assets::LoadShader("Simple.vert", ShaderType::VERTEX, "SimpleVert");
 	mSpriteFragmentShader = *Assets::LoadShader("Simple.frag", ShaderType::FRAGMENT, "SimpleFrag");
@@ -145,7 +145,7 @@ void RendererOpenGl::RemoveMesh(MeshComponent* pMesh)
 void RendererOpenGl::AddSkySphere(SkySphereComponent* pSkySphere)
 {
 	if (mSkySphereComponent != nullptr) {
-		Log::Info("You had already a skysphere, the old one has been replaced");
+		ZP_CORE_WARN("You had already a skysphere, the old one has been replaced");
 	}
 	mSkySphereComponent = pSkySphere;
 }

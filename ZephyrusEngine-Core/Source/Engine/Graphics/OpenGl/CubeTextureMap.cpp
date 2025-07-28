@@ -17,7 +17,7 @@ bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubeP
 		SDL_Surface* surface = IMG_Load((Assets::IMPORT_PATH + mCubeFacePaths[i]).c_str());
 		if (!surface)
 		{
-			Log::Info("Failed to load texture file :" + mCubeFacePaths[i]);
+			ZP_CORE_ERROR("Failed to load texture file :" + mCubeFacePaths[i]);
 			return false;
 		}
 		mWidth = surface->w;
@@ -35,7 +35,7 @@ bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubeP
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
 		SDL_FreeSurface(surface);
 
-		Log::Info("Loaded GL texture : " + Assets::IMPORT_PATH + mCubeFacePaths[i]);
+		ZP_LOAD("Loaded GL texture : " + Assets::IMPORT_PATH + mCubeFacePaths[i]);
 	}
 
 	// Setting some image parameters

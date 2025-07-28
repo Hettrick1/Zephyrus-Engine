@@ -164,7 +164,7 @@ void DoomPC::Update()
 	if (playerRbRef == nullptr)
 	{
 		playerRbRef = mOwner->GetRigidBody();
-		Log::Info("Rigidboy not set in the player controller");
+		ZP_CORE_ERROR("Rigidboy not set in the player controller");
 	}
 }
 

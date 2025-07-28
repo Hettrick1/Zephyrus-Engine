@@ -10,13 +10,14 @@ Game::Game(const std::string& pTitle, Scene* pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
     , mCameraManager(CameraManager::Instance()), mTitle(pTitle)
 {
+    Log::Init();
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
     }
     else
     {
-        Log::Info("SDL initialization succeeded!");
+        ZP_CORE_INFO("SDL initialization succeeded!");
     }
 
     Initialize();
@@ -92,4 +93,5 @@ void Game::Close()
 {
     SceneManager::Unload();
     mGameWindow->Close();
+    Log::Shutdown();
 }

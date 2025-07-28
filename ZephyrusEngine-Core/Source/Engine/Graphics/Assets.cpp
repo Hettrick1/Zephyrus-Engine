@@ -32,7 +32,7 @@ Texture& Assets::GetTexture(const std::string& pName)
 	if(mTextures.find(pName) == mTextures.end()) {
 		std::ostringstream loadError;
 		loadError << "Texture " << pName << " does not exists in assets manager\n";
-		Log::Error(LogType::Application, loadError.str());
+		ZP_CORE_ERROR(loadError.str());
 	}
 	return mTextures[pName];
 }
@@ -51,7 +51,7 @@ Mesh* Assets::GetMesh(const std::string& pName)
 	if (mMeshes.find(pName) == mMeshes.end()) {
 		std::ostringstream loadError;
 		loadError << "Mesh " << pName << " does not exists in assets manager\n";
-		Log::Error(LogType::Application, loadError.str());
+		ZP_CORE_ERROR(loadError.str());
 	}
 	return mMeshes[pName];
 }
@@ -70,7 +70,7 @@ Font& Assets::GetFont(const std::string& pName)
 	if (mFonts.find(pName) == mFonts.end()) {
 		std::ostringstream loadError;
 		loadError << "Font " << pName << " does not exists in assets manager\n";
-		Log::Error(LogType::Application, loadError.str());
+		ZP_CORE_ERROR(loadError.str());
 	}
 	return mFonts[pName];
 }
@@ -89,7 +89,7 @@ Shader& Assets::GetShader(const std::string& pName)
 	if (mShaders.find(pName) == mShaders.end()) {
 		std::ostringstream loadError;
 		loadError << "Shader " << pName << " does not exists in assets manager\n";
-		Log::Error(LogType::Application, loadError.str());
+		ZP_CORE_ERROR(loadError.str());
 	}
 	return mShaders[pName];
 }
@@ -140,6 +140,7 @@ Texture Assets::LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFi
 {
 	Texture texture;
 	texture.Load(pRenderer, pFilePath);
+	ZP_LOAD("Texture " + pFilePath + " successfully loaded");
 	return texture;
 }
 
@@ -154,12 +155,12 @@ Mesh* Assets::LoadMeshFromFile(const std::string& pFilePath)
 	bool success = tinyobj::LoadObj(&attributes, &shapes, &materials, &warning, &errors, + pFilePath.c_str());
 	if (!success) 
 	{
-		Log::Error(LogType::Application, "Mesh " + pFilePath + " does not exist or is not .obj");
+		ZP_CORE_ERROR("Mesh " + pFilePath + " does not exist or is not .obj");
 		return new Mesh();
 	}
 	else
 	{
-		Log::Info("Mesh " + pFilePath + " successfully loaded");
+		ZP_LOAD("Mesh " + pFilePath + " successfully loaded");
 	}
 	std::vector<Vertex> vertices;
 	for (int i = 0; i < static_cast<int>(shapes.size()); i++)
@@ -195,6 +196,7 @@ Font Assets::LoadFontFromFile(const std::string& pFilePath)
 {
 	Font font;
 	font.Load(pFilePath);
+	ZP_LOAD("Font " + pFilePath + " successfully loaded");
 	return font;
 }
 
@@ -202,6 +204,6 @@ Shader Assets::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType
 {
 	Shader shader;
 	shader.Load(pFilePath, pType);
-	std::cout << "Shader Load From assets : " + pFilePath << std::endl;
+	ZP_LOAD("Shader " + pFilePath + " successfully loaded");
 	return shader;
 }

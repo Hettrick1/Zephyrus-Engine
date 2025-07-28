@@ -52,7 +52,7 @@ void CameraManager::SetCurrentCamera(int pIndex)
 	}
 	else 
 	{
-		Log::Error(LogType::Render, "Camera index out of bounds");
+		ZP_CORE_ERROR("Camera index out of bounds");
 	}
 }
 
@@ -66,6 +66,6 @@ void CameraManager::SetCurrentCamera(CameraComponent* pCameraToActivate)
 	}
 	else
 	{
-		Log::Error(LogType::Render, "Camera not found in the camera vector");
+		ZP_CORE_ERROR("Camera not found in the camera vector");
 	}
 }

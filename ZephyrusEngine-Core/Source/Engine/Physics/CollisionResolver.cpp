@@ -43,7 +43,7 @@ void CollisionResolver::RegisterRigidBody(Actor* pOwner, RigidbodyComponent* pRi
 	}
 	else
 	{
-		Log::Error(LogType::System, "You already have a rigidbody attached to this actor !");
+		ZP_CORE_WARN("You already have a rigidbody attached to this actor !");
 	}
 }
 
@@ -164,7 +164,7 @@ void CollisionResolver::CalculateQuerryCollisions()
 		}
 		default:
 		{
-			Log::Error(LogType::Error, "The collision type is needed for querry collisions !");
+			ZP_CORE_ERROR("The collision type is needed for querry collisions !");
 			break;
 		}
 		}
@@ -262,7 +262,7 @@ void CollisionResolver::CalculatePhysicCollisions()
 			}
 			default:
 			{
-				Log::Error(LogType::Error, "The collision type is needed for physic collisions !");
+				ZP_CORE_ERROR("The collision type is needed for physic collisions !");
 				break;
 			}
 		}
