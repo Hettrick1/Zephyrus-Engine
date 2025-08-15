@@ -13,10 +13,10 @@ std::map<std::string, Mesh*> Assets::mMeshes = {};
 std::map<std::string, Shader> Assets::mShaders = {};
 std::map<std::string, ShaderProgram> Assets::mShaderPrograms = {};
 
-const std::string Assets::IMPORT_PATH = "../Imports/";
-const std::string Assets::MESH_PATH = "../Imports/Meshes/";
-const std::string Assets::FONT_PATH = "../Imports/Fonts/";
-const std::string Assets::SHADER_PATH = "../Imports/Shaders/";
+const std::string Assets::IMPORT_PATH = "../Content/";
+const std::string Assets::MESH_PATH = "../Content/Meshes/";
+const std::string Assets::FONT_PATH = "../Content/Fonts/";
+const std::string Assets::SHADER_PATH = "../Content/Shaders/";
 
 Texture* Assets::LoadTexture(const std::string& pFilePath, const std::string& pName)
 {

@@ -13,14 +13,14 @@ OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 filter "system:windows"
    postbuildcommands
    {
-      'rmdir /S /Q "%{cfg.targetdir}\\..\\Imports"',
-      '{COPYDIR} ../Imports "%{cfg.targetdir}\\..\\Imports"'
+      'rmdir /S /Q "%{cfg.targetdir}\\..\\Content"',
+      '{COPYDIR} ../Content "%{cfg.targetdir}\\..\\Content"'
    }
 filter "system:linux"
    postbuildcommands
    {
-      'rm -rf "%{cfg.targetdir}\\..\\Imports"',
-      '{COPYDIR} ../Imports "%{cfg.targetdir}\\..\\Imports"'
+      'rm -rf "%{cfg.targetdir}\\..\\Content"',
+      '{COPYDIR} ../Content "%{cfg.targetdir}\\..\\Content"'
    }
 
 group "Core"

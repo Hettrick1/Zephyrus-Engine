@@ -20,7 +20,6 @@ int main() {
     }
 
     std::cout << "Actor name: " << doc["name"].GetString() << "\n";
-    return 0;
 	Game* pong = new Game("Game", new LVLDoomMainMenu());
 	return 0;
 }
