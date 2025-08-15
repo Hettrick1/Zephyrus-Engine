@@ -21,10 +21,12 @@ protected:
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mPendingComponents;
 	bool mIsUpdatingComponents = false;
+	std::string mName = "";
 	std::string mTag = "";
 	float mLod = 0;
 public:
-	Actor(Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0));
+	Actor(Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
+	Actor(std::string pName);
 	~Actor();
 
 	virtual void Start() = 0;

@@ -18,6 +18,7 @@ project "ZephyrusEngine-Core"
       "../Vendor/Dependencies/SDL2_image-2.8.2/include",
       "../Vendor/Dependencies/freetype-2.6.1/include",
       "../Vendor/Dependencies/freetype-2.6.1/include/freetype",
+      "../Vendor/Dependencies/rapidjson-1.1.0/include",
 
       "Source/Engine",
       "Source/Maths",
@@ -54,7 +55,6 @@ project "ZephyrusEngine-Core"
       "glew32",
       "opengl32",
       "SDL2",
-      "SDL2main",
       "SDL2_image",
       "freetype261",
    }

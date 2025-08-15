@@ -20,6 +20,7 @@ project "ZephyrusEngine-Runtime"
       "../Vendor/Dependencies/SDL2_image-2.8.2/include",
       "../Vendor/Dependencies/freetype-2.6.1/include",
       "../Vendor/Dependencies/freetype-2.6.1/include/freetype",
+      "../Vendor/Dependencies/rapidjson-1.1.0/include",
 
 	  -- Include Core
 	  "../ZephyrusEngine-Core/Source",

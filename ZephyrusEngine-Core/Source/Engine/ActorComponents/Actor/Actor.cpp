@@ -4,12 +4,21 @@
 #include "SceneManager.h"
 #include <algorithm>
 
-Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation) : 
-    mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mTag(""), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
+Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation, std::string pName) :
+    mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mTag(""), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
 {
     mTransformComponent.SetPosition(pPosition);
     mTransformComponent.SetSize(pSize);
     mTransformComponent.SetRotation(pRotation);
+    mTransformComponent.SetOwner(this);
+}
+
+Actor::Actor(std::string pName)
+    : mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mTag(""), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
+{
+    mTransformComponent.SetPosition(0);
+    mTransformComponent.SetSize(1);
+    mTransformComponent.SetRotation(Quaternion(0, 0));
     mTransformComponent.SetOwner(this);
 }
 
