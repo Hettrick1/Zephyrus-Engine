@@ -1,0 +1,8 @@
+{
+    "name": "CameraActor"
+    "components": [
+        {
+            "type": "CameraComponent"
+        }
+    ]
+}

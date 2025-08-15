@@ -131,6 +131,11 @@ void Actor::Destroy()
     mPendingComponents.clear();
 }
 
+void Actor::SetName(std::string pName)
+{
+    mName = pName;
+}
+
 void Actor::SetRigidBody(RigidbodyComponent* pRigidbody)
 {
     if (mRigidbody == nullptr)

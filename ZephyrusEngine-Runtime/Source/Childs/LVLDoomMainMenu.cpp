@@ -10,6 +10,7 @@
 #include "LVLDoom.h"
 #include "CoreActors/EmptyActor.h"
 #include "Game/Doom/DoomMenuPC.h"
+#include "Engine/Editor/PrefabFactory.h"
 
 LVLDoomMainMenu::LVLDoomMainMenu()
 	: Scene(), mDoomMenu(nullptr), mPressEnter(nullptr), mTimer(0)
@@ -25,6 +26,10 @@ LVLDoomMainMenu::~LVLDoomMainMenu()
 void LVLDoomMainMenu::Start(IRenderer* renderer)
 {
 	Scene::Start(renderer);
+	auto actor = PrefabFactory::CreateActorFromPrefab("TestActor");
+	if (actor) {
+		ZP_CORE_WARN("Ca marche !!!");
+	}
 	CameraActor* cam = new CameraActor();
 
 	Texture* damageIndicator = Assets::LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");

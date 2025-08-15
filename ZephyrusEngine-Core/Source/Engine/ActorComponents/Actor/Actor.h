@@ -43,6 +43,7 @@ public:
 	void RotateY(float pAngle);
 	void RotateZ(float pAngle);
 
+	void SetName(std::string pName);
 	void SetRigidBody(RigidbodyComponent* pRigidbody);
 	void SetTag(const std::string& pTag);
 	bool HasTag(const std::string& pTag);
@@ -54,6 +55,7 @@ public:
 	inline RigidbodyComponent* GetRigidBody() const { return mRigidbody; }
 	inline std::string GetTag() const { return mTag; }
 	inline float GetLod() const { return mLod; }
+	inline std::string GetName() const { return mName; }
 
 	// Get the first component of a specific type
 	template<typename  C>
