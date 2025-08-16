@@ -30,7 +30,7 @@ public:
 	virtual void Update();
 	virtual void OnEnd();
 
-	virtual void Deserialize(const rapidjson::Value& data);
+	virtual void Deserialize(const rapidjson::Value& pData);
 
 	void SetRelativePosition(const Vector3D& pPosition);
 	void SetRelativeSize(const Vector3D& pSize);

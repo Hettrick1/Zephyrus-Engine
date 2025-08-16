@@ -1,5 +1,7 @@
 #include "Component.h"
 #include "Actor.h"
+#include "Log.h"
+#include "FactoryJSON/JSONUtils.h"
 
 Component::Component(Actor* pOwner, int pUpdateOder) 
     : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
@@ -25,8 +27,22 @@ void Component::OnEnd()
     mOwner = nullptr;
 }
 
-void Component::Deserialize(const rapidjson::Value& data)
+void Component::Deserialize(const rapidjson::Value& pData)
 {
+    if (auto pos = ReadVector3D(pData, "relativePosition"))
+    {
+        SetRelativePosition(*pos);
+    }
+
+    if (auto size = ReadVector3D(pData, "relativeSize"))
+    {
+        SetRelativeSize(*size);
+    }
+
+    if (auto rot = ReadVector3D(pData, "relativeRotation"))
+    {
+        SetRelativeRotation(Quaternion(*rot));
+    }
 }
 
 void Component::SetRelativePosition(const Vector3D& pPosition)

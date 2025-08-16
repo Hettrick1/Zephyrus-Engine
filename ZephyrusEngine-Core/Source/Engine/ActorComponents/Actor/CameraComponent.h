@@ -16,6 +16,8 @@ public:
 	CameraComponent(Actor* pOwner, int updateOder = 0);
 	~CameraComponent();
 
+	void Deserialize(const rapidjson::Value& pData) override;
+
 	static Component* Create(Actor* pOwner) { return new CameraComponent(pOwner); }
 	static bool registered;
 

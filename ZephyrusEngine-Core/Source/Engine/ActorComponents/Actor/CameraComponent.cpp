@@ -5,7 +5,7 @@
 #include "Matrix4DRow.h"
 #include "CameraManager.h"
 #include "Scene.h"
-#include "ComponentFactory.h"
+#include "FactoryJSON/ComponentFactory.h"
 
 bool CameraComponent::registered = ComponentFactory::Instance().Register("CameraComponent", CameraComponent::Create);
 
@@ -17,6 +17,11 @@ CameraComponent::CameraComponent(Actor* pOwner, int updateOder)
 
 CameraComponent::~CameraComponent()
 {
+}
+
+void CameraComponent::Deserialize(const rapidjson::Value& pData)
+{
+    Component::Deserialize(pData);
 }
 
 Matrix4DRow CameraComponent::GetWorldTransform()
