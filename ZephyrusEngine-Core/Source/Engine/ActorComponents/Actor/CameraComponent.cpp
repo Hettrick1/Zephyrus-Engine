@@ -5,6 +5,9 @@
 #include "Matrix4DRow.h"
 #include "CameraManager.h"
 #include "Scene.h"
+#include "ComponentFactory.h"
+
+bool CameraComponent::registered = ComponentFactory::Instance().Register("CameraComponent", CameraComponent::Create);
 
 CameraComponent::CameraComponent(Actor* pOwner, int updateOder)
     : Component(pOwner, updateOder)

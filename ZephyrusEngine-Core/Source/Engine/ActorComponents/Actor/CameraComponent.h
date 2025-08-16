@@ -16,6 +16,9 @@ public:
 	CameraComponent(Actor* pOwner, int updateOder = 0);
 	~CameraComponent();
 
+	static Component* Create(Actor* pOwner) { return new CameraComponent(pOwner); }
+	static bool registered;
+
 	// Returns the world transform matrix of the camera
 	Matrix4DRow GetWorldTransform();
 
