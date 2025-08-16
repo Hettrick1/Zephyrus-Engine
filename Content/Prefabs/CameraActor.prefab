@@ -1,8 +1,18 @@
 {
     "name": "CameraActor",
+    "state": "active",
+    "transform": {
+        "position": [0, 0, 0],
+        "size": [1, 1, 1],
+        "rotation": [0, 0, 0]
+    },
     "components": [
         {
-            "type": "CameraComponent"
+            "type": "CameraComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [20, 0, 0]
+            }
         }
     ]
 }
