@@ -23,6 +23,9 @@ filter "system:linux"
       '{COPYDIR} ../Content "%{cfg.targetdir}\\..\\Content"'
    }
 
+-- For now, just to remove rapidJson warnings 
+defines { "_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING" }
+
 group "Core"
 	include "ZephyrusEngine-Core/Build-Core.lua"
 group ""

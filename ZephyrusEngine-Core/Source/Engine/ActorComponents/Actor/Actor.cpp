@@ -71,7 +71,7 @@ void Actor::SetActive(const ActorState& pState)
     mState = pState;
 }
 
-void Actor::SetPosition(const Vector3D& pPosition)
+void Actor::SetPosition(const Vector3D& pPosition) 
 {
     mTransformComponent.SetPosition(pPosition);
 }
