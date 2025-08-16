@@ -10,7 +10,7 @@
 #include "LVLDoom.h"
 #include "CoreActors/EmptyActor.h"
 #include "Game/Doom/DoomMenuPC.h"
-#include "Engine/Editor/PrefabFactory.h"
+#include "FactoryJSON/PrefabFactory.h"
 
 LVLDoomMainMenu::LVLDoomMainMenu()
 	: Scene(), mDoomMenu(nullptr), mPressEnter(nullptr), mTimer(0)

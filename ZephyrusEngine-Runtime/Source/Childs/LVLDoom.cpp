@@ -11,6 +11,7 @@
 #include "CoreActors/SkySphere.h"
 #include "Game/Doom/DoomEnemy.h"
 #include "Game/Planets/Planet.h"
+#include "FactoryJSON/PrefabFactory.h"
 
 LVLDoom::LVLDoom()
 	: mPlayer(nullptr)
@@ -31,7 +32,7 @@ void LVLDoom::Start(IRenderer* renderer)
 	Scene::Start(renderer);
 	
 	Scene::GetRenderer()->GetDebugRenderer()->SetDrawDebug(true);
-
+	auto actor = PrefabFactory::CreateActorFromPrefab("CameraActor");
 	mPlayer = new DoomPlayer();
 	mPlayer->SetPosition(Vector3D(-48, 0, 0));
 	mPlayer->RotateZ(-90);

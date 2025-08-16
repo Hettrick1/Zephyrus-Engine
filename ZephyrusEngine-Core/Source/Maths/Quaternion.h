@@ -24,6 +24,7 @@ public:
 	// It is assumed that axis is already normalized,
 	// and the angle is in radians
 	explicit Quaternion(const Vector3D& axis, float angle);
+	explicit Quaternion(const Vector3D& axis);
 
 	friend Vector3D operator*(const Quaternion& q, const Vector3D& v)
 	{
@@ -66,6 +67,8 @@ public:
 	{
 		return Maths::Sqrt(LengthSqr());
 	}
+
+	Vector3D ToEuler() const;
 
 	// Normalize the provided quaternion
 	static Quaternion Normalize(const Quaternion& q)

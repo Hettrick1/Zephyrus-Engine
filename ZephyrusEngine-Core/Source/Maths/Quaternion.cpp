@@ -21,6 +21,21 @@ Quaternion::Quaternion(const Vector3D& axis, float angle)
 	w = Maths::Cos(angle / 2.0f);
 }
 
+Quaternion::Quaternion(const Vector3D& axis)
+{
+	float cy = cos(Maths::ToRad(axis.z) * 0.5f);
+	float sy = sin(Maths::ToRad(axis.z) * 0.5f);
+	float cp = cos(Maths::ToRad(axis.y) * 0.5f);
+	float sp = sin(Maths::ToRad(axis.y) * 0.5f);
+	float cr = cos(Maths::ToRad(axis.x) * 0.5f);
+	float sr = sin(Maths::ToRad(axis.x) * 0.5f);
+
+	w = cr * cp * cy + sr * sp * sy;
+	x = sr * cp * cy - cr * sp * sy;
+	y = cr * sp * cy + sr * cp * sy;
+	z = cr * cp * sy - sr * sp * cy;
+}
+
 void Quaternion::Set(float inX, float inY, float inZ, float inW)
 {
 	x = inX;
@@ -39,6 +54,30 @@ void Quaternion::Conjugate()
 Quaternion Quaternion::ConjugateQuat()
 {
 	return Quaternion(-x, -y, -z, w);
+}
+
+Vector3D Quaternion::ToEuler() const
+{
+	Vector3D euler;
+
+	// --- Pitch (X axis) ---
+	float sinp = 2.0f * (w * x + y * z);
+	float cosp = 1.0f - 2.0f * (x * x + y * y);
+	euler.x = Maths::ToDeg(std::atan2(sinp, cosp));
+
+	// --- Roll (Y axis) ---
+	float sinr = 2.0f * (w * y - z * x);
+	if (std::fabs(sinr) >= 1.0f)
+		euler.y = Maths::ToDeg(std::copysign(Maths::PI / 2.0f, sinr)); // clamp à 90°
+	else
+		euler.y = Maths::ToDeg(std::asin(sinr));
+
+	// --- Yaw (Z axis) ---
+	float siny = 2.0f * (w * z + x * y);
+	float cosy = 1.0f - 2.0f * (y * y + z * z);
+	euler.z = Maths::ToDeg(std::atan2(siny, cosy));
+
+	return euler;
 }
 
 void Quaternion::Normalize()
