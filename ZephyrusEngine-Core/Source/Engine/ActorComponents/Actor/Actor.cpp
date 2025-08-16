@@ -81,6 +81,11 @@ void Actor::SetSize(const Vector3D& pSize)
     mTransformComponent.SetSize(pSize);
 }
 
+void Actor::SetRotation(const Quaternion& pRotation)
+{
+    mTransformComponent.SetRotation(pRotation);
+}
+
 void Actor::RotateX(float pAnle)
 {
     mTransformComponent.RotateX(pAnle);

@@ -39,6 +39,7 @@ public:
 	void SetActive(const ActorState& pState);
 	void SetPosition(const Vector3D& pPosition);
 	void SetSize(const Vector3D& pSize);
+	void SetRotation(const Quaternion& pRotation);
 	void RotateX(float pAnle);
 	void RotateY(float pAngle);
 	void RotateZ(float pAngle);
