@@ -26,11 +26,11 @@ LVLDoomMainMenu::~LVLDoomMainMenu()
 void LVLDoomMainMenu::Start(IRenderer* renderer)
 {
 	Scene::Start(renderer);
-	auto actor = PrefabFactory::CreateActorFromPrefab("TestActor");
+	auto actor = PrefabFactory::CreateActorFromPrefab("CameraActor");
 	if (actor) {
 		ZP_CORE_WARN("Ca marche !!!");
 	}
-	CameraActor* cam = new CameraActor();
+	//CameraActor* cam = new CameraActor();
 
 	Texture* damageIndicator = Assets::LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
 	mDoomMenu = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
