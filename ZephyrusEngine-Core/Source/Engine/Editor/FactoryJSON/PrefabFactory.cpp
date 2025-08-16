@@ -2,6 +2,7 @@
 #include "rapidjson/document.h"
 #include "Log.h"
 #include "ComponentFactory.h"
+#include "FactoryJSON/JSONUtils.h"
 #include <fstream>
 #include <sstream>
 
@@ -34,6 +35,32 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
     auto actor = new EmptyActor();
     actor->SetName(actorName);
 
+    // sets the actor state
+    if (doc.HasMember("state") && doc["state"].IsString()) {
+        std::string stateStr = doc["state"].GetString();
+        actor->SetActive(StringToActorState(stateStr));
+    }
+
+    // sets the actor transform
+    if (doc.HasMember("transform")) { 
+        const auto& transform = doc["transform"];
+        if (auto pos = ReadVector3D(transform, "position"))
+        {
+            actor->SetPosition(*pos);
+        }
+
+        if (auto size = ReadVector3D(transform, "size"))
+        {
+            actor->SetSize(*size);
+        }
+
+        if (auto rot = ReadVector3D(transform, "rotation"))
+        {
+            actor->SetRotation(Quaternion(*rot));
+        }
+    }
+
+    // creates all the components
     if (doc.HasMember("components") && doc["components"].IsArray()) {
         for (auto& comp : doc["components"].GetArray()) {
             std::string type = comp["type"].GetString();
@@ -41,6 +68,7 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
 
             if (c) {
                 if (comp.HasMember("properties")) {
+                    // sets all the components properties from the prefab file
                     c->Deserialize(comp["properties"]);
                 }
                 actor->AddComponent(c);
