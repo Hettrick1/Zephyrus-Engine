@@ -1,6 +1,7 @@
 #pragma once
 #include "Matrix4DRow.h"
 #include "Vector3D.h"
+#include "rapidjson/document.h"
 
 class Actor;
 
@@ -28,6 +29,8 @@ public:
 	virtual void OnStart();
 	virtual void Update();
 	virtual void OnEnd();
+
+	virtual void Deserialize(const rapidjson::Value& data);
 
 	void SetRelativePosition(const Vector3D& pPosition);
 	void SetRelativeSize(const Vector3D& pSize);

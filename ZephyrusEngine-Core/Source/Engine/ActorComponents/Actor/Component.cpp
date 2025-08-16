@@ -25,6 +25,10 @@ void Component::OnEnd()
     mOwner = nullptr;
 }
 
+void Component::Deserialize(const rapidjson::Value& data)
+{
+}
+
 void Component::SetRelativePosition(const Vector3D& pPosition)
 {
     mRelativePosition = pPosition;
