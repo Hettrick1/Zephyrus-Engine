@@ -12,9 +12,7 @@ public:
 
 	static ComponentFactory& Instance();
 
-    bool Register(const std::string& name, Creator createFn) {
-        return mCreators.emplace(name, createFn).second;
-    }
+    bool Register(const std::string& pName, Creator pCreateFn);
 
     Component* Create(const std::string& pName, Actor* pOwner);
 

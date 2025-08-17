@@ -6,6 +6,11 @@ ComponentFactory& ComponentFactory::Instance()
     return instance;
 }
 
+bool ComponentFactory::Register(const std::string& pName, Creator pCreateFn)
+{
+    return mCreators.emplace(pName, pCreateFn).second;
+}
+
 Component* ComponentFactory::Create(const std::string& pName, Actor* pOwner)
 {
     auto it = mCreators.find(pName);

@@ -7,7 +7,7 @@ Component::Component(Actor* pOwner, int pUpdateOder)
     : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
     mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1)
 {
-	mOwner->AddComponent(this);
+	//mOwner->AddComponent(this);
 }
 
 Component::~Component()
