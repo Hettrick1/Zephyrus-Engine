@@ -11,6 +11,12 @@ public:
 	DoomMenuPC(const DoomMenuPC&) = delete;
 	DoomMenuPC& operator=(const DoomMenuPC&) = delete;
 	~DoomMenuPC();
+
+	void Deserialize(const rapidjson::Value& pData) override;
+
+	static Component* Create(Actor* pOwner) { return new DoomMenuPC(pOwner); }
+	static bool registered;
+
 public:
 	void OnActionStarted(InputActions* action) override;
 	void OnActionTriggered(InputActions* action) override;

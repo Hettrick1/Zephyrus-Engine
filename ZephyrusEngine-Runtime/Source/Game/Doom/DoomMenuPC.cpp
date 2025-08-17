@@ -4,6 +4,9 @@
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Childs/LVLDoom.h"
+#include "FactoryJSON/ComponentFactory.h"
+
+bool DoomMenuPC::registered = ComponentFactory::Instance().Register("DoomMenuPC", DoomMenuPC::Create);
 
 DoomMenuPC::DoomMenuPC(Actor* pOwner, int pUpdateOrder)
 	: Component(pOwner, pUpdateOrder)
@@ -13,6 +16,10 @@ DoomMenuPC::DoomMenuPC(Actor* pOwner, int pUpdateOrder)
 }
 
 DoomMenuPC::~DoomMenuPC()
+{
+}
+
+void DoomMenuPC::Deserialize(const rapidjson::Value& pData)
 {
 }
 

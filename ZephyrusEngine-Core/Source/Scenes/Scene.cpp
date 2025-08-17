@@ -40,6 +40,7 @@ void Scene::Unload()
 	mRenderer->Unload();
 	PhysicManager::Instance().Unload();
 	CameraManager::Instance().Unload();
+	Assets::Clear();
 	while (!mAllActors.empty()) {
 		mAllActors.back()->Destroy();
 		delete mAllActors.back();
@@ -50,7 +51,6 @@ void Scene::Unload()
 		delete mPendingActors.back();
 		mAllActors.pop_back();
 	}
-	Assets::Clear();
 }
 
 void Scene::Close()

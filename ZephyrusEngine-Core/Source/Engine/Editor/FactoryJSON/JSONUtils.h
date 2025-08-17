@@ -3,4 +3,4 @@
 #include "Vector3D.h"
 #include "rapidjson/document.h"
 
-std::optional<Vector3D> ReadVector3D(const rapidjson::Value& obj, const char* key);
+std::optional<Vector3D> ReadVector3D(const rapidjson::Value& pObj, const char* pKey);

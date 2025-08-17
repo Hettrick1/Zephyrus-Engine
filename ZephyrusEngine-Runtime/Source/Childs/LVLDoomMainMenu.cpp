@@ -30,7 +30,6 @@ void LVLDoomMainMenu::Start(IRenderer* renderer)
 	if (actor) {
 		ZP_CORE_WARN("Ca marche !!!");
 	}
-	//CameraActor* cam = new CameraActor();
 
 	Texture* damageIndicator = Assets::LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
 	mDoomMenu = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
@@ -38,8 +37,9 @@ void LVLDoomMainMenu::Start(IRenderer* renderer)
 
 	mPressEnter = new HudText("Press Enter To Begin", Vector2D(0.0f, -800.0f), 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), TextAlignment::CENTER);
 
-	EmptyActor* defaultPawn = new EmptyActor();
-	defaultPawn->AddComponent(new DoomMenuPC(defaultPawn, 1));
+	auto actor1 = PrefabFactory::CreateActorFromPrefab("DoomMenuPlayer");
+	//EmptyActor* defaultPawn = new EmptyActor();
+	//new DoomMenuPC(defaultPawn, 1);
 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
