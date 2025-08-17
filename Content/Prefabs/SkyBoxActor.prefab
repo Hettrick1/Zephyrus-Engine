@@ -1,0 +1,27 @@
+{
+    "name": "CameraActor",
+    "state": "active",
+    "transform": {
+        "position": [0, 0, 0],
+        "size": [1, 1, 1],
+        "rotation": [0, 0, 0]
+    },
+    "components": [
+        {
+            "type": "SkySphereComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [20, 0, 0],
+                "isSphere" : false,
+                "textures" : [
+                    "Sprites/SkyBox/DAY_CLOUDS_S.jpg",
+                    "Sprites/SkyBox/DAY_CLOUDS_N.jpg",
+                    "Sprites/SkyBox/DAY_CLOUDS_T.jpg",
+                    "Sprites/SkyBox/DAY_CLOUDS_B.jpg",
+                    "Sprites/SkyBox/DAY_CLOUDS_W.jpg",
+                    "Sprites/SkyBox/DAY_CLOUDS_E.jpg"
+                ]
+            }
+        }
+    ]
+}

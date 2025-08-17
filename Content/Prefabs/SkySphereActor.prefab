@@ -1,0 +1,20 @@
+{
+    "name": "SkySphereActor",
+    "state": "active",
+    "transform": {
+        "position": [0, 0, 0],
+        "size": [1, 1, 1],
+        "rotation": [0, 0, 0]
+    },
+    "components": [
+        {
+            "type": "SkySphereComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [0, 0, 0],
+                "isSphere" : true,
+                "textures" : ["Sprites/LakeSkyTexture.png"]
+            }
+        }
+    ]
+}

@@ -10,7 +10,6 @@
 #include "CoreActors/BasicCube.h"
 #include "CoreActors/SkySphere.h"
 #include "Game/Doom/DoomEnemy.h"
-#include "Game/Planets/Planet.h"
 #include "FactoryJSON/PrefabFactory.h"
 
 LVLDoom::LVLDoom()
@@ -32,21 +31,22 @@ void LVLDoom::Start(IRenderer* renderer)
 	Scene::Start(renderer);
 	
 	Scene::GetRenderer()->GetDebugRenderer()->SetDrawDebug(true);
-	auto actor = PrefabFactory::CreateActorFromPrefab("CameraActor");
-	mPlayer = new DoomPlayer();
+	/*mPlayer = new DoomPlayer();
 	mPlayer->SetPosition(Vector3D(-48, 0, 0));
-	mPlayer->RotateZ(-90);
+	mPlayer->RotateZ(-90);*/
 
-	SkySphere* skySphere = new SkySphere(false, {
+	PrefabFactory::CreateActorFromPrefab("CameraActor");
+	PrefabFactory::CreateActorFromPrefab("SkySphereActor");
+	/*SkySphere* skySphere = new SkySphere(false, {
 		"Sprites/Doom/skybox/front.png",
 		"Sprites/Doom/skybox/back.png",
 		"Sprites/Doom/skybox/top.png",
 		"Sprites/Doom/skybox/bottom.png",
 		"Sprites/Doom/skybox/left.png",
 		"Sprites/Doom/skybox/right.png",
-		});
+		});*/
 
-	BasicCube* wall = new BasicCube(Vector3D(0, 50, -0.21), Vector3D(50, 1, 1));
+	/*BasicCube* wall = new BasicCube(Vector3D(0, 50, -0.21), Vector3D(50, 1, 1));
 	wall->RotateX(90);
 	wall->GetComponentOfType<MeshComponent>()->SetTextureIndex(3);
 	wall->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(150, 6));
@@ -123,7 +123,7 @@ void LVLDoom::Start(IRenderer* renderer)
 	DoomEnemy* enemy2 = new DoomEnemy(mPlayer, Vector3D(-10, 20, -0.1));
 	DoomEnemy* enemy3 = new DoomEnemy(mPlayer, Vector3D(-10, 0, -0.1));
 	DoomEnemy* enemy4 = new DoomEnemy(mPlayer, Vector3D(-45, -45, -0.1));
-	DoomEnemy* enemy5 = new DoomEnemy(mPlayer, Vector3D(-45, 45, -0.1));
+	DoomEnemy* enemy5 = new DoomEnemy(mPlayer, Vector3D(-45, 45, -0.1));*/
 }
 
 void LVLDoom::Update()

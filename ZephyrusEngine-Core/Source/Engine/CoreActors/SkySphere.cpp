@@ -15,7 +15,7 @@ SkySphere::~SkySphere()
 void SkySphere::Start()
 {
 	Actor::Start();
-	mSkySphereComponent = new SkySphereComponent(this, mIsSphere, mTextureToLoad);
+	mSkySphereComponent = new SkySphereComponent(this);
 }
 
 void SkySphere::Update()

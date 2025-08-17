@@ -21,10 +21,14 @@ protected:
 	bool mIsSphere = false;
 	VertexArray* mVao = nullptr;
 	GLenum mTextureType;
-	std::vector<std::string> mTextureToLoad;
 public:
-	SkySphereComponent(Actor* pOwner, bool pIsSphere = false, const std::vector<std::string>& pTextures = {}, ShaderProgram* pProgram = nullptr);
+	SkySphereComponent(Actor* pOwner);
 	virtual ~SkySphereComponent();
+
+	void Deserialize(const rapidjson::Value& pData) override;
+
+	static Component* Create(Actor* pOwner) { return new SkySphereComponent(pOwner); }
+	static bool registered;
 
 	// Sets the index of the texture to use
 	void SetTextureIndex(unsigned int pTextureIndex);
