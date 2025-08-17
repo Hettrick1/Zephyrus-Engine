@@ -30,15 +30,17 @@ void LVLDoom::Start(IRenderer* renderer)
 	mPlayer->RotateZ(-90);*/
 
 	PrefabFactory::CreateActorFromPrefab("CameraActor");
-	PrefabFactory::CreateActorFromPrefab("SkySphereActor");
-	/*SkySphere* skySphere = new SkySphere(false, {
+	auto actor = PrefabFactory::CreateActorFromPrefab("SkyBoxActor");
+	CubeTextureMap cubemap;
+	cubemap.CreateCubeTextureMap({
 		"Sprites/Doom/skybox/front.png",
 		"Sprites/Doom/skybox/back.png",
 		"Sprites/Doom/skybox/top.png",
 		"Sprites/Doom/skybox/bottom.png",
 		"Sprites/Doom/skybox/left.png",
 		"Sprites/Doom/skybox/right.png",
-		});*/
+		});
+	actor->GetComponentOfType<SkySphereComponent>()->SetTextureIndex(cubemap.GetID());
 
 	/*BasicCube* wall = new BasicCube(Vector3D(0, 50, -0.21), Vector3D(50, 1, 1));
 	wall->RotateX(90);
