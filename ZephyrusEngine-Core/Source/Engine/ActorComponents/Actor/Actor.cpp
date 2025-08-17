@@ -118,19 +118,27 @@ void Actor::Update()
 
 void Actor::Destroy()
 {
+    if (mRigidbody != nullptr)
+    {
+        mRigidbody = nullptr;
+    }
     for (auto component : mComponents) {
         component->OnEnd();
     }
-
+    for (auto component : mPendingComponents) {
+        component->OnEnd();
+    }
     for (auto& component : mComponents) {
         if (component != nullptr)
         {
+            delete component;
             component = nullptr;
         }
     }
     mComponents.clear();
 
     for (auto& component : mPendingComponents) {
+        delete component;
         component = nullptr;
     }
     mPendingComponents.clear();
