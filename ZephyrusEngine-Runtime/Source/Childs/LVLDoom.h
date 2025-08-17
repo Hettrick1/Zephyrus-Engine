@@ -1,8 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "Game/Doom/DoomPlayer.h"
-
-class DoomPlayer;
 
 class LVLDoom : public Scene
 {
@@ -13,8 +10,6 @@ public:
 	void Update() override;
 	void Render() override;
 	void Close() override;
-private:
-	DoomPlayer* mPlayer;
 };
 
 

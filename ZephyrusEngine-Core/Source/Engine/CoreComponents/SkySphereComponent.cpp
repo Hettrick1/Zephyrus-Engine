@@ -11,8 +11,6 @@
 
 int SkySphereComponent::index = 0;
 
-bool SkySphereComponent::registered = ComponentFactory::Instance().Register("SkySphereComponent", SkySphereComponent::Create);
-
 SkySphereComponent::SkySphereComponent(Actor* pOwner)
 	: Component(pOwner), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D), mVao(nullptr)
 {

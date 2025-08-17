@@ -28,7 +28,6 @@ public:
 	void Deserialize(const rapidjson::Value& pData) override;
 
 	static Component* Create(Actor* pOwner) { return new SkySphereComponent(pOwner); }
-	static bool registered;
 
 	// Sets the index of the texture to use
 	void SetTextureIndex(unsigned int pTextureIndex);

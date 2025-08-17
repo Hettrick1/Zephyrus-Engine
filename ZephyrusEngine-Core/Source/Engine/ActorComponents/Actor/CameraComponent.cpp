@@ -7,8 +7,6 @@
 #include "Scene.h"
 #include "FactoryJSON/ComponentFactory.h"
 
-bool CameraComponent::registered = ComponentFactory::Instance().Register("CameraComponent", CameraComponent::Create);
-
 CameraComponent::CameraComponent(Actor* pOwner, int updateOder)
     : Component(pOwner, updateOder)
 {

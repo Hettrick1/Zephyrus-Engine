@@ -3,10 +3,8 @@
 #include "Axis2DAction.h"
 #include "InputManager.h"
 #include "SceneManager.h"
-#include "Childs/LVLDoom.h"
+#include "../ZephyrusEngine-Runtime/Source/Childs/LVLDoom.h"
 #include "FactoryJSON/ComponentFactory.h"
-
-bool DoomMenuPC::registered = ComponentFactory::Instance().Register("DoomMenuPC", DoomMenuPC::Create);
 
 DoomMenuPC::DoomMenuPC(Actor* pOwner, int pUpdateOrder)
 	: Component(pOwner, pUpdateOrder)

@@ -13,17 +13,11 @@
 #include "FactoryJSON/PrefabFactory.h"
 
 LVLDoom::LVLDoom()
-	: mPlayer(nullptr)
 {
 }
 
 LVLDoom::~LVLDoom()
 {
-	if (mPlayer != nullptr)
-	{
-		delete mPlayer;
-		mPlayer = nullptr;
-	}
 }
 
 void LVLDoom::Start(IRenderer* renderer)

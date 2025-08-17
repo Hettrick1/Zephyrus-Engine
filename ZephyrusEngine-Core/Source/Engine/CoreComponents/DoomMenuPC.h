@@ -15,7 +15,6 @@ public:
 	void Deserialize(const rapidjson::Value& pData) override;
 
 	static Component* Create(Actor* pOwner) { return new DoomMenuPC(pOwner); }
-	static bool registered;
 
 public:
 	void OnActionStarted(InputActions* action) override;
