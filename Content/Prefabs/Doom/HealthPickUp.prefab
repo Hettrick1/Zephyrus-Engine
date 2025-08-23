@@ -1,0 +1,35 @@
+{
+    "name": "HealthPickUpActor",
+    "state": "active",
+    "transform": {
+        "position": [0, 0, 0],
+        "size": [1, 1, 1],
+        "rotation": [0, 0, 0]
+    },
+    "components": [
+        {
+            "type": "SpriteComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [90, 0, 0],
+                "texture" : "Sprites/Doom/lifePu.png"
+            }
+        },
+        {
+            "type": "PickUpComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [0, 0, 0],
+                "type" : "health"
+            }
+        },
+        {
+            "type": "BoxAABBComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [0, 0, 0],
+                "isQuerry" : true
+            }
+        }
+    ]
+}
