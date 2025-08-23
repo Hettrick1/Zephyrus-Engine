@@ -5,23 +5,61 @@
 #include "VertexArray.h"
 #include "Vertex.h"
 
-MeshComponent::MeshComponent(Actor* pOwner, Mesh* pMesh, ShaderProgram* pProgram)
-	: Component(pOwner), mMesh(pMesh), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
+MeshComponent::MeshComponent(Actor* pOwner)
+	: Component(pOwner), mMesh(nullptr), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
 {
-	mOwner->GetScene().GetRenderer()->AddMesh(this);
-	if (pProgram == nullptr)
-	{
-		mVertexShader = *Assets::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
-		mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
-		mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
-	}
-	else {
-		mShaderProgram = *pProgram;
-	}
 }
 
 MeshComponent::~MeshComponent()
 {
+}
+
+void MeshComponent::Deserialize(const rapidjson::Value& pData)
+{
+	Component::Deserialize(pData);
+	mOwner->GetScene().GetRenderer()->AddMesh(this);
+	mVertexShader = *Assets::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
+	mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
+	mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
+
+	if (pData.HasMember("mesh") && pData["mesh"].IsString())
+	{
+		mMesh = Assets::LoadMesh(pData["mesh"].GetString(), pData["mesh"].GetString());
+		if (!mMesh)
+		{
+			ZP_CORE_ERROR("Mesh creation failed !");
+		}
+		if (pData.HasMember("textures") && pData["textures"].IsArray())
+		{
+			const auto& arr = pData["textures"].GetArray();
+
+			if (!arr.Empty())
+			{
+				for (auto& element : arr)
+				{
+					if (element.IsString())
+					{
+						Texture* texture = Assets::LoadTexture(element.GetString(), element.GetString());
+						mMesh->AddTexture(texture);
+					}
+				}
+			}
+		}
+		if (pData.HasMember("textureIndex") && pData["textureIndex"].IsInt())
+		{
+			SetTextureIndex(pData["textureIndex"].GetInt());
+		}
+		else
+		{
+			SetTextureIndex(0);
+		}
+	}
+	else 
+	{
+		mMesh = Assets::LoadMesh("cube.obj", "cube.obj");
+		SetTextureIndex(0);
+		ZP_CORE_WARN("No mesh referenced in the prefab actor !");
+	}
 }
 
 void MeshComponent::Draw(const Matrix4DRow& pViewProj)

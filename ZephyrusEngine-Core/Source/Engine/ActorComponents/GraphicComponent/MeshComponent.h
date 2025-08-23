@@ -12,8 +12,13 @@ protected:
 	Vector2D mTiling;
 	unsigned int mTextureIndex = 0;
 public:
-	MeshComponent(Actor* pOwner, Mesh* pMesh, ShaderProgram* pProgram = nullptr);
+	MeshComponent(Actor* pOwner);
 	virtual ~MeshComponent();
+
+	void Deserialize(const rapidjson::Value& pData) override;
+
+	static Component* Create(Actor* pOwner) { return new MeshComponent(pOwner); }
+
 	virtual void Draw(const Matrix4DRow& pViewProj);
 	virtual void SetMesh(Mesh& pMesh);
 	void SetTextureIndex(unsigned int pTextureIndex);
