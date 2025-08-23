@@ -19,11 +19,12 @@ protected:
 	bool mCullOff = false;
 	float aspectRatio = 0.0, aspectRatioInv = 0.0;
 public:
-	SpriteComponent(Actor* pOwner, Texture& pTexture, int pDrawOrder = 100, Vector3D pSizeOverride = 0);
+	SpriteComponent(Actor* pOwner);
 	virtual ~SpriteComponent();
-	SpriteComponent() = delete;
-	SpriteComponent(const SpriteComponent&) = delete;
-	SpriteComponent& operator= (const SpriteComponent&) = delete;
+
+	void Deserialize(const rapidjson::Value& pData) override;
+
+	static Component* Create(Actor* pOwner) { return new SpriteComponent(pOwner); }
 
 	// Sets the texture used by the sprite
 	virtual void SetTexture(const Texture& pTexture);

@@ -2,28 +2,40 @@
 
 #include "Actor.h"
 #include "../../Scenes/Scene.h"
+#include "FactoryJSON/JSONUtils.h"
 
-SpriteComponent::SpriteComponent(Actor* pOwner, Texture& pTexture, int pDrawOrder, Vector3D pSizeOverride)
-	: Component(pOwner), mTexture(pTexture), mDrawOrder(pDrawOrder), mFlipMethode(IRenderer::Flip::None)
+SpriteComponent::SpriteComponent(Actor* pOwner)
+	: Component(pOwner), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)
 {
-	if (pSizeOverride.x == 0 || pSizeOverride.y == 0) {
-		mTexWidth = static_cast<int>(pTexture.GetTextureSize().x);
-		mTexHeight = static_cast<int>(pTexture.GetTextureSize().y);
-	}
-	else {
-		mTexWidthOverride = static_cast<int>(pSizeOverride.x);
-		mTexHeightOverride = static_cast<int>(pSizeOverride.y);
-		mTexWidth = mTexWidthOverride;
-		mTexHeight = mTexHeightOverride;
-	}
-	aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
-	aspectRatioInv = 1 / aspectRatio;
-	mOwner->GetScene().GetRenderer()->AddSprite(this);
 }
 
 SpriteComponent::~SpriteComponent()
 {
-	mOwner->GetScene().GetRenderer()->RemoveSprite(this);
+}
+
+void SpriteComponent::Deserialize(const rapidjson::Value& pData)
+{
+	Component::Deserialize(pData);
+	if (pData.HasMember("texture") && pData["texture"].IsString())
+	{
+		mTexture = *Assets::LoadTexture(pData["texture"].GetString(), pData["texture"].GetString());
+	}
+	mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
+	mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
+	if (pData.HasMember("sizeOverride") && pData["sizeOverride"].IsArray())
+	{
+		if (auto sizeOverride = ReadVector3D(pData, "sizeOverride"))
+		{
+			Vector3D size = *sizeOverride;
+			if (size.x > 0 || size.y > 0) {
+				mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
+				mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
+			}
+		}
+	}
+	aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
+	aspectRatioInv = 1 / aspectRatio;
+	mOwner->GetScene().GetRenderer()->AddSprite(this);
 }
 
 void SpriteComponent::SetTexture(const Texture& pTexture)
