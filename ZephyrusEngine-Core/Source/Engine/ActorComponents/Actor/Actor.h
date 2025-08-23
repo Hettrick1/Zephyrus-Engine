@@ -11,7 +11,7 @@ class Scene;
  * @brief Represents an entity in the scene that can have components and interact with the world.
  * The Actor class manages its own state, transform, components, and can be attached to a Scene.
  */
-class Actor
+class Actor 
 {
 protected:
 	Scene& mScene;
@@ -24,6 +24,7 @@ protected:
 	std::string mName = "";
 	std::string mTag = "";
 	float mLod = 0;
+
 public:
 	Actor(Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
 	Actor(std::string pName);
