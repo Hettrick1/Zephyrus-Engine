@@ -25,10 +25,10 @@ void Cube::Start()
 	mesh->AddTexture(tex1);
 	mesh->AddTexture(tex2);
 	mesh->AddTexture(tex3);
-	MeshComponent* meshComp = new MeshComponent(this, mesh);
+	/*MeshComponent* meshComp = new MeshComponent(this, mesh);
 	meshComp->SetTextureIndex(1); 
 	RigidbodyComponent* rb = new RigidbodyComponent(this);
-	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, GetTransformComponent().GetSize());
+	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, GetTransformComponent().GetSize());*/
 }
 
 void Cube::Update()

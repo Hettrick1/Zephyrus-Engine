@@ -28,9 +28,9 @@ void BasicSATCube::Start()
 	mesh->AddTexture(tex3);
 	mesh->AddTexture(tex4);
 	mesh->AddTexture(tex5);
-	MeshComponent* meshComp = new MeshComponent(this, mesh, mShaderProgram);
+	/*MeshComponent* meshComp = new MeshComponent(this, mesh, mShaderProgram);
 	meshComp->SetTextureIndex(1);
-	BoxSATComponent* bc = new BoxSATComponent(this, 10, GetTransformComponent().GetSize());
+	BoxSATComponent* bc = new BoxSATComponent(this, 10, GetTransformComponent().GetSize());*/
 }
 
 void BasicSATCube::Update()

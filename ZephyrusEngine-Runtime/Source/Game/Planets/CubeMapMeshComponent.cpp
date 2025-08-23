@@ -2,8 +2,10 @@
 #include "VertexArray.h"
 
 CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Mesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram)
-	:MeshComponent(pOwner, pMesh, pProgram), mCubeMapTexture(pCubeMap)
+	:MeshComponent(pOwner), mCubeMapTexture(pCubeMap)
 {
+	MeshComponent::SetMesh(*pMesh);
+	MeshComponent::SetShaderProgram(*pProgram);
 }
 
 CubeMapMeshComponent::~CubeMapMeshComponent()

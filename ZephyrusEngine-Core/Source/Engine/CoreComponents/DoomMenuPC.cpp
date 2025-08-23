@@ -19,6 +19,7 @@ DoomMenuPC::~DoomMenuPC()
 
 void DoomMenuPC::Deserialize(const rapidjson::Value& pData)
 {
+	Component::Deserialize(pData);
 }
 
 void DoomMenuPC::OnActionStarted(InputActions* action)

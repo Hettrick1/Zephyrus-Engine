@@ -1,0 +1,33 @@
+{
+    "name": "CubeActor",
+    "state": "active",
+    "transform": {
+        "position": [0, 0, 0],
+        "size": [1, 1, 1],
+        "rotation": [0, 0, 0]
+    },
+    "components": [
+        {
+            "type": "MeshComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [0, 0, 0],
+                "mesh" : "cube.obj",
+                "textures" : [
+                    "Sprites/Doom/268.png",
+                    "Sprites/Doom/091.png",
+                    "Sprites/Doom/268bis.png",
+                    "Sprites/uv_mapper.jpg"
+                ],
+                "textureIndex" : 1
+            }
+        },
+        {
+            "type": "BoxAABBComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [0, 0, 0]
+            }
+        }
+    ]
+}

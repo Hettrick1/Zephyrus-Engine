@@ -81,6 +81,6 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
         }
     }
 
-    ZP_CORE_LOAD("Prefab " + actorName + " loaded");
+    ZP_LOAD("Prefab " + actorName + " loaded");
     return actor;
 }

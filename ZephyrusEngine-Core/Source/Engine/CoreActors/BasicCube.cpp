@@ -28,9 +28,9 @@ void BasicCube::Start()
 	mesh->AddTexture(tex2); 
 	mesh->AddTexture(tex3); 
 	mesh->AddTexture(tex4);
-	MeshComponent* meshComp = new MeshComponent(this, mesh, mShaderProgram);
+	/*MeshComponent* meshComp = new MeshComponent(this, mesh, mShaderProgram);
 	meshComp->SetTextureIndex(1);
-	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, GetTransformComponent().GetSize());
+	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, GetTransformComponent().GetSize());*/
 }
 
 void BasicCube::Update()

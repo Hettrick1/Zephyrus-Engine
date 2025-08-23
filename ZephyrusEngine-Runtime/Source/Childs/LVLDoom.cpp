@@ -42,73 +42,93 @@ void LVLDoom::Start(IRenderer* renderer)
 		});
 	actor->GetComponentOfType<SkySphereComponent>()->SetTextureIndex(cubemap.GetID());
 
-	/*BasicCube* wall = new BasicCube(Vector3D(0, 50, -0.21), Vector3D(50, 1, 1));
+	auto wall = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall->SetPosition(Vector3D(0, 50, -0.21));
+	wall->SetSize(Vector3D(50, 1, 1));
 	wall->RotateX(90);
 	wall->GetComponentOfType<MeshComponent>()->SetTextureIndex(3);
 	wall->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(150, 6));
 	wall->SetTag("Wall");
 
-	BasicCube* wall1 = new BasicCube(Vector3D(0, -50, -0.21), Vector3D(50, 1, 1));
+	auto wall1 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall1->SetPosition(Vector3D(0, -50, -0.21));
+	wall1->SetSize(Vector3D(50, 1, 1));
 	wall1->RotateX(90);
 	wall1->GetComponentOfType<MeshComponent>()->SetTextureIndex(3);
 	wall1->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(150, 6));
 	wall1->SetTag("Wall");
 
-	BasicCube* wall2 = new BasicCube(Vector3D(50, 0, -0.21), Vector3D(1, 50, 1));
+	auto wall2 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall2->SetPosition(Vector3D(50, 0, -0.21));
+	wall2->SetSize(Vector3D(1, 50, 1));
 	wall2->RotateY(90);
 	wall2->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 150));
 	wall2->SetTag("Wall");
 
-	BasicCube* wall3 = new BasicCube(Vector3D(-50, 0, -0.21), Vector3D(1, 50, 1));
+	auto wall3 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall3->SetPosition(Vector3D(-50, 0, -0.21));
+	wall3->SetSize(Vector3D(1, 50, 1));
 	wall3->RotateY(90);
 	wall3->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 150));
 	wall3->SetTag("Wall");
 
-	BasicCube* wall4 = new BasicCube(Vector3D(0, -30, -0.21), Vector3D(1, 20, 1));
+	auto wall4 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall4->SetPosition(Vector3D(0, -30, -0.21));
+	wall4->SetSize(Vector3D(1, 20, 1));
 	wall4->RotateY(90);
 	wall4->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 150));
 	wall4->SetTag("Wall");
 
-	BasicCube* wall5 = new BasicCube(Vector3D(0, 30, -0.21), Vector3D(1, 20, 1));
+	auto wall5 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall5->SetPosition(Vector3D(0, 30, -0.21));
+	wall5->SetSize(Vector3D(1, 20, 1));
 	wall5->RotateY(90);
 	wall5->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 150));
 	wall5->SetTag("Wall");
 
-	BasicCube* wall6 = new BasicCube(Vector3D(0, -9, -0.21), Vector3D(1, 1, 1));
+	auto wall6 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall6->SetPosition(Vector3D(0, -9, -0.21));
+	wall6->SetSize(Vector3D(1, 1, 1));
 	wall6->RotateY(90);
 	wall6->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall6->SetTag("Wall");
 
-	BasicCube* wall7 = new BasicCube(Vector3D(0, 9, -0.21), Vector3D(1, 1, 1));
+	auto wall7 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall7->SetPosition(Vector3D(0, 9, -0.21));
+	wall7->SetSize(Vector3D(1, 1, 1));
 	wall7->RotateY(90);
 	wall7->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall7->SetTag("Wall");
 
-	BasicCube* wall8 = new BasicCube(Vector3D(0, 9, -0.21), Vector3D(1, 1, 1));
-	wall8->RotateY(90);
-	wall8->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
+	auto wall8 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall8->SetPosition(Vector3D(0, 0, -1.2));
+	wall8->SetSize(Vector3D(50, 50, 0.1));
+	wall8->GetComponentOfType<MeshComponent>()->SetTextureIndex(2);
+	wall8->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(300, 300));
 	wall8->SetTag("Wall");
 
-	BasicCube* wall9 = new BasicCube(Vector3D(-30, 0, -0.21), Vector3D(1, 1, 1));
+	auto wall9 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall9->SetPosition(Vector3D(-30, 0, -0.21));
+	wall9->SetSize(Vector3D(1, 1, 1));
 	wall9->RotateY(0);
 	wall9->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall9->SetTag("Wall");
 
-	BasicCube* wall10 = new BasicCube(Vector3D(-48, -10, -0.21), Vector3D(1, 1, 1));
+	auto wall10 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall10->SetPosition(Vector3D(-48, -10, -0.21));
+	wall10->SetSize(Vector3D(1, 1, 1));
 	wall10->RotateY(0);
 	wall10->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall10->SetTag("Wall");
 
-	BasicCube* wall11 = new BasicCube(Vector3D(-48, 10, -0.21), Vector3D(1, 1, 1));
+	auto wall11 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	wall11->SetPosition(Vector3D(-48, 10, -0.21));
+	wall11->SetSize(Vector3D(1, 1, 1));
 	wall11->RotateY(0);
 	wall11->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall11->SetTag("Wall");
 
-	BasicCube* cube2 = new BasicCube(Vector3D(0, 0, -1.2), Vector3D(50,50,0.1));
-	cube2->GetComponentOfType<MeshComponent>()->SetTextureIndex(2);
-	cube2->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(300, 300));
-	cube2->SetTag("Wall");
-
+	/*
 	AmoPickup* amoPu = new AmoPickup(Vector3D(0, 0, -0.5));
 	HealthPickUp* HealthPu = new HealthPickUp(Vector3D(-20, -30, -0.5));
 	HealthPickUp* HealthPu2 = new HealthPickUp(Vector3D(-20, 30, -0.5));

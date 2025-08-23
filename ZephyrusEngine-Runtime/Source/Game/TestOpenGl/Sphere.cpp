@@ -21,13 +21,13 @@ void Sphere::Start()
 	Texture* tex = Assets::LoadTexture("Sprites/LakeSkyTexture.png", "sphere");
 	Mesh* mesh = Assets::LoadMesh("sphere.obj", "sphere");
 	mesh->AddTexture(tex);
-	MeshComponent* meshComp = new MeshComponent(this, mesh);
+	/*MeshComponent* meshComp = new MeshComponent(this, mesh);
 	meshComp->SetTextureIndex(1);
 	AddComponent(meshComp);
 	RigidbodyComponent* rb = new RigidbodyComponent(this);
 	AddComponent(rb);
 	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, GetTransformComponent().GetSize());
-	AddComponent(bc);
+	AddComponent(bc);*/
 }
 
 void Sphere::Update()
