@@ -3,10 +3,11 @@
 #include "Timer.h"
 
 FlipbookComponent::FlipbookComponent(Actor* pOwner, const std::vector<Texture*>& pTextures, int pDrawOrder)
-	: SpriteComponent(pOwner, *pTextures[0], pDrawOrder), mCurrentFrame(0.0f), mAnimationFps(24.0f)
+	: SpriteComponent(pOwner), mCurrentFrame(0.0f), mAnimationFps(24.0f)
 	, mHasFinished(true), mCanPlay(true), mCanPlayPending(false), mPlayOnce(false), mIsLooping(false)
 {
 	SetAnimationTextures(pTextures);
+	SetTexture(*pTextures[0]);
 }
 
 FlipbookComponent::~FlipbookComponent()

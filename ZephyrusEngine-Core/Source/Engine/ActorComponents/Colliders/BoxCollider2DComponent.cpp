@@ -9,8 +9,8 @@ BoxCollider2DComponent::BoxCollider2DComponent(Actor* pOwner, int pUpdateOder, V
     mPosition = pOwner->GetTransformComponent().GetPosition();
     if (mShowInGame) {
         Texture* tex = Assets::LoadTexture("Sprites/collider.png", "ground");
-        SpriteComponent* newSprite = new SpriteComponent(mOwner, *tex, 4000, pSize);
-        mOwner->AddComponent(newSprite);
+        /*SpriteComponent* newSprite = new SpriteComponent(mOwner, *tex, 4000, pSize);
+        mOwner->AddComponent(newSprite);*/
     }
 }
 

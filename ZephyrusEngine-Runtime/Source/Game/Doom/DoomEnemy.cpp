@@ -101,7 +101,7 @@ void DoomEnemy::Start()
 
 	SetTag("Enemy");
 
-	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, Vector3D(0.4,0.4,1.0), Vector3D(0, 0, 0));
+	//BoxAABBComponent* bc = new BoxAABBComponent(this, 10, Vector3D(0.4,0.4,1.0), Vector3D(0, 0, 0));
 }
 
 void DoomEnemy::Update()

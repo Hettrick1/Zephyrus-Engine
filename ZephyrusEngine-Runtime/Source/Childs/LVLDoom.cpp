@@ -128,13 +128,20 @@ void LVLDoom::Start(IRenderer* renderer)
 	wall11->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall11->SetTag("Wall");
 
-	/*
-	AmoPickup* amoPu = new AmoPickup(Vector3D(0, 0, -0.5));
-	HealthPickUp* HealthPu = new HealthPickUp(Vector3D(-20, -30, -0.5));
-	HealthPickUp* HealthPu2 = new HealthPickUp(Vector3D(-20, 30, -0.5));
-	ShieldPickUp* shieldPu = new ShieldPickUp(Vector3D(-40, -40, -0.5));
-	ShieldPickUp* shieldPu2 = new ShieldPickUp(Vector3D(-40, 40, -0.5));
+	auto amoPu = PrefabFactory::CreateActorFromPrefab("Doom/AmoPickUp");
+	amoPu->SetPosition(Vector3D(0, 0, -0.5));
 
+	auto HealthPu = PrefabFactory::CreateActorFromPrefab("Doom/AmoPickUp");
+	HealthPu->SetPosition(Vector3D(-20, -30, -0.5));
+	auto HealthPu2 = PrefabFactory::CreateActorFromPrefab("Doom/AmoPickUp");
+	HealthPu2->SetPosition(Vector3D(-20, 30, -0.5));
+
+	auto shieldPu = PrefabFactory::CreateActorFromPrefab("Doom/AmoPickUp");
+	shieldPu->SetPosition(Vector3D(-40, -40, -0.5));
+	auto shieldPu2 = PrefabFactory::CreateActorFromPrefab("Doom/AmoPickUp");
+	shieldPu2->SetPosition(Vector3D(-40, 40, -0.5));
+
+	/*
 	DoomEnemy* enemy = new DoomEnemy(mPlayer, Vector3D(-10, -20, -0.1));
 	DoomEnemy* enemy2 = new DoomEnemy(mPlayer, Vector3D(-10, 20, -0.1));
 	DoomEnemy* enemy3 = new DoomEnemy(mPlayer, Vector3D(-10, 0, -0.1));

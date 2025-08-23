@@ -1,8 +1,7 @@
 #pragma once
 #include "Actor.h"
-#include "Physics/ICollisionListener.h"
 
-class EmptyActor : public Actor, public ICollisionListener
+class EmptyActor : public Actor
 {
 public:
 	EmptyActor(const Vector3D& pPos = 0, const Vector3D& pSize = 1, const Quaternion& pRotation = Quaternion(0, 0));

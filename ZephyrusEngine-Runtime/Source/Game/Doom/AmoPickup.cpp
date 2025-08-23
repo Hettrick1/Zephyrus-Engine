@@ -22,11 +22,11 @@ void AmoPickup::Start()
 {
 	Actor::Start();
 	Texture* tex = Assets::LoadTexture("Sprites/Doom/amoPu.png", "amoPickUp");
-	SpriteComponent* sc = new SpriteComponent(this, *tex);
-	sc->RelativeRotateX(90);
-	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, 0.5);
+	/*SpriteComponent* sc = new SpriteComponent(this, *tex);
+	sc->RelativeRotateX(90);*/
+	/*BoxAABBComponent* bc = new BoxAABBComponent(this, 10, 0.5);
 	bc->SetIsQuerry(true);
-	bc->AddListener(this);
+	bc->AddListener(this);*/
 }
 
 void AmoPickup::Update()

@@ -22,11 +22,11 @@ void HealthPickUp::Start()
 {
 	Actor::Start();
 	Texture* tex = Assets::LoadTexture("Sprites/Doom/lifePu.png", "lifePickUp");
-	SpriteComponent* sc = new SpriteComponent(this, *tex);
-	sc->RelativeRotateX(90);
-	BoxAABBComponent* bc = new BoxAABBComponent(this, 10, 0.5);
+	/*SpriteComponent* sc = new SpriteComponent(this, *tex);
+	sc->RelativeRotateX(90);*/
+	/*BoxAABBComponent* bc = new BoxAABBComponent(this, 10, 0.5);
 	bc->SetIsQuerry(true);
-	bc->AddListener(this);
+	bc->AddListener(this);*/
 }
 
 void HealthPickUp::Update()
@@ -39,6 +39,10 @@ void HealthPickUp::Update()
 	angleZ -= Maths::ToRad(90);
 	Quaternion targetRotation = Quaternion(Vector3D::unitZ, angleZ);
 	mTransformComponent.SetRotation(targetRotation);
+
+
+
+
 }
 
 void HealthPickUp::Destroy()
