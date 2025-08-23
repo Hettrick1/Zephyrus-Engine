@@ -10,16 +10,6 @@ BoxAABBComponent::BoxAABBComponent(Actor* pOwner)
 {
 }
 
-BoxAABBComponent::BoxAABBComponent(Actor* pOwner, int pUpdateOder, Vector3D pSize, Vector3D pRelativePosition)
-    : ColliderComponent(pOwner, pUpdateOder)
-{
-    //pOwner->AddComponent(this);
-    SetRelativePosition(pRelativePosition);
-    mPosition = pOwner->GetTransformComponent().GetPosition() + GetRelativePosition(); 
-    mLastPosition = mPosition;
-    mSize = pSize;
-}
-
 BoxAABBComponent::~BoxAABBComponent()
 {
 }
@@ -30,10 +20,16 @@ void BoxAABBComponent::Deserialize(const rapidjson::Value& pData)
     mPosition = mOwner->GetTransformComponent().GetPosition() + GetRelativePosition();
     mLastPosition = mPosition;
     mSize = mOwner->GetTransformComponent().GetSize();
+
+    if (pData.HasMember("isQuerry") && pData["isQuerry"].IsBool())
+    {
+        SetIsQuerry(pData["isQuerry"].GetBool());
+    }
 }
 
 void BoxAABBComponent::OnStart()
 {
+    
 }
 
 void BoxAABBComponent::Update()

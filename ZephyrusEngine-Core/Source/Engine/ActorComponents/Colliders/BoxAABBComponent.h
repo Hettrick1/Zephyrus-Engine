@@ -13,7 +13,6 @@ class BoxAABBComponent : public ColliderComponent
 public:
 	BoxAABBComponent() = delete;
 	BoxAABBComponent(Actor* pOwner);
-	BoxAABBComponent(Actor* pOwner, int pUpdateOder, Vector3D pSize = 1, Vector3D pRelativePosition = 0);
 	~BoxAABBComponent();
 
 	void Deserialize(const rapidjson::Value& pData) override;
