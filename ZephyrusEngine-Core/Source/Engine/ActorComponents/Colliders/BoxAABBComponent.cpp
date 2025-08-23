@@ -5,6 +5,11 @@
 #include <algorithm>
 #include <iostream>
 
+BoxAABBComponent::BoxAABBComponent(Actor* pOwner)
+    : ColliderComponent(pOwner, 0)
+{
+}
+
 BoxAABBComponent::BoxAABBComponent(Actor* pOwner, int pUpdateOder, Vector3D pSize, Vector3D pRelativePosition)
     : ColliderComponent(pOwner, pUpdateOder)
 {
@@ -17,6 +22,14 @@ BoxAABBComponent::BoxAABBComponent(Actor* pOwner, int pUpdateOder, Vector3D pSiz
 
 BoxAABBComponent::~BoxAABBComponent()
 {
+}
+
+void BoxAABBComponent::Deserialize(const rapidjson::Value& pData)
+{
+    Component::Deserialize(pData);
+    mPosition = mOwner->GetTransformComponent().GetPosition() + GetRelativePosition();
+    mLastPosition = mPosition;
+    mSize = mOwner->GetTransformComponent().GetSize();
 }
 
 void BoxAABBComponent::OnStart()
