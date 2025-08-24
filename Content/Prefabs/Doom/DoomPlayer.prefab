@@ -1,0 +1,56 @@
+{
+    "name": "DoomPlayerActor",
+    "state": "active",
+    "transform": {
+        "position": [-48, 0, 0],
+        "size": [1, 1, 1],
+        "rotation": [0, 0, -90]
+    },
+    "components": [
+        {
+            "type": "RigidbodyComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [90, 0, 0],
+                "isStatic" : true,
+                "friction" : 1.0
+            }
+        },
+        {
+            "type": "DoomPC",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [0, 0, 0]
+            }
+        },
+        {
+            "type": "CameraComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0.4],
+                "relativeRotation" : [0, 0, 0]
+            }
+        },
+        {
+            "type": "FlipbookComponent", 
+            "properties": {
+                "relativePosition" : [0, 2, 0.2],
+                "relativeRotation" : [89, 0, 0]
+            }
+        },
+        {
+            "type": "BoxAABBComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0.4],
+                "relativeRotation" : [0, 0, 0],
+                "isQuerry" : true
+            }
+        },
+        {
+            "type": "DoomPlayerComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0.4],
+                "relativeRotation" : [0, 0, 0]
+            }
+        }
+    ]
+}
