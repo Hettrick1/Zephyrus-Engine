@@ -2,6 +2,7 @@
 #include "Actor/Actor.h"
 #include "CameraManager.h"
 #include "CameraComponent.h"
+#include "DoomPlayerComponent.h"
 
 PickUpComponent::PickUpComponent(Actor* pOwner, int updateOder)
 	: Component(pOwner, updateOder), mType(PickUpType::Amo)
@@ -70,21 +71,25 @@ void PickUpComponent::OnTriggerEnter(ColliderComponent* collider, HitResult* inf
 {
 	if (infos->HitActor->GetTag() == "Player")
 	{
+		DoomPlayerComponent* playerComp = infos->HitActor->GetComponentOfType<DoomPlayerComponent>();
 		switch (mType)
 		{
 		case PickUpType::Health:
 			{
+				mOwner->SetActive(ActorState::Paused);
+				playerComp->PickUpHealth(20);
 				break;
 			}
 		case PickUpType::Shield:
 			{
+				mOwner->SetActive(ActorState::Paused);
+				playerComp->PickUpShield(15);
 				break;
 			}
 		case PickUpType::Amo:
 			{
 				mOwner->SetActive(ActorState::Paused);
-				//DoomPlayer* player = static_cast<DoomPlayer*>(infos->HitActor);
-				//player->PickUpAmo(10);
+				playerComp->PickUpAmo(10);
 				break;
 			}
 		}

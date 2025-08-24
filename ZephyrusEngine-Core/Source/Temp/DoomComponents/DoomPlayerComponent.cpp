@@ -64,6 +64,7 @@ void DoomPlayerComponent::OnStart()
 	mGun->SetAnimationTextures(mGunAnim);
 	mGun->SetAnimationFps(8);
 	mGun->SetCullOff(true);
+	mGun->SetDrawOrder(100000000);
 
 	mWeaponIconImage = new HudImage(gunIcon, Vector2D(400, -980), Vector2D(10, 10));
 	mWeaponIconImage->SetDrawOrder(100.0f);

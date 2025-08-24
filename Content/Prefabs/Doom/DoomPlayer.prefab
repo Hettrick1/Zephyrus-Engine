@@ -34,7 +34,8 @@
             "type": "FlipbookComponent", 
             "properties": {
                 "relativePosition" : [0, 2, 0.2],
-                "relativeRotation" : [89, 0, 0]
+                "relativeRotation" : [90, 0, 0],
+                "cullOff" : true
             }
         },
         {

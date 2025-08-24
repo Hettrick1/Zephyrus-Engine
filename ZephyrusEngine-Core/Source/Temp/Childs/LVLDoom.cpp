@@ -25,9 +25,10 @@ void LVLDoom::Start(IRenderer* renderer)
 	mPlayer->SetPosition(Vector3D(-48, 0, 0));
 	mPlayer->RotateZ(-90);*/
 
-	PrefabFactory::CreateActorFromPrefab("Doom/DoomPlayer");
+	auto player = PrefabFactory::CreateActorFromPrefab("Doom/DoomPlayer");
+	player->SetPosition(Vector3D(-45, 0, 0));
+	player->SetTag("Player");
 
-	//PrefabFactory::CreateActorFromPrefab("CameraActor");
 	auto actor = PrefabFactory::CreateActorFromPrefab("SkyBoxActor");
 	CubeTextureMap cubemap;
 	cubemap.CreateCubeTextureMap({

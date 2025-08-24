@@ -5,7 +5,7 @@
 
 FlipbookComponent::FlipbookComponent(Actor* pOwner, int pDrawOrder)
 	: SpriteComponent(pOwner), mCurrentFrame(0.0f), mAnimationFps(24.0f)
-	, mHasFinished(true), mCanPlay(true), mCanPlayPending(false), mPlayOnce(false), mIsLooping(false)
+	, mHasFinished(true), mCanPlay(true), mCanPlayPending(false), mPlayOnce(false), mIsLooping(false), mAnimationTextures({})
 {
 }
 
@@ -16,7 +16,7 @@ FlipbookComponent::~FlipbookComponent()
 
 void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
 {
-	Component::Deserialize(pData);
+	SpriteComponent::Deserialize(pData);
 
 	if (pData.HasMember("textures") && pData["textures"].IsArray())
 	{
@@ -31,6 +31,13 @@ void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
 					Texture* texture = Assets::LoadTexture(element.GetString(), element.GetString());
 					mAnimationTextures.push_back(texture);
 				}
+			}
+			if (mAnimationTextures.size() > 0)
+			{
+				SetTexture(*mAnimationTextures[0]);
+				mCurrentFrame = 0.0f;
+				mPlayOnce = false;
+				mHasFinished = true;
 			}
 		}
 	}

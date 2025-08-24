@@ -7,10 +7,16 @@
 SpriteComponent::SpriteComponent(Actor* pOwner)
 	: Component(pOwner), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)
 {
+	mOwner->GetScene().GetRenderer()->AddSprite(this);
 }
 
 SpriteComponent::~SpriteComponent()
 {
+}
+
+void SpriteComponent::Update()
+{
+	Component::Update();
 }
 
 void SpriteComponent::Deserialize(const rapidjson::Value& pData)
@@ -33,9 +39,12 @@ void SpriteComponent::Deserialize(const rapidjson::Value& pData)
 			}
 		}
 	}
+	if (pData.HasMember("cullOff") && pData["cullOff"].IsBool())
+	{
+		SetCullOff(pData["cullOff"].GetBool());
+	}
 	aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 	aspectRatioInv = 1 / aspectRatio;
-	mOwner->GetScene().GetRenderer()->AddSprite(this);
 }
 
 void SpriteComponent::SetTexture(const Texture& pTexture)
@@ -51,6 +60,8 @@ void SpriteComponent::SetTexture(const Texture& pTexture)
 		mTexHeight = mTexHeightOverride;
 		mTexture.OverrideTextureSize(mTexWidth, mTexHeight);
 	}
+	aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
+	aspectRatioInv = 1 / aspectRatio;
 }
 
 void SpriteComponent::SetFlipMethode(IRenderer::Flip pFlipMethode)
@@ -101,4 +112,9 @@ Matrix4DRow SpriteComponent::GetWorldTransform()
 	}
 
 	return mRelativeTransform;
+}
+
+void SpriteComponent::SetDrawOrder(const int pOrder)
+{
+	mDrawOrder = pOrder;
 }

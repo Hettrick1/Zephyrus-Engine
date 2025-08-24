@@ -14,7 +14,9 @@ filter "system:windows"
    postbuildcommands
    {
       'rmdir /S /Q "%{cfg.targetdir}\\..\\Content"',
-      '{COPYDIR} ../Content "%{cfg.targetdir}\\..\\Content"'
+      '{COPYDIR} ../Content "%{cfg.targetdir}\\..\\Content"',
+      'rmdir /S /Q "%{cfg.targetdir}\\..\\Config"',
+      '{COPYDIR} ../Config "%{cfg.targetdir}\\..\\Config"'
    }
 filter "system:linux"
    postbuildcommands

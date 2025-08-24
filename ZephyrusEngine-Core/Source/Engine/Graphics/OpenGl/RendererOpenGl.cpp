@@ -10,6 +10,7 @@
 #include "HudManager.h"
 #include "TextRenderer.h"
 #include "Assets.h"
+#include <algorithm>
 
 RendererOpenGl::RendererOpenGl()
 	: mVAO(nullptr), mWindow(nullptr), mSpriteShaderProgram(nullptr), mHud(nullptr), mDebugRenderer(nullptr), mWireFrameMode(false), mSkySphereComponent(nullptr)
@@ -231,6 +232,12 @@ void RendererOpenGl::DrawSprites()
 	mSpriteShaderProgram->Use(); 
 	mSpriteShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
 	mVAO->SetActive(); 
+
+	std::sort(mSprites.begin(), mSprites.end(), [](const auto& a, const auto& b)
+		{
+			return a->GetDrawOrder() < b->GetDrawOrder();
+		});
+
 	for (SpriteComponent* sprite : mSprites) {
 		Matrix4DRow world = sprite->GetWorldTransform();
 		mSpriteShaderProgram->setMatrix4Row("uWorldTransform", world);

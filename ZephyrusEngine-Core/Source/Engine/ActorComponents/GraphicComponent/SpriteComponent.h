@@ -22,6 +22,8 @@ public:
 	SpriteComponent(Actor* pOwner);
 	virtual ~SpriteComponent();
 
+	virtual void Update() override;
+
 	void Deserialize(const rapidjson::Value& pData) override;
 
 	static Component* Create(Actor* pOwner) { return new SpriteComponent(pOwner); }
@@ -36,6 +38,8 @@ public:
 	void SetCullOff(bool cull);
 	// Returns the world transform matrix for the sprite
 	Matrix4DRow GetWorldTransform() override;
+
+	void SetDrawOrder(const int pOrder);
 
 	inline Texture& GetTexture() { return mTexture; }
 	inline int GetDrawOrder() const { return mDrawOrder; }

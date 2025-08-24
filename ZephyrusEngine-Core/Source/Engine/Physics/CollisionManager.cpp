@@ -234,6 +234,10 @@ bool CollisionManager::LineTrace(const Vector3D& start, const Vector3D& end, Hit
             {
                 continue;
             }
+            if (collider->GetIsQuerry())
+            {
+                continue;
+            }
 
             AABB aabb = collider->GetAABB();
             float hitDistance;

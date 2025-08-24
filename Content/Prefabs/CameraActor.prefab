@@ -11,7 +11,7 @@
             "type": "CameraComponent",
             "properties": {
                 "relativePosition" : [0, 0, 0],
-                "relativeRotation" : [20, 0, 0]
+                "relativeRotation" : [0, 0, 0]
             }
         }
     ]
