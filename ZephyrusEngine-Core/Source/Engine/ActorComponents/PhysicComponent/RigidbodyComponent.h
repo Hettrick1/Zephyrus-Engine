@@ -27,6 +27,10 @@ public:
 	RigidbodyComponent(const RigidbodyComponent&) = delete;
 	RigidbodyComponent& operator=(const RigidbodyComponent&) = delete;
 
+	void Deserialize(const rapidjson::Value& pData) override;
+
+	static Component* Create(Actor* pOwner) { return new RigidbodyComponent(pOwner); }
+
 	void Update(); // Updates the physics state of the rigidbody
 	void ApplyForce(Vector3D pForce); // Applies a continuous force to the rigidbody
 	void AddImpulse(Vector3D pImpulse); // Applies an instant impulse to the rigidbody

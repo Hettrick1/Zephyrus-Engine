@@ -7,6 +7,10 @@
 #include "BoxAABBComponent.h"
 #include "SpriteComponent.h"
 #include "Temp/DoomComponents/PickUpComponent.h"
+#include "Temp/DoomComponents/DoomPC.h"
+#include "Temp/DoomComponents/DoomPlayerComponent.h"
+#include "FlipbookComponent.h"
+#include "RigidbodyComponent.h"
 
 void ComponentRegister::RegisterAllComponents()
 {
@@ -17,4 +21,8 @@ void ComponentRegister::RegisterAllComponents()
 	ComponentFactory::Instance().Register("BoxAABBComponent", BoxAABBComponent::Create);
 	ComponentFactory::Instance().Register("SpriteComponent", SpriteComponent::Create);
 	ComponentFactory::Instance().Register("PickUpComponent", PickUpComponent::Create);
+	ComponentFactory::Instance().Register("DoomPC", DoomPC::Create);
+	ComponentFactory::Instance().Register("DoomPlayerComponent", DoomPlayerComponent::Create);
+	ComponentFactory::Instance().Register("FlipbookComponent", FlipbookComponent::Create);
+	ComponentFactory::Instance().Register("RigidbodyComponent", RigidbodyComponent::Create);
 }

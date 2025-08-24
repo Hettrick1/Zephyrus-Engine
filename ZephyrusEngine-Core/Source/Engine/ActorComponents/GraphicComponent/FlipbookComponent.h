@@ -15,11 +15,15 @@ private:
 	float mAnimationFps;
 	bool mIsLooping, mPlayOnce, mHasFinished, mCanPlay, mCanPlayPending;
 public:
-	FlipbookComponent(Actor* pOwner, const std::vector<Texture*>& pTextures, int pDrawOrder = 100);
+	FlipbookComponent(Actor* pOwner, int pDrawOrder = 100);
 	virtual ~FlipbookComponent();
 	FlipbookComponent() = delete;
 	FlipbookComponent(const FlipbookComponent&) = delete;
 	FlipbookComponent& operator=(const FlipbookComponent&) = delete;
+
+	void Deserialize(const rapidjson::Value& pData) override;
+
+	static Component* Create(Actor* pOwner) { return new FlipbookComponent(pOwner); }
 
 	// Sets the textures used for the animation
 	void SetAnimationTextures(const std::vector<Texture*>& pTextures);

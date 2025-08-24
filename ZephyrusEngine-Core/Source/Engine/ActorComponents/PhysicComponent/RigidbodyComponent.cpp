@@ -14,6 +14,21 @@ RigidbodyComponent::RigidbodyComponent(Actor* pOwner, int pUpdateOrder)
     pOwner->SetRigidBody(this);
 }
 
+void RigidbodyComponent::Deserialize(const rapidjson::Value& pData)
+{
+	Component::Deserialize(pData);
+
+	if (pData.HasMember("isStatic") && pData["isStatic"].IsBool())
+	{
+		SetIsStatic(pData["isStatic"].GetBool());
+	}
+
+	if (pData.HasMember("friction") && pData["friction"].IsFloat())
+	{
+		SetFriction(pData["friction"].GetFloat());
+	}
+}
+
 void RigidbodyComponent::Update()
 {
 	if (mUseGravity && mGravity != 0 && !mIsGrounded)
@@ -83,7 +98,14 @@ void RigidbodyComponent::SetMass(float pMass)
 
 void RigidbodyComponent::SetFriction(float pFriction)
 {
-	mFriction = pFriction;
+	if (pFriction <= 1.0f)
+	{
+		mFriction = pFriction;
+	}
+	else
+	{
+		mFriction = 1.0f;
+	}
 }
 
 void RigidbodyComponent::SetUseGravity(bool pUseGravity)

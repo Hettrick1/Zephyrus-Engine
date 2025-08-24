@@ -1,23 +1,43 @@
 #include "FlipbookComponent.h"
 
 #include "Timer.h"
+#include "Assets.h"
 
-FlipbookComponent::FlipbookComponent(Actor* pOwner, const std::vector<Texture*>& pTextures, int pDrawOrder)
+FlipbookComponent::FlipbookComponent(Actor* pOwner, int pDrawOrder)
 	: SpriteComponent(pOwner), mCurrentFrame(0.0f), mAnimationFps(24.0f)
 	, mHasFinished(true), mCanPlay(true), mCanPlayPending(false), mPlayOnce(false), mIsLooping(false)
 {
-	SetAnimationTextures(pTextures);
-	SetTexture(*pTextures[0]);
 }
 
 FlipbookComponent::~FlipbookComponent()
 {
-	while (mAnimationTextures.size() > 0)
-	{
-		delete mAnimationTextures.back();
-		mAnimationTextures.pop_back();
-	}
 	mAnimationTextures.clear();
+}
+
+void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
+{
+	Component::Deserialize(pData);
+
+	if (pData.HasMember("textures") && pData["textures"].IsArray())
+	{
+		const auto& arr = pData["textures"].GetArray();
+
+		if (!arr.Empty())
+		{
+			for (auto& element : arr)
+			{
+				if (element.IsString())
+				{
+					Texture* texture = Assets::LoadTexture(element.GetString(), element.GetString());
+					mAnimationTextures.push_back(texture);
+				}
+			}
+		}
+	}
+	if (pData.HasMember("animFps") && pData["animFps"].IsFloat())
+	{
+		SetAnimationFps(pData["animFps"].GetFloat());
+	}
 }
 
 void FlipbookComponent::SetAnimationTextures(const std::vector<Texture*>& pTextures)
