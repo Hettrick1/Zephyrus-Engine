@@ -8,10 +8,10 @@
 #include "Timer.h"
 #include "CameraComponent.h"
 #include "FlipbookComponent.h"
-#include "DoomPlayer.h"
 #include "Scene.h"
 #include "SceneManager.h"
 #include "Physics/PhysicManager.h"
+#include "DoomPlayerComponent.h"
 
 DoomPC::DoomPC(Actor* pOwner, int pUpdateOrder)
 	: Component(pOwner, pUpdateOrder), playerRbRef(nullptr), goRight(true), goLeft(true), goForward(true), goBackward(true)
@@ -36,16 +36,22 @@ DoomPC::~DoomPC()
 	}
 }
 
+void DoomPC::Deserialize(const rapidjson::Value& pData)
+{
+	Component::Deserialize(pData);
+}
+
 void DoomPC::OnActionStarted(InputActions* action)
 {
 	if (action->GetType() == ActionType::Boolean)
 	{
 		BooleanActions* Triggeredaction = static_cast<BooleanActions*>(action);
+		DoomPlayerComponent* playerComponentRef = mOwner->GetComponentOfType<DoomPlayerComponent>();
 		if (Triggeredaction && Triggeredaction->GetName() == "Shoot")
 		{
 			FlipbookComponent* fb = mOwner->GetComponentOfType<FlipbookComponent>();
 			int amoNeeded = 0;
-			if (mPlayerRef->GetWeapon() == Weapons::Gun)
+			if (playerComponentRef->GetWeapon() == Weapons::Gun)
 			{
 				amoNeeded = 1;
 			}
@@ -53,15 +59,15 @@ void DoomPC::OnActionStarted(InputActions* action)
 			{
 				amoNeeded = 2;
 			}
-			if (mPlayerRef->GetAmo() >= amoNeeded && fb->IsAnimationEnded())
+			if (playerComponentRef->GetAmo() >= amoNeeded && fb->IsAnimationEnded())
 			{
 				fb->PlayAnimation();
-				mPlayerRef->Shoot(amoNeeded);
+				playerComponentRef->Shoot(amoNeeded);
 			}
 		}
 		if (Triggeredaction && Triggeredaction->GetName() == "ChangeWeapon")
 		{
-			mPlayerRef->ChangeWeapon();
+			playerComponentRef->ChangeWeapon();
 		}
 		if (Triggeredaction && Triggeredaction->GetName() == "WireFrame")
 		{
@@ -166,9 +172,4 @@ void DoomPC::Update()
 		playerRbRef = mOwner->GetRigidBody();
 		ZP_CORE_ERROR("Rigidboy not set in the player controller");
 	}
-}
-
-void DoomPC::SetPlayerRef(DoomPlayer* playerRef)
-{
-	mPlayerRef = playerRef;
 }

@@ -1,4 +1,5 @@
 #include "HudManager.h"
+#include <algorithm>
 
 void HudManager::AddElement(HudElement* pElement)
 {
@@ -7,6 +8,11 @@ void HudManager::AddElement(HudElement* pElement)
 
 void HudManager::Draw(RendererOpenGl& pRenderer)
 {
+    std::sort(mHudElements.begin(), mHudElements.end(), [](const auto& a, const auto& b) 
+        {
+            return a->GetDrawOrder() < b->GetDrawOrder();
+        });
+
     for (auto& element : mHudElements) {
         element->Draw(pRenderer);
     }

@@ -17,9 +17,6 @@ BoxAABBComponent::~BoxAABBComponent()
 void BoxAABBComponent::Deserialize(const rapidjson::Value& pData)
 {
     Component::Deserialize(pData);
-    mPosition = mOwner->GetTransformComponent().GetPosition() + GetRelativePosition();
-    mLastPosition = mPosition;
-    mSize = mOwner->GetTransformComponent().GetSize();
 
     if (pData.HasMember("isQuerry") && pData["isQuerry"].IsBool())
     {
@@ -29,7 +26,9 @@ void BoxAABBComponent::Deserialize(const rapidjson::Value& pData)
 
 void BoxAABBComponent::OnStart()
 {
-    
+    mPosition = mOwner->GetTransformComponent().GetPosition() + GetRelativePosition();
+    mLastPosition = mPosition;
+    mSize = mOwner->GetTransformComponent().GetSize();
 }
 
 void BoxAABBComponent::Update()

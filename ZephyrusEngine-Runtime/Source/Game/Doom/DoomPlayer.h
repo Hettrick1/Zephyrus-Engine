@@ -4,7 +4,7 @@
 #include "Actor.h"
 #include "HudElements/HudText.h"
 #include "HudElements/HudImage.h"
-#include "Weapons.h"
+#include "Temp/DoomComponents/Weapons.h"
 
 class DoomPlayer : public Actor
 {

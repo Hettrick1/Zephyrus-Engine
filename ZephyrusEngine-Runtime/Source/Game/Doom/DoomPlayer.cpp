@@ -1,5 +1,5 @@
 #include "DoomPlayer.h"
-#include "DoomPC.h"
+#include "Temp/DoomComponents/DoomPC.h"
 #include "CameraComponent.h"
 #include "RigidbodyComponent.h"
 #include "SpriteComponent.h"
@@ -14,14 +14,14 @@
 #include "BoxAABBComponent.h"
 #include "DoomEnemy.h"
 #include "SceneManager.h"
-#include "Childs/LVLDoomMainMenu.h"
+#include "Temp/Childs/LVLDoomMainMenu.h"
 
-float bobingTime = 0;
-const float gunDamages = 25;
-const float shotgunDamages = 25;
-const float gunRange = 30;
-const float shotgunRange = 20;
-const float shotgunSpreadAngle = 4;
+//float bobingTime = 0;
+//const float gunDamages = 25;
+//const float shotgunDamages = 25;
+//const float gunRange = 30;
+//const float shotgunRange = 20;
+//const float shotgunSpreadAngle = 4;
 
 
 DoomPlayer::DoomPlayer()
@@ -52,9 +52,7 @@ void DoomPlayer::Start()
 	RigidbodyComponent* rigidBody = new RigidbodyComponent(this);
 	rigidBody->SetIsStatic(true);
 	rigidBody->SetFriction(1.0);
-	SetRigidBody(rigidBody);
 	DoomPC* playerController = new DoomPC(this, 1);
-	playerController->SetPlayerRef(this);
 	Texture* doomHud = Assets::LoadTexture("Sprites/Doom/DoomHud.png", "doomHud");
 	gunIcon = *Assets::LoadTexture("Sprites/Doom/DoomHudGunIcon.png", "gunIcon");
 	shotgunIcon = *Assets::LoadTexture("Sprites/Doom/DoomHudShotGunIcon.png", "shotgunIcon");
@@ -83,7 +81,8 @@ void DoomPlayer::Start()
 
 	CameraComponent* cameraComponent = new CameraComponent(this);
 	cameraComponent->SetRelativePosition(Vector3D(0,0, 0.4));
-	mGun = new FlipbookComponent(this, mGunAnim, 100000000);
+	mGun = new FlipbookComponent(this, 100000000);
+	mGun->SetAnimationTextures(mGunAnim);
 	mGun->SetRelativePosition(Vector3D(0.0f, 2.0f, 0.2f));
 	mGun->RelativeRotateX(90);
 	mGun->SetAnimationFps(8);
@@ -110,7 +109,7 @@ void DoomPlayer::Start()
 void DoomPlayer::Update()
 {
 	Actor::Update();
-	Vector3D bobbing = mGun->GetRelativePosition();
+	/*Vector3D bobbing = mGun->GetRelativePosition();
 	if (GetRigidBody()->GetVelocity().LengthSq() > 1) {
 
 		bobingTime += Timer::deltaTime * 10.0f;
@@ -134,7 +133,7 @@ void DoomPlayer::Update()
 	{
 		mDamageIndicatorAlpha -= Timer::deltaTime;
 		mDamageIndicatorImage->SetTint(Vector4D(1.0, 1.0, 1.0, mDamageIndicatorAlpha));
-	}
+	}*/
 }
 
 void DoomPlayer::Destroy()
@@ -176,62 +175,62 @@ void DoomPlayer::ChangeWeapon()
 
 void DoomPlayer::Shoot(int pAmoQuantity)
 {
-	switch (mWeapon) {
-		case Weapons::Gun:
-		{
-			const float range = gunRange;
-			Vector3D start = GetTransformComponent().GetPosition();
-			start.z -= 0.0f;
-			Vector3D end = start + GetTransformComponent().GetWorldTransform().GetYAxis() * range;
-			HitResult hit;
-			PhysicManager::Instance().LineTrace(start, end, hit, this);
-			DebugLine* line = new DebugLine(start, end, hit);
-			GetScene().GetRenderer()->AddDebugLine(line);
-			UseAmo(pAmoQuantity);
+	//switch (mWeapon) {
+	//	case Weapons::Gun:
+	//	{
+	//		const float range = gunRange;
+	//		Vector3D start = GetTransformComponent().GetPosition();
+	//		start.z -= 0.0f;
+	//		Vector3D end = start + GetTransformComponent().GetWorldTransform().GetYAxis() * range;
+	//		HitResult hit;
+	//		PhysicManager::Instance().LineTrace(start, end, hit, this);
+	//		DebugLine* line = new DebugLine(start, end, hit);
+	//		GetScene().GetRenderer()->AddDebugLine(line);
+	//		UseAmo(pAmoQuantity);
 
-			if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
-			{
-				DoomEnemy* enemy = static_cast<DoomEnemy*>(hit.HitActor);
-				enemy->TakeDamage(gunDamages, static_cast<int>(mWeapon));
-			}
+	//		if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
+	//		{
+	//			DoomEnemy* enemy = static_cast<DoomEnemy*>(hit.HitActor);
+	//			enemy->TakeDamage(gunDamages, static_cast<int>(mWeapon));
+	//		}
 
-			break;
-		}
-		case Weapons::Shotgun:
-		{
-			Vector3D start = GetTransformComponent().GetPosition();
-			start.z -= 0.0f;
-			Vector3D baseDirection = GetTransformComponent().GetWorldTransform().GetYAxis();
+	//		break;
+	//	}
+	//	case Weapons::Shotgun:
+	//	{
+	//		Vector3D start = GetTransformComponent().GetPosition();
+	//		start.z -= 0.0f;
+	//		Vector3D baseDirection = GetTransformComponent().GetWorldTransform().GetYAxis();
 
-			const float spreadAngle = shotgunSpreadAngle;
-			const float range = shotgunRange;       
-			float randomAngle = 0;
+	//		const float spreadAngle = shotgunSpreadAngle;
+	//		const float range = shotgunRange;       
+	//		float randomAngle = 0;
 
-			for (int i = 0; i < 4; ++i)
-			{
-				randomAngle = Maths::RandomRange(-spreadAngle, spreadAngle);
-				float randomRadians = Maths::ToRad(randomAngle);
+	//		for (int i = 0; i < 4; ++i)
+	//		{
+	//			randomAngle = Maths::RandomRange(-spreadAngle, spreadAngle);
+	//			float randomRadians = Maths::ToRad(randomAngle);
 
-				// Création d'une matrice de rotation autour de l'axe Z (vertical)
-				Matrix4DRow rotation = Matrix4DRow::CreateRotationZ(randomRadians); 
-				Vector3D dir = rotation.TransformVector(baseDirection);
-				dir.Normalize();
+	//			// Création d'une matrice de rotation autour de l'axe Z (vertical)
+	//			Matrix4DRow rotation = Matrix4DRow::CreateRotationZ(randomRadians); 
+	//			Vector3D dir = rotation.TransformVector(baseDirection);
+	//			dir.Normalize();
 
-				Vector3D end = start + dir * range;
-				HitResult hit;
-				PhysicManager::Instance().LineTrace(start, end, hit, this);
-				DebugLine* line = new DebugLine(start, end, hit);
-				GetScene().GetRenderer()->AddDebugLine(line);
-				if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
-				{
-					DoomEnemy* enemy = static_cast<DoomEnemy*>(hit.HitActor);
-					enemy->TakeDamage(shotgunDamages, static_cast<int>(mWeapon));
-				}
-			}
-			UseAmo(pAmoQuantity);
-			break;
-		}
-	}
+	//			Vector3D end = start + dir * range;
+	//			HitResult hit;
+	//			PhysicManager::Instance().LineTrace(start, end, hit, this);
+	//			DebugLine* line = new DebugLine(start, end, hit);
+	//			GetScene().GetRenderer()->AddDebugLine(line);
+	//			if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
+	//			{
+	//				DoomEnemy* enemy = static_cast<DoomEnemy*>(hit.HitActor);
+	//				enemy->TakeDamage(shotgunDamages, static_cast<int>(mWeapon));
+	//			}
+	//		}
+	//		UseAmo(pAmoQuantity);
+	//		break;
+	//	}
+	//}
 }
 
 void DoomPlayer::UseAmo(int pQuantity)

@@ -12,6 +12,7 @@ class HudElement
 {
 protected:
     Vector2D mPosition;
+    float mDrawOrder = 0;
 public:
     HudElement();
     virtual ~HudElement() = default;
@@ -21,4 +22,7 @@ public:
     void SetPosition(const Vector2D& pPosition);
 
     inline Vector2D GetPosition() const { return mPosition; }
+
+    void SetDrawOrder(float pDrawOrder);
+    inline float GetDrawOrder() const { return mDrawOrder; }
 };

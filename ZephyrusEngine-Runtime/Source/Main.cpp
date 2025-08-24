@@ -1,7 +1,7 @@
 #define SDL_MAIN_HANDLED
 #include "Engine/Editor/Game.h"
-#include "Childs/LVLDoom.h"
-#include "Childs/LVLDoomMainMenu.h"
+#include "Temp/Childs/LVLDoom.h"
+#include "Temp/Childs/LVLDoomMainMenu.h"
 #include "FactoryJSON/ComponentRegister.h"
 
 int main() {

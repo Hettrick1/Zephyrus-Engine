@@ -88,12 +88,14 @@ void DoomEnemy::Start()
 		Assets::LoadTexture("Sprites/Doom/SplashBlood/1_20.png", "MDamage21"),
 		Assets::LoadTexture("Sprites/Doom/SplashBlood/1_21.png", "MDamage22"),
 	};
-	mEnemyFb = new FlipbookComponent(this, EnemyShootAnim, 100);
+	mEnemyFb = new FlipbookComponent(this, 100);
+	mEnemyFb->SetAnimationTextures(EnemyShootAnim);
 	mEnemyFb->RelativeRotateX(90);
 	mEnemyFb->SetAnimationFps(4);
 	mEnemyFb->SetRelativeSize(2);
 
-	mSplashBlood = new FlipbookComponent(this, EnemyDamagesAnim, 1);
+	mSplashBlood = new FlipbookComponent(this, 1);
+	mSplashBlood->SetAnimationTextures(EnemyDamagesAnim);
 	mSplashBlood->SetRelativePosition(Vector3D(0, 0.1, 0.3));
 	mSplashBlood->RelativeRotateX(90);
 	mSplashBlood->SetAnimationFps(40);
