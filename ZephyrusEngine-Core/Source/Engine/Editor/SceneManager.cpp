@@ -19,12 +19,18 @@ void SceneManager::LoadScene(Scene* pScene)
 	if (renderer != nullptr)
 	{
 		ActiveScene->Start(renderer);
+		ActiveScene->PostStart();
 	}
 }
 
 void SceneManager::StartScene(IRenderer* pRenderer)
 {
 	ActiveScene->Start(pRenderer);
+}
+
+void SceneManager::PostStartScene()
+{
+	ActiveScene->PostStart();
 }
 
 void SceneManager::Update()

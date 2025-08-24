@@ -18,6 +18,10 @@ void Scene::Start(IRenderer* pRenderer)
 	mRenderer = pRenderer;
 }
 
+void Scene::PostStart()
+{
+}
+
 void Scene::Load()
 {
 }

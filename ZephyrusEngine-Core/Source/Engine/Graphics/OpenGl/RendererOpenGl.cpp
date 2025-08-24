@@ -218,7 +218,10 @@ void RendererOpenGl::DrawMeshes()
 	glDisable(GL_BLEND);
 	for (MeshComponent* m : mMeshes) 
 	{
-		m->Draw(mView * mProj);
+		if (m->GetOwner()->GetState() == ActorState::Active)
+		{
+			m->Draw(mView * mProj);
+		}
 	}
 }
 

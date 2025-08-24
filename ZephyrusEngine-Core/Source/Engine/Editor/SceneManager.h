@@ -20,6 +20,7 @@ public:
 
 	// Starts the active scene with the provided renderer
 	static void StartScene(IRenderer* pRenderer);
+	static void PostStartScene();
 
 	static void Update();
 	static void Render();

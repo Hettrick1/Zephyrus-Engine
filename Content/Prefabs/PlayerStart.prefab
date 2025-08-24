@@ -1,0 +1,23 @@
+{
+    "name": "PlayerStart",
+    "state": "active",
+    "transform": {
+        "position": [-48, 0, 0],
+        "size": [1, 1, 1],
+        "rotation": [0, 0, -90]
+    },
+    "components": [
+        {
+            "type": "MeshComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0],
+                "relativeRotation" : [0, 0, 0],
+                "mesh" : "sphere.obj",
+                "textures" : [
+                    "Sprites/uv_mapper.jpg"
+                ],
+                "textureIndex" : 1
+            }
+        }
+    ]
+}

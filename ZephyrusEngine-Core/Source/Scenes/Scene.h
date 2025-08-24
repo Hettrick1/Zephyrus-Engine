@@ -21,6 +21,7 @@ protected:
 public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(IRenderer* pRenderer); // Initializes the scene with the given renderer
+	virtual void PostStart();
 	virtual void Load(); // Loads scene resources
 	virtual void Update(); // Updates the scene and its actors
 	virtual void Render(); // Renders the scene

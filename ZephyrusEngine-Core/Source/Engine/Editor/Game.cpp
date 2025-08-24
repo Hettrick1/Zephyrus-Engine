@@ -20,6 +20,32 @@ Game::Game(const std::string& pTitle, Scene* pStartupScene)
         ZP_CORE_INFO("SDL initialization succeeded!");
     }
 
+    std::string fullPath = "../Config/Game.config";
+
+    std::ifstream file(fullPath);
+
+    if (!file.is_open())
+    {
+        ZP_CORE_ERROR("Impossible to open the game.config : " + fullPath);
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string jsonContent = buffer.str();
+
+    rapidjson::Document doc;
+    doc.Parse(jsonContent.c_str());
+
+    if (doc.HasParseError()) {
+        ZP_CORE_ERROR("Parsing JSON failed !");
+        return;
+    }
+
+    if (doc.HasMember("gameName") && doc["gameName"].IsString())
+    {
+        mTitle = doc["gameName"].GetString();
+    }
+
     Initialize();
 }
 
@@ -46,6 +72,7 @@ void Game::Initialize()
 void Game::Loop()
 {
     SceneManager::StartScene(mRenderer);
+    SceneManager::PostStartScene();
 
     while (mIsRunning) {
         Timer::ComputeDeltaTime();
