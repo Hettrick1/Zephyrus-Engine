@@ -2,6 +2,10 @@
 #include "Matrix4DRow.h"
 #include "Vector3D.h"
 #include "rapidjson/document.h"
+#include <algorithm>
+#include <string>
+#include <vector>
+#include <string_view>
 
 class Actor;
 
@@ -20,7 +24,7 @@ protected:
 	Vector3D mRelativePosition;
 	Vector3D mRelativeSize;
 	Quaternion mRelativeRotation;
-
+	std::vector<std::string> mComponentTags;
 public:
 	Component() = delete;
 	Component(Actor* pOwner, int pUpdateOder = 0);
@@ -38,6 +42,13 @@ public:
 	void RelativeRotateX(float pAngle);
 	void RelativeRotateY(float pAngle);
 	void RelativeRotateZ(float pAngle);
+
+	void AddTag(std::string_view pTag);
+	void RemoveTag(std::string_view pTag);
+	inline bool HasTag(std::string_view pTag) const
+	{
+		return std::find(mComponentTags.begin(), mComponentTags.end(), pTag) != mComponentTags.end();
+	}
 
 	// Returns the world transform matrix of the component
 	virtual Matrix4DRow GetWorldTransform();

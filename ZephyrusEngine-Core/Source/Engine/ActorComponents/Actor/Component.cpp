@@ -7,7 +7,6 @@ Component::Component(Actor* pOwner, int pUpdateOder)
     : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
     mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1)
 {
-	//mOwner->AddComponent(this);
 }
 
 Component::~Component()
@@ -42,6 +41,22 @@ void Component::Deserialize(const rapidjson::Value& pData)
     if (auto rot = ReadVector3D(pData, "relativeRotation"))
     {
         SetRelativeRotation(Quaternion(*rot));
+    }
+
+    if (pData.HasMember("tags") && pData["tags"].IsArray())
+    {
+        const auto& arr = pData["tags"].GetArray();
+
+        if (!arr.Empty())
+        {
+            for (auto& element : arr)
+            {
+                if (element.IsString())
+                {
+                    AddTag(element.GetString());
+                }
+            }
+        }
     }
 }
 
@@ -85,6 +100,19 @@ void Component::RelativeRotateZ(float pAngle)
     Quaternion newX(Vector3D::unitZ, piAngle);
     mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
     ComputeRelativeTransform();
+}
+
+void Component::AddTag(std::string_view pTag)
+{
+    if (std::find(mComponentTags.begin(), mComponentTags.end(), pTag) == mComponentTags.end())
+    {
+        mComponentTags.emplace_back(pTag);
+    }
+}
+
+void Component::RemoveTag(std::string_view pTag)
+{
+    mComponentTags.erase(std::remove(mComponentTags.begin(), mComponentTags.end(), pTag),mComponentTags.end());
 }
 
 Matrix4DRow Component::GetWorldTransform()

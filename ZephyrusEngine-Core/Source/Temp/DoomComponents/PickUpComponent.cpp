@@ -69,7 +69,7 @@ inline const char* PickUpComponent::PickUpTypeToString(PickUpType state) {
 
 void PickUpComponent::OnTriggerEnter(ColliderComponent* collider, HitResult* infos)
 {
-	if (infos->HitActor->GetTag() == "Player")
+	if (infos->HitActor->HasTag("Player"))
 	{
 		DoomPlayerComponent* playerComp = infos->HitActor->GetComponentOfType<DoomPlayerComponent>();
 		switch (mType)

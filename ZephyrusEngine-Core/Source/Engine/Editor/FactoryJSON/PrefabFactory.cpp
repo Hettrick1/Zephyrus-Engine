@@ -60,6 +60,22 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
         }
     }
 
+    if (doc.HasMember("tags") && doc["tags"].IsArray())
+    {
+        const auto& arr = doc["tags"].GetArray();
+
+        if (!arr.Empty())
+        {
+            for (auto& element : arr)
+            {
+                if (element.IsString())
+                {
+                    actor->AddTag(element.GetString());
+                }
+            }
+        }
+    }
+
     // creates all the components
     if (doc.HasMember("components") && doc["components"].IsArray()) {
         for (auto& comp : doc["components"].GetArray()) {

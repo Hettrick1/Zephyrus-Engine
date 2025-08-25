@@ -3,6 +3,8 @@
 #include "TransformComponent.h"
 #include "RigidbodyComponent.h"
 #include <vector>
+#include <algorithm>
+#include <string_view>
 
 class Component;
 class Scene;
@@ -22,7 +24,7 @@ protected:
 	std::vector<Component*> mPendingComponents;
 	bool mIsUpdatingComponents = false;
 	std::string mName = "";
-	std::string mTag = "";
+	std::vector<std::string> mTags;
 	float mLod = 0;
 
 public:
@@ -47,15 +49,19 @@ public:
 
 	void SetName(std::string pName);
 	void SetRigidBody(RigidbodyComponent* pRigidbody);
-	void SetTag(const std::string& pTag);
-	bool HasTag(const std::string& pTag);
+	void AddTag(std::string_view  pTag);
+	void RemoveTag(std::string_view pTag);
+	inline bool HasTag(std::string_view pTag) const
+	{
+		return std::find(mTags.begin(), mTags.end(), pTag) != mTags.end();
+	}
 
 	inline std::vector<Component*> GetComponents() const { return mComponents; }
 	inline ActorState GetState() const { return mState; }
 	inline Scene& GetScene() const { return mScene; }
 	inline TransformComponent& GetTransformComponent() { return mTransformComponent; }
 	inline RigidbodyComponent* GetRigidBody() const { return mRigidbody; }
-	inline std::string GetTag() const { return mTag; }
+	inline std::vector<std::string> GetTag() const { return mTags; }
 	inline float GetLod() const { return mLod; }
 	inline std::string GetName() const { return mName; }
 
@@ -70,6 +76,19 @@ public:
 			if (result != nullptr) return result;
 		}
 		return nullptr;
+	}
+	template<typename  C>
+	std::vector<C*> GetAllComponentOfType() const
+	{
+		std::vector<C*> result;
+		for (Component* component : mComponents)
+		{
+			if (auto comp = dynamic_cast<C*>(component))
+			{
+				result.push_back(comp);
+			}
+		}
+		return result;
 	}
 
 	// Update the transform of all components

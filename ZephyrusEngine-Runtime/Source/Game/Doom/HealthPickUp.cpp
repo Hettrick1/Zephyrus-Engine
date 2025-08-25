@@ -53,7 +53,7 @@ void HealthPickUp::Destroy()
 void HealthPickUp::OnTriggerEnter(ColliderComponent* collider, HitResult* infos)
 {
 	SetActive(ActorState::Paused);
-	if (infos->HitActor->GetTag() == "Player")
+	if (infos->HitActor->HasTag("Player"))
 	{
 		DoomPlayer* player = static_cast<DoomPlayer*>(infos->HitActor);
 		player->PickUpHealth(10);

@@ -5,7 +5,7 @@
 #include <algorithm>
 
 Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation, std::string pName) :
-    mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mTag(""), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
+    mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
 {
     mTransformComponent.SetPosition(pPosition);
     mTransformComponent.SetSize(pSize);
@@ -14,7 +14,7 @@ Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation, std::stri
 }
 
 Actor::Actor(std::string pName)
-    : mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mTag(""), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
+    : mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
 {
     mTransformComponent.SetPosition(0);
     mTransformComponent.SetSize(1);
@@ -161,21 +161,17 @@ void Actor::SetRigidBody(RigidbodyComponent* pRigidbody)
     }
 }
 
-void Actor::SetTag(const std::string& pTag)
+void Actor::AddTag(std::string_view pTag)
 {
-    mTag = pTag;
+    if (std::find(mTags.begin(), mTags.end(), pTag) == mTags.end())
+    {
+        mTags.emplace_back(pTag);
+    }
 }
 
-bool Actor::HasTag(const std::string& pTag)
+void Actor::RemoveTag(std::string_view  pTag)
 {
-    if (mTag == pTag) 
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    mTags.erase(std::remove(mTags.begin(), mTags.end(), pTag), mTags.end());
 }
 
 void Actor::UpdateComponentsTransform()

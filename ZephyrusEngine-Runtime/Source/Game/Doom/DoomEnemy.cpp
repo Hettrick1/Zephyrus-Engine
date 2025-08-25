@@ -101,7 +101,7 @@ void DoomEnemy::Start()
 	mSplashBlood->SetAnimationFps(40);
 	mSplashBlood->SetRelativeSize(1.3);
 
-	SetTag("Enemy");
+	AddTag("Enemy");
 
 	//BoxAABBComponent* bc = new BoxAABBComponent(this, 10, Vector3D(0.4,0.4,1.0), Vector3D(0, 0, 0));
 }
@@ -162,7 +162,7 @@ void DoomEnemy::Update()
 			PhysicManager::Instance().LineTrace(start, end, hit, this);
 			DebugLine* line = new DebugLine(start, end, hit);
 			GetScene().GetRenderer()->AddDebugLine(line);
-			if (hit.HitActor != nullptr && hit.HitActor->GetTag() == "Player")
+			if (hit.HitActor != nullptr && hit.HitActor->HasTag("Player"))
 			{
 				mPlayerRef->TakeDamages(damages);
 			}

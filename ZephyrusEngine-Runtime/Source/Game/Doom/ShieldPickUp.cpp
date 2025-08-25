@@ -49,7 +49,7 @@ void ShieldPickUp::Destroy()
 void ShieldPickUp::OnTriggerEnter(ColliderComponent* collider, HitResult* infos)
 {
 	SetActive(ActorState::Paused);
-	if (infos->HitActor->GetTag() == "Player")
+	if (infos->HitActor->HasTag("Player"))
 	{
 		DoomPlayer* player = static_cast<DoomPlayer*>(infos->HitActor);
 		player->PickUpShield(10);

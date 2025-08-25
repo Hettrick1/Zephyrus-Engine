@@ -103,7 +103,7 @@ void DoomPlayer::Start()
 	/*BoxAABBComponent* bc = new BoxAABBComponent(this, 10, 0.1, Vector3D(0, 0, -0.12));
 	bc->SetIsQuerry(true);*/
 
-	SetTag("Player");
+	AddTag("Player");
 }
 
 void DoomPlayer::Update()
