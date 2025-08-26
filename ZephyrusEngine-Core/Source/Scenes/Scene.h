@@ -18,6 +18,7 @@ protected:
 	std::vector<Actor*> mAllActors;
 	std::vector<Actor*> mPendingActors;
 	bool mIsUpdatingActor;
+	Actor* mPlayerRef = nullptr;
 public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(IRenderer* pRenderer); // Initializes the scene with the given renderer
@@ -32,6 +33,8 @@ public:
 	virtual void AddActor(Actor* pActor); // Adds an actor to the scene
 	virtual void UpdateAllActors(); // Updates all actors in the scene
 	virtual void RemoveActor(Actor* pActor); // Removes an actor from the scene
+
+	inline Actor* GetPlayerRef() const { return mPlayerRef; }
 
 public : 
 	inline IRenderer* GetRenderer() const { return mRenderer; }
