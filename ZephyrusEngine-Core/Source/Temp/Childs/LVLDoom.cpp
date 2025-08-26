@@ -21,9 +21,6 @@ void LVLDoom::Start(IRenderer* renderer)
 	Scene::Start(renderer);
 	
 	GetRenderer()->GetDebugRenderer()->SetDrawDebug(true);
-	/*mPlayer = new DoomPlayer();
-	mPlayer->SetPosition(Vector3D(-48, 0, 0));
-	mPlayer->RotateZ(-90);*/
 
 	mPlayerStart = PrefabFactory::CreateActorFromPrefab("PlayerStart");
 	mPlayerStart->SetPosition(Vector3D(-45, 0, 0));
@@ -151,17 +148,22 @@ void LVLDoom::Start(IRenderer* renderer)
 	auto shieldPu2 = PrefabFactory::CreateActorFromPrefab("Doom/ShieldPickUp");
 	shieldPu2->SetPosition(Vector3D(-40, 40, -0.5));
 
-	/*
-	DoomEnemy* enemy = new DoomEnemy(mPlayer, Vector3D(-10, -20, -0.1));
-	DoomEnemy* enemy2 = new DoomEnemy(mPlayer, Vector3D(-10, 20, -0.1));
-	DoomEnemy* enemy3 = new DoomEnemy(mPlayer, Vector3D(-10, 0, -0.1));
-	DoomEnemy* enemy4 = new DoomEnemy(mPlayer, Vector3D(-45, -45, -0.1));
-	DoomEnemy* enemy5 = new DoomEnemy(mPlayer, Vector3D(-45, 45, -0.1));*/
+	auto enemy = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	enemy->SetPosition(Vector3D(-10, -20, -0.1));
+	auto enemy2 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	enemy2->SetPosition(Vector3D(-10, 20, -0.1));
+	auto enemy3 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	enemy3->SetPosition(Vector3D(-10, 0, -0.1));
+	auto enemy4 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	enemy4->SetPosition(Vector3D(-45, -45, -0.1));
+	auto enemy5 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	enemy5->SetPosition(Vector3D(-45, 45, -0.1));
 }
 
 void LVLDoom::PostStart()
 {
 	// it will be directly in the scene file but for now it's in the game.ini
+	// NOT FINAL
 
 	std::string fullPath = "../Config/Game.config";
 
@@ -186,31 +188,31 @@ void LVLDoom::PostStart()
 
 	if (doc.HasMember("playerActor") && doc["playerActor"].IsString())
 	{
-		auto player = PrefabFactory::CreateActorFromPrefab(doc["playerActor"].GetString());
-		if (player)
+		mPlayerRef = PrefabFactory::CreateActorFromPrefab(doc["playerActor"].GetString());
+		if (mPlayerRef)
 		{
 			if (mPlayerStart)
 			{
-				player->SetPosition(mPlayerStart->GetTransformComponent().GetPosition());
-				player->SetRotation(mPlayerStart->GetTransformComponent().GetRotation());
-				player->SetSize(mPlayerStart->GetTransformComponent().GetSize());
+				mPlayerRef->SetPosition(mPlayerStart->GetTransformComponent().GetPosition());
+				mPlayerRef->SetRotation(mPlayerStart->GetTransformComponent().GetRotation());
+				mPlayerRef->SetSize(mPlayerStart->GetTransformComponent().GetSize());
 				mPlayerStart->SetActive(ActorState::Paused);
 			}
 			else
 			{
-				player->SetPosition(Vector3D(0));
-				player->SetRotation(Quaternion(0,0,0,0));
-				player->SetSize(Vector3D(1));
+				mPlayerRef->SetPosition(Vector3D(0));
+				mPlayerRef->SetRotation(Quaternion(0,0,0,0));
+				mPlayerRef->SetSize(Vector3D(1));
 			}
-			player->AddTag("Player");
+			mPlayerRef->AddTag("Player");
 		}
-		else
-		{
-			auto player = PrefabFactory::CreateActorFromPrefab("CameraActor");
-			player->SetPosition(Vector3D(0));
-			player->SetRotation(Quaternion(0, 0, 0, 0));
-			player->SetSize(Vector3D(1));
-		}
+	}
+	else
+	{
+		mPlayerRef = PrefabFactory::CreateActorFromPrefab("CameraActor");
+		mPlayerRef->SetPosition(Vector3D(0));
+		mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
+		mPlayerRef->SetSize(Vector3D(1));
 	}
 }
 

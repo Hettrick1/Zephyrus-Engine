@@ -47,6 +47,14 @@
             }
         },
         {
+            "type": "BoxAABBComponent",
+            "properties": {
+                "relativePosition" : [0, 0, 0.4],
+                "relativeRotation" : [0, 0, 0],
+                "isQuerry" : false
+            }
+        },
+        {
             "type": "DoomPlayerComponent",
             "properties": {
                 "relativePosition" : [0, 0, 0.4],

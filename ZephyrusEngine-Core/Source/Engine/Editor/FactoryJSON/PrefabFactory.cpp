@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "ComponentFactory.h"
 #include "FactoryJSON/JSONUtils.h"
+#include "Scene.h"
 #include <fstream>
 #include <sstream>
 
@@ -26,7 +27,7 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
     doc.Parse(jsonContent.c_str());
 
     if (doc.HasParseError()) {
-        ZP_CORE_ERROR("Parsing JSON failed !");
+        ZP_CORE_ERROR(pPrefabName + " Parsing JSON failed !");
         return nullptr;
     }
 

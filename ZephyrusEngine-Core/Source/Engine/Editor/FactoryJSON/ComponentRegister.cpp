@@ -11,6 +11,7 @@
 #include "Temp/DoomComponents/DoomPlayerComponent.h"
 #include "FlipbookComponent.h"
 #include "RigidbodyComponent.h"
+#include "Temp/DoomComponents/DoomEnemyComponent.h"
 
 void ComponentRegister::RegisterAllComponents()
 {
@@ -25,4 +26,5 @@ void ComponentRegister::RegisterAllComponents()
 	ComponentFactory::Instance().Register("DoomPlayerComponent", DoomPlayerComponent::Create);
 	ComponentFactory::Instance().Register("FlipbookComponent", FlipbookComponent::Create);
 	ComponentFactory::Instance().Register("RigidbodyComponent", RigidbodyComponent::Create);
+	ComponentFactory::Instance().Register("DoomEnemyComponent", DoomEnemyComponent::Create);
 }

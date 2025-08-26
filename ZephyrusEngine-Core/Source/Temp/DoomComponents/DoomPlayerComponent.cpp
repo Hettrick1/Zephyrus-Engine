@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Temp/Childs/LVLDoomMainMenu.h"
+#include "DoomEnemyComponent.h"
 
 float bobingTime = 0;
 const float gunDamages = 25;
@@ -163,8 +164,11 @@ void DoomPlayerComponent::Shoot(int pAmoQuantity)
 
 		if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
 		{
-			/*DoomEnemy* enemy = static_cast<DoomEnemy*>(hit.HitActor);
-			enemy->TakeDamage(gunDamages, static_cast<int>(mWeapon));*/
+			auto enemyComp = hit.HitActor->GetComponentOfType<DoomEnemyComponent>();
+			if (enemyComp != nullptr)
+			{
+				enemyComp->TakeDamage(gunDamages, static_cast<int>(mWeapon));
+			}
 		}
 
 		break;
@@ -196,8 +200,11 @@ void DoomPlayerComponent::Shoot(int pAmoQuantity)
 			mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 			if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
 			{
-				/*DoomEnemy* enemy = static_cast<DoomEnemy*>(hit.HitActor);
-				enemy->TakeDamage(shotgunDamages, static_cast<int>(mWeapon));*/
+				auto enemyComp = hit.HitActor->GetComponentOfType<DoomEnemyComponent>();
+				if (enemyComp != nullptr)
+				{
+					enemyComp->TakeDamage(gunDamages, static_cast<int>(mWeapon));
+				}
 			}
 		}
 		UseAmo(pAmoQuantity);

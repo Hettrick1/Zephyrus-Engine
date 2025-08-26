@@ -4,7 +4,6 @@
 EmptyActor::EmptyActor(const Vector3D& pPos, const Vector3D& pSize, const Quaternion& pRotation)
 	: Actor(pPos, pSize, pRotation)
 {
-	Start();
 	mScene.AddActor(this);
 }
 

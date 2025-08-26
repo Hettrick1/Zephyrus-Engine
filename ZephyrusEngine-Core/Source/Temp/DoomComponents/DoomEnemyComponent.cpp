@@ -1,44 +1,46 @@
-#include "DoomEnemy.h"
+#include "DoomEnemyComponent.h"
 #include "Assets.h"
 #include "Scene.h"
-#include "BoxAABBComponent.h"
-#include "CameraManager.h"
-#include "CameraComponent.h"
 #include "Timer.h"
 #include "Physics/CollisionManager.h"
 #include "Physics/PhysicManager.h"
 #include "DebugRenderer.h"
 #include "DebugLine.h"
-#include "DoomPlayer.h"
+#include "CameraManager.h"
+#include "CameraComponent.h"
+#include "DoomPlayerComponent.h"
+#include "BoxAABBComponent.h"
 
-//const float damages = 20;
-//const float weaponRange = 60;
-//const float weaponSpreadAngle = 0.8;
-//const float shootCooldown = 1;
-//const float detectionRange = 800;
+const float damages = 20;
+const float weaponRange = 60;
+const float weaponSpreadAngle = 0.8;
+const float shootCooldown = 1;
+const float detectionRange = 800;
 
-DoomEnemy::DoomEnemy(DoomPlayer* pPlayerRef, Vector3D pPos, Vector3D pSize, Quaternion pRotation)
-	: Actor(pPos, pSize, pRotation), mPlayerRef(pPlayerRef), mEnemyFb(nullptr), mHealth(100), mShootCouldown(0)
+DoomEnemyComponent::DoomEnemyComponent(Actor* pOwner, int updateOder)
+	: Component(pOwner), mEnemyFb(nullptr), mHealth(100), mShootCouldown(shootCooldown)
 	, mCanShoot(false), mIsDead(false), mSplashBlood(nullptr)
 {
-	Start();
-	mScene.AddActor(this);
 }
 
-DoomEnemy::~DoomEnemy()
+DoomEnemyComponent::~DoomEnemyComponent()
 {
-	mPlayerRef = nullptr;
+	mEnemyFb = nullptr;
+	mSplashBlood = nullptr;
 	EnemyShootAnim.clear();
 	EnemyDieAnim.clear();
 	EnemyExplodesAnim.clear();
 	EnemyDamagesAnim.clear();
-	delete mEnemyFb;
-	delete mSplashBlood;
 }
 
-void DoomEnemy::Start()
+void DoomEnemyComponent::Deserialize(const rapidjson::Value& pData)
 {
-	Actor::Start();
+	Component::Deserialize(pData);
+}
+
+void DoomEnemyComponent::OnStart()
+{
+	Component::OnStart();
 	EnemyShootAnim = {
 		Assets::LoadTexture("Sprites/Doom/Marine/MShoot1.png", "Mshoot1"),
 		Assets::LoadTexture("Sprites/Doom/Marine/MShoot2.png", "Mshoot2"),
@@ -88,94 +90,104 @@ void DoomEnemy::Start()
 		Assets::LoadTexture("Sprites/Doom/SplashBlood/1_20.png", "MDamage21"),
 		Assets::LoadTexture("Sprites/Doom/SplashBlood/1_21.png", "MDamage22"),
 	};
-	mEnemyFb = new FlipbookComponent(this, 100);
-	mEnemyFb->SetAnimationTextures(EnemyShootAnim);
-	mEnemyFb->RelativeRotateX(90);
-	mEnemyFb->SetAnimationFps(4);
-	mEnemyFb->SetRelativeSize(2);
 
-	mSplashBlood = new FlipbookComponent(this, 1);
-	mSplashBlood->SetAnimationTextures(EnemyDamagesAnim);
-	mSplashBlood->SetRelativePosition(Vector3D(0, 0.1, 0.3));
-	mSplashBlood->RelativeRotateX(90);
-	mSplashBlood->SetAnimationFps(40);
-	mSplashBlood->SetRelativeSize(1.3);
+	if (!mOwner->GetComponents().empty())
+	{
+		auto flipbooks = mOwner->GetAllComponentOfType<FlipbookComponent>();
+	
+		if (flipbooks.size() >= 2)
+		{
+			if (flipbooks[0]->HasTag("enemyFB"))
+			{ 
+				mEnemyFb = flipbooks[0];
+				mSplashBlood = flipbooks[1];
+			}
+			else
+			{
+				mEnemyFb = flipbooks[1];
+				mSplashBlood = flipbooks[0];
+			}
+		}
+		mEnemyFb->SetAnimationTextures(EnemyShootAnim);
+		mEnemyFb->SetAnimationFps(4);
 
-	AddTag("Enemy");
-
-	//BoxAABBComponent* bc = new BoxAABBComponent(this, 10, Vector3D(0.4,0.4,1.0), Vector3D(0, 0, 0));
+		mSplashBlood->SetAnimationTextures(EnemyDamagesAnim);
+		mSplashBlood->SetAnimationFps(40);
+	}
 }
 
-void DoomEnemy::Update()
+void DoomEnemyComponent::Update()
 {
-	//Actor::Update();
+	Component::Update();
 
-	//// bilboard
-	//Vector3D camPos = CameraManager::Instance().GetCurrentCamera()->GetWorldTransform().GetTranslation();
-	//Vector3D direction = camPos - mTransformComponent.GetPosition();
+	auto playerRef = mOwner->GetScene().GetPlayerRef();
 
-	//float angleZ = Maths::ATan2(direction.y, direction.x);
-	//angleZ -= Maths::ToRad(90);
-	//Quaternion targetRotation = Quaternion(Vector3D::unitZ, angleZ);
-	//mTransformComponent.SetRotation(targetRotation);
+	// bilboard
+	Vector3D camPos = CameraManager::Instance().GetCurrentCamera()->GetWorldTransform().GetTranslation();
+	Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
-	//if (!mIsDead)
-	//{
-	//	float dist = (GetTransformComponent().GetPosition() - mPlayerRef->GetTransformComponent().GetPosition()).LengthSq();
+	float angleZ = Maths::ATan2(direction.y, direction.x);
+	angleZ -= Maths::ToRad(90);
+	Quaternion targetRotation = Quaternion(Vector3D::unitZ, angleZ);
+	mOwner->SetRotation(targetRotation);
 
-	//	if (dist < detectionRange) {
-	//		mCanShoot = true;
-	//	}
-	//	else {
-	//		mCanShoot = false;
-	//	}
-	//}
+	if (!mIsDead)
+	{
+		float dist = (mOwner->GetTransformComponent().GetPosition() - playerRef->GetTransformComponent().GetPosition()).LengthSq();
 
-	//if (mCanShoot)
-	//{
-	//	if (mShootCouldown < 0.4 && mShootCouldown > 0.3)
-	//	{
-	//		mEnemyFb->PlayAnimation();
-	//	}
+		if (dist < detectionRange) {
+			mCanShoot = true;
+		}
+		else {
+			mCanShoot = false;
+		}
+	}
 
-	//	if (mShootCouldown > 0.0) {
-	//		mShootCouldown -= Timer::deltaTime;
-	//	}
-	//	else {
-	//		mShootCouldown = shootCooldown;
-	//		Vector3D start = GetTransformComponent().GetPosition();
-	//		start.z -= 0.0f;
-	//		Vector3D baseDirection = GetTransformComponent().GetWorldTransform().GetYAxis();
+	if (mCanShoot)
+	{
+		if (mShootCouldown < 0.4 && mShootCouldown > 0.3)
+		{
+			mEnemyFb->PlayAnimation();
+		}
 
-	//		const float spreadAngle = weaponSpreadAngle;
-	//		const float range = weaponRange;
-	//		float randomAngle = 0;
-	//		randomAngle = Maths::RandomRange(-spreadAngle, spreadAngle);
-	//		float randomRadians = Maths::ToRad(randomAngle);
+		if (mShootCouldown > 0.0) {
+			mShootCouldown -= Timer::deltaTime;
+		}
+		else {
+			mShootCouldown = shootCooldown;
+			Vector3D start = mOwner->GetTransformComponent().GetPosition();
+			start.z -= 0.0f;
+			Vector3D baseDirection = mOwner->GetTransformComponent().GetWorldTransform().GetYAxis();
 
-	//		Matrix4DRow rotation = Matrix4DRow::CreateRotationZ(randomRadians);
-	//		Vector3D dir = rotation.TransformVector(baseDirection);
-	//		dir.Normalize();
+			const float spreadAngle = weaponSpreadAngle;
+			const float range = weaponRange;
+			float randomAngle = 0;
+			randomAngle = Maths::RandomRange(-spreadAngle, spreadAngle);
+			float randomRadians = Maths::ToRad(randomAngle);
 
-	//		Vector3D end = start + dir * range;
-	//		HitResult hit;
-	//		PhysicManager::Instance().LineTrace(start, end, hit, this);
-	//		DebugLine* line = new DebugLine(start, end, hit);
-	//		GetScene().GetRenderer()->AddDebugLine(line);
-	//		if (hit.HitActor != nullptr && hit.HitActor->HasTag("Player"))
-	//		{
-	//			mPlayerRef->TakeDamages(damages);
-	//		}
-	//	}
-	//}
+			Matrix4DRow rotation = Matrix4DRow::CreateRotationZ(randomRadians);
+			Vector3D dir = rotation.TransformVector(baseDirection);
+			dir.Normalize();
+
+			Vector3D end = start + dir * range;
+			HitResult hit;
+			PhysicManager::Instance().LineTrace(start, end, hit, mOwner);
+			DebugLine* line = new DebugLine(start, end, hit);
+			mOwner->GetScene().GetRenderer()->AddDebugLine(line);
+			if (hit.HitActor != nullptr && hit.HitActor->HasTag("Player"))
+			{
+				playerRef->GetComponentOfType<DoomPlayerComponent>()->TakeDamages(damages);
+			}
+		}
+	}
 }
 
-void DoomEnemy::Destroy()
+void DoomEnemyComponent::OnEnd()
 {
-	Actor::Destroy();
+	Component::OnEnd();
 }
 
-void DoomEnemy::TakeDamage(int pDamages, int weapon)
+void DoomEnemyComponent::TakeDamage(int pDamages, int weapon)
 {
 	mSplashBlood->PlayAnimation();
 	mHealth -= pDamages;
@@ -196,6 +208,6 @@ void DoomEnemy::TakeDamage(int pDamages, int weapon)
 		mIsDead = true;
 		mEnemyFb->PlayAnimation();
 		mEnemyFb->SetCanPlay(false);
-		GetComponentOfType<BoxAABBComponent>()->SetActive(false);
+		mOwner->GetComponentOfType<BoxAABBComponent>()->SetActive(false);
 	}
 }
