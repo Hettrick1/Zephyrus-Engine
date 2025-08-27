@@ -1,5 +1,4 @@
 #include "SplashScreen.h"
-#include "CameraActor.h"
 #include "MeshComponent.h"
 #include "Assets.h"
 #include "HudElement.h"
@@ -7,6 +6,7 @@
 #include "TextRenderer.h"
 #include "HudManager.h" 
 #include "SceneManager.h"
+#include "FactoryJSON/PrefabFactory.h"
 
 
 SplashScreen::SplashScreen(Scene* pNextScene)
@@ -26,7 +26,7 @@ void SplashScreen::Start(IRenderer* pRenderer)
 
 	mTime = 0;
 
-	CameraActor* cam = new CameraActor();
+	auto cam = PrefabFactory::CreateActorFromPrefab("CameraActor");
 
 	Shader vert = *Assets::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
 	Shader frag = *Assets::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");

@@ -19,6 +19,7 @@ project "ZephyrusEngine-Core"
       "../Vendor/Dependencies/freetype-2.6.1/include",
       "../Vendor/Dependencies/freetype-2.6.1/include/freetype",
       "../Vendor/Dependencies/rapidjson-1.1.0/include",
+      "../Vendor/Dependencies/TinyObjLoader",
 
       "Source/Engine",
       "Source/Maths",

@@ -2,7 +2,7 @@
 #include "ComponentFactory.h"
 #include "CameraComponent.h"
 #include "SkySphereComponent.h"
-#include "DoomMenuPC.h"
+#include "Temp/DoomComponents/DoomMenuPC.h"
 #include "MeshComponent.h"
 #include "BoxAABBComponent.h"
 #include "SpriteComponent.h"

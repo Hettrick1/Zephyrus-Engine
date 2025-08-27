@@ -5,7 +5,7 @@
 #include "Physics/PhysicManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
-#include "Temp/Childs/LVLDoomMainMenu.h"
+#include "Temp/ChildScenes/LVLDoomMainMenu.h"
 #include "DoomEnemyComponent.h"
 
 float bobingTime = 0;

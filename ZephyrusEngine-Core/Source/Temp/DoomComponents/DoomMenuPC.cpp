@@ -3,7 +3,7 @@
 #include "Axis2DAction.h"
 #include "InputManager.h"
 #include "SceneManager.h"
-#include "Temp/Childs/LVLDoom.h"
+#include "Temp/ChildScenes/LVLDoom.h"
 #include "FactoryJSON/ComponentFactory.h"
 
 DoomMenuPC::DoomMenuPC(Actor* pOwner, int pUpdateOrder)
