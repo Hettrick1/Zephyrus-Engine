@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "Shaders/Shader.h"
-#include "Shaders/ShaderProgram.h"
+#include "Shader.h"
+#include "ShaderProgram.h"
 #include "Vertex.h"
 
 class Texture;

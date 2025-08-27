@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "../Graphics/Texture.h"
+#include "Texture.h"
 
 /**
  * @brief Component that handles rendering a 2D sprite for an Actor.

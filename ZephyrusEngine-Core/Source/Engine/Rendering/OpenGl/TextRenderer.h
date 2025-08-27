@@ -3,7 +3,7 @@
 #include "Vector2D.h"
 #include "Vector3D.h"
 #include "Matrix4DRow.h"
-#include "Shaders/ShaderProgram.h"
+#include "ShaderProgram.h"
 #include "Window.h"
 #include "TextAlignementEnum.h"
 #include <map>

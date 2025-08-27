@@ -7,8 +7,8 @@
 #include "HudManager.h" 
 #include "SceneManager.h"
 #include "LVLDoom.h"
-#include "CoreActors/EmptyActor.h"
-#include "FactoryJSON/PrefabFactory.h"
+#include "EmptyActor.h"
+#include "PrefabFactory.h"
 
 LVLDoomMainMenu::LVLDoomMainMenu()
 	: Scene(), mDoomMenu(nullptr), mPressEnter(nullptr), mTimer(0)

@@ -4,7 +4,7 @@
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Temp/ChildScenes/LVLDoom.h"
-#include "FactoryJSON/ComponentFactory.h"
+#include "ComponentFactory.h"
 
 DoomMenuPC::DoomMenuPC(Actor* pOwner, int pUpdateOrder)
 	: Component(pOwner, pUpdateOrder)

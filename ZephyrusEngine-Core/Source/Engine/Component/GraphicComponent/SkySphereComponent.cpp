@@ -6,8 +6,8 @@
 #include "Vertex.h"
 #include "SceneManager.h"
 
-#include "FactoryJSON/ComponentFactory.h"
-#include "FactoryJSON/JSONUtils.h"
+#include "ComponentFactory.h"
+#include "JSONUtils.h"
 
 int SkySphereComponent::index = 0;
 

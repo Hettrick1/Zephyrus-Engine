@@ -5,7 +5,7 @@
 #include "Matrix4DRow.h"
 #include "CameraManager.h"
 #include "Scene.h"
-#include "FactoryJSON/ComponentFactory.h"
+#include "ComponentFactory.h"
 
 CameraComponent::CameraComponent(Actor* pOwner, int updateOder)
     : Component(pOwner, updateOder)

@@ -1,7 +1,7 @@
 #include "Component.h"
 #include "Actor.h"
 #include "Log.h"
-#include "FactoryJSON/JSONUtils.h"
+#include "JSONUtils.h"
 
 Component::Component(Actor* pOwner, int pUpdateOder) 
     : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),

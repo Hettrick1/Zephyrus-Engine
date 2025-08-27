@@ -1,8 +1,8 @@
 #define SDL_MAIN_HANDLED
-#include "Engine/Editor/Game.h"
+#include "Game.h"
 #include "Temp/ChildScenes/LVLDoom.h"
 #include "Temp/ChildScenes/LVLDoomMainMenu.h"
-#include "FactoryJSON/ComponentRegister.h"
+#include "ComponentRegister.h"
 
 int main() {
 	ComponentRegister::RegisterAllComponents();

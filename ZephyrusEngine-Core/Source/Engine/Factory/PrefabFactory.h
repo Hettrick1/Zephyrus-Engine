@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/CoreActors/EmptyActor.h"
+#include "EmptyActor.h"
 #include <string>
 
 class PrefabFactory

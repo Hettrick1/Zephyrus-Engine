@@ -6,7 +6,7 @@
 #include "TextRenderer.h"
 #include "HudManager.h" 
 #include "SceneManager.h"
-#include "FactoryJSON/PrefabFactory.h"
+#include "PrefabFactory.h"
 
 
 SplashScreen::SplashScreen(Scene* pNextScene)

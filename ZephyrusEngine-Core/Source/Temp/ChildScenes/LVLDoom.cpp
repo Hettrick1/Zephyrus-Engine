@@ -3,7 +3,7 @@
 #include "MeshComponent.h"
 #include "CubeTextureMap.h"
 #include "SkySphereComponent.h"
-#include "FactoryJSON/PrefabFactory.h"
+#include "PrefabFactory.h"
 #include "DebugRenderer.h"
 #include "BoxAABBComponent.h"
 

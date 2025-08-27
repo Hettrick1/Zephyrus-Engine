@@ -11,43 +11,53 @@ project "ZephyrusEngine-Core"
    {
       "Source",
 
-      "../Imports",
+      "../Content",
 
-      "../Vendor/Dependencies/glew-2.2.0-win32/glew-2.2.0/include/GL",
-      "../Vendor/Dependencies/GL/SDL/include",
-      "../Vendor/Dependencies/SDL2_image-2.8.2/include",
-      "../Vendor/Dependencies/freetype-2.6.1/include",
-      "../Vendor/Dependencies/freetype-2.6.1/include/freetype",
-      "../Vendor/Dependencies/rapidjson-1.1.0/include",
-      "../Vendor/Dependencies/TinyObjLoader",
+      "../Vendor/glew-2.2.0-win32/glew-2.2.0/include/GL",
+      "../Vendor/GL/SDL/include",
+      "../Vendor/SDL2_image-2.8.2/include",
+      "../Vendor/freetype-2.6.1/include",
+      "../Vendor/freetype-2.6.1/include/freetype",
+      "../Vendor/rapidjson-1.1.0/include",
+      "../Vendor/TinyObjLoader",
 
       "Source/Engine",
-      "Source/Maths",
       "Source/Scenes",
-      "Source/Engine/ActorComponents",
-      "Source/Engine/DebugClasses",
-      "Source/Engine/Editor",
-      "Source/Engine/Graphics",
-      "Source/Engine/ActorComponents/Colliders",
-      "Source/Engine/ActorComponents/Managers",
+      "Source/Utils",
 
-      "Source/Engine/Inputs",
-      "Source/Engine/Graphics/OpenGl",
-      "Source/Engine/Graphics/SDL",
-      "Source/Engine/ActorComponents/GraphicComponent",
-      "Source/Engine/ActorComponents/PhysicComponent",
-      "Source/Engine/ActorComponents/Actor",
-      "Source/Engine/CoreComponents",
-      "Source/Engine/Graphics/Hud",
+      "Source/Engine/Actor",
+      "Source/Engine/Application",
+      "Source/Engine/Component",
+      "Source/Engine/Debug",
+      "Source/Engine/Factory",
+      "Source/Engine/Input",
+      "Source/Engine/Physics",
+      "Source/Engine/Rendering",
+
+      "Source/Engine/Component",
+      "Source/Engine/Component/ColliderComponent",
+      "Source/Engine/Component/GraphicComponent",
+      "Source/Engine/Component/PhysicComponent",
+
+      "Source/Engine/Rendering/Assets",
+      "Source/Engine/Rendering/Assets/OpenGl",
+      "Source/Engine/Rendering/Assets/Shader",
+      "Source/Engine/Rendering/OpenGl",
+      "Source/Engine/Rendering/SDL",
+
+      "Source/Engine/UI",
+      "Source/Engine/UI/HudElement",
+
+      "Source/Utils/Math"
    }
 
    libdirs 
    {  
-    "../Vendor/Dependencies/GL/SDL/lib/x86",
-    "../Vendor/Dependencies/glew-2.2.0-win32/glew-2.2.0/bin/Release/Win32",
-    "../Vendor/Dependencies/glew-2.2.0-win32/glew-2.2.0/lib/Release/Win32",
-    "../Vendor/Dependencies/SDL2_image-2.8.2/lib/x86",
-    "../Vendor/Dependencies/freetype-2.6.1/objs/vc2010/Win32",
+    "../Vendor/GL/SDL/lib/x86",
+    "../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/Win32",
+    "../Vendor/glew-2.2.0-win32/glew-2.2.0/lib/Release/Win32",
+    "../Vendor/SDL2_image-2.8.2/lib/x86",
+    "../Vendor/freetype-2.6.1/objs/vc2010/Win32",
    }
 
    links

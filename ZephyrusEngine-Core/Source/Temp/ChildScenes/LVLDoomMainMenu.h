@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Scene.h"
-#include "Shaders/ShaderProgram.h"
-#include "HudElements/HudText.h"
-#include "HudElements/HudImage.h"
+#include "ShaderProgram.h"
+#include "HudText.h"
+#include "HudImage.h"
 
 class LVLDoomMainMenu : public Scene
 {

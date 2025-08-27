@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "../Graphics/Texture.h"
+#include "Texture.h"
 #include "Mesh.h"
 #include "Maths.h"
 #include "CubeTextureMap.h"

@@ -2,7 +2,7 @@
 
 #include "IRenderer.h"
 #include "VertexArray.h"
-#include "Shaders/ShaderProgram.h"
+#include "ShaderProgram.h"
 #include "DebugLine.h"
 #include <vector>
 #include "DebugRenderer.h"

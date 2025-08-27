@@ -2,7 +2,7 @@
 #include "rapidjson/document.h"
 #include "Log.h"
 #include "ComponentFactory.h"
-#include "FactoryJSON/JSONUtils.h"
+#include "JSONUtils.h"
 #include "Scene.h"
 #include <fstream>
 #include <sstream>

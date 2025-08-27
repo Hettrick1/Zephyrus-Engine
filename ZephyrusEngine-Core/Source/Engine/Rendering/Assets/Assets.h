@@ -3,8 +3,8 @@
 #include "Texture.h"
 #include "Mesh.h"
 #include "Font.h"
-#include "Shaders/ShaderProgram.h"
-#include "Shaders/Shader.h"
+#include "ShaderProgram.h"
+#include "Shader.h"
 
 #include <map>
 #include <string>

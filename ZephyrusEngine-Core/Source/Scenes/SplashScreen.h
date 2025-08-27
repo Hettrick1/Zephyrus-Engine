@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Scene.h"
-#include "Shaders/ShaderProgram.h"
-#include "HudElements/HudText.h"
+#include "ShaderProgram.h"
+#include "HudText.h"
 
 class SplashScreen : public Scene
 {

@@ -1,8 +1,8 @@
 #include "SpriteComponent.h"
 
 #include "Actor.h"
-#include "../../Scenes/Scene.h"
-#include "FactoryJSON/JSONUtils.h"
+#include "Scene.h"
+#include "JSONUtils.h"
 
 SpriteComponent::SpriteComponent(Actor* pOwner)
 	: Component(pOwner), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)

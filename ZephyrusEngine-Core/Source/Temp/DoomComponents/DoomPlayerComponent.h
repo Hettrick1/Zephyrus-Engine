@@ -2,8 +2,8 @@
 
 #include "Component.h"
 #include "FlipbookComponent.h"
-#include "HudElements/HudText.h"
-#include "HudElements/HudImage.h"
+#include "HudText.h"
+#include "HudImage.h"
 #include "Temp/DoomComponents/Weapons.h"
 
 class DoomPlayerComponent : public Component
