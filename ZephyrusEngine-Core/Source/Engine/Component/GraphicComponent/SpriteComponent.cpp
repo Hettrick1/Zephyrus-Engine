@@ -30,7 +30,7 @@ void SpriteComponent::Deserialize(const rapidjson::Value& pData)
 	mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
 	if (pData.HasMember("sizeOverride") && pData["sizeOverride"].IsArray())
 	{
-		if (auto sizeOverride = ReadVector3D(pData, "sizeOverride"))
+		if (auto sizeOverride = Serialization::Json::ReadVector3D(pData, "sizeOverride"))
 		{
 			Vector3D size = *sizeOverride;
 			if (size.x > 0 || size.y > 0) {

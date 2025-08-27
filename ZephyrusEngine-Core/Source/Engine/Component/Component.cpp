@@ -28,34 +28,26 @@ void Component::OnEnd()
 
 void Component::Deserialize(const rapidjson::Value& pData)
 {
-    if (auto pos = ReadVector3D(pData, "relativePosition"))
+    if (auto pos = Serialization::Json::ReadVector3D(pData, "relativePosition"))
     {
         SetRelativePosition(*pos);
     }
 
-    if (auto size = ReadVector3D(pData, "relativeSize"))
+    if (auto size = Serialization::Json::ReadVector3D(pData, "relativeSize"))
     {
         SetRelativeSize(*size);
     }
 
-    if (auto rot = ReadVector3D(pData, "relativeRotation"))
+    if (auto rot = Serialization::Json::ReadVector3D(pData, "relativeRotation"))
     {
         SetRelativeRotation(Quaternion(*rot));
     }
 
-    if (pData.HasMember("tags") && pData["tags"].IsArray())
+    if (auto arr = Serialization::Json::ReadArrayString(pData, "tags"))
     {
-        const auto& arr = pData["tags"].GetArray();
-
-        if (!arr.Empty())
+        for (auto& element : *arr)
         {
-            for (auto& element : arr)
-            {
-                if (element.IsString())
-                {
-                    AddTag(element.GetString());
-                }
-            }
+            AddTag(element);
         }
     }
 }

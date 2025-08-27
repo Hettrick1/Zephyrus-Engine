@@ -36,70 +36,70 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
     auto actor = new EmptyActor();
     actor->SetName(actorName);
 
+
     // sets the actor state
-    if (doc.HasMember("state") && doc["state"].IsString()) {
-        std::string stateStr = doc["state"].GetString();
+    if (auto state = Serialization::Json::ReadString(doc, "state"))
+    {
+        std::string stateStr = *state;
         actor->SetActive(StringToActorState(stateStr));
     }
 
     // sets the actor transform
-    if (doc.HasMember("transform")) { 
-        const auto& transform = doc["transform"];
-        if (auto pos = ReadVector3D(transform, "position"))
+    if (auto transform = Serialization::Json::ReadObject(doc, "transform"))
+    {
+        if (auto pos = Serialization::Json::ReadVector3D(*transform, "position"))
         {
             actor->SetPosition(*pos);
         }
 
-        if (auto size = ReadVector3D(transform, "size"))
+        if (auto size = Serialization::Json::ReadVector3D(*transform, "size"))
         {
             actor->SetSize(*size);
         }
 
-        if (auto rot = ReadVector3D(transform, "rotation"))
+        if (auto rot = Serialization::Json::ReadVector3D(*transform, "rotation"))
         {
             actor->SetRotation(Quaternion(*rot));
         }
     }
 
-    if (doc.HasMember("tags") && doc["tags"].IsArray())
+    if (auto arr = Serialization::Json::ReadArrayString(doc, "tags"))
     {
-        const auto& arr = doc["tags"].GetArray();
-
-        if (!arr.Empty())
+        for (auto& element : *arr)
         {
-            for (auto& element : arr)
-            {
-                if (element.IsString())
-                {
-                    actor->AddTag(element.GetString());
-                }
-            }
+            actor->AddTag(element);
         }
     }
 
     // creates all the components
-    if (doc.HasMember("components") && doc["components"].IsArray()) {
-        for (auto& comp : doc["components"].GetArray()) {
-            std::string type = comp["type"].GetString();
-            Component* c = ComponentFactory::Instance().Create(type, actor);
-
-            if (c) {
-                if (comp.HasMember("properties")) {
-                    // sets all the components properties from the prefab file
-                    c->Deserialize(comp["properties"]);
-                }
-                actor->AddComponent(c);
-                ZP_CORE_LOAD("Component " + type + " loaded and attached to " + actorName);
-            }
-            else
-            { 
-                ZP_CORE_ERROR("Component is invalid !");
-            }
+    if (auto arr = Serialization::Json::ReadArrayObject(doc, "components"))
+    {
+        for (auto& component : *arr)
+        {
+            CreateAndAttachComponent(*component, actor);
         }
     }
 
     actor->Start();
-
     ZP_LOAD("Prefab " + actorName + " loaded");
     return actor;
+}
+
+Component* PrefabFactory::CreateAndAttachComponent(const rapidjson::Value& componentJson, EmptyActor* actor)
+{
+    std::string type = *Serialization::Json::ReadString(componentJson, "type");
+    Component* c = ComponentFactory::Instance().Create(type, actor);
+
+    if (!c) {
+        ZP_CORE_ERROR("Component " + type + " is invalid !");
+        return nullptr;
+    }
+    if (auto properties = Serialization::Json::ReadObject(componentJson, "properties")) {
+        // sets all the components properties from the prefab file
+        c->Deserialize(*properties);
+    }
+
+    actor->AddComponent(c);
+    ZP_CORE_LOAD("Component " + type + " loaded and attached to " + actor->GetName());
+    return c;
 }
