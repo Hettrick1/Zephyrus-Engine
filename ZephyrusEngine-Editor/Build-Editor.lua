@@ -5,7 +5,20 @@ project "ZephyrusEngine-Editor"
    targetdir "Binaries/%{cfg.buildcfg}"
    staticruntime "off"
 
-   files { "Source/**.h", "Source/**.cpp" }
+   files { 
+    "Source/**.h", 
+    "Source/**.cpp", 
+    -- ImGui core
+    "../Vendor/imgui-1.92.2b/imgui.cpp",
+    "../Vendor/imgui-1.92.2b/imgui_draw.cpp",
+    "../Vendor/imgui-1.92.2b/imgui_widgets.cpp",
+    "../Vendor/imgui-1.92.2b/imgui_tables.cpp",
+    "../Vendor/imgui-1.92.2b/imgui_demo.cpp", -- optional
+
+    -- ImGui backends
+    "../Vendor/imgui-1.92.2b/backends/imgui_impl_sdl2.cpp",
+    "../Vendor/imgui-1.92.2b/backends/imgui_impl_opengl3.cpp",
+    }
 
    includedirs
    {
@@ -20,6 +33,8 @@ project "ZephyrusEngine-Editor"
       "../Vendor/freetype-2.6.1/include/freetype",
       "../Vendor/rapidjson-1.1.0/include",
       "../Vendor/TinyObjLoader",
+      "../Vendor/imgui-1.92.2b",
+      "../Vendor/imgui-1.92.2b/backends",
 
 	  -- Include Core
 	  "../ZephyrusEngine-Core/Source",

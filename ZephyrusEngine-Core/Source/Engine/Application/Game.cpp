@@ -10,7 +10,7 @@ Game::Game(const std::string& pTitle, Scene* pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
     , mCameraManager(CameraManager::Instance()), mTitle(pTitle)
 {
-    Log::Init();
+    Zephyrus::Log::Init();
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
@@ -120,5 +120,5 @@ void Game::Close()
 {
     SceneManager::Unload();
     mGameWindow->Close();
-    Log::Shutdown();
+    Zephyrus::Log::Shutdown();
 }
