@@ -6,6 +6,6 @@
 
 int main() {
 	ComponentRegister::RegisterAllComponents();
-	EditorApplication* editor = new EditorApplication("ZephyrusEditor", new LVLDoom());
+	EditorApplication* editor = new EditorApplication("ZephyrusEditor", new LVLDoomMainMenu());
 	return 0;
 }
