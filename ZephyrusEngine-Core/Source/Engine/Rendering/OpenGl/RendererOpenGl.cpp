@@ -105,7 +105,10 @@ void RendererOpenGl::Unload()
 {
 	mSprites.clear();
 	mMeshes.clear();
-	mHud->Unload();
+	if (mHud)
+	{
+		mHud->Unload();
+	}
 	mDebugRenderer->Unload();
 	mSkySphereComponent = nullptr;
 }
@@ -251,14 +254,17 @@ void RendererOpenGl::DrawSprites()
 
 void RendererOpenGl::DrawHud()
 {
-	glEnable(GL_CULL_FACE); 
-	glEnable(GL_BLEND); 
-	glDisable(GL_DEPTH_TEST);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	mHud->Draw(*this); 
-	glDisable(GL_CULL_FACE); 
-	glDisable(GL_BLEND); 
-	glEnable(GL_DEPTH_TEST);
+	if (mHud)
+	{
+		glEnable(GL_CULL_FACE); 
+		glEnable(GL_BLEND); 
+		glDisable(GL_DEPTH_TEST);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		mHud->Draw(*this); 
+		glDisable(GL_CULL_FACE); 
+		glDisable(GL_BLEND); 
+		glEnable(GL_DEPTH_TEST);
+	}
 }
 
 void RendererOpenGl::DrawHudImage(Texture& pTexture, Rectangle pRect, Vector2D pOrigin, Vector4D pTint)
@@ -292,6 +298,7 @@ void RendererOpenGl::SetSpriteShaderProgram(ShaderProgram& shaderProgram)
 
 void RendererOpenGl::SetHud(HudManager* pHud)
 {
+	mHud->Unload();
 	mHud = pHud;
 }
 

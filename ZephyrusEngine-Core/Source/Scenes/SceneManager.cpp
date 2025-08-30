@@ -39,9 +39,24 @@ void SceneManager::Update()
 	ActiveScene->Update();
 }
 
-void SceneManager::Render()
+void SceneManager::RenderAll()
 {
 	ActiveScene->Render();
+}
+
+void SceneManager::BeginRender()
+{
+	ActiveScene->BeginRender();
+}
+
+void SceneManager::RenderScene()
+{
+	ActiveScene->RenderCurrentSceneOnly();
+}
+
+void SceneManager::EndRender()
+{
+	ActiveScene->EndRender();
 }
 
 bool SceneManager::SceneLoaded()

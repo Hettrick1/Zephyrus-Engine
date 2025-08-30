@@ -23,7 +23,11 @@ public:
 	static void PostStartScene();
 
 	static void Update();
-	static void Render();
+	static void RenderAll();
+
+	static void BeginRender();
+	static void RenderScene();
+	static void EndRender();
 
 	// Returns true if a scene is currently loaded
 	static bool SceneLoaded();

@@ -38,6 +38,21 @@ void Scene::Render()
 	mRenderer->EndDraw();
 }
 
+void Scene::BeginRender()
+{
+	mRenderer->BeginDraw();
+}
+
+void Scene::RenderCurrentSceneOnly()
+{
+	mRenderer->Draw();
+}
+
+void Scene::EndRender()
+{
+	mRenderer->EndDraw();
+}
+
 void Scene::Unload()
 {
 	InputManager::Instance().Unload();

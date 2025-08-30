@@ -94,7 +94,7 @@ void Game::Update()
 
 void Game::Render()
 {
-    SceneManager::Render();
+    SceneManager::RenderAll();
 }
 
 void Game::Input()

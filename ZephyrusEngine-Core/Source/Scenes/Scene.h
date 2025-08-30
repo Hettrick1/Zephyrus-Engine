@@ -25,7 +25,10 @@ public:
 	virtual void PostStart();
 	virtual void Load(); // Loads scene resources
 	virtual void Update(); // Updates the scene and its actors
-	virtual void Render(); // Renders the scene
+	virtual void Render();
+	void BeginRender();
+	void RenderCurrentSceneOnly();
+	void EndRender();
 	virtual void Unload(); // Unloads scene resources
 	virtual void Close(); // Cleans up the scene
 
