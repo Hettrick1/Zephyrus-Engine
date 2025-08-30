@@ -80,7 +80,6 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
         }
     }
 
-    actor->Start();
     ZP_LOAD("Prefab " + actorName + " loaded");
     return actor;
 }

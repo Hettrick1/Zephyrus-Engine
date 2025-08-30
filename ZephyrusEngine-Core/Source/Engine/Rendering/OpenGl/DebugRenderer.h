@@ -16,6 +16,7 @@ private:
 	Shader mDebugFragment;
 	ShaderProgram mDebugShaderProgram;
 	Matrix4DRow mView, mProj;
+	Window* mWindow;
 	std::vector<ColliderComponent*> mCollider;
 	std::vector<DebugLine*> mLines;
 	GLuint mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
@@ -26,7 +27,7 @@ public:
 	~DebugRenderer();
 
 	/// Initializes the debug renderer with the given window.
-	void Initialize(const Window& pWindow);
+	void Initialize(Window& pWindow);
 	/// Releases all resources used by the debug renderer.
 	void Unload();
 

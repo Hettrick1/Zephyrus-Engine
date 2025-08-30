@@ -16,7 +16,7 @@ public:
 	SceneManager& operator=(const SceneManager&) = delete;
 
 	// Loads the given scene and sets it as the active scene
-	static void LoadScene(Scene* pScene);
+	static void LoadScene(Scene* pScene, bool pCallPostStart = true);
 
 	// Starts the active scene with the provided renderer
 	static void StartScene(IRenderer* pRenderer);

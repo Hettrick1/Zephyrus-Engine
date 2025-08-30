@@ -157,6 +157,12 @@ void LVLDoom::Start(IRenderer* renderer)
 	enemy4->SetPosition(Vector3D(-45, -45, -0.1));
 	auto enemy5 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
 	enemy5->SetPosition(Vector3D(-45, 45, -0.1));
+
+	for (auto& actor : mAllActors)
+	{
+		actor->Start();
+	}
+
 }
 
 void LVLDoom::PostStart()

@@ -3,7 +3,7 @@
 bool SceneManager::mIsSceneLoaded = false;
 Scene* SceneManager::ActiveScene = nullptr;
 
-void SceneManager::LoadScene(Scene* pScene)
+void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 {
 	mIsSceneLoaded = false;
 	IRenderer* renderer = nullptr;
@@ -19,7 +19,10 @@ void SceneManager::LoadScene(Scene* pScene)
 	if (renderer != nullptr)
 	{
 		ActiveScene->Start(renderer);
-		ActiveScene->PostStart();
+		if (pCallPostStart)
+		{
+			ActiveScene->PostStart();
+		}
 	}
 }
 

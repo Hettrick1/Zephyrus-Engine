@@ -17,8 +17,9 @@ DebugRenderer::~DebugRenderer()
 	glDeleteVertexArrays(1, &mDebugLineVao);
 }
 
-void DebugRenderer::Initialize(const Window& pWindow)
+void DebugRenderer::Initialize(Window& pWindow)
 {
+	mWindow = &pWindow;
 	glLineWidth(4);
 	mDebugVertex = *Assets::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
 	mDebugFragment = *Assets::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
@@ -91,6 +92,7 @@ void DebugRenderer::Unload()
 void DebugRenderer::Draw(IRenderer& pRenderer)
 {
 	if (mDrawDebug) {
+		mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.01f, 10000.0f);
 		mDebugShaderProgram.Use();
 		mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
 		glEnable(GL_DEPTH_TEST);
