@@ -33,15 +33,24 @@ EditorApplication::~EditorApplication()
 
 void EditorApplication::Initialize()
 {
-    mGameWindow = new Window(1080, 720);
+    SDL_DisplayMode displayMode;
+    SDL_GetCurrentDisplayMode(0, &displayMode);
+    int screenWidth = displayMode.w;
+    int screenHeight = displayMode.h;
+    mGameWindow = new Window(screenWidth, screenHeight, true);
     mRenderer = new RendererOpenGl();
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) 
     {
+        SDL_MaximizeWindow(mGameWindow->GetSdlWindow());
+
         // Init ImGui
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        ImGuiIO& io = ImGui::GetIO(); 
+        (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
         ImGui::StyleColorsDark();
 
@@ -87,20 +96,28 @@ void EditorApplication::Render()
 
 void EditorApplication::RenderImgui()
 {
-    // Start frame ImGui
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    // Exemple : petite fenêtre ImGui
     ImGui::Begin("Hello, world!");
-    ImGui::Text("Si tu vois ca, ImGui marche !");
+    ImGui::Text("ImGui marche !");
     ImGui::End();
 
-    // Rendu
     ImGui::Render();
-    glViewport(0, 0, (int)mGameWindow->GetDimensions().x, (int)mGameWindow->GetDimensions().y);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+        SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+
+        SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+    }
 }
 
 void EditorApplication::Input()

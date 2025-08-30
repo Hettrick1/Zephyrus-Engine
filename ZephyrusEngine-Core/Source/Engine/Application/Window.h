@@ -9,11 +9,12 @@
 class Window
 {
 public :
-	Window(int pWidth = 800, int pHseight = 700); // Constructs a window with the given width and height.
+	Window(int pWidth = 800, int pHseight = 700, bool pIsResizable = false); // Constructs a window with the given width and height.
 	Window(const Window&) = delete;
 	void operator = (const Window&) = delete;
 
 	Vector2D GetDimensions() const; // Returns the current window dimensions.
+	void SetDimensions(const Vector2D& pDimensions);
 
 	SDL_Window* GetSdlWindow() const; // Returns the underlying SDL_Window pointer.
 
@@ -23,4 +24,5 @@ public :
 private:
 	SDL_Window* mSdlWindow = nullptr;
 	Vector2D mDimensions;
+	bool mResizable = false;
 };

@@ -46,6 +46,7 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
 	mContext = SDL_GL_CreateContext(mWindow->GetSdlWindow());
+	SDL_GL_MakeCurrent(mWindow->GetSdlWindow(), mContext);
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
@@ -77,8 +78,11 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 
 void RendererOpenGl::BeginDraw()
 {
+	glViewport(0, 0, mWindow->GetDimensions().x, mWindow->GetDimensions().y);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(mWindow->GetDimensions().x), static_cast<float>(mWindow->GetDimensions().y), 0.000001f, 100000);
+	mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.01f, 10000.0f);
 }
 
 void RendererOpenGl::Draw()

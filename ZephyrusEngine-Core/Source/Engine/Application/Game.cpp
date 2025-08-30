@@ -57,7 +57,7 @@ Game::~Game()
 
 void Game::Initialize()
 {
-    mGameWindow = new Window(WINDOW_WIDTH, WINDOW_HEIGHT);
+    mGameWindow = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, false);
     mRenderer = new RendererOpenGl();
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) {
         #ifdef _DEBUG
