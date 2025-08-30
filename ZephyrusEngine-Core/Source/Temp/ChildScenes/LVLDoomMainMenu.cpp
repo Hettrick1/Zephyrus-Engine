@@ -33,8 +33,6 @@ void LVLDoomMainMenu::Start(IRenderer* renderer)
 	mPressEnter = new HudText("Press Enter To Begin", Vector2D(0.0f, -800.0f), 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), TextAlignment::CENTER);
 
 	auto actor1 = PrefabFactory::CreateActorFromPrefab("DoomMenuPlayer");
-	//EmptyActor* defaultPawn = new EmptyActor();
-	//new DoomMenuPC(defaultPawn, 1);
 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 }

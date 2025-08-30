@@ -46,7 +46,7 @@ void EditorApplication::Initialize()
         ImGui::StyleColorsDark();
 
         ImGui_ImplSDL2_InitForOpenGL(mGameWindow->GetSdlWindow(), SDL_GL_GetCurrentContext());
-        ImGui_ImplOpenGL3_Init("#version 330");
+        ImGui_ImplOpenGL3_Init("#version 450");
 
         SceneManager::LoadScene(mStartUpScene);
         Loop();
