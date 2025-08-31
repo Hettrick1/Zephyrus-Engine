@@ -2,12 +2,15 @@
 
 namespace Zephyrus
 {
+    std::vector<ILogListener*> Log::mListeners;
+
     void Log::Init()
     {
     }
 
     void Log::Shutdown()
     {
+        mListeners.clear();
     }
 
     void Log::Info(Logger pLogger, const std::string& pMessage)
@@ -36,6 +39,11 @@ namespace Zephyrus
             WriteLog(pLogger, LogType::ZLT_ASSERT, pMessage, pFile, pLine);
             abort();
         }
+    }
+
+    void Log::AddListener(ILogListener* listener)
+    {
+        mListeners.push_back(listener);
     }
 
     std::string Log::GetTimestamp()
@@ -97,7 +105,18 @@ namespace Zephyrus
         }
 
         output << message;
+        if (!mListeners.empty())
+        {
+            for (auto* listener : mListeners)
+            {
+                ZPMessage message;
+                message.pTexte = output.str();
+                message.pLogger = logger;
+                message.pType = level;
 
+                listener->OnLogMessage(message);
+            }
+        }
         std::cout << GetColorCode(level) << output.str() << "\033[0m" << std::endl;
     }
 }

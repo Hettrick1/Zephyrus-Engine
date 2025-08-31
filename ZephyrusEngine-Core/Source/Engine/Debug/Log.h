@@ -7,24 +7,16 @@
 #include <ctime>
 #include <string>
 
+#include <vector>
+#include "ILogListener.h"
+
+#include "LogEnum.h"
+
 namespace Zephyrus
 {
     class Log
     {
     public:
-        enum class LogType {
-            ZLT_INFO,
-            ZLT_LOAD,
-            ZLT_WARN,
-            ZLT_ERROR,
-            ZLT_ASSERT
-        };
-
-        enum class Logger {
-            ZP_ZEPHYRUS,
-            ZP_APP,
-            ZP_GAME
-        };
         static void Init();
         static void Shutdown();
 
@@ -37,6 +29,8 @@ namespace Zephyrus
         static void Error(Logger pLogger, const std::string& pMessage, const char* pFile, int pLine);
 
         static void Assert(Logger pLogger, bool pCondition, const std::string& pMessage, const char* pFile, int pLine);
+
+        static void AddListener(ILogListener* listener);
     private:
 
         static std::string GetTimestamp();
@@ -46,22 +40,24 @@ namespace Zephyrus
         static std::string LevelToString(LogType pType);
 
         static void WriteLog(Logger pLogger, LogType pType, const std::string& pMessage, const char* pFile, int pLine);
+
+        static std::vector<ILogListener*> mListeners;
     };
 }
-#define ZP_CORE_INFO(msg)               Zephyrus::Log::Info(Zephyrus::Log::Logger::ZP_ZEPHYRUS, msg)
-#define ZP_CORE_LOAD(msg)               Zephyrus::Log::Load(Zephyrus::Log::Logger::ZP_ZEPHYRUS, msg)
-#define ZP_CORE_WARN(msg)               Zephyrus::Log::Warn(Zephyrus::Log::Logger::ZP_ZEPHYRUS, msg, __FILE__, __LINE__)
-#define ZP_CORE_ERROR(msg)              Zephyrus::Log::Error(Zephyrus::Log::Logger::ZP_ZEPHYRUS, msg, __FILE__, __LINE__)
-#define ZP_CORE_ASSERT(cond, msg)       Zephyrus::Log::Assert(Zephyrus::Log::Logger::ZP_ZEPHYRUS, cond, msg, __FILE__, __LINE__)
+#define ZP_CORE_INFO(msg)               Zephyrus::Log::Info(Zephyrus::Logger::ZP_ZEPHYRUS, msg)
+#define ZP_CORE_LOAD(msg)               Zephyrus::Log::Load(Zephyrus::Logger::ZP_ZEPHYRUS, msg)
+#define ZP_CORE_WARN(msg)               Zephyrus::Log::Warn(Zephyrus::Logger::ZP_ZEPHYRUS, msg, __FILE__, __LINE__)
+#define ZP_CORE_ERROR(msg)              Zephyrus::Log::Error(Zephyrus::Logger::ZP_ZEPHYRUS, msg, __FILE__, __LINE__)
+#define ZP_CORE_ASSERT(cond, msg)       Zephyrus::Log::Assert(Zephyrus::Logger::ZP_ZEPHYRUS, cond, msg, __FILE__, __LINE__)
 
-#define ZP_EDITOR_INFO(msg)             Zephyrus::Log::Info(Zephyrus::Log::Logger::ZP_APP, msg)
-#define ZP_EDITOR_LOAD(msg)             Zephyrus::Log::Load(Zephyrus::Log::Logger::ZP_APP, msg)
-#define ZP_EDITOR_WARN(msg)             Zephyrus::Log::Warn(Zephyrus::Log::Logger::ZP_APP, msg, __FILE__, __LINE__)
-#define ZP_EDITOR_ERROR(msg)            Zephyrus::Log::Error(Zephyrus::Log::Logger::ZP_APP, msg, __FILE__, __LINE__)
-#define ZP_EDITOR_ASSERT(cond, msg)     Zephyrus::Log::Assert(Zephyrus::Log::Logger::ZP_APP, cond, msg, __FILE__, __LINE__)
+#define ZP_EDITOR_INFO(msg)             Zephyrus::Log::Info(Zephyrus::Logger::ZP_APP, msg)
+#define ZP_EDITOR_LOAD(msg)             Zephyrus::Log::Load(Zephyrus::Logger::ZP_APP, msg)
+#define ZP_EDITOR_WARN(msg)             Zephyrus::Log::Warn(Zephyrus::Logger::ZP_APP, msg, __FILE__, __LINE__)
+#define ZP_EDITOR_ERROR(msg)            Zephyrus::Log::Error(Zephyrus::Logger::ZP_APP, msg, __FILE__, __LINE__)
+#define ZP_EDITOR_ASSERT(cond, msg)     Zephyrus::Log::Assert(Zephyrus::Logger::ZP_APP, cond, msg, __FILE__, __LINE__)
 
-#define ZP_INFO(msg)                    Zephyrus::Log::Info(Zephyrus::Log::Logger::ZP_GAME, msg)
-#define ZP_LOAD(msg)                    Zephyrus::Log::Load(Zephyrus::Log::Logger::ZP_GAME, msg)
-#define ZP_WARN(msg)                    Zephyrus::Log::Warn(Zephyrus::Log::Logger::ZP_GAME, msg, __FILE__, __LINE__)
-#define ZP_ERROR(msg)                   Zephyrus::Log::Error(Zephyrus::Log::Logger::ZP_GAME, msg, __FILE__, __LINE__)
-#define ZP_ASSERT(cond, msg)            Zephyrus::Log::Assert(Zephyrus::Log::Logger::ZP_GAME, cond, msg, __FILE__, __LINE__)
+#define ZP_INFO(msg)                    Zephyrus::Log::Info(Zephyrus::Logger::ZP_GAME, msg)
+#define ZP_LOAD(msg)                    Zephyrus::Log::Load(Zephyrus::Logger::ZP_GAME, msg)
+#define ZP_WARN(msg)                    Zephyrus::Log::Warn(Zephyrus::Logger::ZP_GAME, msg, __FILE__, __LINE__)
+#define ZP_ERROR(msg)                   Zephyrus::Log::Error(Zephyrus::Logger::ZP_GAME, msg, __FILE__, __LINE__)
+#define ZP_ASSERT(cond, msg)            Zephyrus::Log::Assert(Zephyrus::Logger::ZP_GAME, cond, msg, __FILE__, __LINE__)

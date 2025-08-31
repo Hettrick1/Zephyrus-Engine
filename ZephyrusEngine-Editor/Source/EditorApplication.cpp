@@ -39,6 +39,7 @@ EditorApplication::~EditorApplication()
 {
     delete mRenderer;
     delete mGameWindow;
+    mAllPanels.clear();
 }
 
 void EditorApplication::Initialize()
@@ -188,10 +189,15 @@ void EditorApplication::InitializePanels()
     std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mRenderTexture);
     std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
+
+    ConsolePanel* consolePanelRaw = consolePanel.get();
+
     mAllPanels.push_back(std::move(consolePanel));
     mAllPanels.push_back(std::move(inspectorPanel));
     mAllPanels.push_back(std::move(sceneHierarchyPanel));
     mAllPanels.push_back(std::move(scenePanel));
+
+    Zephyrus::Log::AddListener(consolePanelRaw);
 }
 
 void EditorApplication::DrawDockSpace()
