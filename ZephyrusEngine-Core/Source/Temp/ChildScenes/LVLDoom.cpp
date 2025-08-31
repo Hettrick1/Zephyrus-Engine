@@ -219,6 +219,7 @@ void LVLDoom::PostStart()
 		mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
 		mPlayerRef->SetSize(Vector3D(1));
 	}
+	mPlayerRef->Start();
 }
 
 void LVLDoom::Update()

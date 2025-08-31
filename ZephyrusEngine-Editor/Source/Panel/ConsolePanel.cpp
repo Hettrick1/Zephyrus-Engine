@@ -39,10 +39,8 @@ void ConsolePanel::Draw()
         }
         ImGui::TextColored(color, "%s", message.pTexte.c_str());
     }
-	if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY() - 5.0f)
-	{
-		ImGui::SetScrollHereY(1.0f);
-	}
+    ImGui::SetScrollHereY(1.0f);
+
 	ImGui::End();
 	Panel::EndDraw();
 

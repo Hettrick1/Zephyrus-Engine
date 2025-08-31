@@ -72,6 +72,11 @@ void PickUpComponent::OnTriggerEnter(ColliderComponent* collider, HitResult* inf
 	if (infos->HitActor->HasTag("Player"))
 	{
 		DoomPlayerComponent* playerComp = infos->HitActor->GetComponentOfType<DoomPlayerComponent>();
+		if (!playerComp)
+		{
+			ZP_WARN("HitActor has no DoomPlayerComponent!");
+			return;
+		}
 		switch (mType)
 		{
 		case PickUpType::Health:

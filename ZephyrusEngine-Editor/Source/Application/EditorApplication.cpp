@@ -8,15 +8,17 @@
 #include "imgui_internal.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
-#include "InspectorPanel.h"
-#include "ScenePanel.h"
-#include "ConsolePanel.h"
-#include "SceneHierarchyPanel.h"
+#include "Panel/InspectorPanel.h"
+#include "Panel/ScenePanel.h"
+#include "Panel/ConsolePanel.h"
+#include "Panel/SceneHierarchyPanel.h"
+#include "Panel/ContentBrowserPanel.h"
 
 const std::string consolePanelName = "Console";
 const std::string inspectorPanelName = "Inspector";
 const std::string scenePanelName = "Scene";
 const std::string sceneHierarchyName = "Scene Hierarchy";
+const std::string contentBrowserName = "Content Browser";
 
 EditorApplication::EditorApplication(const std::string& pTitle, Scene* pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
@@ -189,12 +191,14 @@ void EditorApplication::InitializePanels()
     std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mRenderTexture);
     std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
+    std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
 
     ConsolePanel* consolePanelRaw = consolePanel.get();
 
-    mAllPanels.push_back(std::move(consolePanel));
     mAllPanels.push_back(std::move(inspectorPanel));
     mAllPanels.push_back(std::move(sceneHierarchyPanel));
+    mAllPanels.push_back(std::move(contentBrowserPanel));
+    mAllPanels.push_back(std::move(consolePanel));
     mAllPanels.push_back(std::move(scenePanel));
 
     Zephyrus::Log::AddListener(consolePanelRaw);
@@ -244,6 +248,7 @@ void EditorApplication::DrawDockSpace()
 
         ImGui::DockBuilderDockWindow(scenePanelName.c_str(), dock_main_id);
         ImGui::DockBuilderDockWindow(consolePanelName.c_str(), dock_id_down);
+        ImGui::DockBuilderDockWindow(contentBrowserName.c_str(), dock_id_down);
         ImGui::DockBuilderDockWindow(inspectorPanelName.c_str(), dock_id_right);
         ImGui::DockBuilderDockWindow(sceneHierarchyName.c_str(), dock_id_left);
 

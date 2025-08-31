@@ -8,7 +8,7 @@
 #include "Physics/PhysicManager.h"
 #include "CameraManager.h"
 #include "SceneManager.h"
-#include "Panel.h"
+#include "Panel/Panel.h"
 #include <iostream>
 #include <vector>
 #include <memory>

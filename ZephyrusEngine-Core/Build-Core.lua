@@ -67,6 +67,7 @@ project "ZephyrusEngine-Core"
       "opengl32",
       "SDL2",
       "SDL2_image",
+      "SDL2main",
       "freetype261",
    }
 

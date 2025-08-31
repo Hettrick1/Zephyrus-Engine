@@ -1,5 +1,5 @@
 project "ZephyrusEngine-Editor"
-   kind "ConsoleApp"
+   kind "WindowedApp"
    language "C++"
    cppdialect "C++20"
    targetdir "Binaries/%{cfg.buildcfg}"
