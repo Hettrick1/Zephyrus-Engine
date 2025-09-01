@@ -10,10 +10,19 @@ ConsolePanel::~ConsolePanel()
 	mLogMessages.clear();
 }
 
+void ConsolePanel::Update()
+{
+    if (mLogMessages.size() > mMaxMessageInConsole)
+    {
+        mLogMessages.pop_front();
+    }
+}
+
 void ConsolePanel::Draw()
 {
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
+    ImGui::BeginChild("ScrollingRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
     for (const auto& message : mLogMessages)
     {
         ImVec4 color;
@@ -38,9 +47,20 @@ void ConsolePanel::Draw()
             break;
         }
         ImGui::TextColored(color, "%s", message.pTexte.c_str());
+        ImGui::Separator();
     }
-    ImGui::SetScrollHereY(1.0f);
+    if (mMessageQuantity < mLogMessages.size() && mNewMessage)
+    {
+        mMessageQuantity = mLogMessages.size();
+        ImGui::SetScrollHereY(1.0f);
+        mNewMessage = false;
+    }
 
+    if (mMessageQuantity > mLogMessages.size() && ImGui::GetScrollY() >= ImGui::GetScrollMaxY() - 5.0f)
+    {
+        mMessageQuantity = mLogMessages.size() - 1;
+    }
+    ImGui::EndChild();
 	ImGui::End();
 	Panel::EndDraw();
 
@@ -55,5 +75,6 @@ void ConsolePanel::OnLogMessage(const Zephyrus::ZPMessage& pMessage)
 	else
 	{
 		mLogMessages.push_back(pMessage);
+        mNewMessage = true;
 	}
 }

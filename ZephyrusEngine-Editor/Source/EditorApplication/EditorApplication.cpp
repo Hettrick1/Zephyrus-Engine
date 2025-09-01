@@ -13,6 +13,8 @@
 #include "Panel/ConsolePanel.h"
 #include "Panel/SceneHierarchyPanel.h"
 #include "Panel/ContentBrowserPanel.h"
+#include "EditorControllerActor.h"
+#include "EditorControllerComponent.h"
 
 const std::string consolePanelName = "Console";
 const std::string inspectorPanelName = "Inspector";
@@ -41,7 +43,6 @@ EditorApplication::~EditorApplication()
 {
     delete mRenderer;
     delete mGameWindow;
-    mAllPanels.clear();
 }
 
 void EditorApplication::Initialize()
@@ -73,6 +74,7 @@ void EditorApplication::Initialize()
         InitializePanels();
 
         SceneManager::LoadScene(mStartUpScene, false);
+        SceneManager::mIsSceneLoaded = true;
         Loop();
     }
 }
@@ -110,10 +112,10 @@ void EditorApplication::InitializeFrameBuffer()
 void EditorApplication::Loop()
 {
     SceneManager::StartScene(mRenderer);
-    SDL_SetRelativeMouseMode(SDL_FALSE);
     mRenderer->SetHud(nullptr);
 
-    auto editorController = PrefabFactory::CreateActorFromPrefab("CameraActor");
+    auto editorController = new EditorControllerActor();
+    mEditorController = editorController;
 
     while (mIsRunning) {
         Timer::ComputeDeltaTime();
@@ -129,6 +131,18 @@ void EditorApplication::Loop()
 void EditorApplication::Update()
 {
     mCameraManager.UpdateCurrentCamera();
+    for (auto& panel : mAllPanels)
+    {
+        panel.second->Update();
+    }
+    auto it = mAllPanels.find(scenePanelName);
+    if (it != mAllPanels.end())
+    {
+        if (auto scenePanel = dynamic_cast<ScenePanel*>(it->second.get()))
+        {
+            mEditorController->GetComponentOfType<EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
+        }
+    }
 }
 
 void EditorApplication::Render()
@@ -195,11 +209,11 @@ void EditorApplication::InitializePanels()
 
     ConsolePanel* consolePanelRaw = consolePanel.get();
 
-    mAllPanels.push_back(std::move(inspectorPanel));
-    mAllPanels.push_back(std::move(sceneHierarchyPanel));
-    mAllPanels.push_back(std::move(contentBrowserPanel));
-    mAllPanels.push_back(std::move(consolePanel));
-    mAllPanels.push_back(std::move(scenePanel));
+    mAllPanels[inspectorPanelName] = std::move(inspectorPanel);
+    mAllPanels[sceneHierarchyName] = std::move(sceneHierarchyPanel);
+    mAllPanels[consolePanelName] = std::move(consolePanel);
+    mAllPanels[contentBrowserName] = std::move(contentBrowserPanel);
+    mAllPanels[scenePanelName] = std::move(scenePanel);
 
     Zephyrus::Log::AddListener(consolePanelRaw);
 }
@@ -260,7 +274,7 @@ void EditorApplication::DrawPanels()
 {
     for (auto& panel : mAllPanels)
     {
-        panel->Draw();
+        panel.second->Draw();
     }
 }
 
@@ -299,6 +313,8 @@ void EditorApplication::Close()
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 
+    mEditorController = nullptr;
+    mAllPanels.clear();
     SceneManager::Unload();
     mGameWindow->Close();
     Zephyrus::Log::Shutdown();

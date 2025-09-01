@@ -24,6 +24,8 @@ void ScenePanel::Draw()
 		ImVec2(1, 0)
 	);
 
+	mIsHover = ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows);
+
 	ImGui::End();
 	Panel::EndDraw();
 }

@@ -13,6 +13,8 @@ public:
 	Panel(const std::string& pName);
 	virtual ~Panel();
 
+	virtual void Update();
+
 	virtual void BeginDraw();
 	virtual void Draw() = 0;
 	virtual void EndDraw();

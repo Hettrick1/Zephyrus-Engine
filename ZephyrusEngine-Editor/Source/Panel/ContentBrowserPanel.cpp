@@ -14,6 +14,8 @@ void ContentBrowserPanel::Draw()
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
 	ImGui::Text("Content browser panel");
+
+	ImGui::Text("Content browser panel");
 	ImGui::End();
 	Panel::EndDraw();
 }

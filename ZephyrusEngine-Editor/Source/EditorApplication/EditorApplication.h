@@ -11,7 +11,10 @@
 #include "Panel/Panel.h"
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 #include <memory>
+
+class EditorControllerActor;
 
 class EditorApplication
 {
@@ -25,11 +28,13 @@ private:
 	PhysicManager& mPhysicManager;
 	CameraManager& mCameraManager;
 	bool mIsRunning = true;
-	std::vector<std::unique_ptr<Panel>> mAllPanels;
+	std::unordered_map<std::string, std::unique_ptr<Panel>> mAllPanels;
 
 	GLuint mFrameBuffer = 0;
 	GLuint mRenderTexture = 0;
 	GLuint mDepthRenderBuffer = 0;
+
+	EditorControllerActor* mEditorController = nullptr;
 
 public:
 	EditorApplication(const std::string& pTitle, Scene* pStartupScene);

@@ -9,6 +9,11 @@ Panel::~Panel()
 {
 }
 
+void Panel::Update()
+{
+
+}
+
 void Panel::BeginDraw()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 6.0f);
