@@ -74,19 +74,17 @@ bool Texture::LoadSdl(RendererSdl* pRenderer, const std::string& pFilePath, SDL_
 
 bool Texture::LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface)
 {
-	int format = 0;
-	if (pSurface->format->format == SDL_PIXELFORMAT_RGB24)
-	{
-		format = GL_RGB;
-	}
-	else if (pSurface->format->format == SDL_PIXELFORMAT_RGBA32)
-	{
-		format = GL_RGBA;
-	}
+	SDL_Surface* converted = SDL_ConvertSurfaceFormat(pSurface, SDL_PIXELFORMAT_ABGR8888, 0);
+	SDL_FreeSurface(pSurface);
+
+	mWidth = converted->w;
+	mHeight = converted->h;
+
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
-	glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, pSurface->pixels);
-	SDL_FreeSurface(pSurface);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, converted->pixels);
+	SDL_FreeSurface(converted);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1.0f);
@@ -95,6 +93,11 @@ bool Texture::LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SD
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	if (mTextureId == 0)
+	{
+		ZP_INFO("Texture load failed");
+	}
 
 	return true;
 }

@@ -5,6 +5,7 @@
 #include "SDL_image.h"
 #include "Vector2D.h"
 #include "IRenderer.h"
+#include <glew.h>
 
 class RendererSdl;
 class RendererOpenGl;
@@ -19,7 +20,7 @@ private:
 	std::string mFilePath;
 	SDL_Texture* mSdlTexture = nullptr;
 	int mWidth, mHeight;
-	unsigned int mTextureId;
+	GLuint mTextureId = 0;
 	// Loads a texture using SDL renderer
 	bool LoadSdl(RendererSdl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
 	// Loads a texture using OpenGL renderer
@@ -40,5 +41,5 @@ public:
 	void OverrideTextureSize(int pWidth, int pHeight);
 	inline Vector3D GetTextureSize() const { return { static_cast<float>(mWidth), static_cast<float>(mHeight), 0 }; }
 	SDL_Texture* GetSdlTexture() const { return mSdlTexture; }
-	inline unsigned int& GetId() { return mTextureId; }
+	inline GLuint GetId() const { return mTextureId; }
 };

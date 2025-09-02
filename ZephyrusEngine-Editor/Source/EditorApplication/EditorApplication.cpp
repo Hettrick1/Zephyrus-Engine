@@ -25,6 +25,7 @@ const std::string sceneHierarchyName = "Scene Hierarchy";
 const std::string contentBrowserName = "Content Browser";
 const std::string menuPanelName = "MenuPanel";
 const std::string utilsPanelName = "UtilsPanel";
+const float topBarHeight = 45.0f;
 
 
 EditorApplication::EditorApplication(const std::string& pTitle, Scene* pStartupScene)
@@ -64,10 +65,11 @@ void EditorApplication::Initialize()
 
         InitializeFrameBuffer();
 
-        InitializePanels();
-
         SceneManager::LoadScene(mStartUpScene, false);
         SceneManager::mIsSceneLoaded = true;
+
+        InitializePanels();
+
         Loop();
     }
 }
@@ -84,7 +86,7 @@ void EditorApplication::InitializeImGui()
 
     ImGui::StyleColorsDark();
 
-    ImFont* font = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-Regular.ttf", 15.0f);
+    ImFont* font = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 16.0f);
     if (!font)
     {
         ZP_EDITOR_ERROR("Font not loaded !");
@@ -132,7 +134,7 @@ void EditorApplication::InitializePanels()
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
     std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
     std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(menuPanelName);
-    std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(utilsPanelName);
+    std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(utilsPanelName, topBarHeight);
 
     ConsolePanel* consolePanelRaw = consolePanel.get();
 
@@ -141,8 +143,8 @@ void EditorApplication::InitializePanels()
     mAllPanels[consolePanelName] = std::move(consolePanel);
     mAllPanels[contentBrowserName] = std::move(contentBrowserPanel);
     mAllPanels[scenePanelName] = std::move(scenePanel);
-    mAllPanels[menuPanelName] = std::move(menuPanel);
     mAllPanels[utilsPanelName] = std::move(utilsPanel);
+    mAllPanels[menuPanelName] = std::move(menuPanel);
 
     Zephyrus::Log::AddListener(consolePanelRaw);
 }
@@ -247,7 +249,6 @@ void EditorApplication::DrawDockSpace()
         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus |
         ImGuiWindowFlags_NoNavFocus;
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
-    float topBarHeight = 45.0f;
     ImGui::SetNextWindowPos(ImVec2(viewport->WorkPos.x, viewport->WorkPos.y + topBarHeight));
     ImGui::SetNextWindowSize(ImVec2(viewport->WorkSize.x, viewport->WorkSize.y - topBarHeight));
     ImGui::SetNextWindowViewport(viewport->ID);
@@ -307,10 +308,10 @@ void EditorApplication::SetEditorStyle()
 
     colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
     colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-    colors[ImGuiCol_Border] = ImVec4(1.0f, 0.81176f, 0.0f, 1.0f);
+    colors[ImGuiCol_Border] = ImVec4(0.9f, 0.7f, 0.0f, 1.0f);
 
-    colors[ImGuiCol_TitleBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_TitleBgActive] = ImVec4(1.0f, 0.81176f, 0.0f, 1.0f);
+    colors[ImGuiCol_TitleBg] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.9f, 0.7f, 0.0f, 1.0f);
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.10f, 0.10f, 0.10f, 1.0f);
 
     colors[ImGuiCol_TabSelected] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
@@ -325,7 +326,7 @@ void EditorApplication::SetEditorStyle()
     colors[ImGuiCol_DockingPreview] = ImVec4(1.0f, 0.81176f, 0.0f, 0.8f);
 
     colors[ImGuiCol_Button] = ImVec4(0.2f, 0.3f, 0.7f, 1.0f);
-    colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.4f, 0.8f, 1.0f);
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
     colors[ImGuiCol_ButtonActive] = ImVec4(0.1f, 0.2f, 0.5f, 1.0f);
 }
 
