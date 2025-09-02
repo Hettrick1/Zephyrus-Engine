@@ -42,8 +42,9 @@ public:
 
 	// Initializes the game systems and window
 	void Initialize();
-
+	void InitializeImGui();
 	void InitializeFrameBuffer();
+	void InitializePanels();
 
 	// Main game loop
 	void Loop();
@@ -52,8 +53,6 @@ public:
 	void Render();
 	void RenderImgui();
 	void Input();
-
-	void InitializePanels();
 
 	void DrawDockSpace();
 	void DrawPanels();

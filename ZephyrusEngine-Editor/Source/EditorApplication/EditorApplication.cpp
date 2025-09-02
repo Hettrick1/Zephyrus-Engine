@@ -15,12 +15,15 @@
 #include "Panel/ContentBrowserPanel.h"
 #include "EditorControllerActor.h"
 #include "EditorControllerComponent.h"
+#include "Panel/MenuPanel.h"
 
 const std::string consolePanelName = "Console";
 const std::string inspectorPanelName = "Inspector";
 const std::string scenePanelName = "Scene";
 const std::string sceneHierarchyName = "Scene Hierarchy";
 const std::string contentBrowserName = "Content Browser";
+const std::string menuPanelName = "MenuPanel";
+
 
 EditorApplication::EditorApplication(const std::string& pTitle, Scene* pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
@@ -29,11 +32,11 @@ EditorApplication::EditorApplication(const std::string& pTitle, Scene* pStartupS
     Zephyrus::Log::Init();
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
-        std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
+        ZP_EDITOR_ERROR(std::string("SDL init failed: ") + SDL_GetError());
     }
     else
     {
-        ZP_CORE_INFO("SDL initialization succeeded!");
+        ZP_EDITOR_INFO("SDL initialization succeeded!");
     }
 
     Initialize();
@@ -55,21 +58,9 @@ void EditorApplication::Initialize()
     {
         SDL_MaximizeWindow(mGameWindow->GetSdlWindow());
 
+        InitializeImGui();
+
         InitializeFrameBuffer();
-
-        // Init ImGui
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO(); 
-        (void)io;
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-
-        ImGui::StyleColorsDark();
-
-        ImGui_ImplSDL2_InitForOpenGL(mGameWindow->GetSdlWindow(), SDL_GL_GetCurrentContext());
-        ImGui_ImplOpenGL3_Init("#version 450");
 
         InitializePanels();
 
@@ -77,6 +68,28 @@ void EditorApplication::Initialize()
         SceneManager::mIsSceneLoaded = true;
         Loop();
     }
+}
+
+void EditorApplication::InitializeImGui()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
+    ImGui::StyleColorsDark();
+
+    ImFont* font = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-Regular.ttf", 15.0f);
+    if (!font)
+    {
+        ZP_EDITOR_ERROR("Font not loaded !");
+    }
+
+    ImGui_ImplSDL2_InitForOpenGL(mGameWindow->GetSdlWindow(), SDL_GL_GetCurrentContext());
+    ImGui_ImplOpenGL3_Init("#version 450");
 }
 
 void EditorApplication::InitializeFrameBuffer()
@@ -107,6 +120,27 @@ void EditorApplication::InitializeFrameBuffer()
     {
         ZP_EDITOR_ERROR("Frame buffer init failed !");
     }
+}
+
+void EditorApplication::InitializePanels()
+{
+    std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(consolePanelName);
+    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mRenderTexture);
+    std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
+    std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
+    std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
+    std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(menuPanelName);
+
+    ConsolePanel* consolePanelRaw = consolePanel.get();
+
+    mAllPanels[inspectorPanelName] = std::move(inspectorPanel);
+    mAllPanels[sceneHierarchyName] = std::move(sceneHierarchyPanel);
+    mAllPanels[consolePanelName] = std::move(consolePanel);
+    mAllPanels[contentBrowserName] = std::move(contentBrowserPanel);
+    mAllPanels[scenePanelName] = std::move(scenePanel);
+    mAllPanels[menuPanelName] = std::move(menuPanel);
+
+    Zephyrus::Log::AddListener(consolePanelRaw);
 }
 
 void EditorApplication::Loop()
@@ -153,6 +187,7 @@ void EditorApplication::Render()
     SceneManager::RenderScene();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, mGameWindow->GetDimensions().x, mGameWindow->GetDimensions().y);
+
     RenderImgui();
     SceneManager::EndRender();
 }
@@ -199,25 +234,6 @@ void EditorApplication::Input()
     }
 }
 
-void EditorApplication::InitializePanels()
-{
-    std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(consolePanelName);
-    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mRenderTexture);
-    std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
-    std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
-    std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
-
-    ConsolePanel* consolePanelRaw = consolePanel.get();
-
-    mAllPanels[inspectorPanelName] = std::move(inspectorPanel);
-    mAllPanels[sceneHierarchyName] = std::move(sceneHierarchyPanel);
-    mAllPanels[consolePanelName] = std::move(consolePanel);
-    mAllPanels[contentBrowserName] = std::move(contentBrowserPanel);
-    mAllPanels[scenePanelName] = std::move(scenePanel);
-
-    Zephyrus::Log::AddListener(consolePanelRaw);
-}
-
 void EditorApplication::DrawDockSpace()
 {
     static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
@@ -250,13 +266,14 @@ void EditorApplication::DrawDockSpace()
         ImGui::DockBuilderAddNode(dockspace_id, ImGuiDockNodeFlags_DockSpace);
         ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
 
+        // creates split dockspaces
         ImGuiID dock_main_id = dockspace_id;
         ImGuiID dock_id_right;
         ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Right, 0.20f, &dock_id_right, &dock_main_id);
-
         ImGuiID dock_id_down;
         ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Down, 0.25f, &dock_id_down, &dock_main_id);
-
+        ImGuiID dock_id_up;
+        ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Up, 0.1f, &dock_id_up, &dock_main_id);
         ImGuiID dock_id_left;
         ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.25f, &dock_id_left, &dock_main_id);
 

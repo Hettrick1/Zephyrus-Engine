@@ -9,7 +9,7 @@ class ConsolePanel : public Panel, public Zephyrus::ILogListener
 private:
 	std::deque<Zephyrus::ZPMessage> mLogMessages;
 	size_t mMessageQuantity = 0;
-	size_t mMaxMessageInConsole = 50;
+	size_t mMaxMessageInConsole = 100;
 	bool mNewMessage = false;
 public:
 	ConsolePanel(const std::string& pName);
