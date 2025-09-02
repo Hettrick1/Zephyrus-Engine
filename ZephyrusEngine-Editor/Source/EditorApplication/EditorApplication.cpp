@@ -16,6 +16,7 @@
 #include "EditorControllerActor.h"
 #include "EditorControllerComponent.h"
 #include "Panel/MenuPanel.h"
+#include "Panel/UtilsPanel.h"
 
 const std::string consolePanelName = "Console";
 const std::string inspectorPanelName = "Inspector";
@@ -23,6 +24,7 @@ const std::string scenePanelName = "Scene";
 const std::string sceneHierarchyName = "Scene Hierarchy";
 const std::string contentBrowserName = "Content Browser";
 const std::string menuPanelName = "MenuPanel";
+const std::string utilsPanelName = "UtilsPanel";
 
 
 EditorApplication::EditorApplication(const std::string& pTitle, Scene* pStartupScene)
@@ -130,6 +132,7 @@ void EditorApplication::InitializePanels()
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
     std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
     std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(menuPanelName);
+    std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(utilsPanelName);
 
     ConsolePanel* consolePanelRaw = consolePanel.get();
 
@@ -139,6 +142,7 @@ void EditorApplication::InitializePanels()
     mAllPanels[contentBrowserName] = std::move(contentBrowserPanel);
     mAllPanels[scenePanelName] = std::move(scenePanel);
     mAllPanels[menuPanelName] = std::move(menuPanel);
+    mAllPanels[utilsPanelName] = std::move(utilsPanel);
 
     Zephyrus::Log::AddListener(consolePanelRaw);
 }
@@ -243,8 +247,9 @@ void EditorApplication::DrawDockSpace()
         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus |
         ImGuiWindowFlags_NoNavFocus;
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(viewport->WorkPos);
-    ImGui::SetNextWindowSize(viewport->WorkSize);
+    float topBarHeight = 45.0f;
+    ImGui::SetNextWindowPos(ImVec2(viewport->WorkPos.x, viewport->WorkPos.y + topBarHeight));
+    ImGui::SetNextWindowSize(ImVec2(viewport->WorkSize.x, viewport->WorkSize.y - topBarHeight));
     ImGui::SetNextWindowViewport(viewport->ID);
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);

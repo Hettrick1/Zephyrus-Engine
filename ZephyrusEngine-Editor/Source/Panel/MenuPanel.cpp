@@ -40,6 +40,15 @@ void MenuPanel::Draw()
             ImGui::EndMenu();
         }
         ImGui::Separator();
+        if (ImGui::BeginMenu("Panels"))
+        {
+            if (ImGui::MenuItem("Console")) {/* action */ }
+            if (ImGui::MenuItem("Scene")) {/* action */ }
+            if (ImGui::MenuItem("Hierarchy")) {/* action */ }
+            if (ImGui::MenuItem("Content")) {/* action */ }
+            ImGui::EndMenu();
+        }
+        ImGui::Separator();
 
         ImVec2 menuBarPos = ImGui::GetWindowPos();
         ImVec2 menuBarSize = ImGui::GetWindowSize();
