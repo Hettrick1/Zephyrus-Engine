@@ -45,13 +45,15 @@ EditorApplication::~EditorApplication()
 
 void EditorApplication::Initialize()
 {
-    SDL_DisplayMode displayMode;
-
     mGameWindow = new Window(1920, 1030, true);
     mRenderer = new RendererOpenGl();
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) 
     {
         SDL_MaximizeWindow(mGameWindow->GetSdlWindow());
+
+        SDL_Surface* icon = IMG_Load("../Content/Sprites/Icons/ZephyrusLogo.png");
+        SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
+        SDL_FreeSurface(icon);
 
         InitializeImGui();
 
@@ -227,10 +229,12 @@ void EditorApplication::Input()
     if (mIsRunning) {
         while (SDL_PollEvent(&mSdlEvent)) {
             ImGui_ImplSDL2_ProcessEvent(&mSdlEvent);
-            switch (mSdlEvent.type) {
-            case SDL_QUIT:
-                mIsRunning = false;
-                break;
+            if (mSdlEvent.type == SDL_WINDOWEVENT && mSdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+            {
+                if (mSdlEvent.window.windowID == SDL_GetWindowID(mGameWindow->GetSdlWindow()))
+                {
+                    mIsRunning = false;
+                }
             }
         }
         mInputManager.Update();
