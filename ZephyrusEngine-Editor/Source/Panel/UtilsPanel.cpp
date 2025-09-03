@@ -15,6 +15,24 @@ UtilsPanel::~UtilsPanel()
 
 void UtilsPanel::Draw()
 {
+    BeginDrawPanelWindow();
+
+    ImVec2 windowSize = ImGui::GetContentRegionAvail();
+    ImVec2 buttonSize = ImVec2(200, mPaneSizeY - 15);
+
+    DrawPlayButon(windowSize, buttonSize);
+
+    ImGui::SameLine(0.f, 0.f);
+
+    DrawDropDownButton(windowSize);
+
+    ImGui::Separator();
+
+    EndDrawPanelWindow();
+}
+
+void UtilsPanel::BeginDrawPanelWindow()
+{
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.0));
     ImGui::PushStyleColor(ImGuiCol_BorderShadow, ImVec4(0.0f, 0.0f, 0.0f, 0.0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -29,11 +47,18 @@ void UtilsPanel::Draw()
     ImGui::SetNextWindowSize(ImVec2(viewport->WorkSize.x, mPaneSizeY));
 
     ImGui::Begin("CenterPanel", nullptr, flags);
+}
 
-    ImVec2 windowSize = ImGui::GetContentRegionAvail();
-    ImVec2 widgetSize = ImVec2(200, mPaneSizeY - 15);
+void UtilsPanel::EndDrawPanelWindow()
+{
+    ImGui::End();
+    ImGui::PopStyleVar();
+    ImGui::PopStyleColor(2);
+}
 
-    ImVec2 pos = ImVec2((windowSize.x - widgetSize.x - 20) * 0.5f, (windowSize.y - widgetSize.y) * 0.5f + (15 * 0.5f));
+void UtilsPanel::DrawPlayButon(const ImVec2& pWindowSize, const ImVec2& pButtonSize)
+{
+    ImVec2 pos = ImVec2((pWindowSize.x - pButtonSize.x - 20) * 0.5f, (pWindowSize.y - pButtonSize.y) * 0.5f + (15 * 0.5f));
     ImGui::SetCursorPos(pos);
 
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.81176f, 0.0f, 1.0f));
@@ -57,45 +82,25 @@ void UtilsPanel::Draw()
         break;
     }
 
-    if (ImGui::Button(selectedOptionText.c_str(), widgetSize))
+    if (ImGui::Button(selectedOptionText.c_str(), pButtonSize))
     {
-        switch (mSelectedOption)
-        {
-        case LaunchGameMode::Standalone:
-        {
-            char path[MAX_PATH];
-            GetModuleFileNameA(nullptr, path, MAX_PATH);
-            std::string exePath(path);
-            size_t pos = exePath.find_last_of("\\/");
-            std::string finalPath = exePath.substr(0, pos);
-
-            std::string runtimePath = finalPath + std::string("\\..\\ZephyrusEngine-Runtime\\ZephyrusEngine-Runtime.exe");
-
-            system(runtimePath.c_str());
-        }
-            break;
-        case LaunchGameMode::Editor:
-            ZP_EDITOR_WARN("Not Implemented Yet !");
-            break;
-        default:
-            ZP_EDITOR_ERROR("No launch option selected !");
-            break;
-        }
+        LaunchGame();
     }
 
     ImGui::PopStyleVar(2);
     ImGui::PopStyleColor(3);
+}
 
-    ImGui::SameLine(0.f, 0.f);
-
+void UtilsPanel::DrawDropDownButton(const ImVec2& pWindowSize)
+{
     float x = ImGui::GetCursorPosX();
     float y = ImGui::GetCursorPosY();
 
-    ImVec2 size(20, 30);   
+    ImVec2 size(20, 30);
     ImVec2 popupPos;
 
-    popupPos.x = windowSize.x * 0.5 - 30;
-    popupPos.y = windowSize.y + 54.5;
+    popupPos.x = pWindowSize.x * 0.5 - 30;
+    popupPos.y = pWindowSize.y + 54.5;
 
     Texture* arrowTex = Assets::LoadTexture("Sprites/Icons/arrowDown.png", "Sprites/Icons/arrowDown.png");
     mMyIcon = (ImTextureID)(intptr_t)arrowTex->GetId();
@@ -118,12 +123,18 @@ void UtilsPanel::Draw()
         ImGui::SetNextWindowPos(popupPos);
     }
 
-    ImGui::SetNextWindowBgAlpha(1.0f);
+    DrawDropMenuOptions();
+}
 
+void UtilsPanel::DrawDropMenuOptions()
+{
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
     ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_BorderShadow, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     if (ImGui::BeginPopup("PlayMode"))
     {
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 10));
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
         if (ImGui::MenuItem("Play in Standalone", nullptr, mSelectedOption == LaunchGameMode::Standalone))
         {
             mSelectedOption = LaunchGameMode::Standalone;
@@ -136,11 +147,32 @@ void UtilsPanel::Draw()
         ImGui::PopStyleVar();
         ImGui::EndPopup();
     }
-    ImGui::PopStyleColor();
-
-    ImGui::Separator();
-
-    ImGui::End();
     ImGui::PopStyleVar();
-    ImGui::PopStyleColor(2);
+    ImGui::PopStyleColor(3);
+}
+
+void UtilsPanel::LaunchGame()
+{
+    switch (mSelectedOption)
+    {
+    case LaunchGameMode::Standalone:
+    {
+        char path[MAX_PATH];
+        GetModuleFileNameA(nullptr, path, MAX_PATH);
+        std::string exePath(path);
+        size_t pos = exePath.find_last_of("\\/");
+        std::string finalPath = exePath.substr(0, pos);
+
+        std::string runtimePath = finalPath + std::string("\\..\\ZephyrusEngine-Runtime\\ZephyrusEngine-Runtime.exe");
+
+        system(runtimePath.c_str());
+    }
+    break;
+    case LaunchGameMode::Editor:
+        ZP_EDITOR_WARN("Not Implemented Yet !");
+        break;
+    default:
+        ZP_EDITOR_ERROR("No launch option selected !");
+        break;
+    }
 }

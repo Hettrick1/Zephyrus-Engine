@@ -42,10 +42,17 @@ void MenuPanel::Draw()
         ImGui::Separator();
         if (ImGui::BeginMenu("Panels"))
         {
-            if (ImGui::MenuItem("Console")) {/* action */ }
-            if (ImGui::MenuItem("Scene")) {/* action */ }
-            if (ImGui::MenuItem("Hierarchy")) {/* action */ }
-            if (ImGui::MenuItem("Content")) {/* action */ }
+            if (ImGui::MenuItem("Console", nullptr, true)) 
+            {/* action */ }
+            if (ImGui::MenuItem("Scene", nullptr, true))
+            {/* action */ }
+            if (ImGui::MenuItem("Hierarchy", nullptr, true))
+            {/* action */ }
+            if (ImGui::MenuItem("Content", nullptr, true))
+            {/* action */ }
+            if (ImGui::MenuItem("Inspector", nullptr, true))
+            {/* action */
+            }
             ImGui::EndMenu();
         }
         ImGui::Separator();
