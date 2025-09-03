@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 
 EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
 {
@@ -82,6 +83,21 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
 
     ZP_LOAD("Prefab " + actorName + " loaded");
     return actor;
+}
+
+std::vector<std::string> PrefabFactory::GetPrefabFiles(const std::string& folderPath)
+{
+    std::vector<std::string> prefabs;
+    for (const auto& entry : std::filesystem::directory_iterator(folderPath))
+    {
+        if (entry.is_regular_file())
+        {
+            auto path = entry.path();
+            if (path.extension() == ".prefab")
+                prefabs.push_back(path.stem().string());
+        }
+    }
+    return prefabs;
 }
 
 Component* PrefabFactory::CreateAndAttachComponent(const rapidjson::Value& componentJson, EmptyActor* actor)
