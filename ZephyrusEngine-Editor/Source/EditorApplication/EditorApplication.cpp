@@ -17,16 +17,8 @@
 #include "EditorControllerComponent.h"
 #include "Panel/MenuPanel.h"
 #include "Panel/UtilsPanel.h"
-
-const std::string consolePanelName = "Console";
-const std::string inspectorPanelName = "Inspector";
-const std::string scenePanelName = "Scene";
-const std::string sceneHierarchyName = "Scene Hierarchy";
-const std::string contentBrowserName = "Content Browser";
-const std::string menuPanelName = "MenuPanel";
-const std::string utilsPanelName = "UtilsPanel";
-const float topBarHeight = 45.0f;
-
+#include "Panel/PrefabPanel.h"
+#include "EditorUI/ImGuiUtils.h"
 
 EditorApplication::EditorApplication(const std::string& pTitle, Scene* pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
@@ -86,8 +78,11 @@ void EditorApplication::InitializeImGui()
 
     ImGui::StyleColorsDark();
 
-    ImFont* font = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 16.0f);
-    if (!font)
+    ZP::UI::gFonts.small = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 16.0f);
+    ZP::UI::gFonts.medium = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 24.0f);
+    ZP::UI::gFonts.large = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 32.0f);
+
+    if (!ZP::UI::gFonts.small || !ZP::UI::gFonts.medium || !ZP::UI::gFonts.large)
     {
         ZP_EDITOR_ERROR("Font not loaded !");
     }
@@ -128,17 +123,19 @@ void EditorApplication::InitializeFrameBuffer()
 
 void EditorApplication::InitializePanels()
 {
+    std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(prefabPanelName);
     std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(consolePanelName);
     std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mRenderTexture);
     std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
     std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
-    std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(menuPanelName);
+    std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(menuPanelName, this);
     std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(utilsPanelName, topBarHeight);
 
     ConsolePanel* consolePanelRaw = consolePanel.get();
 
     mAllPanels[inspectorPanelName] = std::move(inspectorPanel);
+    mAllPanels[prefabPanelName] = std::move(prefabPanel);
     mAllPanels[sceneHierarchyName] = std::move(sceneHierarchyPanel);
     mAllPanels[consolePanelName] = std::move(consolePanel);
     mAllPanels[contentBrowserName] = std::move(contentBrowserPanel);
@@ -287,6 +284,7 @@ void EditorApplication::DrawDockSpace()
         ImGui::DockBuilderDockWindow(consolePanelName.c_str(), dock_id_down);
         ImGui::DockBuilderDockWindow(contentBrowserName.c_str(), dock_id_down);
         ImGui::DockBuilderDockWindow(inspectorPanelName.c_str(), dock_id_right);
+        ImGui::DockBuilderDockWindow(prefabPanelName.c_str(), dock_id_right);
         ImGui::DockBuilderDockWindow(sceneHierarchyName.c_str(), dock_id_left);
 
         ImGui::DockBuilderFinish(dockspace_id);
@@ -341,4 +339,13 @@ void EditorApplication::Close()
     SceneManager::Unload();
     mGameWindow->Close();
     Zephyrus::Log::Shutdown();
+}
+
+Panel* EditorApplication::GetPanelWithName(std::string pPanelName)
+{
+    auto it = mAllPanels.find(pPanelName);
+    if (it != mAllPanels.end())
+    {
+        return it->second.get();
+    }
 }

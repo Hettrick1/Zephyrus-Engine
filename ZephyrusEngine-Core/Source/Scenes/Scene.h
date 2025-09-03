@@ -39,6 +39,8 @@ public:
 
 	inline Actor* GetPlayerRef() const { return mPlayerRef; }
 
+	inline std::vector<Actor*> GetAllActors() const { return mAllActors; }
+
 public : 
 	inline IRenderer* GetRenderer() const { return mRenderer; }
 };

@@ -34,6 +34,9 @@ void DoomPlayerComponent::Deserialize(const rapidjson::Value& pData)
 void DoomPlayerComponent::OnStart()
 {
 	Component::OnStart();
+
+	mOwner->GetScene().GetRenderer()->GetDebugRenderer()->SetDrawDebug(false);
+
 	mGun = mOwner->GetComponentOfType<FlipbookComponent>();
 	ZP_ASSERT(mGun, "FlipbookComponent not found !");
 

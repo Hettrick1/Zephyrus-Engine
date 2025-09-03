@@ -11,6 +11,11 @@ ScenePanel::~ScenePanel()
 
 void ScenePanel::Draw()
 {
+	if (!mDrawPanel)
+	{
+		return;
+	}
+
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
 

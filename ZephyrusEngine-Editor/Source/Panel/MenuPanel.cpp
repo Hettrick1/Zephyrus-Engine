@@ -1,7 +1,8 @@
 #include "MenuPanel.h"
+#include "EditorApplication/EditorApplication.h"
 
-MenuPanel::MenuPanel(const std::string& pName)
-	: Panel(pName)
+MenuPanel::MenuPanel(const std::string& pName, EditorApplication* pApplication)
+	: Panel(pName), mApplication(pApplication)
 {
 }
 
@@ -42,16 +43,35 @@ void MenuPanel::Draw()
         ImGui::Separator();
         if (ImGui::BeginMenu("Panels"))
         {
-            if (ImGui::MenuItem("Console", nullptr, true)) 
-            {/* action */ }
-            if (ImGui::MenuItem("Scene", nullptr, true))
-            {/* action */ }
-            if (ImGui::MenuItem("Hierarchy", nullptr, true))
-            {/* action */ }
-            if (ImGui::MenuItem("Content", nullptr, true))
-            {/* action */ }
-            if (ImGui::MenuItem("Inspector", nullptr, true))
-            {/* action */
+            auto consolePanel = mApplication->GetPanelWithName(mApplication->consolePanelName);
+            auto scenePanel = mApplication->GetPanelWithName(mApplication->scenePanelName);
+            auto hierarchyPanel = mApplication->GetPanelWithName(mApplication->sceneHierarchyName);
+            auto contentPanel = mApplication->GetPanelWithName(mApplication->contentBrowserName);
+            auto inspectorPanel = mApplication->GetPanelWithName(mApplication->inspectorPanelName);
+            auto prefabPanel = mApplication->GetPanelWithName(mApplication->prefabPanelName);
+            if (ImGui::MenuItem("Console", nullptr, consolePanel->GetDrawPanel()))
+            {
+                consolePanel->SetDrawPanel(!consolePanel->GetDrawPanel());
+            }
+            if (ImGui::MenuItem("Scene", nullptr, scenePanel->GetDrawPanel()))
+            {
+                scenePanel->SetDrawPanel(!scenePanel->GetDrawPanel());
+            }
+            if (ImGui::MenuItem("Hierarchy", nullptr, hierarchyPanel->GetDrawPanel()))
+            {
+                hierarchyPanel->SetDrawPanel(!hierarchyPanel->GetDrawPanel());
+            }
+            if (ImGui::MenuItem("Content", nullptr, contentPanel->GetDrawPanel()))
+            {
+                contentPanel->SetDrawPanel(!contentPanel->GetDrawPanel());
+            }
+            if (ImGui::MenuItem("Inspector", nullptr, inspectorPanel->GetDrawPanel()))
+            {
+                inspectorPanel->SetDrawPanel(!inspectorPanel->GetDrawPanel());
+            }
+            if (ImGui::MenuItem("Prefabs", nullptr, prefabPanel->GetDrawPanel()))
+            {
+                prefabPanel->SetDrawPanel(!prefabPanel->GetDrawPanel());
             }
             ImGui::EndMenu();
         }

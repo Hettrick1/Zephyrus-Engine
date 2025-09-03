@@ -20,6 +20,10 @@ void ConsolePanel::Update()
 
 void ConsolePanel::Draw()
 {
+    if (!mDrawPanel)
+    {
+        return;
+    }
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
     ImGui::BeginChild("ScrollingRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);

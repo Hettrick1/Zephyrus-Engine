@@ -9,6 +9,7 @@ class Panel
 {
 protected:
 	std::string mName;
+	bool mDrawPanel = true;
 public:
 	Panel(const std::string& pName);
 	virtual ~Panel();
@@ -18,5 +19,8 @@ public:
 	virtual void BeginDraw();
 	virtual void Draw() = 0;
 	virtual void EndDraw();
+
+	inline bool GetDrawPanel() const { return mDrawPanel; }
+	inline void SetDrawPanel(bool pDrawPanel) { mDrawPanel = pDrawPanel; }
 };
 

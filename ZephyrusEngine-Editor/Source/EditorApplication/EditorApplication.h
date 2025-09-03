@@ -61,5 +61,19 @@ public:
 
 	// Closes and cleans up the game
 	void Close();
+
+public:
+	Panel* GetPanelWithName(std::string pPanelName);
+
+public:
+	const std::string consolePanelName = "Console";
+	const std::string inspectorPanelName = "Inspector";
+	const std::string scenePanelName = "Scene";
+	const std::string sceneHierarchyName = "Scene Hierarchy";
+	const std::string contentBrowserName = "Content Browser";
+	const std::string menuPanelName = "MenuPanel";
+	const std::string utilsPanelName = "UtilsPanel";
+	const std::string prefabPanelName = "Prefabs";
+	const float topBarHeight = 45.0f;
 };
 
