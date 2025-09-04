@@ -23,6 +23,7 @@ public:
 	void DrawPlayButon(const ImVec2& pWindowSize, const ImVec2& pButtonSize);
 	void DrawDropDownButton(const ImVec2& pWindowSize);
 	void DrawDropMenuOptions();
+	void DrawSaveButton(const ImVec2& pWindowSize, const ImVec2& pButtonSize);
 
 	void LaunchGame();
 };

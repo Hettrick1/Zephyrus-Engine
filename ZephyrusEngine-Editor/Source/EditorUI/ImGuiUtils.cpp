@@ -28,6 +28,7 @@ namespace ZP::UI
         }
 
         ImGui::SetCursorScreenPos(pos);
+
         bool pressed = ImGui::InvisibleButton(pLabel, buttonSize);
         bool hovered = ImGui::IsItemHovered();
         bool held = ImGui::IsItemActive();

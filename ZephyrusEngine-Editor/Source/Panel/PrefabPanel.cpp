@@ -21,11 +21,11 @@ void PrefabPanel::Draw()
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
 
-	Texture* arrowTex = Assets::LoadTexture("Sprites/Icons/prefab48.png", "Sprites/Icons/prefab48.png");
+	Texture* arrowTex = Assets::LoadTexture("Sprites/Icons/prefab36.png", "Sprites/Icons/prefab36.png");
 	ImTextureID myIcon = (ImTextureID)(intptr_t)arrowTex->GetId();
 
-	ImVec2 iconSize(48, 48);
-	ImVec2 buttonSize(360, 64);
+	ImVec2 iconSize(36, 36);
+	ImVec2 buttonSize(330, 48);
 
 	ImGuiWindow* window = ImGui::GetCurrentWindow();
 	ImVec2 pos = ImGui::GetCursorScreenPos();

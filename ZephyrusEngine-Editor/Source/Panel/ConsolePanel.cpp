@@ -24,8 +24,53 @@ void ConsolePanel::Draw()
     {
         return;
     }
-	Panel::BeginDraw();
-	ImGui::Begin(mName.c_str());
+    Panel::BeginDraw();
+    ImGui::Begin(mName.c_str());
+
+    ImVec2 windowSize = ImGui::GetContentRegionAvail();
+
+    ImGui::BeginChild("MenuRegion1", ImVec2(100, 20), false, ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
+    ImGui::SetCursorPos(ImVec2(0, 0));
+    if (ImGui::BeginMenu("Show Logs"))
+    {
+        if (ImGui::MenuItem("Infos", nullptr, mShowInfos)) 
+        {
+            mShowInfos = !mShowInfos;
+            mNewMessage = true;
+        }
+        if (ImGui::MenuItem("Loads", nullptr, mShowLoads))
+        {
+            mShowLoads = !mShowLoads;
+            mNewMessage = true;
+        }
+        if (ImGui::MenuItem("Warns", nullptr, mShowWarns))
+        {
+            mShowWarns = !mShowWarns;
+            mNewMessage = true;
+        }
+        if (ImGui::MenuItem("Errors", nullptr, mShowErrors))
+        {
+            mShowErrors = !mShowErrors;
+            mNewMessage = true;
+        }
+        ImGui::EndMenu();
+    }
+    ImGui::EndChild();
+
+    ImGui::SameLine();
+
+    ImGui::BeginChild("MenuRegion2", ImVec2(windowSize.x - 120, 20), false, ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
+    ImVec2 textSize = ImGui::CalcTextSize("Clear All");
+    ImGui::SetCursorPos(ImVec2(windowSize.x - textSize.x - 130, 0));
+    if (ImGui::Button("Clear All"))
+    {
+        mLogMessages.clear();
+        mMessageQuantity = 0;
+    }
+    ImGui::EndChild();
+
+    ImGui::Separator();
+
     ImGui::BeginChild("ScrollingRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
     for (const auto& message : mLogMessages)
     {
@@ -50,10 +95,19 @@ void ConsolePanel::Draw()
             color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
             break;
         }
+
+        if (message.pType == Zephyrus::LogType::ZLT_INFO && !mShowInfos
+            || message.pType == Zephyrus::LogType::ZLT_LOAD && !mShowLoads
+            || message.pType == Zephyrus::LogType::ZLT_WARN && !mShowWarns
+            || message.pType == Zephyrus::LogType::ZLT_ERROR && !mShowErrors)
+        {
+            continue;
+        }
+
         ImGui::TextColored(color, "%s", message.pTexte.c_str());
         ImGui::Separator();
     }
-    if (mMessageQuantity < mLogMessages.size() && mNewMessage)
+    if (mMessageQuantity < mLogMessages.size() || mNewMessage)
     {
         mMessageQuantity = mLogMessages.size();
         ImGui::SetScrollHereY(1.0f);

@@ -19,10 +19,14 @@ void UtilsPanel::Draw()
 
     ImVec2 windowSize = ImGui::GetContentRegionAvail();
     ImVec2 buttonSize = ImVec2(200, mPaneSizeY - 15);
+    
+    DrawSaveButton(windowSize, buttonSize);
+
+    ImGui::SameLine();
 
     DrawPlayButon(windowSize, buttonSize);
 
-    ImGui::SameLine(0.f, 0.f);
+    ImGui::SameLine();
 
     DrawDropDownButton(windowSize);
 
@@ -149,6 +153,26 @@ void UtilsPanel::DrawDropMenuOptions()
     }
     ImGui::PopStyleVar();
     ImGui::PopStyleColor(3);
+}
+
+void UtilsPanel::DrawSaveButton(const ImVec2& pWindowSize, const ImVec2& pButtonSize)
+{
+    ImGui::SetCursorPos(ImVec2(390.0f, (pWindowSize.y - pButtonSize.y) * 0.5f + (15 * 0.5f)));
+    Texture* arrowTex = Assets::LoadTexture("Sprites/Icons/save24.png", "Sprites/Icons/save24.png");
+    ImTextureID myIcon = (ImTextureID)(intptr_t)arrowTex->GetId();
+
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.81176f, 0.0f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_BorderShadow, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.1f, 0.1f, 1.0));
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.5f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
+
+    ImGui::ImageButton("SaveBtn", myIcon, ImVec2(24, 24));
+
+    ImGui::PopStyleVar(2);
+    ImGui::PopStyleColor(3);
+
+    ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
 }
 
 void UtilsPanel::LaunchGame()
