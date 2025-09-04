@@ -20,7 +20,7 @@ void SceneHierarchyPanel::Draw()
 
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
-	static int selected = -1;
+	static int selected = 0;
 
 	auto actors = SceneManager::ActiveScene->GetAllActors();
 
@@ -29,11 +29,19 @@ void SceneHierarchyPanel::Draw()
 		char label[32];
 
 		sprintf(label, (actors[i]->GetName() + "_%i").c_str(), i);
-		if (ImGui::Selectable(label, selected == i))
+		ImGui::PushID(label);
+		if (ImGui::Selectable(actors[i]->GetName().c_str(), selected == i))
 		{
 			selected = i;
 		}
+		mSelectedActor = actors[selected];
+		ImGui::PopID();
 	}
 	ImGui::End();
 	Panel::EndDraw();
+}
+
+Actor* SceneHierarchyPanel::GetSelectedActor() const
+{
+	return mSelectedActor;
 }

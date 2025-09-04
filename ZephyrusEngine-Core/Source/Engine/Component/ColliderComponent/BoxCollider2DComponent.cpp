@@ -4,7 +4,7 @@
 #include "Actor.h"
 
 BoxCollider2DComponent::BoxCollider2DComponent(Actor* pOwner, int pUpdateOder, Vector3D pSize) 
-    : ColliderComponent(pOwner, pUpdateOder), mSize(pSize)
+    : ColliderComponent(pOwner, "BoxCollider2DComponent", pUpdateOder), mSize(pSize)
 {
     mPosition = pOwner->GetTransformComponent().GetPosition();
     if (mShowInGame) {

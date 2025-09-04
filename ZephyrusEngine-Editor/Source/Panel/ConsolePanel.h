@@ -13,7 +13,7 @@ private:
 	bool mNewMessage = false;
 
 	bool mShowInfos = true;
-	bool mShowLoads = true;
+	bool mShowLoads = false;
 	bool mShowWarns = true;
 	bool mShowErrors = true;
 

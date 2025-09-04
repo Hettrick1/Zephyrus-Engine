@@ -3,7 +3,7 @@
 #include "Timer.h"
 
 ActorMovementComponent::ActorMovementComponent(Actor* pOwner, int pUpdateOrder)
-	: Component(pOwner, pUpdateOrder), mSpeed(0.0f)
+	: Component(pOwner, "ActorMovementComponent", pUpdateOrder), mSpeed(0.0f)
 {
 }
 

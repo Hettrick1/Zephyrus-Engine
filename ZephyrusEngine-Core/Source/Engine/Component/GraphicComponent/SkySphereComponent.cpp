@@ -12,7 +12,7 @@
 int SkySphereComponent::index = 0;
 
 SkySphereComponent::SkySphereComponent(Actor* pOwner)
-	: Component(pOwner), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D), mVao(nullptr)
+	: Component(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D), mVao(nullptr)
 {
 	mOwner->GetScene().GetRenderer()->AddSkySphere(this);
 }

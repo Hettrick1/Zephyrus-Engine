@@ -6,7 +6,7 @@
 #include "Vertex.h"
 
 MeshComponent::MeshComponent(Actor* pOwner)
-	: Component(pOwner), mMesh(nullptr), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
+	: Component(pOwner, "MeshComponent"), mMesh(nullptr), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
 {
 }
 

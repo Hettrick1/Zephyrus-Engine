@@ -25,7 +25,7 @@ class ColliderComponent : public Component
 {
 public:
 	ColliderComponent() = delete;
-	ColliderComponent(Actor* pOwner, int pUpdateOder);
+	ColliderComponent(Actor* pOwner, const std::string& pName, int pUpdateOder);
 	~ColliderComponent();
 
 	// Returns whether this collider is a query collider (does not physically interact).

@@ -4,8 +4,8 @@
 #include "Scene.h"
 #include "JSONUtils.h"
 
-SpriteComponent::SpriteComponent(Actor* pOwner)
-	: Component(pOwner), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)
+SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
+	: Component(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)
 {
 	mOwner->GetScene().GetRenderer()->AddSprite(this);
 }

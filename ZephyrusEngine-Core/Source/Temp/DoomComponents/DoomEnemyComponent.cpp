@@ -18,7 +18,7 @@ const float shootCooldown = 1;
 const float detectionRange = 800;
 
 DoomEnemyComponent::DoomEnemyComponent(Actor* pOwner, int updateOder)
-	: Component(pOwner), mEnemyFb(nullptr), mHealth(100), mShootCouldown(shootCooldown)
+	: Component(pOwner, "DoomEnemyComponent"), mEnemyFb(nullptr), mHealth(100), mShootCouldown(shootCooldown)
 	, mCanShoot(false), mIsDead(false), mSplashBlood(nullptr)
 {
 }

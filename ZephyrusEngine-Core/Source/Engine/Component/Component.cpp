@@ -3,9 +3,9 @@
 #include "Log.h"
 #include "JSONUtils.h"
 
-Component::Component(Actor* pOwner, int pUpdateOder) 
+Component::Component(Actor* pOwner, std::string pName, int pUpdateOder)
     : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
-    mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1)
+    mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1), mComponentName(pName)
 {
 }
 

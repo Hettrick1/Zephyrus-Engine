@@ -8,7 +8,7 @@
 #include "ComponentFactory.h"
 
 CameraComponent::CameraComponent(Actor* pOwner, int updateOder)
-    : Component(pOwner, updateOder)
+    : Component(pOwner, "CameraComponent", updateOder)
 {
 	CameraManager::Instance().AddCamera(this);
 }

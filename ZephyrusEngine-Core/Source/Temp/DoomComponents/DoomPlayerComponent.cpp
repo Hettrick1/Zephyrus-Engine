@@ -16,7 +16,7 @@ const float shotgunRange = 20;
 const float shotgunSpreadAngle = 4;
 
 DoomPlayerComponent::DoomPlayerComponent(Actor* pOwner, int updateOder)
-	: Component(pOwner, updateOder), mGunAmo(50), mHealth(100), mArmor(100), mWeapon(Weapons::Gun), mDamageIndicatorAlpha(0.0f)
+	: Component(pOwner, "DoomPlayerComponent", updateOder), mGunAmo(50), mHealth(100), mArmor(100), mWeapon(Weapons::Gun), mDamageIndicatorAlpha(0.0f)
 {
 }
 

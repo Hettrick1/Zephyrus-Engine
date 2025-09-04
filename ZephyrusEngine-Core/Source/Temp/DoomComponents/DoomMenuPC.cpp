@@ -7,7 +7,7 @@
 #include "ComponentFactory.h"
 
 DoomMenuPC::DoomMenuPC(Actor* pOwner, int pUpdateOrder)
-	: Component(pOwner, pUpdateOrder)
+	: Component(pOwner, "DoomMenuPC", pUpdateOrder)
 {
 	InputManager& inputManager = InputManager::Instance();
 	inputManager.CreateNewBooleanKeyBinding(this, "Play", SDLK_RETURN);

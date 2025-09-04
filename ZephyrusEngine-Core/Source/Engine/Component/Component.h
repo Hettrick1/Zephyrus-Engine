@@ -25,9 +25,10 @@ protected:
 	Vector3D mRelativeSize;
 	Quaternion mRelativeRotation;
 	std::vector<std::string> mComponentTags;
+	std::string mComponentName;
 public:
 	Component() = delete;
-	Component(Actor* pOwner, int pUpdateOder = 0);
+	Component(Actor* pOwner, std::string pName = "", int pUpdateOder = 0);
 	virtual ~Component();
 
 	virtual void OnStart();
@@ -77,4 +78,6 @@ public:
 	inline Vector3D GetRelativeSize() const { return mRelativeSize; }
 	Actor* GetOwner() const;
 	Vector3D GetWorldPosition() const;
+
+	inline std::string GetName() const { return mComponentName; }
 };

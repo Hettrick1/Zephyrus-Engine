@@ -136,6 +136,9 @@ void EditorApplication::InitializePanels()
     std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(utilsPanelName, topBarHeight);
 
     ConsolePanel* consolePanelRaw = consolePanel.get();
+    SceneHierarchyPanel* hierarchyPanelRaw = sceneHierarchyPanel.get();
+
+    inspectorPanel->SetSceneHierarchy(hierarchyPanelRaw);
 
     mAllPanels[inspectorPanelName] = std::move(inspectorPanel);
     mAllPanels[prefabPanelName] = std::move(prefabPanel);

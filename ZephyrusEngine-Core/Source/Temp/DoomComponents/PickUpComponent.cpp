@@ -5,7 +5,7 @@
 #include "DoomPlayerComponent.h"
 
 PickUpComponent::PickUpComponent(Actor* pOwner, int updateOder)
-	: Component(pOwner, updateOder), mType(PickUpType::Amo)
+	: Component(pOwner,"PickUpComponent", updateOder), mType(PickUpType::Amo)
 {
 }
 

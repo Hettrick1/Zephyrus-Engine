@@ -4,7 +4,7 @@
 #include "Physics/ContactManifold.h"
 
 BoxSATComponent::BoxSATComponent(Actor* pOwner, int pUpdateOrder, Vector3D pSize, Vector3D pRelativePosition)
-    :ColliderComponent(pOwner, pUpdateOrder)
+    :ColliderComponent(pOwner, "BoxSATComponent", pUpdateOrder)
 {
     SetRelativePosition(pRelativePosition);
     mSize = pSize;

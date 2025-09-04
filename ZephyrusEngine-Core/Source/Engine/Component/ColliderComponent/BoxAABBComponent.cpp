@@ -6,7 +6,7 @@
 #include <iostream>
 
 BoxAABBComponent::BoxAABBComponent(Actor* pOwner)
-    : ColliderComponent(pOwner, 0)
+    : ColliderComponent(pOwner, "BoxAABBComponent", 0)
 {
 }
 

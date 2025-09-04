@@ -19,14 +19,14 @@ protected:
 	bool mCullOff = false;
 	float aspectRatio = 0.0, aspectRatioInv = 0.0;
 public:
-	SpriteComponent(Actor* pOwner);
+	SpriteComponent(Actor* pOwner, const std::string& pName);
 	virtual ~SpriteComponent();
 
 	virtual void Update() override;
 
 	void Deserialize(const rapidjson::Value& pData) override;
 
-	static Component* Create(Actor* pOwner) { return new SpriteComponent(pOwner); }
+	static Component* Create(Actor* pOwner) { return new SpriteComponent(pOwner, "SpriteComponent"); }
 
 	// Sets the texture used by the sprite
 	virtual void SetTexture(const Texture& pTexture);

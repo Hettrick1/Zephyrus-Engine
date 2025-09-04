@@ -4,7 +4,7 @@
 #include "Assets.h"
 
 FlipbookComponent::FlipbookComponent(Actor* pOwner, int pDrawOrder)
-	: SpriteComponent(pOwner), mCurrentFrame(0.0f), mAnimationFps(24.0f)
+	: SpriteComponent(pOwner, "FlipbookComponent"), mCurrentFrame(0.0f), mAnimationFps(24.0f)
 	, mHasFinished(true), mCanPlay(true), mCanPlayPending(false), mPlayOnce(false), mIsLooping(false), mAnimationTextures({})
 {
 }

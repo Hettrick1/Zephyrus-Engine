@@ -14,7 +14,7 @@
 #include "DoomPlayerComponent.h"
 
 DoomPC::DoomPC(Actor* pOwner, int pUpdateOrder)
-	: Component(pOwner, pUpdateOrder), playerRbRef(nullptr), goRight(true), goLeft(true), goForward(true), goBackward(true)
+	: Component(pOwner, "DoomPC", pUpdateOrder), playerRbRef(nullptr), goRight(true), goLeft(true), goForward(true), goBackward(true)
 {
 	InputManager& inputManager = InputManager::Instance();
 	inputManager.CreateNewAxis2DBinding(this, "Movement", SDLK_d, SDLK_a, SDLK_w, SDLK_s);

@@ -5,8 +5,8 @@
 #include "IRenderer.h"
 #include "Physics/ContactManifold.h"
 
-ColliderComponent::ColliderComponent(Actor* pOwner, int pUpdateOder)
-	: Component(pOwner, pUpdateOder)
+ColliderComponent::ColliderComponent(Actor* pOwner, const std::string& pName ,int pUpdateOder)
+	: Component(pOwner, pName, pUpdateOder)
 {
 	PhysicManager::Instance().RegisterCollider(pOwner, this);
 	mOwner->GetScene().GetRenderer()->AddDebugCollider(this);

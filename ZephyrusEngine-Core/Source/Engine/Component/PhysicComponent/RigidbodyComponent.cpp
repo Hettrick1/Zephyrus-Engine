@@ -6,7 +6,7 @@
 #include "Log.h"
 
 RigidbodyComponent::RigidbodyComponent(Actor* pOwner, int pUpdateOrder)
-	: Component(pOwner, pUpdateOrder), 
+	: Component(pOwner,"RigidbodyComponent", pUpdateOrder),
 	mVelocity(0.0f), mAcceleration(0.0f), mMass(1.0f), mFriction(0.08f), mUseGravity(false), mGravity(-9.81f), 
 	mBounciness(0.5f), mIsGrounded(false), mIsStatic(false)
 {
