@@ -19,6 +19,7 @@
 #include "Panel/UtilsPanel.h"
 #include "Panel/PrefabPanel.h"
 #include "EditorUI/ImGuiUtils.h"
+#include "EditorApplication/EventSystem/EventSystem.h"
 
 EditorApplication::EditorApplication(const std::string& pTitle, Scene* pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
@@ -342,6 +343,7 @@ void EditorApplication::Close()
     mAllPanels.clear();
     SceneManager::Unload();
     mGameWindow->Close();
+    EventSystem::ClearAllEvents();
     Zephyrus::Log::Shutdown();
 }
 

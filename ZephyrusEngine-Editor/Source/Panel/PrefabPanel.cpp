@@ -2,6 +2,8 @@
 #include "EditorUI/ImGuiUtils.h"
 #include "Assets.h"
 #include "PrefabFactory.h"
+#include "../EditorApplication/EventSystem/EventSystem.h"
+#include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
 
 PrefabPanel::PrefabPanel(const std::string& pName)
 	: Panel(pName)
@@ -40,7 +42,11 @@ void PrefabPanel::Draw()
 
 	for (int i = 0; i < prefabList.size(); i++)
 	{
-		ZP::UI::ImageTextButton(myIcon, buttonSize, iconSize, pos, prefabList[i].c_str(), ZP::UI::gFonts.medium);
+		if (ZP::UI::ImageTextButton(myIcon, buttonSize, iconSize, pos, prefabList[i].c_str(), ZP::UI::gFonts.medium))
+		{
+			SpawnPrefabEvent* event = new SpawnPrefabEvent(prefabList[i].c_str());
+			EventSystem::DoEvent(event);
+		}
 		pos.y += buttonSize.y + 10;
 	}
 

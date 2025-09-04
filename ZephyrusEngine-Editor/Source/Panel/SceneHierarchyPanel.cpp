@@ -24,12 +24,15 @@ void SceneHierarchyPanel::Draw()
 
 	auto actors = SceneManager::ActiveScene->GetAllActors();
 
-	for (int i = 0; i < actors.size() - 1; i++)
+	for (int i = 0; i < actors.size(); i++)
 	{
 		char label[32];
+
 		sprintf(label, (actors[i]->GetName() + "_%i").c_str(), i);
 		if (ImGui::Selectable(label, selected == i))
+		{
 			selected = i;
+		}
 	}
 	ImGui::End();
 	Panel::EndDraw();
