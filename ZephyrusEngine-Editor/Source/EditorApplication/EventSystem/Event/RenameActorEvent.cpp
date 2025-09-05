@@ -2,7 +2,7 @@
 #include "Actor.h"
 
 RenameActorEvent::RenameActorEvent(Actor* pActorToRename, const std::string& pNewName)
-	: Event(), mNewName(pNewName), mPreviousName(pActorToRename->GetName()), mActorToRename(pActorToRename)
+	: Event("Rename Actor"), mNewName(pNewName), mPreviousName(pActorToRename->GetName()), mActorToRename(pActorToRename)
 {
 }
 

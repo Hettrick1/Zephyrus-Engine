@@ -1,6 +1,7 @@
 #pragma once
 #include "Event/Event.h"
 #include <vector>
+#include <string>
 
 class EventSystem
 {
@@ -13,4 +14,5 @@ public:
 	static void ClearAllEvents();
 	static size_t GetEventVectorSize();
 	static bool GetCanUndo();
+	static std::string GetLastEventName();
 };

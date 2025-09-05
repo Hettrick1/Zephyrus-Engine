@@ -64,6 +64,9 @@ public:
 	inline std::vector<std::string> GetTag() const { return mTags; }
 	inline float GetLod() const { return mLod; }
 	inline std::string GetName() const { return mName; }
+	inline Vector3D GetPosition() const { return mTransformComponent.GetPosition(); }
+	inline Vector3D GetSize() const { return mTransformComponent.GetSize(); }
+	inline Vector3D GetRotationEuler() const { return mTransformComponent.GetRotation().ToEuler(); }
 
 	// Get the first component of a specific type
 	template<typename  C>

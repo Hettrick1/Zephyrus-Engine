@@ -31,69 +31,22 @@ void InspectorPanel::Draw()
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(3.0f, 8.0f));
 		ImGui::BeginChild("child1", ImVec2(0, 150), true);
 
-		static bool isActive = true;
-		if (ImGui::Checkbox("Active", &isActive))
-		{
-			if (isActive)
-				//TODO : Set active event with undo
-				actor->SetActive(ActorState::Active);
-			else
-				actor->SetActive(ActorState::Paused);
-		}
-
-		ImGui::SameLine();
-
-		char buffer[64];
-		strncpy(buffer, actor->GetName().c_str(), sizeof(buffer));
-		buffer[sizeof(buffer) - 1] = '\0';
-
-		if (ImGui::InputText("Name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-		{
-			RenameActorEvent* event = new RenameActorEvent(actor, std::string(buffer));
-			EventSystem::DoEvent(event);
-		}
-
-		ImGui::Separator();
-
-		float labelWidth = 70.0f;
-
-		float position[3];
-		ImGui::AlignTextToFramePadding();
-		ImGui::Text("Position");
-		ImGui::SameLine(labelWidth);
-		ImGui::InputFloat3("##Position", position, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
-
-		float rotation[3];
-		ImGui::AlignTextToFramePadding();
-		ImGui::Text("Rotation");
-		ImGui::SameLine(labelWidth);
-		ImGui::InputFloat3("##Rotation", rotation, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
-
-		float size[3];
-		ImGui::AlignTextToFramePadding();
-		ImGui::Text("Size");
-		ImGui::SameLine(labelWidth);
-		ImGui::InputFloat3("##Size", size, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
-
+		DrawActorTransform(actor);
+		
 		ImGui::PopStyleVar();
 		ImGui::EndChild();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 		ImGui::BeginChild("child2", ImVec2(0, h), true);
 		ImGui::PopStyleVar();
+
 		DrawActorComponents(actor);
+
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 		ImGui::EndChild();
 
-		ImGui::InvisibleButton("hsplitter", ImVec2(-1, 8.0f));
-		if (ImGui::IsItemActive())
-		{
-			h += ImGui::GetIO().MouseDelta.y;
-		}
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
-		}
+		DrawSplitterButton(h);
+
 		ImGui::BeginChild("child3", ImVec2(0, 0), true);
 		ImGui::EndChild();
 		ImGui::PopStyleVar();	
@@ -130,6 +83,82 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 			}
 			ImGui::PopID();
 		}
+}
+
+void InspectorPanel::DrawActorTransform(Actor* pActor)
+{
+	static bool isActive = true;
+	if (ImGui::Checkbox("Active", &isActive))
+	{
+		if (isActive)
+			//TODO : Set active event with undo
+			pActor->SetActive(ActorState::Active);
+		else
+			pActor->SetActive(ActorState::Paused);
+	}
+
+	ImGui::SameLine();
+
+	char buffer[64];
+	strncpy(buffer, pActor->GetName().c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	if (ImGui::InputText("Name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		RenameActorEvent* event = new RenameActorEvent(pActor, std::string(buffer));
+		EventSystem::DoEvent(event);
+	}
+
+	ImGui::Separator();
+
+	float labelWidth = 70.0f;
+
+	float position[3] = {
+		pActor->GetPosition().x, pActor->GetPosition().y, pActor->GetPosition().z
+	};
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Position");
+	ImGui::SameLine(labelWidth);
+	if (ImGui::InputFloat3("##Position", position, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		pActor->SetPosition(Vector3D(position[0], position[1], position[2]));
+	}
+
+	float rotation[3] = {
+		pActor->GetRotationEuler().x, pActor->GetRotationEuler().y, pActor->GetRotationEuler().z
+	};
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Rotation");
+	ImGui::SameLine(labelWidth);
+	if (ImGui::InputFloat3("##Rotation", rotation, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+
+	}
+
+	float size[3] = {
+		pActor->GetSize().x, pActor->GetSize().y, pActor->GetSize().z
+	};
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Size");
+	ImGui::SameLine(labelWidth);
+	if (ImGui::InputFloat3("##Size", size, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+
+	}
+}
+
+void InspectorPanel::DrawSplitterButton(float& h)
+{
+	ImGui::InvisibleButton("hsplitter", ImVec2(-1, 8.0f));
+	if (ImGui::IsItemActive())
+	{
+		h += ImGui::GetIO().MouseDelta.y;
+	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+	}
 }
 
 void InspectorPanel::SetSceneHierarchy(SceneHierarchyPanel* pHierarchy)

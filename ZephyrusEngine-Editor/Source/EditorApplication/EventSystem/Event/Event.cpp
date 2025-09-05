@@ -1,6 +1,7 @@
 #include "Event.h"
 
-Event::Event()
+Event::Event(const std::string& pEventName)
+	: mEventName(pEventName)
 {
 }
 

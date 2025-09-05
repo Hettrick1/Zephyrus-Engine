@@ -45,3 +45,12 @@ bool EventSystem::GetCanUndo()
 {
 	return mCanUndo;
 }
+
+std::string EventSystem::GetLastEventName()
+{
+	if (mAllEvents.empty())
+	{
+		return "";
+	}
+	return mAllEvents.back()->GetEventName();
+}

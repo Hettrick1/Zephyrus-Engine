@@ -36,8 +36,14 @@ void MenuPanel::Draw()
             {
                 EventSystem::UndoLastEvent();
             }
-            if (!canUndo && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-                ImGui::SetTooltip("Nothing to undo");
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                if (!canUndo) {
+                    ImGui::SetTooltip("Nothing to undo");
+                }
+                else
+                {
+                    ImGui::SetTooltip(EventSystem::GetLastEventName().c_str());
+                }
             }
             if (ImGui::MenuItem("Redo")) {/* action */ }
             ImGui::EndMenu();

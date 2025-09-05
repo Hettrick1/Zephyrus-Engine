@@ -2,7 +2,7 @@
 #include "PrefabFactory.h"
 
 SpawnPrefabEvent::SpawnPrefabEvent(const std::string& pPrefabToSpawn)
-	: Event(), mPrefabToSpawn(pPrefabToSpawn)
+	: Event("Spawn Prefab Actor"), mPrefabToSpawn(pPrefabToSpawn)
 {
 }
 
