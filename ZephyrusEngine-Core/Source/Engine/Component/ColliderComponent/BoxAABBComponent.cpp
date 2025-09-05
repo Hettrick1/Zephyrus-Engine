@@ -104,6 +104,7 @@ void BoxAABBComponent::DebugDraw(IRenderer& pRenderer)
 {
     if (mOwner->GetState() == ActorState::Active)
     {
+        mPosition = mOwner->GetTransformComponent().GetPosition() + GetRelativePosition();
         AABB aabb = AABB(mPosition - mSize, mPosition + mSize);
 
         Matrix4DRow wt;

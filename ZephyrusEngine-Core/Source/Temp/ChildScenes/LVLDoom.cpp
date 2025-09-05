@@ -19,7 +19,7 @@ void LVLDoom::Start(IRenderer* renderer)
 {
 	Scene::Start(renderer);
 	
-	GetRenderer()->GetDebugRenderer()->SetDrawDebug(true);
+	GetRenderer()->GetDebugRenderer()->SetDrawDebug(false);
 
 	mPlayerStart = PrefabFactory::CreateActorFromPrefab("PlayerStart");
 	mPlayerStart->SetPosition(Vector3D(-45, 0, 0));

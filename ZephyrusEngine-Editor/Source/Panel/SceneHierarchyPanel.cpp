@@ -35,6 +35,11 @@ void SceneHierarchyPanel::Draw()
 			selected = i;
 		}
 		mSelectedActor = actors[selected];
+		mSelectedActor->SetSelected(true);
+		if (selected != i)
+		{
+			actors[i]->SetSelected(false);
+		}
 		ImGui::PopID();
 	}
 	ImGui::End();

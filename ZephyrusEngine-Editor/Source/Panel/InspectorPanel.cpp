@@ -133,7 +133,8 @@ void InspectorPanel::DrawActorTransform(Actor* pActor)
 	ImGui::SameLine(labelWidth);
 	if (ImGui::InputFloat3("##Rotation", rotation, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-
+		auto euler = Vector3D(rotation[0], rotation[1], rotation[2]);
+		pActor->SetRotation(Quaternion(euler));
 	}
 
 	float size[3] = {

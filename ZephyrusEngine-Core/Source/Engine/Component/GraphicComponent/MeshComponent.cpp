@@ -22,6 +22,10 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 	mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
 	mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
 
+	mOutlineVertexShader = *Assets::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
+	mOutlineFragmentShader = *Assets::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
+	mOutlineShaderProgram = *Assets::LoadShaderProgram({ &mOutlineVertexShader, &mOutlineFragmentShader }, "OutlineSP");
+
 	if (pData.HasMember("mesh") && pData["mesh"].IsString())
 	{
 		mMesh = Assets::LoadMesh(pData["mesh"].GetString(), pData["mesh"].GetString());
@@ -64,28 +68,27 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 
 void MeshComponent::Draw(const Matrix4DRow& pViewProj)
 {
-	if (mMesh)
+	if (!mMesh)
+		return;
+
+	Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
+	mShaderProgram.Use();
+	mShaderProgram.setMatrix4Row("uViewProj", pViewProj);
+	mShaderProgram.setMatrix4Row("uWorldTransform", wt);
+	mShaderProgram.setVector2f("uTiling", mTiling);
+	Texture* tex = mMesh->GetTexture(mTextureIndex);
+	if (tex)
 	{
-		Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
-		mShaderProgram.Use();
-		mShaderProgram.setMatrix4Row("uViewProj", pViewProj);
-		mShaderProgram.setMatrix4Row("uWorldTransform", wt);
-		mShaderProgram.setVector2f("uTiling", mTiling);
-		Texture* tex = mMesh->GetTexture(mTextureIndex);
-		if (tex)
-		{
-			tex->SetActive();
-		}
-		mMesh->GetVao()->SetActive();
-		if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
-		{
-			//glPatchParameteri(GL_PATCH_VERTICES, 3);
-			glDrawArrays(GL_PATCHES, 0, mMesh->GetVao()->GetVerticeCount());
-		}
-		else
-		{
-			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
-		}
+		tex->SetActive();
+	}
+	mMesh->GetVao()->SetActive();
+	if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+	{
+		glDrawArrays(GL_PATCHES, 0, mMesh->GetVao()->GetVerticeCount());
+	}
+	else
+	{
+		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
 	}
 }
 

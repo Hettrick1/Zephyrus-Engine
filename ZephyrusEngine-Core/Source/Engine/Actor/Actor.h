@@ -26,7 +26,7 @@ protected:
 	std::string mName = "";
 	std::vector<std::string> mTags;
 	float mLod = 0;
-
+	bool mIsSelected = false;
 public:
 	Actor(Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
 	Actor(std::string pName);
@@ -67,6 +67,8 @@ public:
 	inline Vector3D GetPosition() const { return mTransformComponent.GetPosition(); }
 	inline Vector3D GetSize() const { return mTransformComponent.GetSize(); }
 	inline Vector3D GetRotationEuler() const { return mTransformComponent.GetRotation().ToEuler(); }
+	inline void SetSelected(bool pSelected) { mIsSelected = pSelected; }
+	inline bool GetIsSelected() const { return mIsSelected; }
 
 	// Get the first component of a specific type
 	template<typename  C>

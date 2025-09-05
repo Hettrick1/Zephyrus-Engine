@@ -9,6 +9,8 @@ protected:
 	Mesh* mMesh = nullptr;
 	Shader mVertexShader, mFragmentShader;
 	ShaderProgram mShaderProgram;
+	Shader mOutlineVertexShader, mOutlineFragmentShader;
+	ShaderProgram mOutlineShaderProgram;
 	Vector2D mTiling;
 	unsigned int mTextureIndex = 0;
 public:
