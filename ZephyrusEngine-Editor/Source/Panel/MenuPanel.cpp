@@ -1,5 +1,6 @@
 #include "MenuPanel.h"
 #include "EditorApplication/EditorApplication.h"
+#include "EditorApplication/EventSystem/EventSystem.h"
 
 MenuPanel::MenuPanel(const std::string& pName, EditorApplication* pApplication)
 	: Panel(pName), mApplication(pApplication)
@@ -30,7 +31,14 @@ void MenuPanel::Draw()
         ImGui::Separator();
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Undo")) {/* action */ }
+            bool canUndo = EventSystem::GetCanUndo();
+            if (ImGui::MenuItem("Undo", nullptr, false, canUndo))
+            {
+                EventSystem::UndoLastEvent();
+            }
+            if (!canUndo && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                ImGui::SetTooltip("Nothing to undo");
+            }
             if (ImGui::MenuItem("Redo")) {/* action */ }
             ImGui::EndMenu();
         }

@@ -1,6 +1,8 @@
 #include "InspectorPanel.h"
 #include "Actor.h"
 #include "EditorUI/ImGuiUtils.h"
+#include "EditorApplication/EventSystem/Event/RenameActorEvent.h"
+#include "EditorApplication/EventSystem/EventSystem.h"
 
 InspectorPanel::InspectorPanel(const std::string& pName)
 	: Panel(pName)
@@ -26,8 +28,58 @@ void InspectorPanel::Draw()
 	{
 		static float h = 200.0f;
 
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(3.0f, 8.0f));
+		ImGui::BeginChild("child1", ImVec2(0, 150), true);
+
+		static bool isActive = true;
+		if (ImGui::Checkbox("Active", &isActive))
+		{
+			if (isActive)
+				//TODO : Set active event with undo
+				actor->SetActive(ActorState::Active);
+			else
+				actor->SetActive(ActorState::Paused);
+		}
+
+		ImGui::SameLine();
+
+		char buffer[64];
+		strncpy(buffer, actor->GetName().c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		if (ImGui::InputText("Name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+		{
+			RenameActorEvent* event = new RenameActorEvent(actor, std::string(buffer));
+			EventSystem::DoEvent(event);
+		}
+
+		ImGui::Separator();
+
+		float labelWidth = 70.0f;
+
+		float position[3];
+		ImGui::AlignTextToFramePadding();
+		ImGui::Text("Position");
+		ImGui::SameLine(labelWidth);
+		ImGui::InputFloat3("##Position", position, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+		float rotation[3];
+		ImGui::AlignTextToFramePadding();
+		ImGui::Text("Rotation");
+		ImGui::SameLine(labelWidth);
+		ImGui::InputFloat3("##Rotation", rotation, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+		float size[3];
+		ImGui::AlignTextToFramePadding();
+		ImGui::Text("Size");
+		ImGui::SameLine(labelWidth);
+		ImGui::InputFloat3("##Size", size, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+		ImGui::PopStyleVar();
+		ImGui::EndChild();
+
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-		ImGui::BeginChild("child1", ImVec2(0, h), true);
+		ImGui::BeginChild("child2", ImVec2(0, h), true);
 		ImGui::PopStyleVar();
 		DrawActorComponents(actor);
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -58,7 +110,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 {
 	static int selected = 0;
 		ImGui::PushFont(ZP::UI::gFonts.medium);
-		ImGui::Text(pActor->GetName().c_str());
+		ImGui::Text("Components");
 		ImGui::PopFont();
 		ImGui::Separator();
 

@@ -240,6 +240,16 @@ void EditorApplication::Input()
                     mIsRunning = false;
                 }
             }
+            if (mSdlEvent.type == SDL_KEYDOWN) 
+            {
+                const Uint8* state = SDL_GetKeyboardState(nullptr);
+                bool ctrl = state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL];
+
+                if (ctrl && mSdlEvent.key.keysym.sym == SDLK_z) 
+                {
+                    EventSystem::UndoLastEvent();
+                }
+            }
         }
         mInputManager.Update();
     }
