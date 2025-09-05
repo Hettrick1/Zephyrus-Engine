@@ -68,8 +68,10 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 
 void MeshComponent::Draw(const Matrix4DRow& pViewProj)
 {
-	if (!mMesh)
+	if (!mMesh || mOwner->GetIsSelected())
+	{
 		return;
+	}
 
 	Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
 	mShaderProgram.Use();
@@ -89,6 +91,59 @@ void MeshComponent::Draw(const Matrix4DRow& pViewProj)
 	else
 	{
 		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
+	}
+}
+
+void MeshComponent::DrawSelected(const Matrix4DRow& pViewProj)
+{
+	if (mOwner->GetIsSelected())
+	{
+		//glDisable(GL_DEPTH_TEST);
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT);
+
+		glDepthMask(GL_FALSE);
+
+		glEnable(GL_STENCIL_TEST);
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+		Matrix4DRow outlineMatrix = Matrix4DRow::CreateScale((mOwner->GetSize() * mRelativeSize) + 0.1f);
+		outlineMatrix *= Matrix4DRow::CreateFromQuaternion(mOwner->GetTransformComponent().GetRotation());
+		outlineMatrix *= Matrix4DRow::CreateTranslation(mOwner->GetPosition() + mRelativePosition);
+
+		mOutlineShaderProgram.Use();
+		mOutlineShaderProgram.setMatrix4Row("uViewProj", pViewProj);
+		mOutlineShaderProgram.setMatrix4Row("uWorldTransform", outlineMatrix);
+
+		mMesh->GetVao()->SetActive();
+
+		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
+
+		glCullFace(GL_BACK);
+		glDisable(GL_CULL_FACE);
+
+		Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
+		mShaderProgram.Use();
+		mShaderProgram.setMatrix4Row("uViewProj", pViewProj);
+		mShaderProgram.setMatrix4Row("uWorldTransform", wt);
+		mShaderProgram.setVector2f("uTiling", mTiling);
+		Texture* tex = mMesh->GetTexture(mTextureIndex);
+		if (tex)
+		{
+			tex->SetActive();
+		}
+		if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+		{
+			glDrawArrays(GL_PATCHES, 0, mMesh->GetVao()->GetVerticeCount());
+		}
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
+		}
+		glDepthMask(GL_TRUE);
+		//glEnable(GL_DEPTH_TEST);
 	}
 }
 

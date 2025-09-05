@@ -223,12 +223,22 @@ void RendererOpenGl::DrawMeshes()
 	glPolygonMode(GL_FRONT_AND_BACK, drawMethod);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
+	MeshComponent* activeMesh = nullptr;
 	for (MeshComponent* m : mMeshes) 
 	{
 		if (m->GetOwner()->GetState() == ActorState::Active)
 		{
+			if (m->GetOwner()->GetIsSelected())
+			{
+				activeMesh = m;
+				continue;
+			}
 			m->Draw(mView * mProj);
 		}
+	}
+	if (activeMesh)
+	{
+		activeMesh->DrawSelected(mView * mProj);
 	}
 }
 

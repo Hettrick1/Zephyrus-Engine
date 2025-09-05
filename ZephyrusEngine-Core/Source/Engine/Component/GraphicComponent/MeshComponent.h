@@ -22,6 +22,7 @@ public:
 	static Component* Create(Actor* pOwner) { return new MeshComponent(pOwner); }
 
 	virtual void Draw(const Matrix4DRow& pViewProj);
+	virtual void DrawSelected(const Matrix4DRow& pViewProj);
 	virtual void SetMesh(Mesh& pMesh);
 	void SetTextureIndex(unsigned int pTextureIndex);
 
