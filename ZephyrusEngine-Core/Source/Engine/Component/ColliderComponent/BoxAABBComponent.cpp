@@ -110,7 +110,7 @@ void BoxAABBComponent::DebugDraw(IRenderer& pRenderer)
         Matrix4DRow wt;
 
         wt = Matrix4DRow::CreateScale(mSize * 2);
-        wt *= Matrix4DRow::CreateTranslation(mPosition - mSize);
+        wt *= Matrix4DRow::CreateTranslation(mPosition);
 
         pRenderer.DrawDebugBox(aabb.min, aabb.max, wt);
     }
