@@ -11,7 +11,7 @@ public:
 	~InspectorPanel();
 	void Draw() override;
 	void DrawActorComponents(Actor* pActor);
-	void DrawActorTransform(Actor* pActor);
+	void DrawActorInfos(Actor* pActor);
 	void DrawSplitterButton(float& h);
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
 };

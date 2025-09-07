@@ -3,6 +3,7 @@
 #include "EditorUI/ImGuiUtils.h"
 #include "EditorApplication/EventSystem/Event/RenameActorEvent.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
+#include "Assets.h"
 
 InspectorPanel::InspectorPanel(const std::string& pName)
 	: Panel(pName)
@@ -31,7 +32,7 @@ void InspectorPanel::Draw()
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(3.0f, 8.0f));
 		ImGui::BeginChild("child1", ImVec2(0, 150), true);
 
-		DrawActorTransform(actor);
+		DrawActorInfos(actor);
 		
 		ImGui::PopStyleVar();
 		ImGui::EndChild();
@@ -85,10 +86,28 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 		}
 }
 
-void InspectorPanel::DrawActorTransform(Actor* pActor)
+void InspectorPanel::DrawActorInfos(Actor* pActor)
 {
+	char buffer[64];
+	strncpy(buffer, pActor->GetName().c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	ImGui::SetNextItemWidth(150.0f);
+
+	if (ImGui::InputText("##Name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		RenameActorEvent* event = new RenameActorEvent(pActor, std::string(buffer));
+		EventSystem::DoEvent(event);
+	}
+
+	ImGui::SameLine();
+
 	static bool isActive = true;
-	if (ImGui::Checkbox("Active", &isActive))
+	ImGui::Text("Active");
+
+	ImGui::SameLine();
+
+	if (ImGui::Checkbox("##Active", &isActive))
 	{
 		if (isActive)
 			//TODO : Set active event with undo
@@ -99,15 +118,48 @@ void InspectorPanel::DrawActorTransform(Actor* pActor)
 
 	ImGui::SameLine();
 
-	char buffer[64];
-	strncpy(buffer, pActor->GetName().c_str(), sizeof(buffer));
-	buffer[sizeof(buffer) - 1] = '\0';
+	ImGui::Text("Tags");
 
-	if (ImGui::InputText("Name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	ImGui::SameLine();
+
+	if (ImGui::ArrowButton("##TagArrow", ImGuiDir_Down))
 	{
-		RenameActorEvent* event = new RenameActorEvent(pActor, std::string(buffer));
-		EventSystem::DoEvent(event);
+		ImGui::OpenPopup("TagsMenu");
 	}
+
+	ImVec2 btnPos = ImGui::GetItemRectMin();
+	ImVec2 btnSize = ImGui::GetItemRectSize();
+
+	ImGui::SetNextWindowPos(ImVec2(ImGui::GetWindowPos().x + 15, btnPos.y + btnSize.y + 15), ImGuiCond_Always);
+
+	if (ImGui::BeginPopup("TagsMenu", ImGuiWindowFlags_NoMove))
+	{
+		for (size_t i = 0; i < pActor->GetTag().size(); ++i)
+		{
+			ImGui::Text(pActor->GetTag()[i].c_str());
+			ImGui::SameLine();
+			auto windowSize = ImGui::GetContentRegionAvail();
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
+			if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str()))
+			{
+				pActor->RemoveTag(pActor->GetTag()[i]);
+			}
+		}
+
+		static char newTag[32] = "";
+		if (ImGui::InputText("##NewTag", newTag, sizeof(newTag), ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Add Tag"))
+		{
+			if (strlen(newTag) > 0)
+			{
+				pActor->AddTag(std::string(newTag));
+				newTag[0] = '\0';
+			}
+		}
+
+		ImGui::EndPopup();
+	}
+
+
 
 	ImGui::Separator();
 
@@ -145,7 +197,7 @@ void InspectorPanel::DrawActorTransform(Actor* pActor)
 	ImGui::SameLine(labelWidth);
 	if (ImGui::InputFloat3("##Size", size, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-
+		pActor->SetSize(Vector3D(size[0], size[1], size[2]));
 	}
 }
 
