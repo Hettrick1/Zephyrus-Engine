@@ -20,7 +20,7 @@ private:
 	std::vector<ColliderComponent*> mCollider;
 	std::vector<DebugLine*> mLines;
 	GLuint mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
-	bool mDrawDebug = false, mDrawLines = false, mDrawBoxes = false;
+	bool mDrawDebug = false, mDrawLines = false, mDrawBoxes = false, mDrawSelected = false;
 
 public:
 	DebugRenderer();
@@ -38,6 +38,9 @@ public:
 
 	/// Draws a debug box using the given min/max points and world transform.
 	void DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, const Matrix4DRow& pWorldTransform);
+
+	void DrawSelectedBox(const Matrix4DRow& pWorldTransform);
+
 	/// Draws a debug line between two points, with hit information.
 	void DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit);
 
@@ -47,4 +50,5 @@ public:
 	void SetDrawDebug(bool pDraw);
 	void SetDrawLines(bool pDraw);
 	void SetDrawBoxes(bool pDraw);
+	void SetDrawSelected(bool pDraw);
 };

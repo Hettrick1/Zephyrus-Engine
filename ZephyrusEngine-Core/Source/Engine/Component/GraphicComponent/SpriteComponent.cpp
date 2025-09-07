@@ -3,6 +3,7 @@
 #include "Actor.h"
 #include "Scene.h"
 #include "JSONUtils.h"
+#include "DebugRenderer.h"
 
 SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
 	: Component(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)

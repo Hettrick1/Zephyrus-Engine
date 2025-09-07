@@ -55,6 +55,8 @@ public:
 	virtual void SetSpriteShaderProgram(class ShaderProgram& pShaderProgram) {}
 	virtual void SetViewMatrix(const Matrix4DRow& pViewMatrix) {}
 
+	virtual void SetSelectedActor(Actor* pSelectedActor) {};
+
 	virtual RendererType GetType() const = 0;
 	virtual void DrawSprite(Actor& pActor, Texture& pTex, Rectangle pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
 	virtual void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) {}

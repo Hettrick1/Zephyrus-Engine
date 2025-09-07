@@ -92,6 +92,10 @@ void RendererOpenGl::Draw()
 	mDebugRenderer->Draw(*this);
 	DrawSprites();
 	DrawHud();
+	if (mSelectedActor)
+	{
+		mDebugRenderer->DrawSelectedBox(mSelectedActor->GetTransformComponent().GetWorldTransform());
+	}
 }
 
 void RendererOpenGl::EndDraw()
@@ -163,6 +167,11 @@ void RendererOpenGl::RemoveSkySphere()
 	mSkySphereComponent = nullptr;
 }
 
+void RendererOpenGl::SetSelectedActor(Actor* pSelectedActor)
+{
+	mSelectedActor = pSelectedActor;
+}
+
 void RendererOpenGl::AddDebugCollider(ColliderComponent* pCol)
 {
 	mDebugRenderer->AddDebugCollider(pCol);
@@ -228,17 +237,8 @@ void RendererOpenGl::DrawMeshes()
 	{
 		if (m->GetOwner()->GetState() == ActorState::Active)
 		{
-			if (m->GetOwner()->GetIsSelected())
-			{
-				activeMesh = m;
-				continue;
-			}
 			m->Draw(mView * mProj);
 		}
-	}
-	if (activeMesh)
-	{
-		activeMesh->DrawSelected(mView * mProj);
 	}
 }
 

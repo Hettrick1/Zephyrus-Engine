@@ -157,6 +157,8 @@ void EditorApplication::Loop()
     SceneManager::StartScene(mRenderer);
     mRenderer->SetHud(nullptr);
 
+    SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);
+
     auto editorController = new EditorControllerActor();
     mEditorController = editorController;
 

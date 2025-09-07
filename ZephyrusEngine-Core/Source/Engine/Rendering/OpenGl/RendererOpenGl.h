@@ -33,6 +33,7 @@ private:
 	DebugRenderer* mDebugRenderer;
 	bool mWireFrameMode;
 	SkySphereComponent* mSkySphereComponent;
+	Actor* mSelectedActor = nullptr;
 
 public:
 	RendererOpenGl();
@@ -56,6 +57,8 @@ public:
 
 	void AddSkySphere(SkySphereComponent* pSkySphere) override;
 	void RemoveSkySphere() override;
+
+	void SetSelectedActor(Actor* pSelectedActor) override;
 
 	// Adds a collider to the debug renderer for visualization
 	void AddDebugCollider(ColliderComponent* pCol) override;

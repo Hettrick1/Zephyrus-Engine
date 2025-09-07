@@ -14,7 +14,6 @@ bool AABB::RayIntersects(const Vector3D& rayOrigin, const Vector3D& rayEnd, floa
     float tMin = std::max({ tEnter.x, tEnter.y, tEnter.z });
     float tMax = std::min({ tExit.x, tExit.y, tExit.z });
 
-    // Vérification des intersections
     if (tMax < 0 || tMin > tMax || tMin > 1.0f || tMax < 0.0f)
     {
         return false;

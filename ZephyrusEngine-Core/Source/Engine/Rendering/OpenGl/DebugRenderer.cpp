@@ -27,23 +27,20 @@ void DebugRenderer::Initialize(Window& pWindow)
 	mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 	mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, pWindow.GetDimensions().x, pWindow.GetDimensions().y, 0.01f, 10000.0f);
 	GLfloat vertices[] = {
-		// Face avant
-		0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,  1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,  0.0f, 0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,   0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,  -0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,  -0.5f, -0.5f, -0.5f,
 
-		// Face arrière
-		0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f,  1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,  0.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,  0.0f, 0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,   0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f,  0.5f,   0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,  -0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,  -0.5f, -0.5f,  0.5f,
 
-		// Liaisons entre les faces avant et arrière
-		0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f,  1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f,  1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,  0.0f, 1.0f, 1.0f
+		-0.5f, -0.5f, -0.5f,  -0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f, -0.5f,   0.5f, -0.5f,  0.5f,
+		 0.5f,  0.5f, -0.5f,   0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f,  -0.5f,  0.5f,  0.5f
 	};
 	glGenVertexArrays(1, &mDebugBoxVao); 
 	glGenBuffers(1, &mDebugBoxVbo); 
@@ -91,11 +88,14 @@ void DebugRenderer::Unload()
 
 void DebugRenderer::Draw(IRenderer& pRenderer)
 {
-	if (mDrawDebug) {
+	glEnable(GL_DEPTH_TEST);
+	if (mDrawSelected || mDrawDebug)
+	{
 		mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.01f, 10000.0f);
 		mDebugShaderProgram.Use();
 		mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
-		glEnable(GL_DEPTH_TEST);
+	}
+	if (mDrawDebug) {
 		if (mDrawBoxes)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -140,6 +140,27 @@ void DebugRenderer::DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, con
 	mDebugShaderProgram.setVector3f("uColor", Vector3D(0, 1, 0));
 
 	glDrawArrays(GL_LINES, 0, 24);
+}
+
+void DebugRenderer::DrawSelectedBox(const Matrix4DRow& pWorldTransform)
+{
+	glLineWidth(6);
+	glBindVertexArray(mDebugBoxVao);
+
+	mDebugShaderProgram.Use();
+
+	Matrix4DRow wt = pWorldTransform;
+
+	wt = Matrix4DRow::CreateScale(pWorldTransform.GetScale() * 2);
+	wt *= Matrix4DRow::CreateFromQuaternion(pWorldTransform.GetRotation());
+	wt *= Matrix4DRow::CreateTranslation(pWorldTransform.GetTranslation());
+
+	mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
+	mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);
+	mDebugShaderProgram.setVector3f("uColor", Vector3D(1, 1, 0));
+
+	glDrawArrays(GL_LINES, 0, 24);
+	glLineWidth(4);
 }
 
 void DebugRenderer::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit)
@@ -202,4 +223,9 @@ void DebugRenderer::SetDrawLines(bool pDraw)
 void DebugRenderer::SetDrawBoxes(bool pDraw)
 {
 	mDrawBoxes = pDraw;
+}
+
+void DebugRenderer::SetDrawSelected(bool pDraw)
+{
+	mDrawSelected = pDraw;
 }

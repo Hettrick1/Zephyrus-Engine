@@ -392,5 +392,54 @@ public:
 		return Matrix4DRow(temp);
 	}
 
+	Quaternion GetRotation() const
+	{
+		Vector3D xAxis(mat[0][0], mat[0][1], mat[0][2]);
+		Vector3D yAxis(mat[1][0], mat[1][1], mat[1][2]);
+		Vector3D zAxis(mat[2][0], mat[2][1], mat[2][2]);
+
+		xAxis.Normalize();
+		yAxis.Normalize();
+		zAxis.Normalize();
+
+		float trace = xAxis.x + yAxis.y + zAxis.z;
+		Quaternion q;
+
+		if (trace > 0.0f)
+		{
+			float s = sqrtf(trace + 1.0f) * 2.0f; // s = 4 * qw
+			q.w = 0.25f * s;
+			q.x = (yAxis.z - zAxis.y) / s;
+			q.y = (zAxis.x - xAxis.z) / s;
+			q.z = (xAxis.y - yAxis.x) / s;
+		}
+		else if (xAxis.x > yAxis.y && xAxis.x > zAxis.z)
+		{
+			float s = sqrtf(1.0f + xAxis.x - yAxis.y - zAxis.z) * 2.0f;
+			q.w = (yAxis.z - zAxis.y) / s;
+			q.x = 0.25f * s;
+			q.y = (yAxis.x + xAxis.y) / s;
+			q.z = (zAxis.x + xAxis.z) / s;
+		}
+		else if (yAxis.y > zAxis.z)
+		{
+			float s = sqrtf(1.0f + yAxis.y - xAxis.x - zAxis.z) * 2.0f;
+			q.w = (zAxis.x - xAxis.z) / s;
+			q.x = (yAxis.x + xAxis.y) / s;
+			q.y = 0.25f * s;
+			q.z = (zAxis.y + yAxis.z) / s;
+		}
+		else
+		{
+			float s = sqrtf(1.0f + zAxis.z - xAxis.x - yAxis.y) * 2.0f;
+			q.w = (xAxis.y - yAxis.x) / s;
+			q.x = (zAxis.x + xAxis.z) / s;
+			q.y = (zAxis.y + yAxis.z) / s;
+			q.z = 0.25f * s;
+		}
+
+		return q;
+	}
+
 	static const Matrix4DRow Identity;
 };

@@ -1,6 +1,7 @@
 #include "SceneHierarchyPanel.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "DebugRenderer.h"
 
 SceneHierarchyPanel::SceneHierarchyPanel(const std::string& pName)
 	: Panel(pName)
@@ -36,6 +37,7 @@ void SceneHierarchyPanel::Draw()
 		}
 		mSelectedActor = actors[selected];
 		mSelectedActor->SetSelected(true);
+		mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(mSelectedActor);
 		if (selected != i)
 		{
 			actors[i]->SetSelected(false);
