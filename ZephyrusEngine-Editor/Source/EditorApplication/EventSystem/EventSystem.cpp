@@ -52,6 +52,10 @@ void EventSystem::ClearAllEvents()
 	{
 		delete event;
 	}
+	for (auto event : mUndoedEvents)
+	{
+		delete event;
+	}
 }
 
 size_t EventSystem::GetEventVectorSize()
