@@ -95,6 +95,7 @@ void EditorControllerComponent::OnActionTriggered(InputActions* pAction)
 		Quaternion finalRot = Quaternion::Concatenate(qPitch, qYaw);
 
 		mOwner->GetTransformComponent().SetRotation(finalRot);
+		
 	}
 }
 void EditorControllerComponent::OnActionEnded(InputActions* pAction)

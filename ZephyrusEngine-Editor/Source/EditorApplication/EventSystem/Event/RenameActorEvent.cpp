@@ -8,6 +8,7 @@ RenameActorEvent::RenameActorEvent(Actor* pActorToRename, const std::string& pNe
 
 RenameActorEvent::~RenameActorEvent()
 {
+	mActorToRename = nullptr;
 }
 
 void RenameActorEvent::Execute()

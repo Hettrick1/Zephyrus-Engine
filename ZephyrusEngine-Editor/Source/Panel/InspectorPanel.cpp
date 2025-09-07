@@ -3,6 +3,7 @@
 #include "EditorUI/ImGuiUtils.h"
 #include "EditorApplication/EventSystem/Event/RenameActorEvent.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
+#include "EditorApplication/EventSystem/Event/SetTransformEvent.h"
 #include "Assets.h"
 
 InspectorPanel::InspectorPanel(const std::string& pName)
@@ -66,6 +67,19 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 		ImGui::PushFont(ZP::UI::gFonts.medium);
 		ImGui::Text("Components");
 		ImGui::PopFont();
+
+		ImGui::SameLine();
+
+		ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x + 15);
+
+		if (ImGui::Button("+ Add Component"))
+		{
+			if (ImGui::BeginPopup("AddCompMenu", ImGuiWindowFlags_NoMove))
+			{
+				ImGui::EndPopup();
+			}
+		}
+
 		ImGui::Separator();
 
 		auto components = pActor->GetComponents();
@@ -78,7 +92,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 			ImGui::PushID(label);
 			auto pos = ImGui::GetCursorPos();
 			ImGui::SetCursorPos(ImVec2(pos.x + 10, pos.y + 5));
-			if (ImGui::Selectable(components[i]->GetName().c_str(), selected == i))
+			if (ImGui::Selectable(components[i]->GetName().c_str(), selected == i, 0, ImVec2(ImGui::GetContentRegionAvail().x - 10, 0)))
 			{
 				selected = i;
 			}
@@ -92,6 +106,7 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	strncpy(buffer, pActor->GetName().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 4.0f));
 	ImGui::SetNextItemWidth(150.0f);
 
 	if (ImGui::InputText("##Name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
@@ -140,10 +155,12 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 			ImGui::SameLine();
 			auto windowSize = ImGui::GetContentRegionAvail();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
 			if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str()))
 			{
 				pActor->RemoveTag(pActor->GetTag()[i]);
 			}
+			ImGui::PopStyleColor();
 		}
 
 		static char newTag[32] = "";
@@ -159,7 +176,7 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 		ImGui::EndPopup();
 	}
 
-
+	ImGui::PopStyleVar();
 
 	ImGui::Separator();
 
@@ -174,7 +191,8 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::SameLine(labelWidth);
 	if (ImGui::InputFloat3("##Position", position, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-		pActor->SetPosition(Vector3D(position[0], position[1], position[2]));
+		SetPositionEvent* posEvent = new SetPositionEvent(pActor, pActor->GetPosition(), Vector3D(position[0], position[1], position[2]));
+		EventSystem::DoEvent(posEvent);
 	}
 
 	float rotation[3] = {
@@ -186,18 +204,72 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	if (ImGui::InputFloat3("##Rotation", rotation, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
 	{
 		auto euler = Vector3D(rotation[0], rotation[1], rotation[2]);
-		pActor->SetRotation(Quaternion(euler));
+
+		SetRotationEvent* rotEvent = new SetRotationEvent(pActor, pActor->GetTransformComponent().GetRotation(), Quaternion(euler));
+		EventSystem::DoEvent(rotEvent);
 	}
+
+	static bool keepRatio = true;
+	static Vector3D originalSize;
 
 	float size[3] = {
 		pActor->GetSize().x, pActor->GetSize().y, pActor->GetSize().z
 	};
+
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Size");
 	ImGui::SameLine(labelWidth);
 	if (ImGui::InputFloat3("##Size", size, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-		pActor->SetSize(Vector3D(size[0], size[1], size[2]));
+		Vector3D prevSize = pActor->GetSize();
+		Vector3D newSize(size[0], size[1], size[2]);
+
+		if (keepRatio)
+		{
+			Vector3D delta = newSize - prevSize;
+			int editedAxis = 0;
+
+			if (fabs(delta.y) > fabs(delta.x) && fabs(delta.y) > fabs(delta.z))
+			{
+				editedAxis = 1;
+			}
+			else if (fabs(delta.z) > fabs(delta.x) && fabs(delta.z) > fabs(delta.y)) 
+			{
+				editedAxis = 2;
+			}
+
+			float prevVal = (editedAxis == 0 ? prevSize.x : editedAxis == 1 ? prevSize.y : prevSize.z);
+			float newVal = (editedAxis == 0 ? newSize.x : editedAxis == 1 ? newSize.y : newSize.z);
+
+			float factor = (prevVal != 0.0f) ? newVal / prevVal : 1.0f;
+
+			newSize = prevSize * factor;
+		}
+
+		SetSizeEvent* sizeEvent = new SetSizeEvent(pActor, originalSize, newSize);
+		EventSystem::DoEvent(sizeEvent);
+
+		if (keepRatio)
+		{
+			originalSize = newSize;
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Checkbox("##KeepRatio", &keepRatio))
+	{
+		if(keepRatio)
+		{
+			originalSize = pActor->GetSize();
+		}
+	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+		ImGui::SetTooltip("Uniform Scale");
+		ImGui::PopStyleVar(2);
+		ImGui::PopStyleColor();
 	}
 }
 

@@ -24,5 +24,8 @@ public:
 	void SetMovementSpeed(float pSpeed);
 
 	void SetIsInSceneCapture(bool pInCapture);
+
+	bool GetInCapture() const { return mInCapture; }
+	bool GetCanMove() const { return mCanMove; }
 };
 

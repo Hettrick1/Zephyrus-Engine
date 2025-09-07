@@ -32,6 +32,7 @@ void MenuPanel::Draw()
         if (ImGui::BeginMenu("Edit"))
         {
             bool canUndo = EventSystem::GetCanUndo();
+            bool canRedo = EventSystem::GetCanRedo();
             if (ImGui::MenuItem("Undo", nullptr, false, canUndo))
             {
                 EventSystem::UndoLastEvent();
@@ -45,7 +46,19 @@ void MenuPanel::Draw()
                     ImGui::SetTooltip(EventSystem::GetLastEventName().c_str());
                 }
             }
-            if (ImGui::MenuItem("Redo")) {/* action */ }
+            if (ImGui::MenuItem("Redo", nullptr, false, canRedo))
+            {
+                EventSystem::RedoLastUndo();
+            }
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                if (!canRedo) {
+                    ImGui::SetTooltip("Nothing to redo");
+                }
+                else
+                {
+                    ImGui::SetTooltip(EventSystem::GetRedoEventName().c_str());
+                }
+            }
             ImGui::EndMenu();
         }
         ImGui::Separator();
