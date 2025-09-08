@@ -32,46 +32,10 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
         return nullptr;
     }
 
-    std::string actorName = doc.HasMember("name") ? doc["name"].GetString() : "UnnamedActor";
-
     auto actor = new EmptyActor();
-    actor->SetName(actorName);
     actor->SetPrefab(pPrefabName);
 
-
-    // sets the actor state
-    if (auto state = Serialization::Json::ReadString(doc, "state"))
-    {
-        std::string stateStr = *state;
-        actor->SetActive(StringToActorState(stateStr));
-    }
-
-    // sets the actor transform
-    if (auto transform = Serialization::Json::ReadObject(doc, "transform"))
-    {
-        if (auto pos = Serialization::Json::ReadVector3D(*transform, "position"))
-        {
-            actor->SetPosition(*pos);
-        }
-
-        if (auto size = Serialization::Json::ReadVector3D(*transform, "size"))
-        {
-            actor->SetSize(*size);
-        }
-
-        if (auto rot = Serialization::Json::ReadVector3D(*transform, "rotation"))
-        {
-            actor->SetRotation(Quaternion(*rot));
-        }
-    }
-
-    if (auto arr = Serialization::Json::ReadArrayString(doc, "tags"))
-    {
-        for (auto& element : *arr)
-        {
-            actor->AddTag(element);
-        }
-    }
+    actor->Deserialize(doc);
 
     // creates all the components
     if (auto arr = Serialization::Json::ReadArrayObject(doc, "components"))
@@ -82,7 +46,7 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
         }
     }
 
-    ZP_LOAD("Prefab " + actorName + " loaded");
+    ZP_LOAD("Prefab " + actor->GetName() + " loaded");
     return actor;
 }
 
@@ -109,6 +73,10 @@ Component* PrefabFactory::CreateAndAttachComponent(const rapidjson::Value& compo
     if (!c) {
         ZP_CORE_ERROR("Component " + type + " is invalid !");
         return nullptr;
+    }
+    if (auto id = Serialization::Json::ReadString(componentJson, "componentId"))
+    {
+        c->SetId(*id);
     }
     if (auto properties = Serialization::Json::ReadObject(componentJson, "properties")) {
         // sets all the components properties from the prefab file

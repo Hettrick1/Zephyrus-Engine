@@ -47,6 +47,20 @@ void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
 	}
 }
 
+void FlipbookComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::BeginSerialize(pWriter);
+	pWriter.WriteBool("cullOff", mCullOff);
+	pWriter.BeginArray("textures");
+	for (auto& texture : mAnimationTextures)
+	{
+		pWriter.PushString(texture->GetTextureFilePath());
+	}
+	pWriter.EndArray();
+	pWriter.WriteFloat("animFps", mAnimationFps);
+	Component::EndSerialize(pWriter);
+}
+
 void FlipbookComponent::SetAnimationTextures(const std::vector<Texture*>& pTextures)
 {
 	mAnimationTextures = pTextures;

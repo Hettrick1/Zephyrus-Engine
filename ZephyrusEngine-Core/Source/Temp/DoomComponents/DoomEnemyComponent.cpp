@@ -38,6 +38,11 @@ void DoomEnemyComponent::Deserialize(const rapidjson::Value& pData)
 	Component::Deserialize(pData);
 }
 
+void DoomEnemyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::Serialize(pWriter);
+}
+
 void DoomEnemyComponent::OnStart()
 {
 	Component::OnStart();

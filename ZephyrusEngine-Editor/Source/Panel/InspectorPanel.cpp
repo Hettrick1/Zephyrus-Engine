@@ -189,7 +189,7 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Position");
 	ImGui::SameLine(labelWidth);
-	if (ImGui::InputFloat3("##Position", position, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
+	if (ImGui::InputFloat3("##Position", position, "%.3f"))
 	{
 		SetPositionEvent* posEvent = new SetPositionEvent(pActor, pActor->GetPosition(), Vector3D(position[0], position[1], position[2]));
 		EventSystem::DoEvent(posEvent);
@@ -201,7 +201,7 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Rotation");
 	ImGui::SameLine(labelWidth);
-	if (ImGui::InputFloat3("##Rotation", rotation, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
+	if (ImGui::InputFloat3("##Rotation", rotation, "%.3f"))
 	{
 		auto euler = Vector3D(rotation[0], rotation[1], rotation[2]);
 
@@ -219,7 +219,7 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Size");
 	ImGui::SameLine(labelWidth);
-	if (ImGui::InputFloat3("##Size", size, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue))
+	if (ImGui::InputFloat3("##Size", size, "%.3f"))
 	{
 		Vector3D prevSize = pActor->GetSize();
 		Vector3D newSize(size[0], size[1], size[2]);

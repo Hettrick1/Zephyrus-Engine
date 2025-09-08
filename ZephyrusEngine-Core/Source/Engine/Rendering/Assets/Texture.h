@@ -42,4 +42,5 @@ public:
 	inline Vector3D GetTextureSize() const { return { static_cast<float>(mWidth), static_cast<float>(mHeight), 0 }; }
 	SDL_Texture* GetSdlTexture() const { return mSdlTexture; }
 	inline GLuint GetId() const { return mTextureId; }
+	inline std::string GetTextureFilePath() const { return mFilePath; }
 };

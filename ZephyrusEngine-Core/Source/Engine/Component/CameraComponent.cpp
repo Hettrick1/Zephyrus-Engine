@@ -22,6 +22,11 @@ void CameraComponent::Deserialize(const rapidjson::Value& pData)
     Component::Deserialize(pData);
 }
 
+void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    Component::Serialize(pWriter);
+}
+
 Matrix4DRow CameraComponent::GetWorldTransform()
 {
     if (mOwner)

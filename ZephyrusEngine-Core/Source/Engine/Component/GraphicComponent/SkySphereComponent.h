@@ -21,11 +21,15 @@ protected:
 	bool mIsSphere = false;
 	VertexArray* mVao = nullptr;
 	GLenum mTextureType;
+
+	std::vector<std::string> mTexturesPaths;
+
 public:
 	SkySphereComponent(Actor* pOwner);
 	virtual ~SkySphereComponent();
 
 	void Deserialize(const rapidjson::Value& pData) override;
+	void Serialize(Serialization::Json::JsonWriter& pWriter) override;
 
 	static Component* Create(Actor* pOwner) { return new SkySphereComponent(pOwner); }
 
@@ -37,6 +41,8 @@ public:
 
 	// Sets the tiling factor for the sky texture
 	void SetTiling(const Vector2D& pTiling);
+
+	void SetTexturePaths(std::vector<std::string>& pTexturesPaths);
 
 	inline Mesh* GetMesh() const { return mMesh; }
 	inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }

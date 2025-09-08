@@ -10,12 +10,12 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(std::vector<Vertex> pVertices)
-	: mVertices(std::move(pVertices)), mVao(nullptr)
+Mesh::Mesh(std::vector<Vertex> pVertices, const std::string pFilePath)
+	: mVertices(std::move(pVertices)), mVao(nullptr), mFilePath(pFilePath)
 {
-	Assets::LoadTexture("Sprites/planks.png", "cube");
+	auto texture = Assets::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
 	mVao = new VertexArray(ToVerticeArray(), mVertices.size());
-	mTextures.emplace_back(&Assets::GetTexture("cube"));
+	mTextures.push_back(texture);
 }
 
 Mesh::~Mesh()

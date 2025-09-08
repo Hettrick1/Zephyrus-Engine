@@ -9,6 +9,7 @@
     "components": [
         {
             "type": "SkySphereComponent",
+            "componentId": "SkySphereComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0],

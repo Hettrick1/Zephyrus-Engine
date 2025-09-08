@@ -12,6 +12,11 @@ Component::~Component()
 {
 }
 
+void Component::SetId(const std::string& pId)
+{
+    mComponentId = pId;
+}
+
 void Component::OnStart()
 {
 }
@@ -51,10 +56,11 @@ void Component::Deserialize(const rapidjson::Value& pData)
     }
 }
 
-void Component::Serialize(Serialization::Json::JsonWriter& pWriter)
+void Component::BeginSerialize(Serialization::Json::JsonWriter& pWriter)
 {
     pWriter.BeginObject();
     pWriter.WriteString("type", mComponentName);
+    pWriter.WriteString("componentId", mComponentId);
     pWriter.BeginObject("properties");
     pWriter.WriteVector3D("relativePosition", mRelativePosition);
     pWriter.WriteVector3D("relativeSize", mRelativeSize);
@@ -68,6 +74,16 @@ void Component::Serialize(Serialization::Json::JsonWriter& pWriter)
         }
         pWriter.EndArray();
     }
+}
+
+void Component::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    BeginSerialize(pWriter);
+    EndSerialize(pWriter);
+}
+
+void Component::EndSerialize(Serialization::Json::JsonWriter& pWriter)
+{
     pWriter.EndObject();
     pWriter.EndObject();
 }

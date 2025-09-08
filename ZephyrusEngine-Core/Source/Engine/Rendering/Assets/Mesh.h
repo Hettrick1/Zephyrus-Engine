@@ -15,9 +15,10 @@ private:
 	std::vector<Texture*> mTextures;
 	std::vector<Vertex> mVertices;
 	VertexArray* mVao = nullptr;
+	std::string mFilePath;
 public:
 	Mesh();
-	Mesh(std::vector<Vertex> pVertices);
+	Mesh(std::vector<Vertex> pVertices, const std::string pFilePath);
 	~Mesh();
 
 	// Releases resources used by the mesh.
@@ -34,4 +35,6 @@ public:
 
 	inline VertexArray* GetVao() const { return mVao; }
 	inline unsigned int GetTextureArraySize() const { return mTextures.size(); }
+	inline std::string GetMeshFilePath() const { return mFilePath; }
+	inline std::vector<Texture*> GetAllTextures() const { return mTextures; }
 };

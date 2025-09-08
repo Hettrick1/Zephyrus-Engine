@@ -24,6 +24,13 @@ void BoxAABBComponent::Deserialize(const rapidjson::Value& pData)
     }
 }
 
+void BoxAABBComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    Component::BeginSerialize(pWriter);
+    pWriter.WriteBool("isQuerry", mIsQuerry);
+    Component::EndSerialize(pWriter);
+}
+
 void BoxAABBComponent::OnStart()
 {
     mPosition = mOwner->GetTransformComponent().GetPosition() + GetRelativePosition();

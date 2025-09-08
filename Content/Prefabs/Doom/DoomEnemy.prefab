@@ -10,6 +10,7 @@
     "components": [
         {
             "type": "FlipbookComponent",
+            "componentId": "FlipbookComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0.2],
                 "relativeRotation" : [90, 0, 0],
@@ -19,6 +20,7 @@
         },
         {
             "type": "FlipbookComponent",
+            "componentId": "FlipbookComponent2",
             "properties": {
                 "relativePosition" : [0, 0.1, 0.3],
                 "relativeRotation" : [90, 0, 0],
@@ -27,6 +29,7 @@
         },
         {
             "type": "BoxAABBComponent",
+            "componentId": "BoxAABBComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0]   
@@ -34,6 +37,7 @@
         },
         {
             "type": "DoomEnemyComponent",
+            "componentId": "DoomEnemyComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0]

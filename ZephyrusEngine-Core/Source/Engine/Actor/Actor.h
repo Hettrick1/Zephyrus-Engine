@@ -38,6 +38,7 @@ public:
 	virtual void Update() = 0;
 	virtual void Destroy() = 0;
 
+	virtual void Deserialize(const rapidjson::Value& pData);
 	virtual void Serialize(Serialization::Json::JsonWriter& pWriter);
 
 	void AttachScene(const Scene& pScene);
@@ -75,6 +76,8 @@ public:
 	inline Vector3D GetRotationEuler() const { return mTransformComponent.GetRotation().ToEuler(); }
 	inline void SetSelected(bool pSelected) { mIsSelected = pSelected; }
 	inline bool GetIsSelected() const { return mIsSelected; }
+
+	Component* GetComponentWithId(const std::string pId);
 
 	// Get the first component of a specific type
 	template<typename  C>

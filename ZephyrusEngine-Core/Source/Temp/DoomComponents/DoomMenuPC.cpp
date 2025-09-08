@@ -22,6 +22,11 @@ void DoomMenuPC::Deserialize(const rapidjson::Value& pData)
 	Component::Deserialize(pData);
 }
 
+void DoomMenuPC::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::Serialize(pWriter);
+}
+
 void DoomMenuPC::OnActionStarted(InputActions* action)
 {
 	if (action->GetType() == ActionType::Boolean)

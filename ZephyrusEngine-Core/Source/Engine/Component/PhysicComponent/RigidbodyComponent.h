@@ -28,6 +28,7 @@ public:
 	RigidbodyComponent& operator=(const RigidbodyComponent&) = delete;
 
 	void Deserialize(const rapidjson::Value& pData) override;
+	void Serialize(Serialization::Json::JsonWriter& pWriter) override;
 
 	static Component* Create(Actor* pOwner) { return new RigidbodyComponent(pOwner); }
 

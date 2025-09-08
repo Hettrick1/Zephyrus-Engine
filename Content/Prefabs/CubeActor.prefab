@@ -9,6 +9,7 @@
     "components": [
         {
             "type": "MeshComponent",
+            "componentId": "MeshComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0],
@@ -24,6 +25,7 @@
         },
         {
             "type": "BoxAABBComponent",
+            "componentId": "BoxAABBComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0]

@@ -29,6 +29,14 @@ void RigidbodyComponent::Deserialize(const rapidjson::Value& pData)
 	}
 }
 
+void RigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::BeginSerialize(pWriter);
+	pWriter.WriteBool("isStatic", mIsStatic);
+	pWriter.WriteFloat("friction", mFriction);
+	Component::EndSerialize(pWriter);
+}
+
 void RigidbodyComponent::Update()
 {
 	if (mUseGravity && mGravity != 0 && !mIsGrounded)

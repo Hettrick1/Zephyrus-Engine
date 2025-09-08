@@ -26,17 +26,23 @@ protected:
 	Quaternion mRelativeRotation;
 	std::vector<std::string> mComponentTags;
 	std::string mComponentName;
+	std::string mComponentId;
 public:
 	Component() = delete;
 	Component(Actor* pOwner, std::string pName = "", int pUpdateOder = 0);
 	virtual ~Component();
+
+	void SetId(const std::string& pId);
+	inline std::string GetId() const { return mComponentId; }
 
 	virtual void OnStart();
 	virtual void Update();
 	virtual void OnEnd();
 
 	virtual void Deserialize(const rapidjson::Value& pData);
+	virtual void BeginSerialize(Serialization::Json::JsonWriter& pWriter);
 	virtual void Serialize(Serialization::Json::JsonWriter& pWriter);
+	virtual void EndSerialize(Serialization::Json::JsonWriter& pWriter);
 
 	void SetRelativePosition(const Vector3D& pPosition);
 	void SetRelativeSize(const Vector3D& pSize);

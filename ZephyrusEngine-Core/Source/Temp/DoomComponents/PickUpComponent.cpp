@@ -23,6 +23,13 @@ void PickUpComponent::Deserialize(const rapidjson::Value& pData)
 	}
 }
 
+void PickUpComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::BeginSerialize(pWriter);
+	pWriter.WriteString("type", PickUpTypeToString(mType));
+	Component::EndSerialize(pWriter);
+}
+
 void PickUpComponent::OnStart()
 {
 	Component::OnStart();

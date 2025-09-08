@@ -25,7 +25,7 @@ namespace Serialization::Json {
             return std::nullopt;
         }
         const auto& array = pObj[pKey].GetArray();
-        if (array.Size() != 3)
+        if (array.Size() != 2)
         {
             ZP_CORE_ERROR(std::string(pKey) + " must be an array of 2 floats!");
             return std::nullopt;
@@ -208,6 +208,13 @@ namespace Serialization::Json {
         arr.PushBack(pVec.x, *mAllocator);
         arr.PushBack(pVec.y, *mAllocator);
         arr.PushBack(pVec.z, *mAllocator);
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
+    }
+    void JsonWriter::WriteVector2D(const char* pKey, const Vector2D& pVec)
+    {
+        rapidjson::Value arr(rapidjson::kArrayType);
+        arr.PushBack(pVec.x, *mAllocator);
+        arr.PushBack(pVec.y, *mAllocator);
         mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
     }
     void JsonWriter::PushString(const std::string& pValue)

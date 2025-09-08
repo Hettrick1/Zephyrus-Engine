@@ -144,11 +144,55 @@ void Actor::Destroy()
     mPendingComponents.clear();
 }
 
+void Actor::Deserialize(const rapidjson::Value& pData)
+{
+    if (auto name = Serialization::Json::ReadString(pData, "name"))
+    {
+        SetName(*name);
+    }
+    else
+    {
+        SetName("UnamedActor");
+    }
+
+    if (auto state = Serialization::Json::ReadString(pData, "state"))
+    {
+        std::string stateStr = *state;
+        SetActive(StringToActorState(stateStr));
+    }
+
+    if (auto transform = Serialization::Json::ReadObject(pData, "transform"))
+    {
+        if (auto pos = Serialization::Json::ReadVector3D(*transform, "position"))
+        {
+            SetPosition(*pos);
+        }
+
+        if (auto size = Serialization::Json::ReadVector3D(*transform, "size"))
+        {
+            SetSize(*size);
+        }
+
+        if (auto rot = Serialization::Json::ReadVector3D(*transform, "rotation"))
+        {
+            SetRotation(Quaternion(*rot));
+        }
+    }
+
+    if (auto arr = Serialization::Json::ReadArrayString(pData, "actorTags"))
+    {
+        for (auto& element : *arr)
+        {
+            AddTag(element);
+        }
+    }
+}
+
 void Actor::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
     pWriter.BeginObject();
     pWriter.WriteString("prefabName", mPrefab);
-    pWriter.WriteString("actorName", mName);
+    pWriter.WriteString("name", mName);
     pWriter.WriteString("state", ActorStateToString(mState));
     if (!mTags.empty())
     {
@@ -159,13 +203,13 @@ void Actor::Serialize(Serialization::Json::JsonWriter& pWriter)
         }
         pWriter.EndArray();
     }
-    pWriter.BeginObject("Transform");
-    pWriter.WriteVector3D("Position", GetPosition());
-    pWriter.WriteVector3D("Rotation", GetRotationEuler());
-    pWriter.WriteVector3D("Scale", GetSize());
+    pWriter.BeginObject("transform");
+    pWriter.WriteVector3D("position", GetPosition());
+    pWriter.WriteVector3D("rotation", GetRotationEuler());
+    pWriter.WriteVector3D("size", GetSize());
     pWriter.EndObject();
 
-    pWriter.BeginArray("Components");
+    pWriter.BeginArray("components");
     for (auto& comp : mComponents)
     {
         comp->Serialize(pWriter);
@@ -207,6 +251,29 @@ void Actor::AddTag(std::string_view pTag)
 void Actor::RemoveTag(std::string_view  pTag)
 {
     mTags.erase(std::remove(mTags.begin(), mTags.end(), pTag), mTags.end());
+}
+
+Component* Actor::GetComponentWithId(const std::string pId)
+{
+    if (pId == "")
+    {
+        return nullptr;
+    }
+    for (auto comp : mComponents)
+    {
+        if (comp->GetId() == pId)
+        {
+            return comp;
+        }
+    }
+    for (auto comp : mPendingComponents)
+    {
+        if (comp->GetId() == pId)
+        {
+            return comp;
+        }
+    }
+    return nullptr;
 }
 
 void Actor::UpdateComponentsTransform()

@@ -50,6 +50,7 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 		if (auto index = Serialization::Json::ReadInt(pData, "textureIndex"))
 		{
 			SetTextureIndex(*index);
+			ZP_INFO(mOwner->GetName() + std::to_string(*index));
 		}
 		else
 		{
@@ -66,6 +67,21 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 		SetTextureIndex(0);
 		ZP_CORE_WARN("No mesh referenced in the prefab actor !");
 	}
+}
+
+void MeshComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::BeginSerialize(pWriter);
+	pWriter.WriteString("mesh", mMesh->GetMeshFilePath());
+	pWriter.BeginArray("textures");
+	for (auto& texture : mMesh->GetAllTextures())
+	{
+		pWriter.PushString(texture->GetTextureFilePath());
+	}
+	pWriter.EndArray();
+	pWriter.WriteInt("textureIndex", mTextureIndex);
+	pWriter.WriteVector2D("textureTiling", mTiling);
+	Component::EndSerialize(pWriter);
 }
 
 void MeshComponent::OnStart()

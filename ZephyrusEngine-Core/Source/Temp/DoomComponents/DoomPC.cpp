@@ -41,6 +41,11 @@ void DoomPC::Deserialize(const rapidjson::Value& pData)
 	Component::Deserialize(pData);
 }
 
+void DoomPC::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::Serialize(pWriter);
+}
+
 void DoomPC::OnActionStarted(InputActions* action)
 {
 	if (action->GetType() == ActionType::Boolean)

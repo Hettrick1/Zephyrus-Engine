@@ -31,6 +31,11 @@ void DoomPlayerComponent::Deserialize(const rapidjson::Value& pData)
 	Component::Deserialize(pData);
 }
 
+void DoomPlayerComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::Serialize(pWriter);
+}
+
 void DoomPlayerComponent::OnStart()
 {
 	Component::OnStart();

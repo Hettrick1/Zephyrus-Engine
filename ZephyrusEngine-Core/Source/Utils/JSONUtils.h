@@ -45,6 +45,7 @@ namespace Serialization::Json
 		void WriteInt(const char* pKey, int pValue);
 		void WriteBool(const char* pKey, bool pValue);
 		void WriteVector3D(const char* pKey, const Vector3D& pVec);
+		void WriteVector2D(const char* pKey, const Vector2D& pVec);
 		void PushString(const std::string& pValue);
 		void PushFloat(float pValue);
 		void PushInt(int pValue);

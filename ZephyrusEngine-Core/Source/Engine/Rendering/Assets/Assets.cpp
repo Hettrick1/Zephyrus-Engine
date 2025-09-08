@@ -21,7 +21,7 @@ const std::string Assets::SHADER_PATH = "../Content/Shaders/";
 Texture* Assets::LoadTexture(const std::string& pFilePath, const std::string& pName)
 {
 	if (mTextures.find(pName) == mTextures.end()) {
-		mTextures[pName] = LoadTextureFromFile(*SceneManager::ActiveScene->GetRenderer(), IMPORT_PATH + pFilePath);
+		mTextures[pName] = LoadTextureFromFile(*SceneManager::ActiveScene->GetRenderer(), GetFullPath(pFilePath, AssetType::Texture));
 		return &mTextures[pName];
 	}
 	return &mTextures[pName];
@@ -40,7 +40,7 @@ Texture& Assets::GetTexture(const std::string& pName)
 Mesh* Assets::LoadMesh(const std::string& pFilePath, const std::string& pName)
 {
 	if (mMeshes.find(pName) == mMeshes.end()) {
-		mMeshes[pName] = LoadMeshFromFile(MESH_PATH + pFilePath);
+		mMeshes[pName] = LoadMeshFromFile(GetFullPath(pFilePath, AssetType::Mesh));
 		return mMeshes[pName];
 	}
 	return mMeshes[pName];
@@ -59,7 +59,7 @@ Mesh* Assets::GetMesh(const std::string& pName)
 Font* Assets::LoadFont(const std::string& pFilePath, const std::string& pName)
 {
 	if (mFonts.find(pName) == mFonts.end()) {
-		mFonts[pName] = LoadFontFromFile(FONT_PATH + pFilePath);
+		mFonts[pName] = LoadFontFromFile(GetFullPath(pFilePath, AssetType::Font));
 		return &mFonts[pName];
 	}
 	return &mFonts[pName];
@@ -78,7 +78,7 @@ Font& Assets::GetFont(const std::string& pName)
 Shader* Assets::LoadShader(const std::string& pFilePath, ShaderType pType, const std::string& pName)
 {
 	if (mShaders.find(pName) == mShaders.end()) {
-		mShaders[pName] = LoadShaderFromFile(SHADER_PATH + pFilePath, pType);
+		mShaders[pName] = LoadShaderFromFile(GetFullPath(pFilePath, AssetType::Shader), pType);
 		return &mShaders[pName];
 	}
 	return &mShaders[pName];
@@ -189,7 +189,7 @@ Mesh* Assets::LoadMeshFromFile(const std::string& pFilePath)
 		}
 
 	}
-	return new Mesh(vertices);
+	return new Mesh(vertices, pFilePath);
 }
 
 Font Assets::LoadFontFromFile(const std::string& pFilePath)
@@ -206,4 +206,58 @@ Shader Assets::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType
 	shader.Load(pFilePath, pType);
 	ZP_LOAD("Shader " + pFilePath + " successfully loaded");
 	return shader;
+}
+
+std::string Assets::GetFullPath(const std::string& pPath, AssetType pType)
+{
+	std::string newPath;
+	switch (pType)
+	{
+	case AssetType::Texture:
+	{
+		if (pPath.find(IMPORT_PATH) == std::string::npos)
+		{
+			newPath = IMPORT_PATH + pPath;
+			break;
+		}
+		newPath = pPath;
+		break;
+	}
+	case AssetType::Mesh:
+	{
+		if (pPath.find(MESH_PATH) == std::string::npos)
+		{
+			newPath = MESH_PATH + pPath;
+			break;
+		}
+		newPath = pPath;
+		break;
+	}
+	case AssetType::Font:
+	{
+		if (pPath.find(FONT_PATH) == std::string::npos)
+		{
+			newPath = FONT_PATH + pPath;
+			break;
+		}
+		newPath = pPath;
+		break;
+	}
+	case AssetType::Shader:
+	{
+		if (pPath.find(SHADER_PATH) == std::string::npos)
+		{
+			newPath = SHADER_PATH + pPath;
+			break;
+		}
+		newPath = pPath;
+		break;
+	}
+	default:
+	{
+		newPath = pPath;
+		break;
+	}
+	}
+	return newPath;
 }

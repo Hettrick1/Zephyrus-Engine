@@ -9,6 +9,7 @@
     "components": [
         {
             "type": "DoomMenuPC",
+            "componentId": "DoomMenuPC1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [20, 0, 0]

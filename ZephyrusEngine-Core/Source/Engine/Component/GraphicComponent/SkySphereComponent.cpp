@@ -26,6 +26,7 @@ void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 	Component::Deserialize(pData);
 	if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && pData["isSphere"].GetBool())
 	{
+		mIsSphere = true;
 		mVertexShader = *Assets::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
 		mFragmentShader = *Assets::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
 		mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "skySphereSP");
@@ -37,6 +38,7 @@ void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 			if (!arr.Empty() && arr[0].IsString())
 			{
 				tex = Assets::LoadTexture(arr[0].GetString(), "skysphere");
+				mTexturesPaths.push_back(arr[0].GetString());
 				mTextureIndex = tex->GetId();
 				mMesh = Assets::LoadMesh("sphere.obj", "sphere");
 				mVao = mMesh->GetVao();
@@ -50,6 +52,7 @@ void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 	}
 	else if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && !pData["isSphere"].GetBool())
 	{
+		mIsSphere = false;
 		mVertexShader = *Assets::LoadShader("VertFrag/SkyBox.vert", ShaderType::VERTEX, "SkyBoxVert");
 		mFragmentShader = *Assets::LoadShader("VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "SkyBoxFrag");
 		mTescShader = *Assets::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
@@ -73,6 +76,7 @@ void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 					if (element.IsString())
 					{
 						faces.push_back(element.GetString());
+						mTexturesPaths.push_back(element.GetString());
 					}
 				}
 				cubemapSuccess = mCubeMap.CreateCubeTextureMap(faces);
@@ -88,6 +92,22 @@ void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 	}
 }
 
+void SkySphereComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::BeginSerialize(pWriter);
+
+	pWriter.WriteBool("isSphere", mIsSphere);
+
+	pWriter.BeginArray("textures");
+	for (auto texture : mTexturesPaths)
+	{
+		pWriter.PushString(texture);
+	}
+	pWriter.EndArray();
+
+	Component::EndSerialize(pWriter);
+}
+
 void SkySphereComponent::SetTextureIndex(unsigned int pTextureIndex)
 {
 	mTextureIndex = pTextureIndex;
@@ -101,4 +121,9 @@ void SkySphereComponent::SetShaderProgram(const ShaderProgram& pShaderProgram)
 void SkySphereComponent::SetTiling(const Vector2D& pTiling)
 {
 	mTiling = pTiling;
+}
+
+void SkySphereComponent::SetTexturePaths(std::vector<std::string>& pTexturesPaths)
+{
+	mTexturesPaths = pTexturesPaths;
 }

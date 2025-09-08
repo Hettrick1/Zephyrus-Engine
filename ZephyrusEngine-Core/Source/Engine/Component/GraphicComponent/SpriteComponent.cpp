@@ -29,23 +29,20 @@ void SpriteComponent::Deserialize(const rapidjson::Value& pData)
 	}
 	mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
 	mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
-	if (pData.HasMember("sizeOverride") && pData["sizeOverride"].IsArray())
-	{
-		if (auto sizeOverride = Serialization::Json::ReadVector3D(pData, "sizeOverride"))
-		{
-			Vector3D size = *sizeOverride;
-			if (size.x > 0 || size.y > 0) {
-				mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
-				mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
-			}
-		}
-	}
 	if (pData.HasMember("cullOff") && pData["cullOff"].IsBool())
 	{
 		SetCullOff(pData["cullOff"].GetBool());
 	}
 	aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 	aspectRatioInv = 1 / aspectRatio;
+}
+
+void SpriteComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::BeginSerialize(pWriter);
+	pWriter.WriteString("texture", mTexture.GetTextureFilePath());
+	pWriter.WriteBool("cullOff", mCullOff);
+	Component::EndSerialize(pWriter);
 }
 
 void SpriteComponent::SetTexture(const Texture& pTexture)

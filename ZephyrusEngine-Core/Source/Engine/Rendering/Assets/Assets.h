@@ -13,6 +13,15 @@
  * @brief Manages loading, storing, and retrieving textures, meshes, and fonts for the engine.
  * Provides static methods to access and clear loaded assets.
  */
+
+enum class AssetType
+{
+	Mesh,
+	Texture,
+	Font,
+	Shader
+};
+
 class Assets
 {
 private:
@@ -25,6 +34,8 @@ private:
 	// Loads a font from file (internal use)
 	static Font LoadFontFromFile(const std::string& pFilePath);
 	static Shader LoadShaderFromFile(const std::string& pFilePath, ShaderType pType);
+
+	static std::string GetFullPath(const std::string& pPath, AssetType pType);
 
 public:
 	static std::map<std::string, Texture> mTextures;

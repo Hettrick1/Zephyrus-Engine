@@ -19,6 +19,7 @@ protected:
 	std::vector<Actor*> mPendingActors;
 	bool mIsUpdatingActor;
 	Actor* mPlayerRef = nullptr;
+	Actor* mPlayerStart = nullptr;
 public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(IRenderer* pRenderer); // Initializes the scene with the given renderer
