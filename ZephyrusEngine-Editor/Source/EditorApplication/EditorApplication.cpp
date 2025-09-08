@@ -60,7 +60,8 @@ void EditorApplication::Initialize()
 
         InitializeFrameBuffer();
 
-        SceneManager::LoadScene(mStartUpScene, false);
+        SceneManager::LoadScene(new Scene(), false);
+        //SceneManager::LoadScene(mStartUpScene, false);
         SceneManager::mIsSceneLoaded = true;
 
         InitializePanels();
@@ -154,7 +155,9 @@ void EditorApplication::InitializePanels()
 
 void EditorApplication::Loop()
 {
-    SceneManager::StartScene(mRenderer);
+    //SceneManager::StartScene(mRenderer);
+    SceneManager::LoadSceneWithFile(mRenderer, "../Content/Maps/LevelDoom.ZPMap");
+    SceneManager::ActiveScene->Start(mRenderer);
     mRenderer->SetHud(nullptr);
 
     SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);

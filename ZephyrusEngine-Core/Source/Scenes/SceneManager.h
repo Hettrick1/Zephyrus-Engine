@@ -17,6 +17,7 @@ public:
 
 	// Loads the given scene and sets it as the active scene
 	static void LoadScene(Scene* pScene, bool pCallPostStart = true);
+	static void LoadSceneWithFile(IRenderer* pRenderer, const std::string& pFilePath);
 
 	// Starts the active scene with the provided renderer
 	static void StartScene(IRenderer* pRenderer);

@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "SceneFactory.h"
 
 bool SceneManager::mIsSceneLoaded = false;
 Scene* SceneManager::ActiveScene = nullptr;
@@ -24,6 +25,12 @@ void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 			ActiveScene->PostStart();
 		}
 	}
+}
+
+void SceneManager::LoadSceneWithFile(IRenderer* pRenderer, const std::string& pFilePath)
+{
+	ActiveScene->Start(pRenderer);
+	SceneFactory::CreateSceneFromFile(pFilePath);
 }
 
 void SceneManager::StartScene(IRenderer* pRenderer)
@@ -70,4 +77,5 @@ bool SceneManager::SceneLoaded()
 void SceneManager::Unload()
 {
 	ActiveScene->Unload();
+	delete ActiveScene;
 }

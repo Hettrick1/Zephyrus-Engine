@@ -4,7 +4,6 @@
 class LVLDoom : public Scene
 {
 private:
-	Actor* mPlayerStart = nullptr;
 public:
 	LVLDoom();
 	~LVLDoom();

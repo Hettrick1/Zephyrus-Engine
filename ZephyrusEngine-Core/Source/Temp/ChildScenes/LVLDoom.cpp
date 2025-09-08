@@ -26,15 +26,17 @@ void LVLDoom::Start(IRenderer* renderer)
 
 	auto actor = PrefabFactory::CreateActorFromPrefab("SkyBoxActor");
 	CubeTextureMap cubemap;
-	cubemap.CreateCubeTextureMap({
+	std::vector<std::string> paths = {
 		"Sprites/Doom/skybox/front.png",
 		"Sprites/Doom/skybox/back.png",
 		"Sprites/Doom/skybox/top.png",
 		"Sprites/Doom/skybox/bottom.png",
 		"Sprites/Doom/skybox/left.png",
 		"Sprites/Doom/skybox/right.png",
-		});
+	};
+	cubemap.CreateCubeTextureMap(paths);
 	actor->GetComponentOfType<SkySphereComponent>()->SetTextureIndex(cubemap.GetID());
+	actor->GetComponentOfType<SkySphereComponent>()->SetTexturePaths(paths);
 
 	auto wall = PrefabFactory::CreateActorFromPrefab("CubeActor");
 	wall->SetPosition(Vector3D(0, 50, -0.21));
@@ -167,59 +169,7 @@ void LVLDoom::Start(IRenderer* renderer)
 
 void LVLDoom::PostStart()
 {
-	// it will be directly in the scene file but for now it's in the game.ini
-	// NOT FINAL
 
-	std::string fullPath = "../Config/Game.config";
-
-	std::ifstream file(fullPath);
-
-	if (!file.is_open())
-	{
-		ZP_CORE_ERROR("Impossible to open the game.config : " + fullPath);
-	}
-
-	std::stringstream buffer;
-	buffer << file.rdbuf();
-	std::string jsonContent = buffer.str();
-
-	rapidjson::Document doc;
-	doc.Parse(jsonContent.c_str());
-
-	if (doc.HasParseError()) {
-		ZP_CORE_ERROR("Parsing JSON failed !");
-		return;
-	}
-
-	if (doc.HasMember("playerActor") && doc["playerActor"].IsString())
-	{
-		mPlayerRef = PrefabFactory::CreateActorFromPrefab(doc["playerActor"].GetString());
-		if (mPlayerRef)
-		{
-			if (mPlayerStart)
-			{
-				mPlayerRef->SetPosition(mPlayerStart->GetTransformComponent().GetPosition());
-				mPlayerRef->SetRotation(mPlayerStart->GetTransformComponent().GetRotation());
-				mPlayerRef->SetSize(mPlayerStart->GetTransformComponent().GetSize());
-				mPlayerStart->SetActive(ActorState::Paused);
-			}
-			else
-			{
-				mPlayerRef->SetPosition(Vector3D(0));
-				mPlayerRef->SetRotation(Quaternion(0,0,0,0));
-				mPlayerRef->SetSize(Vector3D(1));
-			}
-			mPlayerRef->AddTag("Player");
-		}
-	}
-	else
-	{
-		mPlayerRef = PrefabFactory::CreateActorFromPrefab("CameraActor");
-		mPlayerRef->SetPosition(Vector3D(0));
-		mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
-		mPlayerRef->SetSize(Vector3D(1));
-	}
-	mPlayerRef->Start();
 }
 
 void LVLDoom::Update()
