@@ -130,4 +130,87 @@ namespace Serialization::Json {
         }
         return result;
     }
+
+    JsonWriter::JsonWriter()
+    {
+        mDocument.SetObject();
+        mAllocator = &mDocument.GetAllocator();
+        mCurrentValue = &mDocument;
+    }
+    JsonWriter::~JsonWriter()
+    {
+    }
+    void JsonWriter::BeginObject(const char* pKey)
+    {
+        rapidjson::Value obj(rapidjson::kObjectType);
+
+        if (pKey)
+        {
+            mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), obj, *mAllocator);
+            mParentStack.push(mCurrentValue);
+            mCurrentValue = &(*mCurrentValue)[pKey];
+        }
+        else 
+        {
+            mParentStack.push(mCurrentValue);
+            mTempArray.PushBack(obj, *mAllocator);
+            mCurrentValue = &mTempArray[mTempArray.Size() - 1];
+        }
+    }
+    void JsonWriter::EndObject()
+    {
+        mCurrentValue = mParentStack.top();
+        mParentStack.pop();
+    }
+    void JsonWriter::BeginArray(const char* pKey)
+    {
+        rapidjson::Value arr(rapidjson::kArrayType);
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
+        mParentStack.push(mCurrentValue);
+        mCurrentValue = &(*mCurrentValue)[pKey];
+    }
+    void JsonWriter::EndArray()
+    {
+        mCurrentValue = mParentStack.top();
+        mParentStack.pop();
+    }
+    void JsonWriter::WriteString(const char* pKey, const std::string& pValue)
+    {
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), rapidjson::Value(pValue.c_str(), *mAllocator).Move(), *mAllocator);
+    }
+    void JsonWriter::WriteFloat(const char* pKey, float pValue)
+    {
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), rapidjson::Value(pValue).Move(), *mAllocator);
+    }
+    void JsonWriter::WriteInt(const char* pKey, int pValue)
+    {
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), rapidjson::Value(pValue).Move(), *mAllocator);
+    }
+    void JsonWriter::WriteBool(const char* pKey, bool pValue)
+    {
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), rapidjson::Value(pValue).Move(), *mAllocator);
+    }
+    void JsonWriter::WriteVector3D(const char* pKey, const Vector3D& vec)
+    {
+        rapidjson::Value arr(rapidjson::kArrayType);
+        arr.PushBack(vec.x, *mAllocator);
+        arr.PushBack(vec.y, *mAllocator);
+        arr.PushBack(vec.z, *mAllocator);
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
+    }
+    bool JsonWriter::SaveDocument(const std::string& filename)
+    {
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+        mDocument.Accept(writer);
+
+        std::ofstream file(filename);
+        if (!file.is_open()) 
+        {
+            return false;
+        }
+        file << buffer.GetString();
+
+        return true;
+    }
 }
