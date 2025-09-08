@@ -1,9 +1,10 @@
 #pragma once
 #include <optional>
 #include "Vector3D.h"
+#include "Vector2D.h"
 #include "rapidjson/document.h"
 #include <rapidjson/stringbuffer.h>
-#include <rapidjson/writer.h>
+#include <rapidjson/prettywriter.h>
 #include <stack>
 #include <fstream>
 #include <string>
@@ -12,6 +13,7 @@
 namespace Serialization::Json
 {
 	std::optional<Vector3D> ReadVector3D(const rapidjson::Value& pObj, const char* pKey);
+	std::optional<Vector2D> ReadVector2D(const rapidjson::Value& pObj, const char* pKey);
 	std::optional<float> ReadFloat(const rapidjson::Value& pObj, const char* pKey);
 	std::optional<int> ReadInt(const rapidjson::Value& pObj, const char* pKey);
 	std::optional<bool> ReadBool(const rapidjson::Value& pObj, const char* pKey);
@@ -32,10 +34,8 @@ namespace Serialization::Json
 		rapidjson::Document::AllocatorType* mAllocator;
 		rapidjson::Value* mCurrentValue;
 		std::stack<rapidjson::Value*> mParentStack;
-		rapidjson::Value mTempArray { rapidjson::kArrayType };
 	public:
 		JsonWriter();
-		~JsonWriter();
 		void BeginObject(const char* pKey = nullptr);
 		void EndObject();
 		void BeginArray(const char* pKey);
@@ -44,11 +44,15 @@ namespace Serialization::Json
 		void WriteFloat(const char* pKey, float pValue);
 		void WriteInt(const char* pKey, int pValue);
 		void WriteBool(const char* pKey, bool pValue);
-		void WriteVector3D(const char* pKey, const Vector3D& vec);
-		bool SaveDocument(const std::string& filename);
-		rapidjson::Document GetDoc()
+		void WriteVector3D(const char* pKey, const Vector3D& pVec);
+		void PushString(const std::string& pValue);
+		void PushFloat(float pValue);
+		void PushInt(int pValue);
+		void PushBool(bool pValue);
+		bool SaveDocument(const std::string& pFilepath);
+		const rapidjson::Document& GetDoc()
 		{
-			return std::move(mDocument);
+			return mDocument;
 		}
 	};
 }

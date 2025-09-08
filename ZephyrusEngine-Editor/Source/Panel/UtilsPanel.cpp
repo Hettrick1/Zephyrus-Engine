@@ -3,6 +3,8 @@
 #include "Assets/Assets.h"
 #include <cstdlib>
 #include <windows.h>
+#include "SceneManager.h"
+#include "Scene.h"
 
 UtilsPanel::UtilsPanel(const std::string& pName, float pPanelSizeY)
 	: Panel(pName), mPaneSizeY(pPanelSizeY)
@@ -167,7 +169,10 @@ void UtilsPanel::DrawSaveButton(const ImVec2& pWindowSize, const ImVec2& pButton
     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.5f);
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
 
-    ImGui::ImageButton("SaveBtn", myIcon, ImVec2(24, 24));
+    if (ImGui::ImageButton("SaveBtn", myIcon, ImVec2(24, 24)))
+    {
+        SceneManager::ActiveScene->SaveTo("../Content/Maps/LevelDoom.ZPMap");
+    }
 
     ImGui::PopStyleVar(2);
     ImGui::PopStyleColor(3);

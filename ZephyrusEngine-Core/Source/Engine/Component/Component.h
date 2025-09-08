@@ -6,9 +6,9 @@
 #include <string>
 #include <vector>
 #include <string_view>
+#include "JSONUtils.h"
 
 class Actor;
-
 /**
  * @brief Base class for all components that can be attached to an Actor.
  * Provides transform management (position, size, rotation) relative to its owner.
@@ -36,6 +36,7 @@ public:
 	virtual void OnEnd();
 
 	virtual void Deserialize(const rapidjson::Value& pData);
+	virtual void Serialize(Serialization::Json::JsonWriter& pWriter);
 
 	void SetRelativePosition(const Vector3D& pPosition);
 	void SetRelativeSize(const Vector3D& pSize);

@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <string_view>
+#include "JSONUtils.h"
 
 class Component;
 class Scene;
@@ -24,17 +25,20 @@ protected:
 	std::vector<Component*> mPendingComponents;
 	bool mIsUpdatingComponents = false;
 	std::string mName = "";
+	std::string mPrefab = "";
 	std::vector<std::string> mTags;
 	float mLod = 0;
 	bool mIsSelected = false;
 public:
 	Actor(Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
-	Actor(std::string pName);
+	Actor(const std::string& pName, const std::string& pPrefab);
 	~Actor();
 
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	virtual void Destroy() = 0;
+
+	virtual void Serialize(Serialization::Json::JsonWriter& pWriter);
 
 	void AttachScene(const Scene& pScene);
 	void AddComponent(Component* pComponent);
@@ -47,7 +51,8 @@ public:
 	void RotateY(float pAngle);
 	void RotateZ(float pAngle);
 
-	void SetName(std::string pName);
+	void SetName(const std::string& pName);
+	void SetPrefab(const std::string& pPrefab);
 	void SetRigidBody(RigidbodyComponent* pRigidbody);
 	void AddTag(std::string_view  pTag);
 	void RemoveTag(std::string_view pTag);
@@ -64,6 +69,7 @@ public:
 	inline std::vector<std::string> GetTag() const { return mTags; }
 	inline float GetLod() const { return mLod; }
 	inline std::string GetName() const { return mName; }
+	inline std::string GetPrefabName() const { return mPrefab; }
 	inline Vector3D GetPosition() const { return mTransformComponent.GetPosition(); }
 	inline Vector3D GetSize() const { return mTransformComponent.GetSize(); }
 	inline Vector3D GetRotationEuler() const { return mTransformComponent.GetRotation().ToEuler(); }

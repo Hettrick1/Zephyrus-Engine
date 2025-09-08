@@ -1,5 +1,6 @@
 #include "InputActions.h"
 #include "IActionListener.h"
+#include "Actor.h"
 
 InputActions::InputActions(const std::string& pName)
 	: mName(pName)

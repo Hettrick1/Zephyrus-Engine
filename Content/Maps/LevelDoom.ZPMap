@@ -1,0 +1,692 @@
+{
+    "Actors": [{
+            "prefabName": "PlayerStart",
+            "actorName": "PlayerStart",
+            "state": "active",
+            "Transform": {
+                "Position": [-45.0, 0.0, 0.0],
+                "Rotation": [0.0, 0.0, -89.999],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "SkyBoxActor",
+            "actorName": "SkyBoxActor",
+            "state": "active",
+            "Transform": {
+                "Position": [0.0, 0.0, 0.0],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "SkySphereComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [20.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [0.0, 50.0, -0.209],
+                "Rotation": [89.999, 0.0, 0.0],
+                "Scale": [50.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [0.0, -50.0, -0.209],
+                "Rotation": [89.999, 0.0, 0.0],
+                "Scale": [50.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [50.0, 0.0, -0.209],
+                "Rotation": [0.0, 89.98, 0.0],
+                "Scale": [1.0, 50.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [-50.0, 0.0, -0.209],
+                "Rotation": [0.0, 89.98, 0.0],
+                "Scale": [1.0, 50.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [0.0, -30.0, -0.209],
+                "Rotation": [0.0, 89.98, 0.0],
+                "Scale": [1.0, 20.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [0.0, 30.0, -0.209],
+                "Rotation": [0.0, 89.98, 0.0],
+                "Scale": [1.0, 20.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [0.0, -9.0, -0.209],
+                "Rotation": [0.0, 89.98, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [0.0, 9.0, -0.209],
+                "Rotation": [0.0, 89.98, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [0.0, 0.0, -1.2],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [50.0, 50.0, 0.1]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [-30.0, 0.0, -0.209],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [-48.0, -10.0, -0.209],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "actorName": "CubeActor",
+            "state": "active",
+            "actorTags": ["Wall"],
+            "Transform": {
+                "Position": [-48.0, 10.0, -0.209],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/AmoPickUp",
+            "actorName": "AmoPickUpActor",
+            "state": "active",
+            "Transform": {
+                "Position": [0.0, 0.0, -0.5],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "SpriteComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "PickUpComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/HealthPickUp",
+            "actorName": "HealthPickUpActor",
+            "state": "active",
+            "Transform": {
+                "Position": [-20.0, -30.0, -0.5],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "SpriteComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "PickUpComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/HealthPickUp",
+            "actorName": "HealthPickUpActor",
+            "state": "active",
+            "Transform": {
+                "Position": [-20.0, 30.0, -0.5],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "SpriteComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "PickUpComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/ShieldPickUp",
+            "actorName": "ShieldPickUpActor",
+            "state": "active",
+            "Transform": {
+                "Position": [-40.0, -40.0, -0.5],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "SpriteComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "PickUpComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/ShieldPickUp",
+            "actorName": "ShieldPickUpActor",
+            "state": "active",
+            "Transform": {
+                "Position": [-40.0, 40.0, -0.5],
+                "Rotation": [0.0, 0.0, 0.0],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "SpriteComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "PickUpComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/DoomEnemy",
+            "actorName": "DoomEnemyActor",
+            "state": "active",
+            "actorTags": ["Enemy"],
+            "Transform": {
+                "Position": [-10.0, -20.0, -0.1],
+                "Rotation": [0.0, 0.0, -89.999],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.2],
+                        "relativeSize": [2.5, 2.5, 2.5],
+                        "relativeRotation": [89.999, 0.0, 0.0],
+                        "tags": ["enemyFB"]
+                    }
+                }, {
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.1, 0.3],
+                        "relativeSize": [1.299, 1.299, 1.299],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "DoomEnemyComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/DoomEnemy",
+            "actorName": "DoomEnemyActor",
+            "state": "active",
+            "actorTags": ["Enemy"],
+            "Transform": {
+                "Position": [-10.0, 20.0, -0.1],
+                "Rotation": [0.0, 0.0, -89.999],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.2],
+                        "relativeSize": [2.5, 2.5, 2.5],
+                        "relativeRotation": [89.999, 0.0, 0.0],
+                        "tags": ["enemyFB"]
+                    }
+                }, {
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.1, 0.3],
+                        "relativeSize": [1.299, 1.299, 1.299],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "DoomEnemyComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/DoomEnemy",
+            "actorName": "DoomEnemyActor",
+            "state": "active",
+            "actorTags": ["Enemy"],
+            "Transform": {
+                "Position": [-10.0, 0.0, -0.1],
+                "Rotation": [0.0, 0.0, -89.999],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.2],
+                        "relativeSize": [2.5, 2.5, 2.5],
+                        "relativeRotation": [89.999, 0.0, 0.0],
+                        "tags": ["enemyFB"]
+                    }
+                }, {
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.1, 0.3],
+                        "relativeSize": [1.299, 1.299, 1.299],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "DoomEnemyComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/DoomEnemy",
+            "actorName": "DoomEnemyActor",
+            "state": "active",
+            "actorTags": ["Enemy"],
+            "Transform": {
+                "Position": [-45.0, -45.0, -0.1],
+                "Rotation": [0.0, 0.0, -89.999],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.2],
+                        "relativeSize": [2.5, 2.5, 2.5],
+                        "relativeRotation": [89.999, 0.0, 0.0],
+                        "tags": ["enemyFB"]
+                    }
+                }, {
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.1, 0.3],
+                        "relativeSize": [1.299, 1.299, 1.299],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "DoomEnemyComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "Doom/DoomEnemy",
+            "actorName": "DoomEnemyActor",
+            "state": "active",
+            "actorTags": ["Enemy"],
+            "Transform": {
+                "Position": [-45.0, 45.0, -0.1],
+                "Rotation": [0.0, 0.0, -89.999],
+                "Scale": [1.0, 1.0, 1.0]
+            },
+            "Components": [{
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.2],
+                        "relativeSize": [2.5, 2.5, 2.5],
+                        "relativeRotation": [89.999, 0.0, 0.0],
+                        "tags": ["enemyFB"]
+                    }
+                }, {
+                    "type": "FlipbookComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.1, 0.3],
+                        "relativeSize": [1.299, 1.299, 1.299],
+                        "relativeRotation": [89.999, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "BoxAABBComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "DoomEnemyComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }]
+}

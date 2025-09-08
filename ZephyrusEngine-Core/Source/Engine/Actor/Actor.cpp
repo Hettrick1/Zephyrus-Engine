@@ -13,8 +13,8 @@ Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation, std::stri
     mTransformComponent.SetOwner(this);
 }
 
-Actor::Actor(std::string pName)
-    : mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
+Actor::Actor(const std::string& pName, const std::string& pPrefab)
+    : mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false), mPrefab(pPrefab)
 {
     mTransformComponent.SetPosition(0);
     mTransformComponent.SetSize(1);
@@ -144,9 +144,44 @@ void Actor::Destroy()
     mPendingComponents.clear();
 }
 
-void Actor::SetName(std::string pName)
+void Actor::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    pWriter.BeginObject();
+    pWriter.WriteString("prefabName", mPrefab);
+    pWriter.WriteString("actorName", mName);
+    pWriter.WriteString("state", ActorStateToString(mState));
+    if (!mTags.empty())
+    {
+        pWriter.BeginArray("actorTags");
+        for (auto tag : mTags)
+        {
+            pWriter.PushString(tag);
+        }
+        pWriter.EndArray();
+    }
+    pWriter.BeginObject("Transform");
+    pWriter.WriteVector3D("Position", GetPosition());
+    pWriter.WriteVector3D("Rotation", GetRotationEuler());
+    pWriter.WriteVector3D("Scale", GetSize());
+    pWriter.EndObject();
+
+    pWriter.BeginArray("Components");
+    for (auto& comp : mComponents)
+    {
+        comp->Serialize(pWriter);
+    }
+    pWriter.EndArray();
+    pWriter.EndObject();
+}
+
+void Actor::SetName(const std::string& pName)
 {
     mName = pName;
+}
+
+void Actor::SetPrefab(const std::string& pPrefab)
+{
+    mPrefab = pPrefab;
 }
 
 void Actor::SetRigidBody(RigidbodyComponent* pRigidbody)

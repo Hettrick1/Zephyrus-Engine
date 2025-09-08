@@ -21,6 +21,9 @@ public:
 
 	static Component* Create(Actor* pOwner) { return new MeshComponent(pOwner); }
 
+	void OnStart() override;
+	void OnEnd() override;
+
 	virtual void Draw(const Matrix4DRow& pViewProj);
 	virtual void DrawSelected(const Matrix4DRow& pViewProj);
 	virtual void SetMesh(Mesh& pMesh);

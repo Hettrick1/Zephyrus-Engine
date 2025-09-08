@@ -1,7 +1,6 @@
 #include "Component.h"
 #include "Actor.h"
 #include "Log.h"
-#include "JSONUtils.h"
 
 Component::Component(Actor* pOwner, std::string pName, int pUpdateOder)
     : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
@@ -50,6 +49,27 @@ void Component::Deserialize(const rapidjson::Value& pData)
             AddTag(element);
         }
     }
+}
+
+void Component::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    pWriter.BeginObject();
+    pWriter.WriteString("type", mComponentName);
+    pWriter.BeginObject("properties");
+    pWriter.WriteVector3D("relativePosition", mRelativePosition);
+    pWriter.WriteVector3D("relativeSize", mRelativeSize);
+    pWriter.WriteVector3D("relativeRotation", mRelativeRotation.ToEuler());
+    if (!mComponentTags.empty())
+    {
+        pWriter.BeginArray("tags");
+        for (auto& tag : mComponentTags)
+        {
+            pWriter.PushString(tag);
+        }
+        pWriter.EndArray();
+    }
+    pWriter.EndObject();
+    pWriter.EndObject();
 }
 
 void Component::SetRelativePosition(const Vector3D& pPosition)

@@ -31,6 +31,7 @@ public:
 	void EndRender();
 	virtual void Unload(); // Unloads scene resources
 	virtual void Close(); // Cleans up the scene
+	void SaveTo(const std::string& pFilePath);
 
 public:
 	virtual void AddActor(Actor* pActor); // Adds an actor to the scene

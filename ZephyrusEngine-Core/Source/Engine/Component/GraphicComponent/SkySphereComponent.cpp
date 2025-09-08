@@ -37,16 +37,16 @@ void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 			if (!arr.Empty() && arr[0].IsString())
 			{
 				tex = Assets::LoadTexture(arr[0].GetString(), "skysphere");
+				mTextureIndex = tex->GetId();
+				mMesh = Assets::LoadMesh("sphere.obj", "sphere");
+				mVao = mMesh->GetVao();
+				mTextureType = GL_TEXTURE_2D;
 			}
 			else
 			{
 				ZP_CORE_ERROR("Textures array must contain at least one string!");
 			}
 		}
-		mTextureIndex = tex->GetId();
-		mMesh = Assets::LoadMesh("sphere.obj", "sphere");
-		mVao = mMesh->GetVao();
-		mTextureType = GL_TEXTURE_2D;
 	}
 	else if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && !pData["isSphere"].GetBool())
 	{

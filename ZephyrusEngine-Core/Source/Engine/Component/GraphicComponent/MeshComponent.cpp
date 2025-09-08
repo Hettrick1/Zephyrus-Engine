@@ -5,6 +5,7 @@
 #include "VertexArray.h"
 #include "Vertex.h"
 #include "DebugRenderer.h"
+#include "JSONUtils.h"
 
 MeshComponent::MeshComponent(Actor* pOwner)
 	: Component(pOwner, "MeshComponent"), mMesh(nullptr), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
@@ -18,7 +19,6 @@ MeshComponent::~MeshComponent()
 void MeshComponent::Deserialize(const rapidjson::Value& pData)
 {
 	Component::Deserialize(pData);
-	mOwner->GetScene().GetRenderer()->AddMesh(this);
 	mVertexShader = *Assets::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
 	mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
 	mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
@@ -27,36 +27,37 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 	mOutlineFragmentShader = *Assets::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
 	mOutlineShaderProgram = *Assets::LoadShaderProgram({ &mOutlineVertexShader, &mOutlineFragmentShader }, "OutlineSP");
 
-	if (pData.HasMember("mesh") && pData["mesh"].IsString())
+	if (auto mesh = Serialization::Json::ReadString(pData, "mesh"))
 	{
-		mMesh = Assets::LoadMesh(pData["mesh"].GetString(), pData["mesh"].GetString());
+		mMesh = Assets::LoadMesh(*mesh, *mesh);
 		if (!mMesh)
 		{
 			ZP_CORE_ERROR("Mesh creation failed !");
 		}
-		if (pData.HasMember("textures") && pData["textures"].IsArray())
+		if (auto textures = Serialization::Json::ReadArrayString(pData, "textures"))
 		{
-			const auto& arr = pData["textures"].GetArray();
+			const auto& arr = *textures;
 
-			if (!arr.Empty())
+			if (!arr.empty())
 			{
 				for (auto& element : arr)
 				{
-					if (element.IsString())
-					{
-						Texture* texture = Assets::LoadTexture(element.GetString(), element.GetString());
-						mMesh->AddTexture(texture);
-					}
+					Texture* texture = Assets::LoadTexture(element, element);
+					mMesh->AddTexture(texture);
 				}
 			}
 		}
-		if (pData.HasMember("textureIndex") && pData["textureIndex"].IsInt())
+		if (auto index = Serialization::Json::ReadInt(pData, "textureIndex"))
 		{
-			SetTextureIndex(pData["textureIndex"].GetInt());
+			SetTextureIndex(*index);
 		}
 		else
 		{
 			SetTextureIndex(0);
+		}
+		if (auto tiling = Serialization::Json::ReadVector2D(pData, "textureTiling"))
+		{
+			SetTiling(*tiling);
 		}
 	}
 	else 
@@ -65,6 +66,16 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 		SetTextureIndex(0);
 		ZP_CORE_WARN("No mesh referenced in the prefab actor !");
 	}
+}
+
+void MeshComponent::OnStart()
+{
+	mOwner->GetScene().GetRenderer()->AddMesh(this);
+}
+
+void MeshComponent::OnEnd()
+{
+	//mOwner->GetScene().GetRenderer()->RemoveMesh(this);
 }
 
 void MeshComponent::Draw(const Matrix4DRow& pViewProj)

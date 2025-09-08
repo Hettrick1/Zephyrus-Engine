@@ -18,6 +18,20 @@ namespace Serialization::Json {
         }
         return Vector3D(array[0].GetFloat(), array[1].GetFloat(), array[2].GetFloat());
     }
+    std::optional<Vector2D> ReadVector2D(const rapidjson::Value& pObj, const char* pKey)
+    {
+        if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray())
+        {
+            return std::nullopt;
+        }
+        const auto& array = pObj[pKey].GetArray();
+        if (array.Size() != 3)
+        {
+            ZP_CORE_ERROR(std::string(pKey) + " must be an array of 2 floats!");
+            return std::nullopt;
+        }
+        return Vector2D(array[0].GetFloat(), array[1].GetFloat());
+    }
     std::optional<float> ReadFloat(const rapidjson::Value& pObj, const char* pKey)
     {
         if (!pObj.HasMember(pKey) || !pObj[pKey].IsNumber())
@@ -137,24 +151,21 @@ namespace Serialization::Json {
         mAllocator = &mDocument.GetAllocator();
         mCurrentValue = &mDocument;
     }
-    JsonWriter::~JsonWriter()
-    {
-    }
     void JsonWriter::BeginObject(const char* pKey)
     {
         rapidjson::Value obj(rapidjson::kObjectType);
 
         if (pKey)
         {
-            mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), obj, *mAllocator);
+            mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), std::move(obj), *mAllocator);
             mParentStack.push(mCurrentValue);
             mCurrentValue = &(*mCurrentValue)[pKey];
         }
-        else 
+        else
         {
+            mCurrentValue->PushBack(std::move(obj), *mAllocator);
             mParentStack.push(mCurrentValue);
-            mTempArray.PushBack(obj, *mAllocator);
-            mCurrentValue = &mTempArray[mTempArray.Size() - 1];
+            mCurrentValue = &(*mCurrentValue)[mCurrentValue->Size() - 1];
         }
     }
     void JsonWriter::EndObject()
@@ -165,6 +176,7 @@ namespace Serialization::Json {
     void JsonWriter::BeginArray(const char* pKey)
     {
         rapidjson::Value arr(rapidjson::kArrayType);
+
         mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
         mParentStack.push(mCurrentValue);
         mCurrentValue = &(*mCurrentValue)[pKey];
@@ -190,21 +202,52 @@ namespace Serialization::Json {
     {
         mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), rapidjson::Value(pValue).Move(), *mAllocator);
     }
-    void JsonWriter::WriteVector3D(const char* pKey, const Vector3D& vec)
+    void JsonWriter::WriteVector3D(const char* pKey, const Vector3D& pVec)
     {
         rapidjson::Value arr(rapidjson::kArrayType);
-        arr.PushBack(vec.x, *mAllocator);
-        arr.PushBack(vec.y, *mAllocator);
-        arr.PushBack(vec.z, *mAllocator);
+        arr.PushBack(pVec.x, *mAllocator);
+        arr.PushBack(pVec.y, *mAllocator);
+        arr.PushBack(pVec.z, *mAllocator);
         mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
     }
-    bool JsonWriter::SaveDocument(const std::string& filename)
+    void JsonWriter::PushString(const std::string& pValue)
+    {
+        if (mCurrentValue->IsArray())
+            mCurrentValue->PushBack(rapidjson::Value(pValue.c_str(), *mAllocator).Move(), *mAllocator);
+    }
+    void JsonWriter::PushFloat(float pValue)
+    {
+        if (mCurrentValue->IsArray())
+        {
+            mCurrentValue->PushBack(rapidjson::Value(pValue).Move(), *mAllocator);
+        }
+    }
+    void JsonWriter::PushInt(int pValue)
+    {
+        if (mCurrentValue->IsArray())
+        {
+            mCurrentValue->PushBack(rapidjson::Value(pValue).Move(), *mAllocator);
+        }
+    }
+    void JsonWriter::PushBool(bool pValue)
+    {
+        if (mCurrentValue->IsArray())
+        {
+            mCurrentValue->PushBack(rapidjson::Value(pValue).Move(), *mAllocator);
+        }
+    }
+    bool JsonWriter::SaveDocument(const std::string& pFilepath)
     {
         rapidjson::StringBuffer buffer;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+        // TODO replace prettyWriter by Writter it's jus for debugging purposes
+
+        rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+        writer.SetFormatOptions(rapidjson::kFormatSingleLineArray);
+        writer.SetMaxDecimalPlaces(3);
         mDocument.Accept(writer);
 
-        std::ofstream file(filename);
+        std::ofstream file(pFilepath);
         if (!file.is_open()) 
         {
             return false;

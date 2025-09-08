@@ -36,6 +36,7 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
 
     auto actor = new EmptyActor();
     actor->SetName(actorName);
+    actor->SetPrefab(pPrefabName);
 
 
     // sets the actor state

@@ -7,6 +7,8 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 
+#include "Utils/JSONUtils.h"
+#include "ActorState.h"
 
 Scene::Scene(std::string pTitle) 
 	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr)
@@ -88,6 +90,20 @@ void Scene::Close()
 		delete mPendingActors.back();
 		mAllActors.pop_back();
 	}
+}
+
+void Scene::SaveTo(const std::string& pFilePath)
+{
+	auto writer = Serialization::Json::JsonWriter();
+
+	writer.BeginArray("Actors");
+	for (auto& actor : mAllActors)
+	{
+		actor->Serialize(writer);
+	}
+	writer.EndArray();
+
+	writer.SaveDocument(pFilePath);
 }
 
 void Scene::AddActor(Actor* pActor)
