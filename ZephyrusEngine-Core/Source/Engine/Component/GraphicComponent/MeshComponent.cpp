@@ -10,6 +10,7 @@
 MeshComponent::MeshComponent(Actor* pOwner)
 	: Component(pOwner, "MeshComponent"), mMesh(nullptr), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
 {
+	mOwner->GetScene().GetRenderer()->AddMesh(this);
 }
 
 MeshComponent::~MeshComponent()
@@ -86,7 +87,6 @@ void MeshComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 
 void MeshComponent::OnStart()
 {
-	mOwner->GetScene().GetRenderer()->AddMesh(this);
 }
 
 void MeshComponent::OnEnd()
