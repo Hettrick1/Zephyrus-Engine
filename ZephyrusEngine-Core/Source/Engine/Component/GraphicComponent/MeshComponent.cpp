@@ -92,6 +92,7 @@ void MeshComponent::OnStart()
 void MeshComponent::OnEnd()
 {
 	mOwner->GetScene().GetRenderer()->RemoveMesh(this);
+	Component::OnEnd();
 }
 
 void MeshComponent::Draw(const Matrix4DRow& pViewProj)

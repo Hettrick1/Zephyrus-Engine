@@ -27,6 +27,12 @@ void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
     Component::Serialize(pWriter);
 }
 
+void CameraComponent::OnEnd()
+{
+    CameraManager::Instance().RemoveCamera(this);
+    Component::OnEnd();
+}
+
 Matrix4DRow CameraComponent::GetWorldTransform()
 {
     if (mOwner)

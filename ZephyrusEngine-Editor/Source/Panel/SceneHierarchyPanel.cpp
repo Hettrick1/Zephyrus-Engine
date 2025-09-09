@@ -44,6 +44,20 @@ void SceneHierarchyPanel::Draw()
 		}
 		ImGui::PopID();
 	}
+	if (ImGui::IsKeyPressed(ImGuiKey_Delete))
+	{
+		mSelectedActor->Destroy();
+		SceneManager::ActiveScene->RemoveActor(mSelectedActor);
+		delete mSelectedActor;
+		actors = SceneManager::ActiveScene->GetAllActors();
+		if (selected >= actors.size())
+		{
+			selected = actors.size() - 1;
+		}
+		mSelectedActor = actors[selected];
+		mSelectedActor->SetSelected(true);
+		mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(mSelectedActor);
+	}
 	ImGui::End();
 	Panel::EndDraw();
 }

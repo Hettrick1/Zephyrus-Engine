@@ -24,6 +24,7 @@ void ColliderComponent::OnEnd()
 {
 	PhysicManager::Instance().RemoveCollider(mOwner, this);
 	mOwner->GetScene().GetRenderer()->RemoveDebugCollider(this);
+	Component::OnEnd();
 }
 
 bool ColliderComponent::CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut)

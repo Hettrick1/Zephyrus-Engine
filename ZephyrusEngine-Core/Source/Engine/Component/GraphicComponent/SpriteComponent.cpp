@@ -13,6 +13,7 @@ SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
 
 SpriteComponent::~SpriteComponent()
 {
+
 }
 
 void SpriteComponent::Update()
@@ -22,8 +23,8 @@ void SpriteComponent::Update()
 
 void SpriteComponent::OnEnd()
 {
+	mOwner->GetScene().GetRenderer()->RemoveSprite(this);
 	Component::OnEnd();
-	//mOwner->GetScene().GetRenderer()->RemoveSprite(this);
 }
 
 void SpriteComponent::Deserialize(const rapidjson::Value& pData)

@@ -37,6 +37,13 @@ void RigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 	Component::EndSerialize(pWriter);
 }
 
+void RigidbodyComponent::OnEnd()
+{
+	PhysicManager::Instance().RemoveRigidBody(mOwner, this);
+	mOwner->SetRigidBody(nullptr);
+	Component::OnEnd();
+}
+
 void RigidbodyComponent::Update()
 {
 	if (mUseGravity && mGravity != 0 && !mIsGrounded)

@@ -17,6 +17,7 @@ EditorControllerComponent::EditorControllerComponent(Actor* pOwner, int pUpdateO
 	inputManager.CreateNewBooleanKeyBinding(this, "left", SDLK_a);
 	inputManager.CreateNewBooleanKeyBinding(this, "backward", SDLK_s);
 	inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
+	inputManager.CreateNewBooleanKeyBinding(this, "delete", SDLK_DELETE);
 	inputManager.CreateNewBooleanBtnBinding(this, "rightClick", SDL_BUTTON_RIGHT);
 	inputManager.CreateNewAxis2DBinding(this, "Mouse");
 	SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -27,7 +28,7 @@ void EditorControllerComponent::OnActionStarted(InputActions* pAction)
 	if (!mInCapture) return;
 	if (pAction->GetType() == ActionType::Boolean)
 	{
-		auto* triggeredaction = dynamic_cast<BooleanActions*>(pAction);
+		auto* triggeredaction = static_cast<BooleanActions*>(pAction);
 		if (!triggeredaction) return;
 		if (triggeredaction->GetName() == "rightClick")
 		{
@@ -42,7 +43,7 @@ void EditorControllerComponent::OnActionTriggered(InputActions* pAction)
 
 	if (pAction->GetType() == ActionType::Boolean)
 	{
-		auto* triggeredaction = dynamic_cast<BooleanActions*>(pAction);
+		auto* triggeredaction = static_cast<BooleanActions*>(pAction);
 		if (!triggeredaction) return;
 		if (triggeredaction->GetName() == "forward")
 		{
@@ -66,12 +67,12 @@ void EditorControllerComponent::OnActionTriggered(InputActions* pAction)
 		}
 		else if (triggeredaction->GetName() == "up")
 		{
-			auto up = mOwner->GetTransformComponent().Up();
+			auto up = Vector3D::unitZ;
 			mOwner->GetTransformComponent().Translate(up * mSpeed * Timer::deltaTime);
 		}
 		else if (triggeredaction->GetName() == "down")
 		{
-			auto up = mOwner->GetTransformComponent().Up();
+			auto up = Vector3D::unitZ;
 			mOwner->GetTransformComponent().Translate(-up * mSpeed * Timer::deltaTime);
 		}
 	}
