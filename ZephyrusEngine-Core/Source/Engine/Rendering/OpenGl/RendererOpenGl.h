@@ -62,8 +62,10 @@ public:
 
 	// Adds a collider to the debug renderer for visualization
 	void AddDebugCollider(ColliderComponent* pCol) override;
+	void RemoveDebugCollider(ColliderComponent* pCol) override;
 	// Adds a debug line to the debug renderer
 	void AddDebugLine(DebugLine* pLine) override;
+	void RemoveDebugLine(DebugLine* pLine) override;
 
 	// Sets the view matrix for rendering
 	void SetViewMatrix(const Matrix4DRow& pViewMatrix) override;

@@ -20,6 +20,12 @@ void SpriteComponent::Update()
 	Component::Update();
 }
 
+void SpriteComponent::OnEnd()
+{
+	Component::OnEnd();
+	//mOwner->GetScene().GetRenderer()->RemoveSprite(this);
+}
+
 void SpriteComponent::Deserialize(const rapidjson::Value& pData)
 {
 	Component::Deserialize(pData);

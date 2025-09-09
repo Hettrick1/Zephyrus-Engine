@@ -20,6 +20,12 @@ void ColliderComponent::Update()
 {
 }
 
+void ColliderComponent::OnEnd()
+{
+	PhysicManager::Instance().RemoveCollider(mOwner, this);
+	mOwner->GetScene().GetRenderer()->RemoveDebugCollider(this);
+}
+
 bool ColliderComponent::CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut)
 {
 	return true;

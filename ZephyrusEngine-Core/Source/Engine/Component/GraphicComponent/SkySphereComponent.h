@@ -28,6 +28,8 @@ public:
 	SkySphereComponent(Actor* pOwner);
 	virtual ~SkySphereComponent();
 
+	void OnEnd() override;
+
 	void Deserialize(const rapidjson::Value& pData) override;
 	void Serialize(Serialization::Json::JsonWriter& pWriter) override;
 

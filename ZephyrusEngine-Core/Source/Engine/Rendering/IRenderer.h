@@ -50,7 +50,9 @@ public:
 	virtual void RemoveSkySphere() = 0;
 
 	virtual void AddDebugCollider(ColliderComponent* pCol) {} // DEBUG PURPOSE ONLY
+	virtual void RemoveDebugCollider(ColliderComponent* pCol) {} // DEBUG PURPOSE ONLY
 	virtual void AddDebugLine(DebugLine* pLine) {} // DEBUG PURPOSE ONLY
+	virtual void RemoveDebugLine(DebugLine* pLine) {} // DEBUG PURPOSE ONLY
 
 	virtual void SetSpriteShaderProgram(class ShaderProgram& pShaderProgram) {}
 	virtual void SetViewMatrix(const Matrix4DRow& pViewMatrix) {}

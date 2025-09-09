@@ -14,6 +14,11 @@ FlipbookComponent::~FlipbookComponent()
 	mAnimationTextures.clear();
 }
 
+void FlipbookComponent::OnEnd()
+{
+	SpriteComponent::OnEnd();
+}
+
 void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
 {
 	SpriteComponent::Deserialize(pData);

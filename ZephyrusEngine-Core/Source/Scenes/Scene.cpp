@@ -111,29 +111,25 @@ void Scene::EndRender()
 
 void Scene::Unload()
 {
+	while (!mAllActors.empty()) {
+		mAllActors.back()->Destroy();
+		delete mAllActors.back();
+		mAllActors.pop_back();
+	}
+	while (!mPendingActors.empty()) {
+		mPendingActors.back()->Destroy();
+		delete mPendingActors.back();
+		mAllActors.pop_back();
+	}
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
 	PhysicManager::Instance().Unload();
 	CameraManager::Instance().Unload();
 	Assets::Clear();
-	while (!mAllActors.empty()) {
-		mAllActors.back()->Destroy();
-		delete mAllActors.back();
-		mAllActors.pop_back();
-	}
-	while (!mPendingActors.empty()) {
-		mPendingActors.back()->Destroy();
-		delete mPendingActors.back();
-		mAllActors.pop_back();
-	}
 }
 
 void Scene::Close()
 {
-	InputManager::Instance().Unload();
-	mRenderer->Unload();
-	PhysicManager::Instance().Unload();
-	CameraManager::Instance().Unload();
 	while (!mAllActors.empty()) {
 		mAllActors.back()->Destroy();
 		delete mAllActors.back();
@@ -144,6 +140,10 @@ void Scene::Close()
 		delete mPendingActors.back();
 		mAllActors.pop_back();
 	}
+	InputManager::Instance().Unload();
+	mRenderer->Unload();
+	PhysicManager::Instance().Unload();
+	CameraManager::Instance().Unload();
 }
 
 void Scene::SaveTo(const std::string& pFilePath)

@@ -125,9 +125,23 @@ void DebugRenderer::AddDebugCollider(ColliderComponent* pCol)
 	mCollider.push_back(pCol);
 }
 
+void DebugRenderer::RemoveDebugCollider(ColliderComponent* pCol)
+{
+	std::vector<ColliderComponent*>::iterator cc;
+	cc = std::find(mCollider.begin(), mCollider.end(), pCol);
+	mCollider.erase(cc);
+}
+
 void DebugRenderer::AddDebugLine(DebugLine* pLine)
 {
 	mLines.push_back(pLine);
+}
+
+void DebugRenderer::RemoveDebugLine(DebugLine* pLine)
+{
+	std::vector<DebugLine*>::iterator dl;
+	dl = std::find(mLines.begin(), mLines.end(), pLine);
+	mLines.erase(dl);
 }
 
 void DebugRenderer::DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, const Matrix4DRow& pWorldTransform)

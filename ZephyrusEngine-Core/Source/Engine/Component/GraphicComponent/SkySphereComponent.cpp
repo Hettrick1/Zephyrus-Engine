@@ -21,6 +21,11 @@ SkySphereComponent::~SkySphereComponent()
 {
 }
 
+void SkySphereComponent::OnEnd()
+{
+	// TODO Remove sky sphere if it's the one used
+}
+
 void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 {
 	Component::Deserialize(pData);
@@ -62,7 +67,9 @@ void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 
 		mMesh = Assets::LoadMesh("cube.obj", "cube");
 		mVao = mMesh->GetVao();
+
 		std::vector<std::string> faces;
+		mTexturesPaths.clear();
 
 		if (pData.HasMember("textures") && pData["textures"].IsArray())
 		{

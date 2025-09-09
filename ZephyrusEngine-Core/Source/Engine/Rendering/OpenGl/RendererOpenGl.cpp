@@ -177,9 +177,19 @@ void RendererOpenGl::AddDebugCollider(ColliderComponent* pCol)
 	mDebugRenderer->AddDebugCollider(pCol);
 }
 
+void RendererOpenGl::RemoveDebugCollider(ColliderComponent* pCol)
+{
+	mDebugRenderer->RemoveDebugCollider(pCol);
+}
+
 void RendererOpenGl::AddDebugLine(DebugLine* pLine)
 {
 	mDebugRenderer->AddDebugLine(pLine);
+}
+
+void RendererOpenGl::RemoveDebugLine(DebugLine* pLine)
+{
+	mDebugRenderer->RemoveDebugLine(pLine);
 }
 
 void RendererOpenGl::SetViewMatrix(const Matrix4DRow& pViewMatrix)

@@ -84,19 +84,45 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 
 		auto components = pActor->GetComponents();
 
-		for (int i = 0; i < components.size(); i++)
+		if (!components.empty())
 		{
-			char label[32];
-
-			sprintf(label, (components[i]->GetName() + "_%i").c_str(), i);
-			ImGui::PushID(label);
-			auto pos = ImGui::GetCursorPos();
-			ImGui::SetCursorPos(ImVec2(pos.x + 10, pos.y + 5));
-			if (ImGui::Selectable(components[i]->GetName().c_str(), selected == i, 0, ImVec2(ImGui::GetContentRegionAvail().x - 10, 0)))
+			for (int i = 0; i < components.size(); i++)
 			{
-				selected = i;
+				char label[32];
+
+				sprintf(label, (components[i]->GetName() + "_%i").c_str(), i);
+				ImGui::PushID(label);
+				auto pos = ImGui::GetCursorPos();
+				ImGui::SetCursorPos(ImVec2(pos.x + 10, pos.y + 5));
+				if (ImGui::Selectable(components[i]->GetName().c_str(), selected == i, 0, ImVec2(ImGui::GetContentRegionAvail().x - 10 - 25, 0)))
+				{
+					selected = i;
+				}
+				ImGui::PopID();
+				ImGui::SameLine();
+				auto windowSize = ImGui::GetContentRegionAvail();
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
+				if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str()))
+				{
+					//TODO Event to destroy actors + be sure the component is not set somewhere else
+					pActor->GetComponentWithId(components[i]->GetId())->OnEnd();
+					pActor->RemoveComponent(pActor->GetComponentWithId(components[i]->GetId()));
+					delete components[i];
+					ImGui::PopStyleColor();
+					break;
+				}
+				ImGui::PopStyleColor();
+				if (ImGui::IsItemHovered())
+				{
+					ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+					ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+					ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+					ImGui::SetTooltip(("Delete " + components[i]->GetName()).c_str());
+					ImGui::PopStyleVar(2);
+					ImGui::PopStyleColor();
+				}
 			}
-			ImGui::PopID();
 		}
 }
 

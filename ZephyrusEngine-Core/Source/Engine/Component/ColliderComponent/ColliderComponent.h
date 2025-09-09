@@ -33,6 +33,7 @@ public:
 	// Sets whether this collider is a query collider.
 	void SetIsQuerry(bool pIsQuerry);
 	virtual void Update();
+	virtual void OnEnd() override;
 	// Checks collision with another collider and outputs contact information.
 	virtual bool CheckCollisionWith(ColliderComponent* pOther, ContactManifold& pInfosOut);
 	// Returns the collision position as a pair of points.

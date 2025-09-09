@@ -34,7 +34,9 @@ public:
 	void Draw(IRenderer& pRenderer);
 
 	void AddDebugCollider(ColliderComponent* pCol);
+	void RemoveDebugCollider(ColliderComponent* pCol);
 	void AddDebugLine(DebugLine* pLine);
+	void RemoveDebugLine(DebugLine* pLine);
 
 	/// Draws a debug box using the given min/max points and world transform.
 	void DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, const Matrix4DRow& pWorldTransform);
