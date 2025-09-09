@@ -61,13 +61,9 @@ void Game::Initialize()
     mRenderer = new RendererOpenGl();
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) {
         #ifdef _DEBUG
-            SceneManager::LoadScene(new Scene(), false);
-            SceneManager::ActiveScene->SetRenderer(mRenderer);
-            SceneManager::LoadSceneWithFile(mStartUpScene);
+            SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer, false);
         #else
-            SceneManager::LoadScene(new Scene(), false);
-            SceneManager::ActiveScene->SetRenderer(mRenderer);
-            SceneManager::LoadScene(new SplashScreen(mStartUpScene), false);
+            SceneManager::LoadSplashScreen(new SplashScreen(mStartUpScene), mRenderer);
         #endif
         Loop();
     }
@@ -75,10 +71,6 @@ void Game::Initialize()
 
 void Game::Loop()
 {
-   /* SceneManager::ActiveScene->SetRenderer(mRenderer);
-    SceneManager::StartScene();*/
-    //SceneManager::PostStartScene();
-
     while (mIsRunning) {
         Timer::ComputeDeltaTime();
         Input();

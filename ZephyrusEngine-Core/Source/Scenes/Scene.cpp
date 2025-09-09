@@ -165,6 +165,28 @@ void Scene::SetPlayerStart(Actor* pPlayerStart)
 	mPlayerStart = pPlayerStart;
 }
 
+void Scene::SetFilePath(const std::string& pFilePath)
+{
+	mFilePath = pFilePath;
+}
+
+void Scene::SaveScene()
+{
+	if (!mFilePath.empty())
+	{
+		auto writer = Serialization::Json::JsonWriter();
+
+		writer.BeginArray("actors");
+		for (auto& actor : mAllActors)
+		{
+			actor->Serialize(writer);
+		}
+		writer.EndArray();
+
+		writer.SaveDocument(mFilePath);
+	}
+}
+
 void Scene::AddActor(Actor* pActor)
 {
 	pActor->AttachScene(*this);

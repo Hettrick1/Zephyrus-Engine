@@ -23,6 +23,8 @@ bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
         return false;
     }
 
+    SceneManager::ActiveScene->SetFilePath(pFilePath);
+
     std::stringstream buffer;
     buffer << file.rdbuf();
     std::string jsonContent = buffer.str();

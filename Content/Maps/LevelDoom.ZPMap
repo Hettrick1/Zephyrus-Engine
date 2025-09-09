@@ -723,7 +723,7 @@
             "state": "active",
             "actorTags": ["Enemy"],
             "transform": {
-                "position": [-10.0, 0.0, -0.1],
+                "position": [-15.0, 0.0, -0.1],
                 "rotation": [0.0, 0.0, -89.999],
                 "size": [1.0, 1.0, 1.0]
             },

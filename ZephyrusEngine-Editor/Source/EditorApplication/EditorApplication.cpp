@@ -60,10 +60,6 @@ void EditorApplication::Initialize()
 
         InitializeFrameBuffer();
 
-        SceneManager::LoadScene(new Scene(), false);
-        SceneManager::mIsSceneLoaded = true;
-        SceneManager::ActiveScene->SetRenderer(mRenderer);
-
         InitializePanels();
 
         Loop();
@@ -155,7 +151,9 @@ void EditorApplication::InitializePanels()
 
 void EditorApplication::Loop()
 {
-    SceneManager::LoadSceneWithFile(mStartUpScene);
+    SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer, false);
+    SceneManager::mIsSceneLoaded = true;
+
     mRenderer->SetHud(nullptr);
 
     SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);

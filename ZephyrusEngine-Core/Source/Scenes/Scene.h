@@ -14,6 +14,7 @@ class Scene
 {
 protected:
 	std::string mTitle;
+	std::string mFilePath;
 	IRenderer* mRenderer;
 	std::vector<Actor*> mAllActors;
 	std::vector<Actor*> mPendingActors;
@@ -34,6 +35,8 @@ public:
 	virtual void Close(); // Cleans up the scene
 	void SaveTo(const std::string& pFilePath);
 	void SetPlayerStart(Actor* pPlayerStart);
+	void SetFilePath(const std::string& pFilePath);
+	void SaveScene();
 
 public:
 	virtual void AddActor(Actor* pActor); // Adds an actor to the scene
@@ -43,6 +46,7 @@ public:
 	inline Actor* GetPlayerRef() const { return mPlayerRef; }
 
 	inline std::vector<Actor*> GetAllActors() const { return mAllActors; }
+	inline std::string GetTitle() const { return mTitle; }
 
 public : 
 	inline IRenderer* GetRenderer() const { return mRenderer; }

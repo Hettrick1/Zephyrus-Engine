@@ -21,8 +21,13 @@ void UtilsPanel::Draw()
 
     ImVec2 windowSize = ImGui::GetContentRegionAvail();
     ImVec2 buttonSize = ImVec2(200, mPaneSizeY - 15);
-    
+
     DrawSaveButton(windowSize, buttonSize);
+
+    ImGui::SameLine();
+    
+    ImGui::SetCursorPosY(buttonSize.y - 10);
+    ImGui::Text(SceneManager::ActiveScene->GetTitle().c_str());
 
     ImGui::SameLine();
 
@@ -171,7 +176,7 @@ void UtilsPanel::DrawSaveButton(const ImVec2& pWindowSize, const ImVec2& pButton
 
     if (ImGui::ImageButton("SaveBtn", myIcon, ImVec2(24, 24)))
     {
-        SceneManager::ActiveScene->SaveTo("../Content/Maps/LevelDoom.ZPMap");
+        SceneManager::ActiveScene->SaveScene();
     }
 
     ImGui::PopStyleVar(2);
@@ -186,6 +191,8 @@ void UtilsPanel::LaunchGame()
     {
     case LaunchGameMode::Standalone:
     {
+        SceneManager::ActiveScene->SaveScene();
+
         char path[MAX_PATH];
         GetModuleFileNameA(nullptr, path, MAX_PATH);
         std::string exePath(path);

@@ -10,7 +10,7 @@
 
 
 SplashScreen::SplashScreen(const std::string& pNextScene)
-	: Scene(), mZephyrusText(nullptr), mStudioText(nullptr), mTime(0), mNextScene(pNextScene)
+	: Scene("SplashScreen"), mZephyrusText(nullptr), mStudioText(nullptr), mTime(0), mNextScene(pNextScene)
 {
 }
 
@@ -54,8 +54,7 @@ void SplashScreen::Update()
 	}
 	if (mTime > 3.0f)
 	{
-		SceneManager::LoadScene(new Scene(), false);
-		SceneManager::LoadSceneWithFile(mNextScene);
+		SceneManager::LoadSceneWithFile(mNextScene, nullptr, false);
 	}
 }
 

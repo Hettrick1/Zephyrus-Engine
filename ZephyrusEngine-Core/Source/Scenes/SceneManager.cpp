@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "SceneFactory.h"
+#include <filesystem>
 
 bool SceneManager::mIsSceneLoaded = false;
 Scene* SceneManager::ActiveScene = nullptr;
@@ -27,10 +28,44 @@ void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 	}
 }
 
-void SceneManager::LoadSceneWithFile(const std::string& pFilePath)
+void SceneManager::LoadSplashScreen(Scene* pScene, IRenderer* pRenderer)
 {
-	SceneFactory::PopulateSceneFromFile(pFilePath);
+	mIsSceneLoaded = false;
+	ActiveScene = pScene;
+	ActiveScene->SetRenderer(pRenderer);
 	ActiveScene->Start();
+	mIsSceneLoaded = true;
+}
+
+void SceneManager::LoadSceneWithFile(const std::string& pFilePath, IRenderer* pRenderer, bool pCallPostStart)
+{
+	mIsSceneLoaded = false;
+	IRenderer* renderer = pRenderer;
+	if (ActiveScene != nullptr)
+	{
+		ActiveScene->Close();
+		renderer = ActiveScene->GetRenderer();
+		delete ActiveScene;
+		ActiveScene = nullptr;
+	}
+	std::filesystem::path fsPath(pFilePath);
+	std::string filename = fsPath.filename().string();
+
+	ActiveScene = new Scene(filename);
+	if (renderer != nullptr)
+	{
+		ActiveScene->SetRenderer(renderer);
+		SceneFactory::PopulateSceneFromFile(pFilePath);
+		ActiveScene->Start();
+		if (pCallPostStart)
+		{
+			ActiveScene->PostStart();
+		}
+	}
+	else
+	{
+		ZP_CORE_ERROR("No render when loading a scene !");
+	}
 }
 
 void SceneManager::StartScene()

@@ -50,9 +50,7 @@ void DoomMenuPC::OnActionStarted(InputActions* action)
 		BooleanActions* Triggeredaction = static_cast<BooleanActions*>(action);
 		if (Triggeredaction && Triggeredaction->GetName() == "Play")
 		{
-			SceneManager::LoadScene(new Scene(), false);
 			SceneManager::LoadSceneWithFile("../Content/Maps/LevelDoom.ZPMap");
-			SceneManager::PostStartScene();
 		}
 	}
 }
