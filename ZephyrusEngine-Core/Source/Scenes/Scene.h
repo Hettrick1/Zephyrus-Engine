@@ -22,17 +22,18 @@ protected:
 	Actor* mPlayerStart = nullptr;
 public:
 	Scene(std::string pTitle = "Scene");
-	virtual void Start(IRenderer* pRenderer); // Initializes the scene with the given renderer
+	virtual void Start(); // Initializes the scene with the given renderer
 	virtual void PostStart();
-	virtual void Load(); // Loads scene resources
 	virtual void Update(); // Updates the scene and its actors
 	virtual void Render();
+	void SetRenderer(IRenderer* pRenderer);
 	void BeginRender();
 	void RenderCurrentSceneOnly();
 	void EndRender();
 	virtual void Unload(); // Unloads scene resources
 	virtual void Close(); // Cleans up the scene
 	void SaveTo(const std::string& pFilePath);
+	void SetPlayerStart(Actor* pPlayerStart);
 
 public:
 	virtual void AddActor(Actor* pActor); // Adds an actor to the scene

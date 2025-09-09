@@ -21,7 +21,7 @@
 #include "EditorUI/ImGuiUtils.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
 
-EditorApplication::EditorApplication(const std::string& pTitle, Scene* pStartupScene)
+EditorApplication::EditorApplication(const std::string& pTitle, const std::string& pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
     , mCameraManager(CameraManager::Instance()), mTitle(pTitle)
 {
@@ -61,8 +61,8 @@ void EditorApplication::Initialize()
         InitializeFrameBuffer();
 
         SceneManager::LoadScene(new Scene(), false);
-        //SceneManager::LoadScene(mStartUpScene, false);
         SceneManager::mIsSceneLoaded = true;
+        SceneManager::ActiveScene->SetRenderer(mRenderer);
 
         InitializePanels();
 
@@ -155,9 +155,7 @@ void EditorApplication::InitializePanels()
 
 void EditorApplication::Loop()
 {
-    //SceneManager::StartScene(mRenderer);
-    SceneManager::LoadSceneWithFile(mRenderer, "../Content/Maps/LevelDoom.ZPMap");
-    SceneManager::ActiveScene->Start(mRenderer);
+    SceneManager::LoadSceneWithFile(mStartUpScene);
     mRenderer->SetHud(nullptr);
 
     SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);

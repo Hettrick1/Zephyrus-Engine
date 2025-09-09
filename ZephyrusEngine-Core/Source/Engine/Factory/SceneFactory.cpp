@@ -7,7 +7,7 @@
 #include <filesystem>
 #include "SceneManager.h"
 
-bool SceneFactory::CreateSceneFromFile(const std::string& pFilePath)
+bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
 {
     if (SceneManager::ActiveScene == nullptr)
     {
@@ -42,6 +42,7 @@ bool SceneFactory::CreateSceneFromFile(const std::string& pFilePath)
             if (auto prefabName = Serialization::Json::ReadString(*actor, "prefabName"))
             {
                 auto actorPrefab = PrefabFactory::CreateActorFromPrefab(*prefabName);
+
                 actorPrefab->Deserialize(*actor);
                 if (auto actorComponents = Serialization::Json::ReadArrayObject(*actor, "components"))
                 {
@@ -57,6 +58,11 @@ bool SceneFactory::CreateSceneFromFile(const std::string& pFilePath)
                             actorPrefab->GetComponentWithId(id)->Deserialize(*componentProperties);
                         }
                     }
+                }
+
+                if (prefabName == "PlayerStart")
+                {
+                    SceneManager::ActiveScene->SetPlayerStart(actorPrefab);
                 }
             }
         }

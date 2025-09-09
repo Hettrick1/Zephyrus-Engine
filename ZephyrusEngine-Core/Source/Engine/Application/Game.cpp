@@ -6,7 +6,7 @@
 #include "TextRenderer.h"
 #include "SplashScreen.h"
 
-Game::Game(const std::string& pTitle, Scene* pStartupScene)
+Game::Game(const std::string& pTitle, const std::string& pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
     , mCameraManager(CameraManager::Instance()), mTitle(pTitle)
 {
@@ -61,9 +61,13 @@ void Game::Initialize()
     mRenderer = new RendererOpenGl();
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) {
         #ifdef _DEBUG
-            SceneManager::LoadScene(mStartUpScene);
+            SceneManager::LoadScene(new Scene(), false);
+            SceneManager::ActiveScene->SetRenderer(mRenderer);
+            SceneManager::LoadSceneWithFile(mStartUpScene);
         #else
-            SceneManager::LoadScene(new SplashScreen(mStartUpScene));
+            SceneManager::LoadScene(new Scene(), false);
+            SceneManager::ActiveScene->SetRenderer(mRenderer);
+            SceneManager::LoadScene(new SplashScreen(mStartUpScene), false);
         #endif
         Loop();
     }
@@ -71,8 +75,9 @@ void Game::Initialize()
 
 void Game::Loop()
 {
-    SceneManager::StartScene(mRenderer);
-    SceneManager::PostStartScene();
+   /* SceneManager::ActiveScene->SetRenderer(mRenderer);
+    SceneManager::StartScene();*/
+    //SceneManager::PostStartScene();
 
     while (mIsRunning) {
         Timer::ComputeDeltaTime();

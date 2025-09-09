@@ -5,6 +5,6 @@
 
 int main(int argc, char** argv) {
 	ComponentRegister::RegisterAllComponents();
-	EditorApplication* editor = new EditorApplication("ZephyrusEditor", new LVLDoom());
+	EditorApplication* editor = new EditorApplication("ZephyrusEditor", "../Content/Maps/LevelDoom.ZPMap");
 	return 0;
 }

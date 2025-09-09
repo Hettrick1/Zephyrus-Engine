@@ -7,7 +7,7 @@ private:
 public:
 	LVLDoom();
 	~LVLDoom();
-	void Start(IRenderer* renderer) override;
+	void Start() override;
 	void PostStart() override;
 	void Update() override;
 	void Render() override;

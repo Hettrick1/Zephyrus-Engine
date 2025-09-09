@@ -9,12 +9,12 @@ class SplashScreen : public Scene
 private:
 	HudText* mZephyrusText;
 	HudText* mStudioText;
-	Scene* mNextScene;
+	std::string mNextScene;
 	float mTime;
 public:
-	SplashScreen(Scene* pNextScene);
+	SplashScreen(const std::string& pNextScene);
 	~SplashScreen();
-	void Start(IRenderer* pRenderer) override;
+	void Start() override;
 	void Update() override;
 	void Render() override;
 	void Close() override;

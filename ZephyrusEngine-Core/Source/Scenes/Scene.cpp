@@ -15,9 +15,8 @@ Scene::Scene(std::string pTitle)
 {
 }
 
-void Scene::Start(IRenderer* pRenderer)
+void Scene::Start()
 {
-	mRenderer = pRenderer;
 	for (auto& actor : mAllActors)
 	{
 		actor->Start();
@@ -78,10 +77,6 @@ void Scene::PostStart()
 	mPlayerRef->Start();
 }
 
-void Scene::Load()
-{
-}
-
 void Scene::Update()
 {
 	UpdateAllActors();
@@ -92,6 +87,11 @@ void Scene::Render()
 	mRenderer->BeginDraw();
 	mRenderer->Draw();
 	mRenderer->EndDraw();
+}
+
+void Scene::SetRenderer(IRenderer* pRenderer)
+{
+	mRenderer = pRenderer;
 }
 
 void Scene::BeginRender()
@@ -158,6 +158,11 @@ void Scene::SaveTo(const std::string& pFilePath)
 	writer.EndArray();
 
 	writer.SaveDocument(pFilePath);
+}
+
+void Scene::SetPlayerStart(Actor* pPlayerStart)
+{
+	mPlayerStart = pPlayerStart;
 }
 
 void Scene::AddActor(Actor* pActor)

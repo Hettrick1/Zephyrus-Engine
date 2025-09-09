@@ -23,7 +23,7 @@ private:
 	std::string mTitle;
 	Window* mGameWindow = nullptr;
 	IRenderer* mRenderer = nullptr;
-	Scene* mStartUpScene = nullptr;
+	std::string mStartUpScene;
 	InputManager& mInputManager;
 	PhysicManager& mPhysicManager;
 	CameraManager& mCameraManager;
@@ -37,7 +37,7 @@ private:
 	EditorControllerActor* mEditorController = nullptr;
 
 public:
-	EditorApplication(const std::string& pTitle, Scene* pStartupScene);
+	EditorApplication(const std::string& pTitle, const std::string& pStartupScene);
 	~EditorApplication();
 
 	// Initializes the game systems and window

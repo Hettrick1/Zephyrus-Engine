@@ -16,10 +16,10 @@ void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 		ActiveScene = nullptr;
 	}
 	ActiveScene = pScene;
-	ActiveScene->Load();
 	if (renderer != nullptr)
 	{
-		ActiveScene->Start(renderer);
+		ActiveScene->SetRenderer(renderer);
+		ActiveScene->Start();
 		if (pCallPostStart)
 		{
 			ActiveScene->PostStart();
@@ -27,15 +27,15 @@ void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 	}
 }
 
-void SceneManager::LoadSceneWithFile(IRenderer* pRenderer, const std::string& pFilePath)
+void SceneManager::LoadSceneWithFile(const std::string& pFilePath)
 {
-	ActiveScene->Start(pRenderer);
-	SceneFactory::CreateSceneFromFile(pFilePath);
+	SceneFactory::PopulateSceneFromFile(pFilePath);
+	ActiveScene->Start();
 }
 
-void SceneManager::StartScene(IRenderer* pRenderer)
+void SceneManager::StartScene()
 {
-	ActiveScene->Start(pRenderer);
+	ActiveScene->Start();
 }
 
 void SceneManager::PostStartScene()

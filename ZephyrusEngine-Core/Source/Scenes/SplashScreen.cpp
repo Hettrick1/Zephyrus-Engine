@@ -9,7 +9,7 @@
 #include "PrefabFactory.h"
 
 
-SplashScreen::SplashScreen(Scene* pNextScene)
+SplashScreen::SplashScreen(const std::string& pNextScene)
 	: Scene(), mZephyrusText(nullptr), mStudioText(nullptr), mTime(0), mNextScene(pNextScene)
 {
 }
@@ -20,9 +20,9 @@ SplashScreen::~SplashScreen()
 	delete mStudioText;
 }
 
-void SplashScreen::Start(IRenderer* pRenderer)
+void SplashScreen::Start()
 {
-	Scene::Start(pRenderer);
+	Scene::Start();
 
 	mTime = 0;
 
@@ -54,7 +54,8 @@ void SplashScreen::Update()
 	}
 	if (mTime > 3.0f)
 	{
-		SceneManager::LoadScene(mNextScene);
+		SceneManager::LoadScene(new Scene(), false);
+		SceneManager::LoadSceneWithFile(mNextScene);
 	}
 }
 

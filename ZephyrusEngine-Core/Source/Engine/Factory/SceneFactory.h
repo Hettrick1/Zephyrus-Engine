@@ -4,5 +4,5 @@
 class SceneFactory
 {
 public:
-	static bool CreateSceneFromFile(const std::string& pFilePath);
+	static bool PopulateSceneFromFile(const std::string& pFilePath);
 };

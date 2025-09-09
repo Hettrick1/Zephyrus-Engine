@@ -15,9 +15,9 @@ LVLDoom::~LVLDoom()
 {
 }
 
-void LVLDoom::Start(IRenderer* renderer)
+void LVLDoom::Start()
 {
-	Scene::Start(renderer);
+	Scene::Start();
 	
 	GetRenderer()->GetDebugRenderer()->SetDrawDebug(false);
 

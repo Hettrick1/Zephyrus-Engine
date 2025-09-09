@@ -10,7 +10,7 @@ class LVLDoomMainMenu : public Scene
 public:
 	LVLDoomMainMenu();
 	~LVLDoomMainMenu();
-	void Start(IRenderer* renderer) override;
+	void Start() override;
 	void Update() override;
 	void Render() override;
 	void Close() override;

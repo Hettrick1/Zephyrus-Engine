@@ -20,13 +20,13 @@ private:
 	std::string mTitle;
 	Window* mGameWindow = nullptr;
 	IRenderer* mRenderer = nullptr;
-	Scene* mStartUpScene = nullptr;
+	std::string mStartUpScene;
 	InputManager& mInputManager;
 	PhysicManager& mPhysicManager;
 	CameraManager& mCameraManager;
 	bool mIsRunning = true;
 public:
-	Game(const std::string& pTitle, Scene* pStartupScene);
+	Game(const std::string& pTitle, const std::string& pStartupScene);
 	~Game();
 
 	// Initializes the game systems and window

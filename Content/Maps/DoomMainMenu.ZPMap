@@ -1,0 +1,44 @@
+{
+    "actors": [
+        {
+            "prefabName": "CameraActor",
+            "name": "CameraActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [
+                {
+                    "type": "CameraComponent",
+                    "componentId": "CameraComp1",
+                    "properties": {
+                        "relativePosition": [0, 0, 0],
+                        "relativeRotation": [0, 0, 0]
+                    }
+                }
+            ]
+        },
+        {
+            "prefabName": "DoomMenuPlayer",
+            "name": "DoomMenuPlayer",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [
+                {
+                    "type": "DoomMenuPC",
+                    "componentId": "DoomMenuPC1",
+                    "properties": {
+                        "relativePosition": [0, 0, 0],
+                        "relativeRotation": [20, 0, 0]
+                    }
+                }
+            ]
+        }
+    ]
+}
