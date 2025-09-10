@@ -8,6 +8,7 @@ ComponentFactory& ComponentFactory::Instance()
 
 bool ComponentFactory::Register(const std::string& pName, Creator pCreateFn)
 {
+    mComponentNames.push_back(pName);
     return mCreators.emplace(pName, pCreateFn).second;
 }
 

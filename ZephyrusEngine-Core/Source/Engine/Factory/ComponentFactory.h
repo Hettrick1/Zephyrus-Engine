@@ -16,6 +16,9 @@ public:
 
     Component* Create(const std::string& pName, Actor* pOwner);
 
+    inline std::vector<std::string> GetComponentNames() const { return mComponentNames; }
+
 private:
     std::unordered_map<std::string, Creator> mCreators;
+    std::vector<std::string> mComponentNames;
 };

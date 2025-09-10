@@ -233,6 +233,7 @@ void Scene::UpdateAllActors()
 			{
 				return;
 			}
+			RemoveActor(actor);
 			delete actor;
 		}
 	}

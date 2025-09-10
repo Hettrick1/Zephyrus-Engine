@@ -27,4 +27,6 @@ void ComponentRegister::RegisterAllComponents()
 	ComponentFactory::Instance().Register("FlipbookComponent", FlipbookComponent::Create);
 	ComponentFactory::Instance().Register("RigidbodyComponent", RigidbodyComponent::Create);
 	ComponentFactory::Instance().Register("DoomEnemyComponent", DoomEnemyComponent::Create);
+
+
 }

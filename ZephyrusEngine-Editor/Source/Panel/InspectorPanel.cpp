@@ -5,6 +5,8 @@
 #include "EditorApplication/EventSystem/EventSystem.h"
 #include "EditorApplication/EventSystem/Event/SetTransformEvent.h"
 #include "Assets.h"
+#include "ComponentFactory.h"
+#include "Log.h"
 
 InspectorPanel::InspectorPanel(const std::string& pName)
 	: Panel(pName)
@@ -74,10 +76,32 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 
 		if (ImGui::Button("+ Add Component"))
 		{
-			if (ImGui::BeginPopup("AddCompMenu", ImGuiWindowFlags_NoMove))
+			ImGui::OpenPopup("AddCompMenu");
+		}
+
+		if (ImGui::BeginPopup("AddCompMenu", ImGuiWindowFlags_NoMove))
+		{
+			for (auto componentType : ComponentFactory::Instance().GetComponentNames())
 			{
-				ImGui::EndPopup();
+				if (ImGui::Button(componentType.c_str()))
+				{
+					Component* c = ComponentFactory::Instance().Create(componentType, pActor);
+
+					if (!c) {
+						ZP_EDITOR_ERROR("Component " + componentType + " is invalid !");
+					}
+					c->SetId(componentType + std::to_string(pActor->GetComponents().size()));
+
+					rapidjson::Value value;
+
+					// REMOVE DESERIALIZE AND DO THE BASIC INIT IN CONSTRUCTOR
+					c->Deserialize(value);
+
+					pActor->AddComponent(c);
+					ZP_CORE_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
+				}
 			}
+			ImGui::EndPopup();
 		}
 
 		ImGui::Separator();
