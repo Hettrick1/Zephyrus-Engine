@@ -6,5 +6,6 @@
 int main(int argc, char** argv) {
 	ComponentRegister::RegisterAllComponents();
 	Game* pong = new Game("Game", "../Content/Maps/DoomMainMenu.ZPMap");
+	delete pong;
 	return 0;
 }
