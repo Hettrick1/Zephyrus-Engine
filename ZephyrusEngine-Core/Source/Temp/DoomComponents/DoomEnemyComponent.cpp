@@ -21,31 +21,6 @@ DoomEnemyComponent::DoomEnemyComponent(Actor* pOwner, int updateOder)
 	: Component(pOwner, "DoomEnemyComponent"), mEnemyFb(nullptr), mHealth(100), mShootCouldown(shootCooldown)
 	, mCanShoot(false), mIsDead(false), mSplashBlood(nullptr)
 {
-}
-
-DoomEnemyComponent::~DoomEnemyComponent()
-{
-	mEnemyFb = nullptr;
-	mSplashBlood = nullptr;
-	EnemyShootAnim.clear();
-	EnemyDieAnim.clear();
-	EnemyExplodesAnim.clear();
-	EnemyDamagesAnim.clear();
-}
-
-void DoomEnemyComponent::Deserialize(const rapidjson::Value& pData)
-{
-	Component::Deserialize(pData);
-}
-
-void DoomEnemyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
-{
-	Component::Serialize(pWriter);
-}
-
-void DoomEnemyComponent::OnStart()
-{
-	Component::OnStart();
 	EnemyShootAnim = {
 		Assets::LoadTexture("Sprites/Doom/Marine/MShoot1.png", "Mshoot1"),
 		Assets::LoadTexture("Sprites/Doom/Marine/MShoot2.png", "Mshoot2"),
@@ -99,11 +74,11 @@ void DoomEnemyComponent::OnStart()
 	if (!mOwner->GetComponents().empty())
 	{
 		auto flipbooks = mOwner->GetAllComponentOfType<FlipbookComponent>();
-	
+
 		if (flipbooks.size() >= 2)
 		{
 			if (flipbooks[0]->HasTag("enemyFB"))
-			{ 
+			{
 				mEnemyFb = flipbooks[0];
 				mSplashBlood = flipbooks[1];
 			}
@@ -119,6 +94,31 @@ void DoomEnemyComponent::OnStart()
 		mSplashBlood->SetAnimationTextures(EnemyDamagesAnim);
 		mSplashBlood->SetAnimationFps(40);
 	}
+}
+
+DoomEnemyComponent::~DoomEnemyComponent()
+{
+	mEnemyFb = nullptr;
+	mSplashBlood = nullptr;
+	EnemyShootAnim.clear();
+	EnemyDieAnim.clear();
+	EnemyExplodesAnim.clear();
+	EnemyDamagesAnim.clear();
+}
+
+void DoomEnemyComponent::Deserialize(const rapidjson::Value& pData)
+{
+	Component::Deserialize(pData);
+}
+
+void DoomEnemyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+	Component::Serialize(pWriter);
+}
+
+void DoomEnemyComponent::OnStart()
+{
+	Component::OnStart();
 }
 
 void DoomEnemyComponent::Update()

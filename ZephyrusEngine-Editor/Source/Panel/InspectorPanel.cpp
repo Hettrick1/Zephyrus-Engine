@@ -83,6 +83,10 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 		{
 			for (auto componentType : ComponentFactory::Instance().GetComponentNames())
 			{
+				if (componentType == "SkySphereComponent" || componentType == "DoomEnemyComponent") // There are some components that cannot be added because they are temporary
+				{
+					continue;
+				}
 				if (ImGui::Button(componentType.c_str()))
 				{
 					Component* c = ComponentFactory::Instance().Create(componentType, pActor);
@@ -91,11 +95,6 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 						ZP_EDITOR_ERROR("Component " + componentType + " is invalid !");
 					}
 					c->SetId(componentType + std::to_string(pActor->GetComponents().size()));
-
-					rapidjson::Value value;
-
-					// REMOVE DESERIALIZE AND DO THE BASIC INIT IN CONSTRUCTOR
-					c->Deserialize(value);
 
 					pActor->AddComponent(c);
 					ZP_CORE_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());

@@ -11,6 +11,17 @@ MeshComponent::MeshComponent(Actor* pOwner)
 	: Component(pOwner, "MeshComponent"), mMesh(nullptr), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
 {
 	mOwner->GetScene().GetRenderer()->AddMesh(this);
+
+	mVertexShader = *Assets::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
+	mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
+	mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
+
+	mOutlineVertexShader = *Assets::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
+	mOutlineFragmentShader = *Assets::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
+	mOutlineShaderProgram = *Assets::LoadShaderProgram({ &mOutlineVertexShader, &mOutlineFragmentShader }, "OutlineSP");
+
+	mMesh = Assets::LoadMesh("cube.obj", "cube.obj");
+	SetTextureIndex(0);
 }
 
 MeshComponent::~MeshComponent()
@@ -20,14 +31,6 @@ MeshComponent::~MeshComponent()
 void MeshComponent::Deserialize(const rapidjson::Value& pData)
 {
 	Component::Deserialize(pData);
-	mVertexShader = *Assets::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
-	mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
-	mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
-
-	mOutlineVertexShader = *Assets::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
-	mOutlineFragmentShader = *Assets::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
-	mOutlineShaderProgram = *Assets::LoadShaderProgram({ &mOutlineVertexShader, &mOutlineFragmentShader }, "OutlineSP");
-
 	if (auto mesh = Serialization::Json::ReadString(pData, "mesh"))
 	{
 		mMesh = Assets::LoadMesh(*mesh, *mesh);

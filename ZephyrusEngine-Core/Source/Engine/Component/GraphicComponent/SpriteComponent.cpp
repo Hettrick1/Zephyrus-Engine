@@ -9,6 +9,11 @@ SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
 	: Component(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)
 {
 	mOwner->GetScene().GetRenderer()->AddSprite(this);
+	mTexture = *Assets::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
+	mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
+	mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
+	aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
+	aspectRatioInv = 1 / aspectRatio;
 }
 
 SpriteComponent::~SpriteComponent()

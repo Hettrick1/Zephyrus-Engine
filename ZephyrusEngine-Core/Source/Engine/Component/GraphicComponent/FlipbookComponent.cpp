@@ -7,6 +7,15 @@ FlipbookComponent::FlipbookComponent(Actor* pOwner, int pDrawOrder)
 	: SpriteComponent(pOwner, "FlipbookComponent"), mCurrentFrame(0.0f), mAnimationFps(24.0f)
 	, mHasFinished(true), mCanPlay(true), mCanPlayPending(false), mPlayOnce(false), mIsLooping(false), mAnimationTextures({})
 {
+	Texture* texture = Assets::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
+	mAnimationTextures.push_back(texture);
+	if (mAnimationTextures.size() > 0)
+	{
+		SetTexture(*mAnimationTextures[0]);
+		mCurrentFrame = 0.0f;
+		mPlayOnce = false;
+		mHasFinished = true;
+	}
 }
 
 FlipbookComponent::~FlipbookComponent()
