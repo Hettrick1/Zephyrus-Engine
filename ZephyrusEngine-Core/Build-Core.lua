@@ -20,6 +20,7 @@ project "ZephyrusEngine-Core"
       "../Vendor/freetype-2.6.1/include/freetype",
       "../Vendor/rapidjson-1.1.0/include",
       "../Vendor/TinyObjLoader",
+      "../Vendor/JoltPhysics-5.3.0",
 
       "Source/Engine",
       "Source/Scenes",
@@ -58,6 +59,7 @@ project "ZephyrusEngine-Core"
     "../Vendor/glew-2.2.0-win32/glew-2.2.0/lib/Release/Win32",
     "../Vendor/SDL2_image-2.8.2/lib/x86",
     "../Vendor/freetype-2.6.1/objs/vc2010/Win32",
+    "../Vendor/JoltPhysics-5.3.0/Build/VS2022_CL_32BIT/Release",
    }
 
    links
@@ -69,6 +71,7 @@ project "ZephyrusEngine-Core"
       "SDL2_image",
       "SDL2main",
       "freetype261",
+      "Jolt"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

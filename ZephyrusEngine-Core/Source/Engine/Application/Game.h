@@ -13,6 +13,7 @@
 /**
  * @brief Main class responsible for managing the game loop, window, rendering, input, and scene.
  */
+
 class Game
 {
 private:
