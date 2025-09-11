@@ -45,42 +45,6 @@ Game::Game(const std::string& pTitle, const std::string& pStartupScene)
     {
         mTitle = doc["gameName"].GetString();
     }
-    
-    JPH::Factory::sInstance = new JPH::Factory();
-    JPH::PhysicsSystem physicsSystem;
-
-    physicsSystem.Init(
-        1000,      // maxBodies
-        0,         // numBodyMutexes
-        1000,      // maxBodyPairs
-        1000,      // maxContactConstraints
-        broadPhaseInterface,
-        objectVsBPFilter,
-        layerPairFilter
-    );
-
-    // Création d'une boîte
-    JPH::Ref<JPH::BoxShape> boxShape = new JPH::BoxShape(JPH::Vec3(1, 1, 1));
-    JPH::BodyCreationSettings boxSettings(
-        boxShape,
-        JPH::Vec3(0, 10, 0),
-        JPH::Quat::sIdentity(),
-        JPH::EMotionType::Dynamic,
-        0
-    );
-
-    JPH::Body* box = physicsSystem.GetBodyInterface().CreateBody(boxSettings);
-    physicsSystem.GetBodyInterface().AddBody(box->GetID(), JPH::EActivation::Activate);
-
-    // Simulation simple
-    float dt = 1.0f / 60.0f;
-    for (int i = 0; i < 120; ++i) {
-        physicsSystem.Update(dt, 1, 1);
-        std::cout << "Step " << i << ": Y = " << box->GetPosition().GetY() << std::endl;
-    }
-
-    delete JPH::Factory::sInstance;
-
     Initialize();
 }
 

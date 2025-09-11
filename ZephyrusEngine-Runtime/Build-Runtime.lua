@@ -20,6 +20,7 @@ project "ZephyrusEngine-Runtime"
       "../Vendor/freetype-2.6.1/include/freetype",
       "../Vendor/rapidjson-1.1.0/include",
       "../Vendor/TinyObjLoader",
+      "../Vendor/reactphysics3d-v0.10.2-0/include",
 
 	  -- Include Core
 	  "../ZephyrusEngine-Core/Source",
