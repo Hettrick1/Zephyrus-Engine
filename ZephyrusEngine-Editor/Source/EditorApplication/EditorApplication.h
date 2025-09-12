@@ -59,6 +59,8 @@ public:
 
 	void SetEditorStyle();
 
+	void ResetEditorController();
+
 	// Closes and cleans up the game
 	void Close();
 

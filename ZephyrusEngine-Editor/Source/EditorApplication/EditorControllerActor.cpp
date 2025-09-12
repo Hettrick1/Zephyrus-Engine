@@ -2,13 +2,15 @@
 #include "SceneManager.h"
 #include "CameraComponent.h"
 #include "EditorControllerComponent.h"
+#include "CameraManager.h"
 
 EditorControllerActor::EditorControllerActor(const Vector3D& pPos, const Vector3D& pSize, const Quaternion& pRotation)
 	: Actor(pPos, pSize, pRotation)
 {
 	auto camera = new CameraComponent(this);
 	AddComponent(camera);
-
+	CameraManager::Instance().SetCurrentCamera(camera);
+	
 	auto editorController = new EditorControllerComponent(this);
 	AddComponent(editorController);
 }

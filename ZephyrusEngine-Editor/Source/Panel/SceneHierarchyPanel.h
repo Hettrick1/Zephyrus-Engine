@@ -11,5 +11,6 @@ public:
 	SceneHierarchyPanel(const std::string& pName);
 	~SceneHierarchyPanel();
 	void Draw() override;
+	void ResetSelectedActor();
 	Actor* GetSelectedActor() const;
 };

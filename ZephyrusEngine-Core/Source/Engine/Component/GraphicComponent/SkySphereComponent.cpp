@@ -19,6 +19,7 @@ SkySphereComponent::SkySphereComponent(Actor* pOwner)
 
 SkySphereComponent::~SkySphereComponent()
 {
+	mOwner->GetScene().GetRenderer()->AddSkySphere(nullptr);
 }
 
 void SkySphereComponent::OnEnd()

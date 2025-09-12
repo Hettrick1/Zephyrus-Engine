@@ -55,6 +55,7 @@ void SceneManager::LoadSceneWithFile(const std::string& pFilePath, IRenderer* pR
 	if (renderer != nullptr)
 	{
 		ActiveScene->SetRenderer(renderer);
+		ActiveScene->SetFilePath(pFilePath);
 		SceneFactory::PopulateSceneFromFile(pFilePath);
 		ActiveScene->Start();
 		if (pCallPostStart)

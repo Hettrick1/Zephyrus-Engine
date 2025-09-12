@@ -1,4 +1,5 @@
 {
+    "player" : "Doom/DoomPlayer",
     "actors": [{
             "prefabName": "PlayerStart",
             "name": "PlayerStart",

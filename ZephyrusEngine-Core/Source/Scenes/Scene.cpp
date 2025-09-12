@@ -25,13 +25,13 @@ void Scene::Start()
 
 void Scene::PostStart()
 {
-	std::string fullPath = "../Config/Game.config";
+	std::string fullPath = mFilePath;
 
 	std::ifstream file(fullPath);
 
 	if (!file.is_open())
 	{
-		ZP_CORE_ERROR("Impossible to open the game.config : " + fullPath);
+		ZP_CORE_ERROR("Impossible to open the game map file : " + fullPath);
 	}
 
 	std::stringstream buffer;
@@ -46,9 +46,9 @@ void Scene::PostStart()
 		return;
 	}
 
-	if (doc.HasMember("playerActor") && doc["playerActor"].IsString())
+	if (doc.HasMember("player") && doc["player"].IsString())
 	{
-		mPlayerRef = PrefabFactory::CreateActorFromPrefab(doc["playerActor"].GetString());
+		mPlayerRef = PrefabFactory::CreateActorFromPrefab(doc["player"].GetString());
 		if (mPlayerRef)
 		{
 			if (mPlayerStart)

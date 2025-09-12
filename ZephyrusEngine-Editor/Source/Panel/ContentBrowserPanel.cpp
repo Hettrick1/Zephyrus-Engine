@@ -1,4 +1,18 @@
 #include "ContentBrowserPanel.h"
+#include "Texture.h"
+#include "Assets.h"
+#include "SceneManager.h"
+#include "HudManager.h"
+#ifdef _WIN32
+#include <windows.h>
+#include <shellapi.h>
+#endif
+
+std::filesystem::path ContentBrowserPanel::rootDirectory = "../Content";
+std::filesystem::path ContentBrowserPanel::currentDirectory = rootDirectory;
+
+bool isSelected;
+std::filesystem::path selectedEntry;
 
 ContentBrowserPanel::ContentBrowserPanel(const std::string& pName)
 	: Panel(pName)
@@ -20,7 +34,7 @@ void ContentBrowserPanel::Draw()
     if (ImGui::Begin("Content Browser"))
     {
         static float width = 200.0f;
-        static float height = 210.0f;
+        float height = ImGui::GetContentRegionAvail().y - ImGui::CalcTextSize(currentDirectory.string().c_str()).y;
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
         ImGui::BeginChild("child1", ImVec2(width, height), true);
         DrawDirectory("../Content");
@@ -40,9 +54,11 @@ void ContentBrowserPanel::Draw()
         ImGui::SameLine();
 
         ImGui::BeginChild("child2", ImVec2(0, height), true);
-
+        DrawDirectoryContent(currentDirectory);
         ImGui::EndChild();
         ImGui::PopStyleVar();
+
+        ImGui::Text(currentDirectory.string().c_str());
     }
     ImGui::End();
 	Panel::EndDraw();
@@ -54,11 +70,225 @@ void ContentBrowserPanel::DrawDirectory(const std::string& folderPath)
     {
         if (entry.is_directory())
         {
-            if (ImGui::TreeNode(entry.path().filename().string().c_str()))
+            ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
+
+            bool nodeOpen = ImGui::TreeNodeEx(entry.path().filename().string().c_str(), flags);
+
+            if (ImGui::IsItemClicked() && nodeOpen)
+            {
+                currentDirectory = entry.path();
+            }
+            else if (ImGui::IsItemClicked() && !nodeOpen)
+            {
+                currentDirectory = entry.path().parent_path();
+            }
+            if (nodeOpen)
             {
                 DrawDirectory(entry.path().string());
                 ImGui::TreePop();
             }
         }
     }
+}
+
+void ContentBrowserPanel::DrawDirectoryContent(const std::filesystem::path& directory)
+{
+    int columns = 12;
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
+    ImGui::Columns(columns, 0, false);
+
+    if (currentDirectory != rootDirectory)
+    {
+        isSelected = (selectedEntry == currentDirectory.parent_path());
+        ImageButton(isSelected, "folder", "folder");
+        if (ImGui::IsItemClicked())
+        {
+            selectedEntry = currentDirectory.parent_path();
+        }
+        if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
+        {
+            currentDirectory = currentDirectory.parent_path();
+        }
+        ImGui::TextWrapped("...");
+
+        ImGui::NextColumn();
+    }
+
+    //first directories
+    for (auto& entry : std::filesystem::directory_iterator(directory))
+    {
+        if (entry.is_directory())
+        {
+            DrawEntry(entry);
+        }
+    }
+
+    //then files
+    for (auto& entry : std::filesystem::directory_iterator(directory))
+    {
+        if (!entry.is_directory() && entry.path().extension().string() != ".txt" && entry.path().extension().string() != ".zip")
+        {
+            DrawEntry(entry);
+        }
+    }
+
+    ImGui::Columns(1);
+    ImGui::PopStyleVar();
+}
+
+void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entry)
+{
+    const auto& path = entry.path();
+
+    isSelected = (selectedEntry == path);
+
+    std::string name = path.filename().string();
+
+    ImGui::PushID(name.c_str());
+
+    ImageButton(isSelected, entry.path().string(), entry.path().filename().extension().string());
+
+    if (ImGui::IsItemClicked())
+    {
+        selectedEntry = path;
+    }
+
+    if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
+    {
+        if (entry.is_directory())
+        {
+            currentDirectory = path;
+        }
+        else
+        {
+            if (entry.path().extension().string() != ".zpmap")
+            {
+#ifdef _WIN32
+                ShellExecuteA(nullptr, "open", path.string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+#endif
+            }
+            else
+            {
+                std::filesystem::path fsPath = path.lexically_normal();
+                std::string normalizedPath = fsPath.generic_string();
+                ZP_EDITOR_ERROR(normalizedPath);
+                SceneManager::LoadSceneWithFile(normalizedPath, nullptr, false);
+                SceneManager::mIsSceneLoaded = true;
+                SceneManager::ActiveScene->GetRenderer()->GetHud()->Unload();
+                mHierarchy->ResetSelectedActor();
+                resetfunc();
+            }
+        }
+    }
+
+    float padding = 6.0f;
+    float boxSize = 80.0f;
+    float wrapWidth = boxSize - 2 * padding;
+
+    ImVec2 pos = ImGui::GetCursorScreenPos();
+
+    ImVec2 textSize = ImGui::CalcTextSize(name.c_str(), nullptr, true, wrapWidth * 1.8);
+
+    if (isSelected)
+    {
+        ImU32 bgColor = IM_COL32(70, 70, 70, 255);
+        ImGui::GetWindowDrawList()->AddRectFilled(
+            pos,
+            ImVec2(pos.x + boxSize, pos.y + textSize.y + 2 * padding),
+            bgColor,
+            4.0f
+        );
+    }
+
+    ImGui::TextWrapped(name.c_str());
+
+    ImGui::NextColumn();
+
+    ImGui::PopID();
+}
+
+void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry, const std::string& extension)
+{
+    ImVec2 size(80, 80);
+
+    ImVec2 pos = ImGui::GetCursorScreenPos();
+    ImVec2 end = ImVec2(pos.x + size.x, pos.y + size.y);
+
+    ImGui::InvisibleButton("##entry", size);
+
+    ImU32 bgColor;
+
+    if (ImGui::IsItemActive())
+    {
+        bgColor = IM_COL32(100, 100, 100, 255);
+    }
+    else if (ImGui::IsItemHovered())
+    {
+        bgColor = IM_COL32(140, 140, 140, 255);
+    }
+    else if (pIsSelected)
+    {
+        bgColor = IM_COL32(70, 70, 70, 255);
+    }
+    else
+    {
+        bgColor = IM_COL32(0, 0, 0, 0);
+    }
+
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+    draw_list->AddRectFilled(
+        pos,
+        end,
+        bgColor,
+        8.0f
+    );
+
+    ImTextureID myIcon = GetImageFromExtension(extension, entry);
+
+    draw_list->AddImage(
+        myIcon,
+        pos,
+        end
+    );
+}
+
+ImTextureID ContentBrowserPanel::GetImageFromExtension(const std::string& extension, std::string filepath)
+{
+    Texture* tex;
+    if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+    {
+        tex = Assets::LoadTexture(filepath, filepath);
+    }
+    else if (extension == ".otf" || extension == ".ttf")
+    {
+        tex = Assets::LoadTexture("../Content/Sprites/Icons/font80.png", "../Content/Sprites/Icons/font80.png");
+    }
+    else if (extension == ".zpmap")
+    {
+        tex = Assets::LoadTexture("../Content/Sprites/Icons/scene80.png", "../Content/Sprites/Icons/scene80.png");
+    }
+    else if (extension == ".obj" || extension == ".fbx")
+    {
+        tex = Assets::LoadTexture("../Content/Sprites/Icons/mesh80.png", "../Content/Sprites/Icons/mesh80.png");
+    }
+    else if (extension == ".prefab")
+    {
+        tex = Assets::LoadTexture("../Content/Sprites/Icons/prefab80.png", "../Content/Sprites/Icons/prefab80.png");
+    }
+    else if (extension == ".vert" || extension == ".frag" || extension == ".tesc" || extension == ".tese" || extension == ".geom")
+    {
+        tex = Assets::LoadTexture("../Content/Sprites/Icons/shader80.png", "../Content/Sprites/Icons/shader80.png");
+    }
+    else
+    {
+        tex = Assets::LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png");
+    }
+    ImTextureID myIcon = (ImTextureID)(intptr_t)tex->GetId();
+
+    return myIcon;
+}
+
+void ContentBrowserPanel::SetSceneHierarchy(SceneHierarchyPanel* pHierarchy)
+{
+    mHierarchy = pHierarchy;
 }

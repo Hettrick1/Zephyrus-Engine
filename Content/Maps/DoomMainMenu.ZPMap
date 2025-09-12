@@ -1,4 +1,5 @@
 {
+    "player" : "DoomMenuPlayer",
     "actors": [
         {
             "prefabName": "CameraActor",

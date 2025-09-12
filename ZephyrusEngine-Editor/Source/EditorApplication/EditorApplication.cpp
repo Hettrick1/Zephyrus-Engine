@@ -20,6 +20,7 @@
 #include "Panel/PrefabPanel.h"
 #include "EditorUI/ImGuiUtils.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
+#include "HudManager.h"
 
 EditorApplication::EditorApplication(const std::string& pTitle, const std::string& pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
@@ -136,6 +137,8 @@ void EditorApplication::InitializePanels()
     SceneHierarchyPanel* hierarchyPanelRaw = sceneHierarchyPanel.get();
 
     inspectorPanel->SetSceneHierarchy(hierarchyPanelRaw);
+    contentBrowserPanel->SetSceneHierarchy(hierarchyPanelRaw);
+    contentBrowserPanel->resetfunc = [this]() { this->ResetEditorController(); };
 
     mAllPanels[inspectorPanelName] = std::move(inspectorPanel);
     mAllPanels[prefabPanelName] = std::move(prefabPanel);
@@ -154,7 +157,7 @@ void EditorApplication::Loop()
     SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer, false);
     SceneManager::mIsSceneLoaded = true;
 
-    mRenderer->SetHud(nullptr);
+    mRenderer->GetHud()->Unload();
 
     SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);
 
@@ -353,18 +356,25 @@ void EditorApplication::SetEditorStyle()
     colors[ImGuiCol_ButtonActive] = ImVec4(0.59f, 0.59f, 0.59f, 1.0f);
 }
 
+void EditorApplication::ResetEditorController()
+{
+    delete mEditorController;
+    mEditorController = new EditorControllerActor();
+}
+
 void EditorApplication::Close()
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 
-    mEditorController = nullptr;
+    Zephyrus::Log::Shutdown();
     mAllPanels.clear();
+    mEditorController->Destroy();
+    delete mEditorController;
     SceneManager::Unload();
     mGameWindow->Close();
     EventSystem::ClearAllEvents();
-    Zephyrus::Log::Shutdown();
 }
 
 Panel* EditorApplication::GetPanelWithName(std::string pPanelName)

@@ -62,6 +62,19 @@ void SceneHierarchyPanel::Draw()
 	Panel::EndDraw();
 }
 
+void SceneHierarchyPanel::ResetSelectedActor()
+{
+	auto actors = SceneManager::ActiveScene->GetAllActors();
+	if(actors.size() > 0)
+	{
+		mSelectedActor = actors[0];
+	}
+	else
+	{
+		mSelectedActor = nullptr;
+	}
+}
+
 Actor* SceneHierarchyPanel::GetSelectedActor() const
 {
 	return mSelectedActor;
