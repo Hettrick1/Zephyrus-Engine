@@ -15,6 +15,7 @@ class Scene
 protected:
 	std::string mTitle;
 	std::string mFilePath;
+	std::string mPlayerPrefabName;
 	IRenderer* mRenderer;
 	std::vector<Actor*> mAllActors;
 	std::vector<Actor*> mPendingActors;

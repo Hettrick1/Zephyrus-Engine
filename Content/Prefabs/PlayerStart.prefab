@@ -19,6 +19,15 @@
                 ],
                 "textureIndex" : 1
             }
+        },
+        {
+            "type": "PlayerStartComponent",
+            "componentId": "PlayerStartComponent1",
+            "properties": {
+                "relativePosition": [0, 0, 0],
+                "relativeRotation": [0, 0, 0],
+                "playerPrefab": "Doom/DoomPlayer"
+            }
         }
     ]
 }

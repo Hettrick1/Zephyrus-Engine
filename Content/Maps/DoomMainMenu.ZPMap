@@ -1,7 +1,6 @@
 {
-    "player" : "DoomMenuPlayer",
-    "actors": [
-        {
+    "player": "DoomMenuPlayer",
+    "actors": [{
             "prefabName": "CameraActor",
             "name": "CameraActor",
             "state": "active",
@@ -10,36 +9,45 @@
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
-            "components": [
-                {
+            "components": [{
                     "type": "CameraComponent",
                     "componentId": "CameraComp1",
                     "properties": {
-                        "relativePosition": [0, 0, 0],
-                        "relativeRotation": [0, 0, 0]
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
                     }
-                }
-            ]
-        },
-        {
-            "prefabName": "DoomMenuPlayer",
-            "name": "DoomMenuPlayer",
+                }]
+        }, {
+            "prefabName": "PlayerStart",
+            "name": "PlayerStart",
             "state": "active",
             "transform": {
                 "position": [0.0, 0.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
-            "components": [
-                {
-                    "type": "DoomMenuPC",
-                    "componentId": "DoomMenuPC1",
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
                     "properties": {
-                        "relativePosition": [0, 0, 0],
-                        "relativeRotation": [20, 0, 0]
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/sphere.obj",
+                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/uv_mapper.jpg"],
+                        "textureIndex": 1,
+                        "textureTiling": [1.0, 1.0]
                     }
-                }
-            ]
-        }
-    ]
+                }, {
+                    "type": "PlayerStartComponent",
+                    "componentId": "PlayerStartComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "playerPrefab": "DoomMenuPlayer"
+                    }
+                }]
+        }]
 }

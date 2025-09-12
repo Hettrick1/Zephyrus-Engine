@@ -60,7 +60,7 @@ void Game::Initialize()
     mRenderer = new RendererOpenGl();
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) {
         #ifdef _DEBUG
-            SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer, false);
+            SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer);
         #else
             SceneManager::LoadSplashScreen(new SplashScreen(mStartUpScene), mRenderer);
         #endif

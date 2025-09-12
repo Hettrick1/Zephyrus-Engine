@@ -9,6 +9,7 @@
 #include "PrefabFactory.h"
 #include "Utils/JSONUtils.h"
 #include "ActorState.h"
+#include "PlayerStartComponent.h"
 
 Scene::Scene(std::string pTitle) 
 	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr)
@@ -150,6 +151,15 @@ void Scene::SaveTo(const std::string& pFilePath)
 {
 	auto writer = Serialization::Json::JsonWriter();
 
+	std::string playerPrefab = "CameraActor";
+
+	if (mPlayerStart)
+	{
+		playerPrefab = mPlayerStart->GetComponentOfType<PlayerStartComponent>()->GetPlayerPrefabName();
+	}
+
+	writer.WriteString("player", playerPrefab);
+
 	writer.BeginArray("actors");
 	for (auto& actor : mAllActors)
 	{
@@ -175,6 +185,15 @@ void Scene::SaveScene()
 	if (!mFilePath.empty())
 	{
 		auto writer = Serialization::Json::JsonWriter();
+
+		std::string playerPrefab = "CameraActor";
+
+		if (mPlayerStart)
+		{
+			playerPrefab = mPlayerStart->GetComponentOfType<PlayerStartComponent>()->GetPlayerPrefabName();
+		}
+
+		writer.WriteString("player", playerPrefab);
 
 		writer.BeginArray("actors");
 		for (auto& actor : mAllActors)
