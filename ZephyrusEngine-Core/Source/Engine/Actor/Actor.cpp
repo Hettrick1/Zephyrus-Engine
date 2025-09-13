@@ -105,6 +105,10 @@ void Actor::RotateZ(float pAngle)
 
 void Actor::Update()
 {
+    if (mState != ActorState::Active)
+    {
+        return;
+    }
     mIsUpdatingComponents = true;
     for (Component* component : mComponents)
     {

@@ -83,7 +83,8 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 		{
 			for (auto componentType : ComponentFactory::Instance().GetComponentNames())
 			{
-				if (componentType == "SkySphereComponent" || componentType == "DoomEnemyComponent") // There are some components that cannot be added because they are temporary
+				// There are some components that cannot be added because they are temporary (doom enemy component needs to be in a prefab to work)
+				if (componentType == "SkySphereComponent" || componentType == "DoomEnemyComponent") 
 				{
 					continue;
 				}
@@ -94,7 +95,16 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 					if (!c) {
 						ZP_EDITOR_ERROR("Component " + componentType + " is invalid !");
 					}
-					c->SetId(componentType + std::to_string(pActor->GetComponents().size()));
+
+					int index = 1;
+					std::string newId;
+					do
+					{
+						newId = componentType + std::to_string(index);
+						index++;
+					} while (pActor->HasComponentId(newId));
+
+					c->SetId(newId);
 
 					pActor->AddComponent(c);
 					ZP_CORE_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
@@ -128,7 +138,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
 				if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str())) // delete a specific component
 				{
-					//TODO Event to destroy actors
+					//TODO Event to destroy component
 					pActor->GetComponentWithId(components[i]->GetId())->OnEnd();
 					pActor->RemoveComponent(pActor->GetComponentWithId(components[i]->GetId()));
 					delete components[i];
@@ -167,6 +177,9 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::SameLine();
 
 	static bool isActive = true;
+
+	pActor->GetState() == ActorState::Active ? isActive = true : isActive = false;
+
 	ImGui::Text("Active");
 
 	ImGui::SameLine();

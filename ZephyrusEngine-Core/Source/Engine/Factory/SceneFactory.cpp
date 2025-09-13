@@ -59,20 +59,20 @@ bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
                         if (auto componentProperties = Serialization::Json::ReadObject(*component, "properties"))
                         {
                             auto c = actorPrefab->GetComponentWithId(id);
+                            // if found = component is still there
                             if (c)
                             {
                                 c->Deserialize(*componentProperties);
                                 ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
                             }
+                            // if the id is not found (component has been added)
                             else 
                             {
                                 PrefabFactory::CreateAndAttachComponent(*component, actorPrefab);
                             }
-                            // if the id is not found (component has been added)
-                            // if there is still an id in the prefab but not in the scene (component has been deleted)
-                            // else component is still there
                         }
                     }
+                    // if there is still an id in the prefab but not in the scene (component has been deleted)
                     if (!ids.empty())
                     {
                         for (auto id : ids)

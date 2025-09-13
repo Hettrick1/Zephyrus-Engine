@@ -167,11 +167,10 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
                 ShellExecuteA(nullptr, "open", path.string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 #endif
             }
-            else
+            else // load map
             {
                 std::filesystem::path fsPath = path.lexically_normal();
                 std::string normalizedPath = fsPath.generic_string();
-                ZP_EDITOR_ERROR(normalizedPath);
                 SceneManager::LoadSceneWithFile(normalizedPath, nullptr, false);
                 SceneManager::mIsSceneLoaded = true;
                 SceneManager::ActiveScene->GetRenderer()->GetHud()->Unload();
