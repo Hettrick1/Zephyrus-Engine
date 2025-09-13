@@ -126,9 +126,9 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 				auto windowSize = ImGui::GetContentRegionAvail();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
-				if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str()))
+				if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str())) // delete a specific component
 				{
-					//TODO Event to destroy actors + be sure the component is not set somewhere else
+					//TODO Event to destroy actors
 					pActor->GetComponentWithId(components[i]->GetId())->OnEnd();
 					pActor->RemoveComponent(pActor->GetComponentWithId(components[i]->GetId()));
 					delete components[i];

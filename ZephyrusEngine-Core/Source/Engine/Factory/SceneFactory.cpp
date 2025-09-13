@@ -48,6 +48,7 @@ bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
                 actorPrefab->Deserialize(*actor);
                 if (auto actorComponents = Serialization::Json::ReadArrayObject(*actor, "components"))
                 {
+                    auto ids = actorPrefab->GetComponentsIds();
                     for (auto component : *actorComponents)
                     {
                         std::string id;
@@ -57,7 +58,32 @@ bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
                         }
                         if (auto componentProperties = Serialization::Json::ReadObject(*component, "properties"))
                         {
-                            actorPrefab->GetComponentWithId(id)->Deserialize(*componentProperties);
+                            auto c = actorPrefab->GetComponentWithId(id);
+                            if (c)
+                            {
+                                c->Deserialize(*componentProperties);
+                                ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
+                            }
+                            else 
+                            {
+                                PrefabFactory::CreateAndAttachComponent(*component, actorPrefab);
+                            }
+                            // if the id is not found (component has been added)
+                            // if there is still an id in the prefab but not in the scene (component has been deleted)
+                            // else component is still there
+                        }
+                    }
+                    if (!ids.empty())
+                    {
+                        for (auto id : ids)
+                        {
+                            auto c = actorPrefab->GetComponentWithId(id);
+                            if (c)
+                            {
+                                c->OnEnd();
+                                actorPrefab->RemoveComponent(c);
+                                delete c;
+                            }
                         }
                     }
                 }

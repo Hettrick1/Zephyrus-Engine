@@ -10,17 +10,6 @@
 EditorControllerComponent::EditorControllerComponent(Actor* pOwner, int pUpdateOrder)
 	: Component(pOwner)
 {
-	InputManager& inputManager = InputManager::Instance();
-	inputManager.CreateNewBooleanKeyBinding(this, "up", SDLK_SPACE);
-	inputManager.CreateNewBooleanKeyBinding(this, "down", SDLK_LSHIFT);
-	inputManager.CreateNewBooleanKeyBinding(this, "forward", SDLK_w);
-	inputManager.CreateNewBooleanKeyBinding(this, "left", SDLK_a);
-	inputManager.CreateNewBooleanKeyBinding(this, "backward", SDLK_s);
-	inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
-	inputManager.CreateNewBooleanKeyBinding(this, "delete", SDLK_DELETE);
-	inputManager.CreateNewBooleanBtnBinding(this, "rightClick", SDL_BUTTON_RIGHT);
-	inputManager.CreateNewAxis2DBinding(this, "Mouse");
-	SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
 void EditorControllerComponent::OnActionStarted(InputActions* pAction)
@@ -111,6 +100,22 @@ void EditorControllerComponent::OnActionEnded(InputActions* pAction)
 			SDL_SetRelativeMouseMode(SDL_FALSE);
 		}
 	}
+}
+
+void EditorControllerComponent::OnStart()
+{
+	Component::OnStart();
+	InputManager& inputManager = InputManager::Instance();
+	inputManager.CreateNewBooleanKeyBinding(this, "up", SDLK_SPACE);
+	inputManager.CreateNewBooleanKeyBinding(this, "down", SDLK_LSHIFT);
+	inputManager.CreateNewBooleanKeyBinding(this, "forward", SDLK_w);
+	inputManager.CreateNewBooleanKeyBinding(this, "left", SDLK_a);
+	inputManager.CreateNewBooleanKeyBinding(this, "backward", SDLK_s);
+	inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
+	inputManager.CreateNewBooleanKeyBinding(this, "delete", SDLK_DELETE);
+	inputManager.CreateNewBooleanBtnBinding(this, "rightClick", SDL_BUTTON_RIGHT);
+	inputManager.CreateNewAxis2DBinding(this, "Mouse");
+	SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
 void EditorControllerComponent::Update()

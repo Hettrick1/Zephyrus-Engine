@@ -19,6 +19,8 @@ public:
 	void OnActionTriggered(InputActions* pAction) override;
 	void OnActionEnded(InputActions* pAction) override;
 
+	void OnStart() override;
+
 	void Update() override;
 
 	void SetMovementSpeed(float pSpeed);

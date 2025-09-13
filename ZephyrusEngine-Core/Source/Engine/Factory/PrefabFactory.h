@@ -8,6 +8,6 @@ class PrefabFactory
 public:
 	static EmptyActor* CreateActorFromPrefab(const std::string& pPrefabName);
 	static std::vector<std::string> GetPrefabFiles(const std::string& folderPath);
-private:
 	static Component* CreateAndAttachComponent(const rapidjson::Value& componentJson, EmptyActor* actor);
+private:
 };

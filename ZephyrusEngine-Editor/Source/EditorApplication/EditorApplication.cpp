@@ -163,6 +163,7 @@ void EditorApplication::Loop()
 
     auto editorController = new EditorControllerActor();
     mEditorController = editorController;
+    mEditorController->Start();
 
     while (mIsRunning) {
         Timer::ComputeDeltaTime();
@@ -358,8 +359,7 @@ void EditorApplication::SetEditorStyle()
 
 void EditorApplication::ResetEditorController()
 {
-    delete mEditorController;
-    mEditorController = new EditorControllerActor();
+    mEditorController->Start();
 }
 
 void EditorApplication::Close()

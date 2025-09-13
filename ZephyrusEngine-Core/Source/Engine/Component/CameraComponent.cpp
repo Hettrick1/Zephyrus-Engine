@@ -5,12 +5,13 @@
 #include "Matrix4DRow.h"
 #include "CameraManager.h"
 #include "Scene.h"
+#include "SceneManager.h"
 #include "ComponentFactory.h"
 
 CameraComponent::CameraComponent(Actor* pOwner, int updateOder)
     : Component(pOwner, "CameraComponent", updateOder)
 {
-	CameraManager::Instance().AddCamera(this);
+	
 }
 
 CameraComponent::~CameraComponent()
@@ -25,6 +26,12 @@ void CameraComponent::Deserialize(const rapidjson::Value& pData)
 void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
     Component::Serialize(pWriter);
+}
+
+void CameraComponent::OnStart()
+{
+    Component::OnStart();
+    CameraManager::Instance().AddCamera(this);
 }
 
 void CameraComponent::OnEnd()
@@ -65,6 +72,6 @@ void CameraComponent::UpdateCam()
     Vector3D up = worldTransform.GetZAxis(); 
 
     Matrix4DRow view = Matrix4DRow::CreateLookAt(camPosition, target, up);
-    mOwner->GetScene().GetRenderer()->SetViewMatrix(view);
+    SceneManager::ActiveScene->GetRenderer()->SetViewMatrix(view);
 }
 

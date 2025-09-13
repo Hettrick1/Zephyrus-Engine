@@ -59,7 +59,9 @@ std::vector<std::string> PrefabFactory::GetPrefabFiles(const std::string& folder
         {
             auto path = entry.path();
             if (path.extension() == ".prefab")
+            {
                 prefabs.push_back(path.stem().string());
+            }
         }
     }
     return prefabs;

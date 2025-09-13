@@ -48,6 +48,7 @@ void Actor::AddComponent(Component* pComponent)
     {
         mComponents.emplace_back(pComponent);
     }
+    AddComponentId(pComponent->GetId());
 }
 
 void Actor::RemoveComponent(Component* pComponent)
@@ -64,6 +65,7 @@ void Actor::RemoveComponent(Component* pComponent)
         iter_swap(it, mComponents.end() - 1);
         mComponents.pop_back();
     }
+    RemoveComponentId(pComponent->GetId());
 }
 
 void Actor::SetActive(const ActorState& pState)
@@ -251,6 +253,19 @@ void Actor::AddTag(std::string_view pTag)
 void Actor::RemoveTag(std::string_view  pTag)
 {
     mTags.erase(std::remove(mTags.begin(), mTags.end(), pTag), mTags.end());
+}
+
+void Actor::AddComponentId(std::string_view pId)
+{
+    if (std::find(mComponentsIds.begin(), mComponentsIds.end(), pId) == mComponentsIds.end())
+    {
+        mComponentsIds.emplace_back(pId);
+    }
+}
+
+void Actor::RemoveComponentId(std::string_view pId)
+{
+    mComponentsIds.erase(std::remove(mComponentsIds.begin(), mComponentsIds.end(), pId), mComponentsIds.end());
 }
 
 Component* Actor::GetComponentWithId(const std::string pId)

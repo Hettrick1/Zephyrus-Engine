@@ -9,7 +9,6 @@ EditorControllerActor::EditorControllerActor(const Vector3D& pPos, const Vector3
 {
 	auto camera = new CameraComponent(this);
 	AddComponent(camera);
-	CameraManager::Instance().SetCurrentCamera(camera);
 	
 	auto editorController = new EditorControllerComponent(this);
 	AddComponent(editorController);
@@ -22,6 +21,7 @@ EditorControllerActor::~EditorControllerActor()
 void EditorControllerActor::Start()
 {
 	Actor::Start();
+	CameraManager::Instance().SetCurrentCamera(GetComponentOfType<CameraComponent>());
 }
 
 void EditorControllerActor::Update()

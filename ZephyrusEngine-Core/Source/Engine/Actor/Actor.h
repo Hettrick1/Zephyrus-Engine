@@ -27,6 +27,7 @@ protected:
 	std::string mName = "";
 	std::string mPrefab = "";
 	std::vector<std::string> mTags;
+	std::vector<std::string> mComponentsIds;
 	float mLod = 0;
 	bool mIsSelected = false;
 public:
@@ -61,6 +62,14 @@ public:
 	{
 		return std::find(mTags.begin(), mTags.end(), pTag) != mTags.end();
 	}
+
+	void AddComponentId(std::string_view  pId);
+	void RemoveComponentId(std::string_view pId);
+	inline bool HasComponentId(std::string_view pId) const
+	{
+		return std::find(mComponentsIds.begin(), mComponentsIds.end(), pId) != mComponentsIds.end();
+	}
+	inline std::vector<std::string> GetComponentsIds() const { return mComponentsIds; }
 
 	inline std::vector<Component*> GetComponents() const { return mComponents; }
 	inline ActorState GetState() const { return mState; }
