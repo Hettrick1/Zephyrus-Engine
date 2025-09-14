@@ -30,6 +30,8 @@ void EditorControllerComponent::OnActionTriggered(InputActions* pAction)
 {
 	if (!mCanMove) return;
 
+	SDL_WarpMouseInWindow(SDL_GL_GetCurrentWindow(), 960, 540);
+
 	if (pAction->GetType() == ActionType::Boolean)
 	{
 		auto* triggeredaction = static_cast<BooleanActions*>(pAction);
@@ -85,7 +87,6 @@ void EditorControllerComponent::OnActionTriggered(InputActions* pAction)
 		Quaternion finalRot = Quaternion::Concatenate(qPitch, qYaw);
 
 		mOwner->GetTransformComponent().SetRotation(finalRot);
-		
 	}
 }
 void EditorControllerComponent::OnActionEnded(InputActions* pAction)

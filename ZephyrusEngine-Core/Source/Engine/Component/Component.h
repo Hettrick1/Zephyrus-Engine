@@ -86,6 +86,7 @@ public:
 
 	inline Vector3D GetRelativePosition() const { return mRelativePosition; }
 	inline Vector3D GetRelativeSize() const { return mRelativeSize; }
+	inline Vector3D GetRelativeRotationEuler() const { return mRelativeRotation.ToEuler(); }
 	Actor* GetOwner() const;
 	Vector3D GetWorldPosition() const;
 	inline std::string GetName() const { return mComponentName; }

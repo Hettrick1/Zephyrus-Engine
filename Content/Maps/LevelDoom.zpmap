@@ -451,7 +451,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
-                        "texture": "../Content/../Content\\Sprites\\Doom\\amoPu.png",
+                        "texture": "../Content/Sprites/Doom/amoPu.png",
                         "cullOff": false
                     }
                 }, {

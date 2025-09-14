@@ -12,7 +12,8 @@ enum class PropertyType
     Quaternion, 
     Texture, 
     Font, 
-    Mesh
+    Mesh,
+    VectorTexture
 };
 
 struct PropertyDescriptor {

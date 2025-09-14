@@ -31,6 +31,13 @@ void FlipbookComponent::OnEnd()
 	SpriteComponent::OnEnd();
 }
 
+std::vector<PropertyDescriptor> FlipbookComponent::GetProperties()
+{
+	return {
+		 { "Textures", &mAnimationTextures, PropertyType::VectorTexture }
+	};
+}
+
 void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
 {
 	SpriteComponent::Deserialize(pData);

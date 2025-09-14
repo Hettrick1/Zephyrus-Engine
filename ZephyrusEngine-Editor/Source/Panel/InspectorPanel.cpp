@@ -417,21 +417,24 @@ void InspectorPanel::DrawComponentInfos()
 			ImGui::SameLine(labelWidth);
 			if (ImGui::InputFloat3("##RelativePosition", position, "%.3f"))
 			{
+				//TODO Event to set relative pos
+				auto pos = Vector3D(position[0], position[1], position[2]);
+				mActiveComponent->SetRelativePosition(pos);
 			}
 
-			/*float rotation[3] = {
-				pActor->GetRotationEuler().x, pActor->GetRotationEuler().y, pActor->GetRotationEuler().z
+			float rotation[3] = {
+				mActiveComponent->GetRelativeRotationEuler().x, mActiveComponent->GetRelativeRotationEuler().y, mActiveComponent->GetRelativeRotationEuler().z
 			};
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("Rotation");
 			ImGui::SameLine(labelWidth);
-			if (ImGui::InputFloat3("##Rotation", rotation, "%.3f"))
+			if (ImGui::InputFloat3("##RelativeRotation", rotation, "%.3f"))
 			{
 				auto euler = Vector3D(rotation[0], rotation[1], rotation[2]);
 
-				SetRotationEvent* rotEvent = new SetRotationEvent(pActor, pActor->GetTransformComponent().GetRotation(), Quaternion(euler));
-				EventSystem::DoEvent(rotEvent);
-			}*/
+				//TODO Event to set relative rot
+				mActiveComponent->SetRelativeRotation(Quaternion(euler));
+			}
 
 			static bool keepRatio = true;
 			static Vector3D originalSize;
@@ -470,8 +473,8 @@ void InspectorPanel::DrawComponentInfos()
 					newSize = prevSize * factor;
 				}
 
-				//SetSizeEvent* sizeEvent = new SetSizeEvent(pActor, originalSize, newSize);
-				//EventSystem::DoEvent(sizeEvent);
+				//TODO Event to set relative size
+				mActiveComponent->SetRelativeSize(newSize);
 
 				if (keepRatio)
 				{
@@ -551,6 +554,86 @@ void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
 				}
 			}
 			ImGui::EndDragDropTarget();
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip(buffer);
+		}
+	}
+	if (property.type == PropertyType::VectorTexture)
+	{
+		auto prop = MakeUndoableProperty<std::vector<Texture*>>(property, mActiveComponent);
+		auto* textures = static_cast<std::vector<Texture*>*>(prop.getter());
+		if (!textures)
+		{
+			return;
+		}
+		if (ImGui::TreeNode("Textures"))
+		{
+			for (size_t i = 0; i < textures->size(); i++)
+			{
+				Texture* tex = (*textures)[i];
+				std::string label = "Texture " + std::to_string(i);
+
+				char buffer[128];
+				if (tex)
+				{
+					strncpy(buffer, tex->GetTextureFilePath().c_str(), sizeof(buffer));
+					buffer[sizeof(buffer) - 1] = '\0';
+				}
+				else
+				{
+					buffer[0] = '\0';
+				}
+				ImGui::PushID((int)i);
+				if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+				{
+					Texture* newTex = Assets::LoadTexture(buffer, buffer);
+					if (newTex)
+					{
+						auto newVec = *textures;
+						newVec[i] = newTex;
+						prop.setter(&newVec);
+					}
+				}
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+					{
+						std::string textureID((const char*)payload->Data, payload->DataSize);
+						Texture* droppedTex = Assets::LoadTexture(textureID, textureID);
+						if (droppedTex)
+						{
+							auto newVec = *textures;
+							newVec[i] = droppedTex;
+							prop.setter(&newVec);
+						}
+					}
+					ImGui::EndDragDropTarget();
+				}
+				if (ImGui::IsItemHovered())
+				{
+					ImGui::SetTooltip(buffer);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Remove"))
+				{
+					auto newVec = *textures;
+					newVec.erase(newVec.begin() + i);
+					prop.setter(&newVec);
+
+					ImGui::PopID();
+					break;
+				}
+				ImGui::PopID();
+			}
+			if (ImGui::Button("Add Texture"))
+			{
+				auto newVec = *textures;
+				newVec.push_back(nullptr);
+				prop.setter(&newVec);
+			}
+			ImGui::TreePop();
 		}
 	}
 }
