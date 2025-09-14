@@ -3,6 +3,8 @@
 #include "Scene.h"
 #include "DebugRenderer.h"
 
+int selected = 0;
+
 SceneHierarchyPanel::SceneHierarchyPanel(const std::string& pName)
 	: Panel(pName)
 {
@@ -21,7 +23,6 @@ void SceneHierarchyPanel::Draw()
 
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
-	static int selected = 0;
 
 	auto actors = SceneManager::ActiveScene->GetAllActors();
 
@@ -68,6 +69,7 @@ void SceneHierarchyPanel::ResetSelectedActor()
 	if(actors.size() > 0)
 	{
 		mSelectedActor = actors[0];
+		selected = 0;
 	}
 	else
 	{
