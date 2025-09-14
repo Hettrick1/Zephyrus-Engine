@@ -33,6 +33,10 @@ void FlipbookComponent::OnEnd()
 
 std::vector<PropertyDescriptor> FlipbookComponent::GetProperties()
 {
+	if (!mAnimationTextures.empty())
+	{
+		SetTexture(*mAnimationTextures[0]);
+	}
 	return {
 		 { "Textures", &mAnimationTextures, PropertyType::VectorTexture }
 	};
