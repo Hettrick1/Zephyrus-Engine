@@ -12,7 +12,8 @@ SpawnPrefabEvent::~SpawnPrefabEvent()
 
 void SpawnPrefabEvent::Execute()
 {
-	PrefabFactory::CreateActorFromPrefab(mPrefabToSpawn);
+	auto actor = PrefabFactory::CreateActorFromPrefab(mPrefabToSpawn);
+	actor->Start();
 }
 
 void SpawnPrefabEvent::Undo()

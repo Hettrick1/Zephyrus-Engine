@@ -36,7 +36,10 @@ void CameraManager::RemoveCamera(CameraComponent* pCameraToRemove)
 {
 	std::vector<CameraComponent*>::iterator sc;
 	sc = std::find(mCameras.begin(), mCameras.end(), pCameraToRemove);
-	mCameras.erase(sc);
+	if (sc != mCameras.end())
+	{
+		mCameras.erase(sc);
+	}
 }
 
 void CameraManager::UpdateCurrentCamera()

@@ -30,6 +30,11 @@ void Component::OnEnd()
     mOwner = nullptr;
 }
 
+std::vector<PropertyDescriptor> Component::GetProperties()
+{
+    return std::vector<PropertyDescriptor>();
+}
+
 void Component::Deserialize(const rapidjson::Value& pData)
 {
     if (auto pos = Serialization::Json::ReadVector3D(pData, "relativePosition"))

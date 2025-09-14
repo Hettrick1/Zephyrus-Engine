@@ -7,6 +7,8 @@
 #include "Assets.h"
 #include "ComponentFactory.h"
 #include "Log.h"
+#include "Component.h"
+#include "../EditorUI/Property.h"
 
 InspectorPanel::InspectorPanel(const std::string& pName)
 	: Panel(pName)
@@ -52,6 +54,7 @@ void InspectorPanel::Draw()
 		DrawSplitterButton(h);
 
 		ImGui::BeginChild("child3", ImVec2(0, 0), true);
+		DrawComponentInfos();
 		ImGui::EndChild();
 		ImGui::PopStyleVar();	
 	}
@@ -107,7 +110,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 					c->SetId(newId);
 
 					pActor->AddComponent(c);
-					ZP_CORE_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
+					ZP_EDITOR_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
 				}
 			}
 			ImGui::EndPopup();
@@ -131,6 +134,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 				{
 					selected = i;
 				}
+				mActiveComponent = components[selected];
 				ImGui::PopID();
 				ImGui::SameLine();
 				auto windowSize = ImGui::GetContentRegionAvail();
@@ -332,6 +336,222 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 		ImGui::SetTooltip("Uniform Scale");
 		ImGui::PopStyleVar(2);
 		ImGui::PopStyleColor();
+	}
+}
+
+void InspectorPanel::DrawComponentInfos()
+{
+	if (mActiveComponent)
+	{
+		char buffer[64];
+		strncpy(buffer, mActiveComponent->GetName().c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 4.0f));
+		ImGui::SetNextItemWidth(150.0f);
+
+		if (ImGui::InputText("##Name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+		{
+			/*RenameActorEvent* event = new RenameActorEvent(mActiveComponent, std::string(buffer));
+			EventSystem::DoEvent(event);*/
+		}
+
+		ImGui::SameLine();
+
+		ImGui::Text("Tags");
+
+		ImGui::SameLine();
+
+		if (ImGui::ArrowButton("##TagArrow", ImGuiDir_Down))
+		{
+			ImGui::OpenPopup("TagsMenu");
+		}
+
+		ImVec2 btnPos = ImGui::GetItemRectMin();
+		ImVec2 btnSize = ImGui::GetItemRectSize();
+
+		ImGui::SetNextWindowPos(ImVec2(ImGui::GetWindowPos().x + 15, btnPos.y + btnSize.y + 15), ImGuiCond_Always);
+
+		if (ImGui::BeginPopup("TagsMenu", ImGuiWindowFlags_NoMove))
+		{
+			for (size_t i = 0; i < mActiveComponent->GetTag().size(); ++i)
+			{
+				ImGui::Text(mActiveComponent->GetTag()[i].c_str());
+				ImGui::SameLine();
+				auto windowSize = ImGui::GetContentRegionAvail();
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
+				if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str()))
+				{
+					mActiveComponent->RemoveTag(mActiveComponent->GetTag()[i]);
+				}
+				ImGui::PopStyleColor();
+			}
+
+			static char newTag[32] = "";
+			if (ImGui::InputText("##NewTag", newTag, sizeof(newTag), ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Add Tag"))
+			{
+				if (strlen(newTag) > 0)
+				{
+					mActiveComponent->AddTag(std::string(newTag));
+					newTag[0] = '\0';
+				}
+			}
+
+			ImGui::EndPopup();
+		}
+
+		ImGui::Separator();
+
+		if (ImGui::CollapsingHeader("Relative Transform", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+
+			float labelWidth = 70.0f;
+
+			float position[3] = {
+				mActiveComponent->GetRelativePosition().x, mActiveComponent->GetRelativePosition().y, mActiveComponent->GetRelativePosition().z
+			};
+
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Position");
+			ImGui::SameLine(labelWidth);
+			if (ImGui::InputFloat3("##RelativePosition", position, "%.3f"))
+			{
+			}
+
+			/*float rotation[3] = {
+				pActor->GetRotationEuler().x, pActor->GetRotationEuler().y, pActor->GetRotationEuler().z
+			};
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Rotation");
+			ImGui::SameLine(labelWidth);
+			if (ImGui::InputFloat3("##Rotation", rotation, "%.3f"))
+			{
+				auto euler = Vector3D(rotation[0], rotation[1], rotation[2]);
+
+				SetRotationEvent* rotEvent = new SetRotationEvent(pActor, pActor->GetTransformComponent().GetRotation(), Quaternion(euler));
+				EventSystem::DoEvent(rotEvent);
+			}*/
+
+			static bool keepRatio = true;
+			static Vector3D originalSize;
+
+			float size[3] = {
+				mActiveComponent->GetRelativeSize().x, mActiveComponent->GetRelativeSize().y, mActiveComponent->GetRelativeSize().z
+			};
+
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Size");
+			ImGui::SameLine(labelWidth);
+			if (ImGui::InputFloat3("##RelativeSize", size, "%.3f"))
+			{
+				Vector3D prevSize = mActiveComponent->GetRelativeSize();
+				Vector3D newSize(size[0], size[1], size[2]);
+
+				if (keepRatio)
+				{
+					Vector3D delta = newSize - prevSize;
+					int editedAxis = 0;
+
+					if (fabs(delta.y) > fabs(delta.x) && fabs(delta.y) > fabs(delta.z))
+					{
+						editedAxis = 1;
+					}
+					else if (fabs(delta.z) > fabs(delta.x) && fabs(delta.z) > fabs(delta.y))
+					{
+						editedAxis = 2;
+					}
+
+					float prevVal = (editedAxis == 0 ? prevSize.x : editedAxis == 1 ? prevSize.y : prevSize.z);
+					float newVal = (editedAxis == 0 ? newSize.x : editedAxis == 1 ? newSize.y : newSize.z);
+
+					float factor = (prevVal != 0.0f) ? newVal / prevVal : 1.0f;
+
+					newSize = prevSize * factor;
+				}
+
+				//SetSizeEvent* sizeEvent = new SetSizeEvent(pActor, originalSize, newSize);
+				//EventSystem::DoEvent(sizeEvent);
+
+				if (keepRatio)
+				{
+					originalSize = newSize;
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Checkbox("##RelativeKeepRatio", &keepRatio))
+			{
+				if (keepRatio)
+				{
+					originalSize = mActiveComponent->GetRelativeSize();
+				}
+			}
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+				ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+				ImGui::SetTooltip("Uniform Scale");
+				ImGui::PopStyleVar(2);
+				ImGui::PopStyleColor();
+			}
+		}
+
+		ImGui::Separator();
+
+		auto properties = mActiveComponent->GetProperties();
+		if (!properties.empty() && ImGui::CollapsingHeader("Properties", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			for (auto property : properties)
+			{
+				DrawProperty(property);
+			}
+		}
+	}
+	ImGui::PopStyleVar();
+}
+
+void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
+{
+	if (property.type == PropertyType::Texture)
+	{
+		auto prop = MakeUndoableProperty<Texture>(property, mActiveComponent);
+		Texture* tex = static_cast<Texture*>(prop.getter());
+		if (!tex)
+		{
+			return;
+		}
+		char buffer[255];
+		strncpy(buffer, tex->GetTextureFilePath().c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		ImGui::Text("Texture : ");
+
+		if (ImGui::InputText(("##Texture" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+		{
+			Texture* newTex = Assets::LoadTexture(buffer, buffer);
+			if (newTex)
+			{
+				prop.setter(newTex);
+			}
+			else
+			{
+				ZP_EDITOR_ERROR("Failed to load Texture " + std::string(buffer));
+			}
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+			{
+				std::string textureID((const char*)payload->Data, payload->DataSize);
+				Texture* droppedTex = Assets::LoadTexture(textureID, textureID);
+				if (droppedTex)
+				{
+					prop.setter(droppedTex);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
 	}
 }
 

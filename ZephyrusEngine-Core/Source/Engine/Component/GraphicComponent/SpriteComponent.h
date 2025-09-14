@@ -25,6 +25,8 @@ public:
 	virtual void Update() override;
 	virtual void OnEnd() override;
 
+	virtual std::vector<PropertyDescriptor> GetProperties() override;
+
 	void Deserialize(const rapidjson::Value& pData) override;
 	void Serialize(Serialization::Json::JsonWriter& pWriter) override;
 

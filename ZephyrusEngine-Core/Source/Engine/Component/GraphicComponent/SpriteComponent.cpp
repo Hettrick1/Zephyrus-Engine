@@ -32,6 +32,13 @@ void SpriteComponent::OnEnd()
 	Component::OnEnd();
 }
 
+std::vector<PropertyDescriptor> SpriteComponent::GetProperties()
+{
+	return {
+		 { "Texture", &mTexture, PropertyType::Texture }
+	};
+}
+
 void SpriteComponent::Deserialize(const rapidjson::Value& pData)
 {
 	Component::Deserialize(pData);

@@ -11,7 +11,6 @@
 CameraComponent::CameraComponent(Actor* pOwner, int updateOder)
     : Component(pOwner, "CameraComponent", updateOder)
 {
-	
 }
 
 CameraComponent::~CameraComponent()

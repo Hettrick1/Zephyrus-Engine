@@ -7,6 +7,7 @@
 #include <vector>
 #include <string_view>
 #include "JSONUtils.h"
+#include "PropertyDescriptor.h"
 
 class Actor;
 /**
@@ -38,6 +39,8 @@ public:
 	virtual void OnStart();
 	virtual void Update();
 	virtual void OnEnd();
+
+	virtual std::vector<PropertyDescriptor> GetProperties();
 
 	virtual void Deserialize(const rapidjson::Value& pData);
 	virtual void BeginSerialize(Serialization::Json::JsonWriter& pWriter);
@@ -85,6 +88,6 @@ public:
 	inline Vector3D GetRelativeSize() const { return mRelativeSize; }
 	Actor* GetOwner() const;
 	Vector3D GetWorldPosition() const;
-
 	inline std::string GetName() const { return mComponentName; }
+	inline std::vector<std::string> GetTag() const { return mComponentTags; }
 };

@@ -7,14 +7,17 @@ FlipbookComponent::FlipbookComponent(Actor* pOwner, int pDrawOrder)
 	: SpriteComponent(pOwner, "FlipbookComponent"), mCurrentFrame(0.0f), mAnimationFps(24.0f)
 	, mHasFinished(true), mCanPlay(true), mCanPlayPending(false), mPlayOnce(false), mIsLooping(false), mAnimationTextures({})
 {
-	Texture* texture = Assets::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
-	mAnimationTextures.push_back(texture);
+	Texture* fallbackTexture = Assets::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
 	if (mAnimationTextures.size() > 0)
 	{
 		SetTexture(*mAnimationTextures[0]);
 		mCurrentFrame = 0.0f;
 		mPlayOnce = false;
 		mHasFinished = true;
+	}
+	else
+	{
+		SetTexture(*fallbackTexture);
 	}
 }
 
@@ -43,7 +46,7 @@ void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
 				if (element.IsString())
 				{
 					Texture* texture = Assets::LoadTexture(element.GetString(), element.GetString());
-					mAnimationTextures.push_back(texture);
+					AddAnimationTexture(texture);
 				}
 			}
 			if (mAnimationTextures.size() > 0)
@@ -84,6 +87,14 @@ void FlipbookComponent::SetAnimationTextures(const std::vector<Texture*>& pTextu
 		mCurrentFrame = 0.0f;
 		mPlayOnce = false;
 		mHasFinished = true;
+	}
+}
+
+void FlipbookComponent::AddAnimationTexture(Texture* pTexture)
+{
+	if (std::find(mAnimationTextures.begin(), mAnimationTextures.end(), pTexture) == mAnimationTextures.end())
+	{
+		mAnimationTextures.push_back(pTexture);
 	}
 }
 

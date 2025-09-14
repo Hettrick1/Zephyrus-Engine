@@ -213,7 +213,12 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
     ImVec2 pos = ImGui::GetCursorScreenPos();
     ImVec2 end = ImVec2(pos.x + size.x, pos.y + size.y);
 
-    ImGui::InvisibleButton("##entry", size);
+    ImGui::InvisibleButton(("##" + entry).c_str(), size);
+    if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+        ImGui::SetDragDropPayload("TEXTURE", entry.c_str(), entry.size() + 1);
+        ImGui::Text("Dragging %s", entry.c_str());
+        ImGui::EndDragDropSource();
+    }
 
     ImU32 bgColor;
 

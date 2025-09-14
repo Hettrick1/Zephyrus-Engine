@@ -30,6 +30,7 @@ public:
 
 	// Sets the textures used for the animation
 	void SetAnimationTextures(const std::vector<Texture*>& pTextures);
+	void AddAnimationTexture(Texture* pTexture);
 	// Sets the animation frame rate (frames per second)
 	void SetAnimationFps(float pFps);
 	// Starts playing the animation from the beginning
