@@ -20,4 +20,6 @@ struct PropertyDescriptor {
     std::string name;
     void* field;
     PropertyType type;
+
+    bool isPointer = false;
 };

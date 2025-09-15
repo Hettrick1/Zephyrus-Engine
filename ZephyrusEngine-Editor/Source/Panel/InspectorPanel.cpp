@@ -358,7 +358,7 @@ void InspectorPanel::DrawComponentInfos()
 
 		ImGui::SameLine();
 
-		ImGui::Text("Tags");
+		ImGui::Text("Component Tags");
 
 		ImGui::SameLine();
 
@@ -516,9 +516,20 @@ void InspectorPanel::DrawComponentInfos()
 
 void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
 {
+	ImGui::AlignTextToFramePadding();
+	float labelWidth = 150;
+	float inputWidth = ImGui::GetContentRegionAvail().x - labelWidth;
 	if (property.type == PropertyType::Texture)
 	{
-		auto prop = MakeUndoableProperty<Texture>(property, mActiveComponent);
+		Property prop;
+		if (property.isPointer)
+		{
+			prop = MakeUndoableProperty<Texture*>(property, mActiveComponent);
+		}
+		else
+		{
+			prop = MakeUndoableProperty<Texture>(property, mActiveComponent);
+		}
 		Texture* tex = static_cast<Texture*>(prop.getter());
 		if (!tex)
 		{
@@ -530,6 +541,9 @@ void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
 
 		ImGui::Text("Texture : ");
 
+		ImGui::SameLine(labelWidth);
+
+		ImGui::SetNextItemWidth(inputWidth);
 		if (ImGui::InputText(("##Texture" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 		{
 			Texture* newTex = Assets::LoadTexture(buffer, buffer);
@@ -627,7 +641,7 @@ void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
 				}
 				ImGui::PopID();
 			}
-			if (ImGui::Button("Add Texture"))
+			if (ImGui::Button("+ Add Texture"))
 			{
 				auto newVec = *textures;
 				newVec.push_back(nullptr);
@@ -636,6 +650,92 @@ void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
 			ImGui::TreePop();
 		}
 	}
+	if (property.type == PropertyType::Bool)
+	{
+		auto prop = MakeUndoableProperty<bool>(property, mActiveComponent);
+		bool bVar = *static_cast<bool*>(prop.getter());
+		ImGui::Text(prop.name.c_str());
+		ImGui::SameLine(labelWidth);
+		std::string label = "##" + prop.name;
+		if (ImGui::Checkbox(label.c_str(), &bVar))
+		{
+			prop.setter(&bVar);
+		}
+	}
+	if (property.type == PropertyType::Float)
+	{
+		auto prop = MakeUndoableProperty<float>(property, mActiveComponent);
+		float fVar = *static_cast<float*>(prop.getter());
+		ImGui::Text(prop.name.c_str());
+		ImGui::SameLine(labelWidth);
+		ImGui::SetNextItemWidth(inputWidth);
+		std::string label = "##" + prop.name;
+		if (ImGui::InputFloat(label.c_str(), &fVar))
+		{
+			prop.setter(&fVar);
+		}
+	}
+	if (property.type == PropertyType::Int)
+	{
+		auto prop = MakeUndoableProperty<int>(property, mActiveComponent);
+		int iVar = *static_cast<int*>(prop.getter());
+		ImGui::Text(prop.name.c_str());
+		ImGui::SameLine(labelWidth);
+		ImGui::SetNextItemWidth(inputWidth);
+		std::string label = "##" + prop.name;
+		if (ImGui::InputInt(label.c_str(), &iVar))
+		{
+			prop.setter(&iVar);
+		}
+	}
+	if (property.type == PropertyType::Mesh)
+	{
+		auto prop = MakeUndoableProperty<Mesh*>(property, mActiveComponent);
+		Mesh* mesh = static_cast<Mesh*>(prop.getter());
+		if (!mesh)
+		{
+			return;
+		}
+		char buffer[255];
+		strncpy(buffer, mesh->GetMeshFilePath().c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		ImGui::Text("Mesh : ");
+
+		ImGui::SameLine(labelWidth);
+
+		ImGui::SetNextItemWidth(inputWidth);
+		if (ImGui::InputText(("##Mesh" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+		{
+			Mesh* newMesh = Assets::LoadMesh(buffer, buffer);
+			if (newMesh)
+			{
+				prop.setter(newMesh);
+			}
+			else
+			{
+				ZP_EDITOR_ERROR("Failed to load Mesh " + std::string(buffer));
+			}
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MESH"))
+			{
+				std::string meshID((const char*)payload->Data, payload->DataSize);
+				Mesh* droppedMesh = Assets::LoadMesh(meshID, meshID);
+				if (droppedMesh)
+				{
+					prop.setter(droppedMesh);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip(buffer);
+		}
+	}
+	ImGui::Separator();
 }
 
 void InspectorPanel::DrawSplitterButton(float& h)

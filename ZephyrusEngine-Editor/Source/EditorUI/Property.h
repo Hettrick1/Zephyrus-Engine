@@ -18,30 +18,42 @@ struct Property {
 
 template<typename T>
 Property MakeUndoableProperty(const PropertyDescriptor& desc, Component* owner) {
-    T* field = static_cast<T*>(desc.field);
+    if constexpr (std::is_pointer_v<T>) 
+    {
+        // For T = Mesh*, Texture*, ...
+        T** field = static_cast<T**>(desc.field);
 
-    return {
-        desc.name,
-        desc.type,
-        [field, owner](void* val) 
-        {
-            T oldVal;
-            T newVal;
-
-            if constexpr (std::is_pointer_v<T>)
+        return {
+            desc.name,
+            desc.type,
+            [field, owner](void* val)
             {
-                oldVal = field;
-                newVal = static_cast<T>(val);
-            }
-            else
-            {
-                oldVal = *field;
-                newVal = *static_cast<T*>(val);
-            }
+                T* oldVal = *field;
+                T* newVal = static_cast<T*>(val);
 
-            auto* evt = new SetGenericPropertyEvent<T>(owner, field, oldVal, newVal);
-            EventSystem::DoEvent(evt);
-        },
-        [field]() -> void* { return field; }
-    };
+                auto* evt = new SetGenericPropertyEvent<T*>(owner, field, oldVal, newVal);
+                EventSystem::DoEvent(evt);
+            },
+            [field]() -> void* { return *field; }
+        };
+    }
+    else 
+    {
+        // For float, bool, ...
+        T* field = static_cast<T*>(desc.field);
+
+        return {
+            desc.name,
+            desc.type,
+            [field, owner](void* val)
+            {
+                T oldVal = *field;
+                T newVal = *static_cast<T*>(val);
+
+                auto* evt = new SetGenericPropertyEvent<T>(owner, field, oldVal, newVal);
+                EventSystem::DoEvent(evt);
+            },
+            [field]() -> void* { return field; }
+        };
+    }
 }

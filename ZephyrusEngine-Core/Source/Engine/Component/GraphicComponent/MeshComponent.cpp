@@ -21,6 +21,8 @@ MeshComponent::MeshComponent(Actor* pOwner)
 	mOutlineShaderProgram = *Assets::LoadShaderProgram({ &mOutlineVertexShader, &mOutlineFragmentShader }, "OutlineSP");
 
 	mMesh = Assets::LoadMesh("cube.obj", "cube.obj");
+	auto texture = Assets::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
+	AddTexture(texture);
 	SetTextureIndex(0);
 }
 
@@ -40,6 +42,7 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 		}
 		if (auto textures = Serialization::Json::ReadArrayString(pData, "textures"))
 		{
+			mTextures.clear();
 			const auto& arr = *textures;
 
 			if (!arr.empty())
@@ -47,7 +50,7 @@ void MeshComponent::Deserialize(const rapidjson::Value& pData)
 				for (auto& element : arr)
 				{
 					Texture* texture = Assets::LoadTexture(element, element);
-					mMesh->AddTexture(texture);
+					AddTexture(texture);
 				}
 			}
 		}
@@ -78,7 +81,7 @@ void MeshComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 	Component::BeginSerialize(pWriter);
 	pWriter.WriteString("mesh", mMesh->GetMeshFilePath());
 	pWriter.BeginArray("textures");
-	for (auto& texture : mMesh->GetAllTextures())
+	for (auto& texture : GetAllTextures())
 	{
 		pWriter.PushString(texture->GetTextureFilePath());
 	}
@@ -98,6 +101,16 @@ void MeshComponent::OnEnd()
 	Component::OnEnd();
 }
 
+std::vector<PropertyDescriptor> MeshComponent::GetProperties()
+{
+	return
+	{
+		{ "Mesh : ", &mMesh, PropertyType::Mesh },
+		{ "Textures : ", &mTextures, PropertyType::VectorTexture },
+		{ "TextureIndex", &mTextureIndex, PropertyType::Int },
+	};
+}
+
 void MeshComponent::Draw(const Matrix4DRow& pViewProj)
 {
 	if (!mMesh)
@@ -110,7 +123,11 @@ void MeshComponent::Draw(const Matrix4DRow& pViewProj)
 	mShaderProgram.setMatrix4Row("uViewProj", pViewProj);
 	mShaderProgram.setMatrix4Row("uWorldTransform", wt);
 	mShaderProgram.setVector2f("uTiling", mTiling);
-	Texture* tex = mMesh->GetTexture(mTextureIndex);
+	if (GetTextureArraySize() < mTextureIndex)
+	{
+		mTextureIndex = 0;
+	}
+	Texture* tex = GetTexture(mTextureIndex);
 	if (tex)
 	{
 		tex->SetActive();
@@ -138,7 +155,7 @@ void MeshComponent::SetMesh(Mesh& pMesh)
 
 void MeshComponent::SetTextureIndex(unsigned int pTextureIndex)
 {
-	if (mTextureIndex < mMesh->GetTextureArraySize())
+	if (pTextureIndex < GetTextureArraySize())
 	{
 		mTextureIndex = pTextureIndex;
 	}
@@ -147,6 +164,28 @@ void MeshComponent::SetTextureIndex(unsigned int pTextureIndex)
 		mTextureIndex = 0;
 	}
 }
+
+void MeshComponent::AddTexture(Texture* pTexture)
+{
+	if (std::find(mTextures.begin(), mTextures.end(), pTexture) == mTextures.end())
+	{
+		mTextures.push_back(pTexture);
+	}
+}
+
+Texture* MeshComponent::GetTexture(unsigned int pTextureIndex)
+{
+	if (pTextureIndex < GetTextureArraySize())
+	{
+		return mTextures[pTextureIndex];
+	}
+	else
+	{
+		mTextureIndex = 0;
+		return mTextures[mTextureIndex];
+	}
+}
+
 
 void MeshComponent::SetShaderProgram(const ShaderProgram& pShaderProgram)
 {

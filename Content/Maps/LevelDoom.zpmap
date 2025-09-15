@@ -645,7 +645,8 @@
                         "tags": ["enemyFB"],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
-                        "animFps": 4.0
+                        "animFps": 4.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -656,7 +657,8 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
-                        "animFps": 40.0
+                        "animFps": 40.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "BoxAABBComponent",
@@ -696,7 +698,8 @@
                         "tags": ["enemyFB"],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
-                        "animFps": 4.0
+                        "animFps": 4.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -707,7 +710,8 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
-                        "animFps": 40.0
+                        "animFps": 40.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "BoxAABBComponent",
@@ -747,7 +751,8 @@
                         "tags": ["enemyFB"],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
-                        "animFps": 4.0
+                        "animFps": 4.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -758,7 +763,8 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
-                        "animFps": 40.0
+                        "animFps": 40.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "BoxAABBComponent",
@@ -798,7 +804,8 @@
                         "tags": ["enemyFB"],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
-                        "animFps": 4.0
+                        "animFps": 4.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -809,7 +816,8 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
-                        "animFps": 40.0
+                        "animFps": 40.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "BoxAABBComponent",
@@ -849,7 +857,8 @@
                         "tags": ["enemyFB"],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
-                        "animFps": 4.0
+                        "animFps": 4.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -860,7 +869,8 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
-                        "animFps": 40.0
+                        "animFps": 40.0,
+                        "isLooping": false
                     }
                 }, {
                     "type": "BoxAABBComponent",

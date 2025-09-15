@@ -88,11 +88,6 @@ DoomEnemyComponent::DoomEnemyComponent(Actor* pOwner, int updateOder)
 				mSplashBlood = flipbooks[0];
 			}
 		}
-		//mEnemyFb->SetAnimationTextures(EnemyShootAnim);
-		mEnemyFb->SetAnimationFps(4);
-
-		//mSplashBlood->SetAnimationTextures(EnemyDamagesAnim);
-		mSplashBlood->SetAnimationFps(40);
 	}
 }
 

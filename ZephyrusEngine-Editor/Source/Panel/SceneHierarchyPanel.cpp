@@ -45,19 +45,22 @@ void SceneHierarchyPanel::Draw()
 		}
 		ImGui::PopID();
 	}
-	if (ImGui::IsKeyPressed(ImGuiKey_Delete))
+	if (ImGui::IsWindowFocused())
 	{
-		mSelectedActor->Destroy();
-		SceneManager::ActiveScene->RemoveActor(mSelectedActor);
-		delete mSelectedActor;
-		actors = SceneManager::ActiveScene->GetAllActors();
-		if (selected >= actors.size())
+		if (ImGui::IsKeyPressed(ImGuiKey_Delete))
 		{
-			selected = actors.size() - 1;
+			mSelectedActor->Destroy();
+			SceneManager::ActiveScene->RemoveActor(mSelectedActor);
+			delete mSelectedActor;
+			actors = SceneManager::ActiveScene->GetAllActors();
+			if (selected >= actors.size())
+			{
+				selected = actors.size() - 1;
+			}
+			mSelectedActor = actors[selected];
+			mSelectedActor->SetSelected(true);
+			mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(mSelectedActor);
 		}
-		mSelectedActor = actors[selected];
-		mSelectedActor->SetSelected(true);
-		mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(mSelectedActor);
 	}
 	ImGui::End();
 	Panel::EndDraw();

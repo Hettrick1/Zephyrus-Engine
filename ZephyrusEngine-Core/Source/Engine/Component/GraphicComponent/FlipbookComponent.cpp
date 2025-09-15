@@ -38,7 +38,9 @@ std::vector<PropertyDescriptor> FlipbookComponent::GetProperties()
 		SetTexture(*mAnimationTextures[0]);
 	}
 	return {
-		 { "Textures", &mAnimationTextures, PropertyType::VectorTexture }
+		{ "Textures", &mAnimationTextures, PropertyType::VectorTexture },
+		{ "Is Looping : ", &mIsLooping, PropertyType::Bool},
+		{ "Animation FPS : ", &mAnimationFps, PropertyType::Float}
 	};
 }
 
@@ -73,6 +75,10 @@ void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
 	{
 		SetAnimationFps(pData["animFps"].GetFloat());
 	}
+	if (auto looping = Serialization::Json::ReadBool(pData, "isLooping"))
+	{
+		mIsLooping = *looping;
+	}
 }
 
 void FlipbookComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
@@ -86,6 +92,7 @@ void FlipbookComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 	}
 	pWriter.EndArray();
 	pWriter.WriteFloat("animFps", mAnimationFps);
+	pWriter.WriteBool("isLooping", mIsLooping);
 	Component::EndSerialize(pWriter);
 }
 

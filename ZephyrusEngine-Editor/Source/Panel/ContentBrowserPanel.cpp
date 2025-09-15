@@ -225,6 +225,14 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
             ImGui::EndDragDropSource();
         }
     }
+    else if (extension == ".obj" || extension == ".fbx")
+    {
+        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+            ImGui::SetDragDropPayload("MESH", cleanPath.c_str(), cleanPath.size() + 1);
+            ImGui::Text(cleanPath.c_str());
+            ImGui::EndDragDropSource();
+        }
+    }
 
     ImU32 bgColor;
 

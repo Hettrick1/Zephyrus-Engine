@@ -13,9 +13,8 @@ Mesh::Mesh()
 Mesh::Mesh(std::vector<Vertex> pVertices, const std::string pFilePath)
 	: mVertices(std::move(pVertices)), mVao(nullptr), mFilePath(pFilePath)
 {
-	auto texture = Assets::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
+
 	mVao = new VertexArray(ToVerticeArray(), mVertices.size());
-	mTextures.push_back(texture);
 }
 
 Mesh::~Mesh()
@@ -29,20 +28,6 @@ void Mesh::Unload()
 		delete mVao;
 	}
 	mVao = nullptr;
-}
-
-void Mesh::AddTexture(Texture* pTexture)
-{
-	auto it = std::find(mTextures.begin(), mTextures.end(), pTexture);
-	if (it == mTextures.end())
-	{
-		mTextures.push_back(pTexture);
-	}
-}
-
-Texture* Mesh::GetTexture(unsigned int pTextureIndex)
-{
-	return mTextures[pTextureIndex];
 }
 
 float* Mesh::ToVerticeArray()
