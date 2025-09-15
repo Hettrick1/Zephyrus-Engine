@@ -265,7 +265,7 @@ void DoomPlayerComponent::TakeDamages(int pQuantity)
 		mHealth -= pQuantity;
 		if (mHealth <= 0)
 		{
-			SceneManager::LoadSceneWithFile("../Content/Maps/DoomMainMenu.zpmap", nullptr, false);
+			SceneManager::LoadSceneWithFile("../Content/Maps/DoomMainMenu.zpmap", nullptr, true);
 			return;
 		}
 	}
