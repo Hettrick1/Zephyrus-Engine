@@ -10,11 +10,15 @@ bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubeP
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureId);
 
+	mTempFacePaths = pCubePaths;
 	mCubeFacePaths = pCubePaths;
 
 	for (unsigned int i = 0; i < pCubePaths.size(); i++) // retrieve the skybox textures
 	{
-		SDL_Surface* surface = IMG_Load((Assets::IMPORT_PATH + mCubeFacePaths[i]).c_str());
+
+		std::string path = Assets::GetFullPath(mCubeFacePaths[i], AssetType::Texture);
+
+		SDL_Surface* surface = IMG_Load(path.c_str());
 		if (!surface)
 		{
 			ZP_CORE_ERROR("Failed to load texture file :" + mCubeFacePaths[i]);

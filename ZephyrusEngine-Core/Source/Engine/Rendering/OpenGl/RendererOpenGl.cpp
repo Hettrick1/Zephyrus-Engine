@@ -229,7 +229,14 @@ void RendererOpenGl::DrawSkySphere()
 		Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView); 
 		mSkySphereComponent->GetShaderProgram().setMatrix4Row("uViewProj", skyView * mProj); 
 		mSkySphereComponent->GetVao()->SetActive();
-		glBindTexture(mSkySphereComponent->GetTextureType(), mSkySphereComponent->GetTextureIndex());
+		if (mSkySphereComponent->GetIsSphere())
+		{
+			mSkySphereComponent->GetSphereTexture()->SetActive();
+		}
+		else
+		{
+			mSkySphereComponent->GetCubeMap().SetActive();
+		}
 		GLenum drawMode = mSkySphereComponent->GetTextureType() == GL_TEXTURE_2D ? GL_TRIANGLES : GL_PATCHES;
 		glDrawArrays(drawMode, 0, mSkySphereComponent->GetVao()->GetVerticeCount());
 		glDepthMask(GL_TRUE);

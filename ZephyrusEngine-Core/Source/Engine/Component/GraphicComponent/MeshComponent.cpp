@@ -107,7 +107,8 @@ std::vector<PropertyDescriptor> MeshComponent::GetProperties()
 	{
 		{ "Mesh : ", &mMesh, PropertyType::Mesh },
 		{ "Textures : ", &mTextures, PropertyType::VectorTexture },
-		{ "TextureIndex", &mTextureIndex, PropertyType::Int },
+		{ "Texture Index : ", &mTextureIndex, PropertyType::Int },
+		{ "Texture Tiling : ", &mTiling, PropertyType::Vec2 },
 	};
 }
 

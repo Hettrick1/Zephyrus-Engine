@@ -216,7 +216,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
     std::filesystem::path p(entry);
     std::string cleanPath = p.lexically_normal().generic_string();
 
-    ImGui::InvisibleButton(("##" + cleanPath).c_str(), size);
+    ImGui::InvisibleButton(("##" + cleanPath).c_str(), size); // TODO clean the dropsource data function -> it's messy af
     if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
     {
         if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
@@ -229,6 +229,14 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
     {
         if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
             ImGui::SetDragDropPayload("MESH", cleanPath.c_str(), cleanPath.size() + 1);
+            ImGui::Text(cleanPath.c_str());
+            ImGui::EndDragDropSource();
+        }
+    }
+    else if (extension == ".prefab")
+    {
+        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+            ImGui::SetDragDropPayload("PREFAB", cleanPath.c_str(), cleanPath.size() + 1);
             ImGui::Text(cleanPath.c_str());
             ImGui::EndDragDropSource();
         }

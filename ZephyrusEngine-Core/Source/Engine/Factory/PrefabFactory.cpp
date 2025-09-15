@@ -10,8 +10,17 @@
 
 EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
 {
-    std::string fullPath = "../Content/Prefabs/" + pPrefabName + ".prefab";
+    std::string fullPath;
     
+    if (pPrefabName.find("../Content/Prefabs/") == std::string::npos)
+    {
+        fullPath = "../Content/Prefabs/" + pPrefabName + ".prefab";
+    }
+    else
+    {
+        fullPath = pPrefabName;
+    }
+
     std::ifstream file(fullPath);
 
     if (!file.is_open())

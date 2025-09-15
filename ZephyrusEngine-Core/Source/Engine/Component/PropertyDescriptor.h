@@ -13,7 +13,9 @@ enum class PropertyType
     Texture, 
     Font, 
     Mesh,
-    VectorTexture
+    VectorTexture,
+    Prefab,
+    CubeMap
 };
 
 struct PropertyDescriptor {

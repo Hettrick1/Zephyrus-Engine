@@ -133,7 +133,6 @@ void Assets::Clear()
 		iter.second.Unload();
 	}
 	mShaderPrograms.clear();
-
 }
 
 Texture Assets::LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath)

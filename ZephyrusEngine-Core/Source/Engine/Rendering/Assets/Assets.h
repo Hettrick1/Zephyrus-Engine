@@ -35,8 +35,6 @@ private:
 	static Font LoadFontFromFile(const std::string& pFilePath);
 	static Shader LoadShaderFromFile(const std::string& pFilePath, ShaderType pType);
 
-	static std::string GetFullPath(const std::string& pPath, AssetType pType);
-
 public:
 	static std::map<std::string, Texture> mTextures;
 	static std::map<std::string, Mesh*> mMeshes;
@@ -65,6 +63,8 @@ public:
 	static Shader& GetShader(const std::string& pName);
 
 	static ShaderProgram* LoadShaderProgram(std::vector<Shader*> pShaders, const std::string& pName);
+
+	static std::string GetFullPath(const std::string& pPath, AssetType pType);
 
 	// Clears all loaded assets
 	static void Clear();

@@ -27,6 +27,25 @@ void SkySphereComponent::OnEnd()
 	// TODO Remove sky sphere if it's the one used
 }
 
+std::vector<PropertyDescriptor> SkySphereComponent::GetProperties()
+{
+	std::vector<PropertyDescriptor> prop;
+	if (mIsSphere)
+	{
+		prop = {
+			{"Texture : ", &mSphereTexture, PropertyType::Texture, true}
+		};
+	}
+	else
+	{
+		prop = {
+			{"Textures : ", &mCubeMap, PropertyType::CubeMap}
+		};
+	}
+
+	return prop;
+}
+
 void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 {
 	Component::Deserialize(pData);
@@ -43,8 +62,9 @@ void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
 			const auto& arr = pData["textures"].GetArray();
 			if (!arr.Empty() && arr[0].IsString())
 			{
-				tex = Assets::LoadTexture(arr[0].GetString(), "skysphere");
+				tex = Assets::LoadTexture(arr[0].GetString(), arr[0].GetString());
 				mTexturesPaths.push_back(arr[0].GetString());
+				mSphereTexture = tex;
 				mTextureIndex = tex->GetId();
 				mMesh = Assets::LoadMesh("sphere.obj", "sphere");
 				mVao = mMesh->GetVao();

@@ -28,3 +28,10 @@ void PlayerStartComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 void PlayerStartComponent::OnEnd()
 {
 }
+
+std::vector<PropertyDescriptor> PlayerStartComponent::GetProperties()
+{
+	return {
+		{ "Player Prefab : ", &mPlayerPrefabName, PropertyType::Prefab }
+	};
+}

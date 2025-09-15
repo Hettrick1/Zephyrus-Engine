@@ -22,6 +22,8 @@ public:
 
 	void OnEnd() override;
 
+	std::vector<PropertyDescriptor> GetProperties() override;
+
 	static Component* Create(Actor* pOwner) { return new PlayerStartComponent(pOwner); }
 
 	inline void SetPlayerPrefabName(const std::string& pPlayerPrefab) { mPlayerPrefabName = pPlayerPrefab; }
