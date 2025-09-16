@@ -238,6 +238,36 @@ void Actor::Serialize(Serialization::Json::JsonWriter& pWriter)
     pWriter.EndObject();
 }
 
+void Actor::SerializePrefab(const std::string& pFilePath)
+{
+    auto writer = Serialization::Json::JsonWriter();
+
+    writer.WriteString("name", mName);
+    writer.WriteString("state", ActorStateToString(mState));
+    if (!mTags.empty())
+    {
+        writer.BeginArray("actorTags");
+        for (auto tag : mTags)
+        {
+            writer.PushString(tag);
+        }
+        writer.EndArray();
+    }
+    writer.BeginObject("transform");
+    writer.WriteVector3D("position", GetPosition());
+    writer.WriteVector3D("rotation", GetRotationEuler());
+    writer.WriteVector3D("size", GetSize());
+    writer.EndObject();
+
+    writer.BeginArray("components");
+    for (auto& comp : mComponents)
+    {
+        comp->Serialize(writer);
+    }
+    writer.EndArray();
+    writer.SaveDocument(pFilePath);
+}
+
 void Actor::SetName(const std::string& pName)
 {
     mName = pName;

@@ -36,6 +36,13 @@ void SceneHierarchyPanel::Draw()
 		{
 			selected = i;
 		}
+
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+			ImGui::SetDragDropPayload("ACTOR", actors[i]->GetUUID().c_str(), actors[i]->GetUUID().size());
+			ImGui::Text(actors[i]->GetName().c_str());
+			ImGui::EndDragDropSource();
+		}
+
 		mSelectedActor = actors[selected];
 		mSelectedActor->SetSelected(true);
 		mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(mSelectedActor);

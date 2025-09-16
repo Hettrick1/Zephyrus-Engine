@@ -18,6 +18,7 @@ protected:
 	std::string mFilePath;
 	std::string mPlayerPrefabName;
 	IRenderer* mRenderer;
+	std::unordered_map<std::string, Actor*> mActors;
 	std::vector<Actor*> mAllActors;
 	std::vector<Actor*> mPendingActors;
 	bool mIsUpdatingActor;
@@ -44,6 +45,10 @@ public:
 	virtual void AddActor(Actor* pActor); // Adds an actor to the scene
 	virtual void UpdateAllActors(); // Updates all actors in the scene
 	virtual void RemoveActor(Actor* pActor); // Removes an actor from the scene
+	virtual void RemoveActorWithID(const std::string& pId);
+
+	Actor* GetActorWithID(const std::string& pID);
+
 
 	inline Actor* GetPlayerRef() const { return mPlayerRef; }
 

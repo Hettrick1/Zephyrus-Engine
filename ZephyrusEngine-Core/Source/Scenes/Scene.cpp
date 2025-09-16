@@ -76,6 +76,7 @@ void Scene::PostStart()
 		mPlayerRef->SetSize(Vector3D(1));
 	}
 	mPlayerRef->Start();
+	AddActor(mPlayerRef);
 }
 
 void Scene::Update()
@@ -122,6 +123,7 @@ void Scene::Unload()
 		delete mPendingActors.back();
 		mAllActors.pop_back();
 	}
+	mActors.clear();
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
 	PhysicManager::Instance().Unload();
@@ -141,6 +143,7 @@ void Scene::Close()
 		delete mPendingActors.back();
 		mAllActors.pop_back();
 	}
+	mActors.clear();
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
 	PhysicManager::Instance().Unload();
@@ -161,9 +164,9 @@ void Scene::SaveTo(const std::string& pFilePath)
 	writer.WriteString("player", playerPrefab);
 
 	writer.BeginArray("actors");
-	for (auto& actor : mAllActors)
+	for (auto& actor : mActors)
 	{
-		actor->Serialize(writer);
+		actor.second->Serialize(writer);
 	}
 	writer.EndArray();
 
@@ -196,9 +199,9 @@ void Scene::SaveScene()
 		writer.WriteString("player", playerPrefab);
 
 		writer.BeginArray("actors");
-		for (auto& actor : mAllActors)
+		for (auto& actor : mActors)
 		{
-			actor->Serialize(writer);
+			actor.second->Serialize(writer);
 		}
 		writer.EndArray();
 
@@ -216,6 +219,10 @@ void Scene::AddActor(Actor* pActor)
 	else
 	{
 		mAllActors.emplace_back(pActor);
+		if (mActors.find(pActor->GetUUID()) == mActors.end() && pActor->GetUUID() != "")
+		{
+			mActors[pActor->GetUUID()] = pActor;
+		}
 	}
 }
 
@@ -226,7 +233,7 @@ void Scene::UpdateAllActors()
 		return;
 	}
 	mIsUpdatingActor = true;
-	for (Actor* actor : mAllActors) 
+	for (auto& actor : mAllActors)
 	{
 		if (!SceneManager::mIsSceneLoaded)
 		{
@@ -241,10 +248,10 @@ void Scene::UpdateAllActors()
 		{
 			return;
 		}
-		mAllActors.emplace_back(actor);
+		AddActor(actor);
 	}
 	mPendingActors.clear();
-	for (Actor* actor : mAllActors) 
+	for (auto& actor : mAllActors)
 	{
 		if (actor->GetState() == ActorState::Dead)
 		{
@@ -253,13 +260,13 @@ void Scene::UpdateAllActors()
 				return;
 			}
 			RemoveActor(actor);
-			delete actor;
 		}
 	}
 }
 
 void Scene::RemoveActor(Actor* pActor)
 {
+	RemoveActorWithID(pActor->GetUUID());
 	std::vector<Actor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), pActor); 
 	if (it != mPendingActors.end())
 	{
@@ -272,5 +279,23 @@ void Scene::RemoveActor(Actor* pActor)
 		iter_swap(it, mAllActors.end() - 1);
 		mAllActors.pop_back(); 
 	}
+}
 
+void Scene::RemoveActorWithID(const std::string& pId)
+{
+	auto it = mActors.find(pId);
+	if (it != mActors.end())
+	{
+		mActors.erase(it);
+	}
+}
+
+Actor* Scene::GetActorWithID(const std::string& pID)
+{
+	auto it = mActors.find(pID);
+	if (it != mActors.end())
+	{
+		return it->second;
+	}
+	return nullptr;
 }

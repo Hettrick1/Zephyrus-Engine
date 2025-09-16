@@ -102,7 +102,7 @@ void ContentBrowserPanel::Draw()
             DeleteFileOrDirectory();
         }
 
-        CreatePrefabFile();
+        CreatePrefabFile(currentDirectory.string());
 
         ImGui::Text(currentDirectory.string().c_str());
     }
@@ -395,13 +395,30 @@ void ContentBrowserPanel::DeleteFileOrDirectory()
     selectedEntry.clear();
 }
 
-void ContentBrowserPanel::CreatePrefabFile()
+void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)
 {
     if (ImGui::BeginDragDropTarget())
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ACTOR"))
         {
-            std::string meshID((const char*)payload->Data, payload->DataSize);
+            std::string actorID((const char*)payload->Data, payload->DataSize);
+
+            auto actor = SceneManager::ActiveScene->GetActorWithID(actorID);    
+
+            if (!actor)
+            {
+                return;
+            }
+            std::filesystem::path newPrefabPath = currentDirectory / (actor->GetName() + ".prefab");
+
+            int counter = 1;
+            while (std::filesystem::exists(newPrefabPath))
+            {
+                newPrefabPath = currentDirectory / (actor->GetName() + std::to_string(counter) + ".prefab");
+                counter++;
+            }
+
+            actor->SerializePrefab(newPrefabPath.string());
 
             //TODO create prefab -> we need an uuid for actors
         }

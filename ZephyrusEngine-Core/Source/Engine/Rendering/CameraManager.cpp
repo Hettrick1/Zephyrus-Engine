@@ -1,6 +1,8 @@
 #include "CameraManager.h"
 #include "CameraComponent.h"
 #include "Log.h"
+#include "PrefabFactory.h"
+#include "SceneManager.h"
 
 CameraManager& CameraManager::Instance()
 {
@@ -44,7 +46,16 @@ void CameraManager::RemoveCamera(CameraComponent* pCameraToRemove)
 
 void CameraManager::UpdateCurrentCamera()
 {
-	mActiveCamera->UpdateCam();
+	if (mActiveCamera)
+	{
+		mActiveCamera->UpdateCam();
+	}
+	else
+	{
+		auto cameraActor = PrefabFactory::CreateActorFromPrefab("CameraActor");
+		AddCamera(cameraActor->GetComponentOfType<CameraComponent>());
+		SceneManager::ActiveScene->AddActor(cameraActor);
+	}
 }
 
 void CameraManager::SetCurrentCamera(int pIndex)

@@ -92,6 +92,7 @@ bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
                 {
                     SceneManager::ActiveScene->SetPlayerStart(actorPrefab);
                 }
+                SceneManager::ActiveScene->AddActor(actorPrefab);
             }
         }
     }

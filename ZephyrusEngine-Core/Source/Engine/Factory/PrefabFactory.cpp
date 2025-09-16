@@ -12,7 +12,8 @@ EmptyActor* PrefabFactory::CreateActorFromPrefab(const std::string& pPrefabName)
 {
     std::string fullPath;
     
-    if (pPrefabName.find("../Content/Prefabs/") == std::string::npos)
+    // TODO -> only work with full path, no longer spawn prefab with name
+    if (pPrefabName.find(".prefab") == std::string::npos)
     {
         fullPath = "../Content/Prefabs/" + pPrefabName + ".prefab";
     }

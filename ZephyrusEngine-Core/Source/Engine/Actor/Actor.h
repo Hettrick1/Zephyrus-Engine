@@ -42,6 +42,7 @@ public:
 
 	virtual void Deserialize(const rapidjson::Value& pData);
 	virtual void Serialize(Serialization::Json::JsonWriter& pWriter);
+	virtual void SerializePrefab(const std::string& pFilePath);
 
 	void AttachScene(const Scene& pScene);
 	void AddComponent(Component* pComponent);

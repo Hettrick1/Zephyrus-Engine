@@ -1,0 +1,45 @@
+{
+    "name": "TestPrefab",
+    "state": "active",
+    "actorTags": ["test"],
+    "transform": {
+        "position": [0.0, 0.0, 0.0],
+        "rotation": [0.0, 0.0, 0.0],
+        "size": [1.0, 1.0, 1.0]
+    },
+    "components": [{
+            "type": "MeshComponent",
+            "componentId": "MeshComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "mesh": "../Content/Meshes/cube.obj",
+                "textures": ["../Content/Sprites/planks.png"],
+                "textureIndex": 0,
+                "textureTiling": [1.0, 1.0]
+            }
+        }, {
+            "type": "MeshComponent",
+            "componentId": "MeshComponent2",
+            "properties": {
+                "relativePosition": [1.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "mesh": "../Content/Meshes/monkey.obj",
+                "textures": ["../Content/Sprites/collider.png"],
+                "textureIndex": 0,
+                "textureTiling": [1.0, 1.0]
+            }
+        }, {
+            "type": "SpriteComponent",
+            "componentId": "SpriteComponent1",
+            "properties": {
+                "relativePosition": [0.0, 1.1, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [89.999, 0.0, 0.0],
+                "texture": "../Content/Sprites/LakeSkyTexture.png",
+                "cullOff": false
+            }
+        }]
+}

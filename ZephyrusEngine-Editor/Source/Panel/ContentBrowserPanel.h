@@ -22,6 +22,6 @@ public:
 	ImTextureID GetImageFromExtension(const std::string& extension, std::string filepath = "");
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
 	void DeleteFileOrDirectory();
-	void CreatePrefabFile();
+	void CreatePrefabFile(const std::string& pFilepath);
 	ResetEditorController resetfunc;
 };
