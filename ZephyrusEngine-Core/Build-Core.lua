@@ -21,6 +21,7 @@ project "ZephyrusEngine-Core"
       "../Vendor/rapidjson-1.1.0/include",
       "../Vendor/TinyObjLoader",
       "../Vendor/reactphysics3d-v0.10.2-0/include",
+      "../Vendor/stduuid-1.2.3/include",
 
       "Source/Engine",
       "Source/Scenes",

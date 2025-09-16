@@ -8,6 +8,8 @@ project "ZephyrusEngine-Editor"
    files { 
     "Source/**.h", 
     "Source/**.cpp", 
+    "Source/**.rc",
+    
     -- ImGui core
     "../Vendor/imgui-1.92.2b/imgui.cpp",
     "../Vendor/imgui-1.92.2b/imgui_draw.cpp",

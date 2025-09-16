@@ -26,6 +26,7 @@ protected:
 	bool mIsUpdatingComponents = false;
 	std::string mName = "";
 	std::string mPrefab = "";
+	std::string mUUID = "";
 	std::vector<std::string> mTags;
 	std::vector<std::string> mComponentsIds;
 	float mLod = 0;
@@ -54,6 +55,7 @@ public:
 	void RotateZ(float pAngle);
 
 	void SetName(const std::string& pName);
+	void SetUUID(const std::string& pUUID);
 	void SetPrefab(const std::string& pPrefab);
 	void SetRigidBody(RigidbodyComponent* pRigidbody);
 	void AddTag(std::string_view  pTag);
@@ -78,6 +80,7 @@ public:
 	inline RigidbodyComponent* GetRigidBody() const { return mRigidbody; }
 	inline std::vector<std::string> GetTag() const { return mTags; }
 	inline float GetLod() const { return mLod; }
+	inline std::string GetUUID() const { return mUUID; }
 	inline std::string GetName() const { return mName; }
 	inline std::string GetPrefabName() const { return mPrefab; }
 	inline Vector3D GetPosition() const { return mTransformComponent.GetPosition(); }

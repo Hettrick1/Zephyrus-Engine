@@ -2,6 +2,7 @@
     "player": "Doom/DoomPlayer",
     "actors": [{
             "prefabName": "PlayerStart",
+            "uuid": "70ac9f85-ffc2-45bf-8571-e258fa4851bc",
             "name": "PlayerStart",
             "state": "active",
             "transform": {
@@ -33,6 +34,7 @@
                 }]
         }, {
             "prefabName": "SkyBoxActor",
+            "uuid": "b7348bda-725f-4d41-a31a-44b0b498787f",
             "name": "SkyBoxActor",
             "state": "active",
             "transform": {
@@ -53,6 +55,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "3293af66-d208-4bb8-81a3-e9810c97dee7",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -85,6 +88,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "73e64283-50ff-417c-9e6b-6016c42b3ef4",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -117,6 +121,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "211519b4-77a0-4c9d-a7d3-7355f5b3fac2",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -149,6 +154,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "9f1b9fcd-26c6-4c6f-99e6-127c4e4bb1f1",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -181,6 +187,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "be81f76f-e5a2-476c-8725-434d48e86434",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -213,6 +220,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "365e4dce-71f0-417e-b182-8890eee9a52b",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -245,6 +253,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "73683965-6bd7-4f1a-8f9e-81cadd86146d",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -277,6 +286,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "524f7a5d-a168-4bca-a9b6-29855beaadb8",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -309,6 +319,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "61210360-21ed-495b-bcde-335b851dcd42",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -341,6 +352,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "61c4dd9a-410b-4f17-b966-cc46f333a5cc",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -373,6 +385,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "b8bf94c6-15d1-4a2f-a58c-0dfa6c62d63f",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -405,6 +418,7 @@
                 }]
         }, {
             "prefabName": "CubeActor",
+            "uuid": "12209356-d167-4837-ac3d-38d1cca1705e",
             "name": "CubeActor",
             "state": "active",
             "actorTags": ["Wall"],
@@ -437,6 +451,7 @@
                 }]
         }, {
             "prefabName": "Doom/AmoPickUp",
+            "uuid": "8738b392-b8d2-4851-a724-c602e8abbb7b",
             "name": "AmoPickUpActor",
             "state": "active",
             "transform": {
@@ -475,6 +490,7 @@
                 }]
         }, {
             "prefabName": "Doom/HealthPickUp",
+            "uuid": "6169956c-c70d-4d47-bea5-3cd428b0b1f2",
             "name": "HealthPickUpActor",
             "state": "active",
             "transform": {
@@ -513,6 +529,7 @@
                 }]
         }, {
             "prefabName": "Doom/HealthPickUp",
+            "uuid": "f9f66636-d1a1-460f-b419-1072e7394636",
             "name": "HealthPickUpActor",
             "state": "active",
             "transform": {
@@ -551,6 +568,7 @@
                 }]
         }, {
             "prefabName": "Doom/ShieldPickUp",
+            "uuid": "1dc4eb89-6594-411f-a90e-9c674274aee0",
             "name": "ShieldPickUpActor",
             "state": "active",
             "transform": {
@@ -589,6 +607,7 @@
                 }]
         }, {
             "prefabName": "Doom/ShieldPickUp",
+            "uuid": "46a0c3ff-f960-4b07-b194-9b7bd1ab4810",
             "name": "ShieldPickUpActor",
             "state": "active",
             "transform": {
@@ -627,6 +646,7 @@
                 }]
         }, {
             "prefabName": "Doom/DoomEnemy",
+            "uuid": "b2d17704-31e0-41cd-b528-c4d3665c10be",
             "name": "DoomEnemyActor",
             "state": "active",
             "actorTags": ["Enemy"],
@@ -680,6 +700,7 @@
                 }]
         }, {
             "prefabName": "Doom/DoomEnemy",
+            "uuid": "0bca37fb-6770-4080-8937-076e44e2be60",
             "name": "DoomEnemyActor",
             "state": "active",
             "actorTags": ["Enemy"],
@@ -733,6 +754,7 @@
                 }]
         }, {
             "prefabName": "Doom/DoomEnemy",
+            "uuid": "f99a376f-871b-4370-8d50-34a266d6140a",
             "name": "DoomEnemyActor",
             "state": "active",
             "actorTags": ["Enemy"],
@@ -786,6 +808,7 @@
                 }]
         }, {
             "prefabName": "Doom/DoomEnemy",
+            "uuid": "95c5d689-acf3-4331-832d-e0ffa4cb4285",
             "name": "DoomEnemyActor",
             "state": "active",
             "actorTags": ["Enemy"],
@@ -839,6 +862,7 @@
                 }]
         }, {
             "prefabName": "Doom/DoomEnemy",
+            "uuid": "3aba7f02-952e-4e94-8791-cdea6f3461ce",
             "name": "DoomEnemyActor",
             "state": "active",
             "actorTags": ["Enemy"],

@@ -2,6 +2,7 @@
     "player": "../Content/Prefabs/DoomMenuPlayer.prefab",
     "actors": [{
             "prefabName": "CameraActor",
+            "uuid": "279b8040-36d8-4642-8a6c-d6656ab51400",
             "name": "CameraActor",
             "state": "active",
             "transform": {
@@ -20,6 +21,7 @@
                 }]
         }, {
             "prefabName": "PlayerStart",
+            "uuid": "bc6b7acf-e785-4c53-939d-2d9c34c6705c",
             "name": "PlayerStart",
             "state": "active",
             "transform": {

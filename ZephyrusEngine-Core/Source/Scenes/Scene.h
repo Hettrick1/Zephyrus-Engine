@@ -1,6 +1,7 @@
 #pragma once
 #include "IRenderer.h"
 #include <vector>
+#include <unordered_map>
 #include "Assets.h"
 
 class Actor;

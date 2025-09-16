@@ -4,6 +4,10 @@
 #include "SceneManager.h"
 #include <algorithm>
 
+#define UUID_SYSTEM_GENERATOR
+#include "uuid.h"
+
+
 Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation, std::string pName) :
     mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
 {
@@ -152,6 +156,15 @@ void Actor::Destroy()
 
 void Actor::Deserialize(const rapidjson::Value& pData)
 {
+    if (auto uuid = Serialization::Json::ReadString(pData, "uuid"))
+    {
+        SetUUID(*uuid);
+    }
+    else
+    {
+        std::string id = uuids::to_string(uuids::uuid_system_generator{}());
+        SetUUID(id);
+    }
     if (auto name = Serialization::Json::ReadString(pData, "name"))
     {
         SetName(*name);
@@ -198,6 +211,7 @@ void Actor::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
     pWriter.BeginObject();
     pWriter.WriteString("prefabName", mPrefab);
+    pWriter.WriteString("uuid", mUUID);
     pWriter.WriteString("name", mName);
     pWriter.WriteString("state", ActorStateToString(mState));
     if (!mTags.empty())
@@ -227,6 +241,11 @@ void Actor::Serialize(Serialization::Json::JsonWriter& pWriter)
 void Actor::SetName(const std::string& pName)
 {
     mName = pName;
+}
+
+void Actor::SetUUID(const std::string& pUUID)
+{
+    mUUID = pUUID;
 }
 
 void Actor::SetPrefab(const std::string& pPrefab)

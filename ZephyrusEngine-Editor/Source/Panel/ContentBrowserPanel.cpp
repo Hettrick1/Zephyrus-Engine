@@ -102,6 +102,8 @@ void ContentBrowserPanel::Draw()
             DeleteFileOrDirectory();
         }
 
+        CreatePrefabFile();
+
         ImGui::Text(currentDirectory.string().c_str());
     }
     ImGui::End();
@@ -391,4 +393,18 @@ void ContentBrowserPanel::DeleteFileOrDirectory()
         std::filesystem::remove(selectedEntry);
     }
     selectedEntry.clear();
+}
+
+void ContentBrowserPanel::CreatePrefabFile()
+{
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ACTOR"))
+        {
+            std::string meshID((const char*)payload->Data, payload->DataSize);
+
+            //TODO create prefab -> we need an uuid for actors
+        }
+        ImGui::EndDragDropTarget();
+    }
 }
