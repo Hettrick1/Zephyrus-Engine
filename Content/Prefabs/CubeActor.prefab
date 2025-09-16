@@ -15,10 +15,7 @@
                 "relativeRotation" : [0, 0, 0],
                 "mesh" : "cube.obj",
                 "textures" : [
-                    "Sprites/Doom/268.png",
-                    "Sprites/Doom/091.png",
-                    "Sprites/Doom/268bis.png",
-                    "Sprites/uv_mapper.jpg"
+                    "../Content/Sprites/planks.png"
                 ],
                 "textureIndex" : 1
             }

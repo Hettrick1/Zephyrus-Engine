@@ -152,6 +152,8 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 				pActor->GetComponentWithId(components[i]->GetId())->OnEnd();
 				pActor->RemoveComponent(pActor->GetComponentWithId(components[i]->GetId()));
 				delete components[i];
+				selected = pActor->GetComponents().size() - 1;
+				mActiveComponent = components[selected];
 				ImGui::PopStyleColor();
 				break;
 			}

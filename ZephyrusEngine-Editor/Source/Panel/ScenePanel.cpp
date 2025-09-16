@@ -1,4 +1,6 @@
 #include "ScenePanel.h"
+#include "../EditorApplication/EventSystem/EventSystem.h"
+#include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
 
 ScenePanel::ScenePanel(const std::string& pName, GLuint pSceneRenderTexture)
 	: Panel(pName), mSceneRenderTexture(pSceneRenderTexture)
@@ -30,6 +32,17 @@ void ScenePanel::Draw()
 	);
 
 	mIsHover = ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows);
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB"))
+		{
+			std::string prefabSource((const char*)payload->Data, payload->DataSize);
+			SpawnPrefabEvent* event = new SpawnPrefabEvent(prefabSource);
+			EventSystem::DoEvent(event);
+		}
+		ImGui::EndDragDropTarget();
+	}
 
 	ImGui::End();
 	Panel::EndDraw();
