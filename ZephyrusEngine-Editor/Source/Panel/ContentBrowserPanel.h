@@ -21,5 +21,6 @@ public:
 	void ImageButton(bool pIsSelected, const std::string& entry, const std::string& extension);
 	ImTextureID GetImageFromExtension(const std::string& extension, std::string filepath = "");
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
+	void DeleteFileOrDirectory();
 	ResetEditorController resetfunc;
 };

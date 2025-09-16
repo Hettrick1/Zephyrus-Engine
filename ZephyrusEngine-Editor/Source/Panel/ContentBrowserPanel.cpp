@@ -15,7 +15,7 @@ bool isSelected;
 std::filesystem::path selectedEntry;
 
 ContentBrowserPanel::ContentBrowserPanel(const std::string& pName)
-	: Panel(pName)
+    : Panel(pName)
 {
 }
 
@@ -25,12 +25,12 @@ ContentBrowserPanel::~ContentBrowserPanel()
 
 void ContentBrowserPanel::Draw()
 {
-	if (!mDrawPanel)
-	{
-		return;
-	}
+    if (!mDrawPanel)
+    {
+        return;
+    }
 
-	Panel::BeginDraw();
+    Panel::BeginDraw();
     if (ImGui::Begin("Content Browser"))
     {
         static float width = 200.0f;
@@ -58,10 +58,54 @@ void ContentBrowserPanel::Draw()
         ImGui::EndChild();
         ImGui::PopStyleVar();
 
+        if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows))
+        {
+            ImGui::OpenPopup("CreationPopUP");
+        }
+
+        if (ImGui::BeginPopup("CreationPopUP"))
+        {
+            if (ImGui::BeginMenu("Add"))
+            {
+                if (ImGui::MenuItem("New Map"))
+                {
+                    std::filesystem::path newMapPath = currentDirectory / "NewMap.zpmap";
+
+                    int counter = 1;
+                    while (std::filesystem::exists(newMapPath))
+                    {
+                        newMapPath = currentDirectory / ("NewMap" + std::to_string(counter) + ".zpmap");
+                        counter++;
+                    }
+
+                    std::ofstream file(newMapPath);
+                    if (file.is_open())
+                    {
+                        file << "{}";
+                        file.close();
+                    }
+                }
+                ImGui::EndMenu();
+            }
+            if (!selectedEntry.empty())
+            {
+                if (ImGui::MenuItem("Delete"))
+                {
+                    DeleteFileOrDirectory();
+                }
+            }
+            ImGui::EndPopup();
+        }
+
+        if (!selectedEntry.empty() && ImGui::IsKeyPressed(ImGuiKey_Delete) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
+        {
+            DeleteFileOrDirectory();
+        }
+
         ImGui::Text(currentDirectory.string().c_str());
     }
     ImGui::End();
-	Panel::EndDraw();
+    Panel::EndDraw();
 }
 
 void ContentBrowserPanel::DrawDirectory(const std::string& folderPath)
@@ -101,13 +145,22 @@ void ContentBrowserPanel::DrawDirectoryContent(const std::filesystem::path& dire
     {
         isSelected = (selectedEntry == currentDirectory.parent_path());
         ImageButton(isSelected, "folder", "folder");
-        if (ImGui::IsItemClicked())
+        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
-            selectedEntry = currentDirectory.parent_path();
+            if (ImGui::IsItemClicked())
+            {
+                selectedEntry.clear();
+            }
+            else if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
+            {
+                selectedEntry.clear();
+            }
         }
+
         if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
         {
             currentDirectory = currentDirectory.parent_path();
+            selectedEntry.clear();
         }
         ImGui::TextWrapped("...");
 
@@ -148,9 +201,16 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
 
     ImageButton(isSelected, entry.path().string(), entry.path().filename().extension().string());
 
-    if (ImGui::IsItemClicked())
+    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
-        selectedEntry = path;
+        if (ImGui::IsItemClicked())
+        {
+            selectedEntry = path;
+        }
+        else if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
+        {
+            selectedEntry.clear();
+        }
     }
 
     if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
@@ -158,6 +218,7 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
         if (entry.is_directory())
         {
             currentDirectory = path;
+            selectedEntry.clear();
         }
         else
         {
@@ -317,4 +378,17 @@ ImTextureID ContentBrowserPanel::GetImageFromExtension(const std::string& extens
 void ContentBrowserPanel::SetSceneHierarchy(SceneHierarchyPanel* pHierarchy)
 {
     mHierarchy = pHierarchy;
+}
+
+void ContentBrowserPanel::DeleteFileOrDirectory()
+{
+    if (std::filesystem::is_directory(selectedEntry))
+    {
+        std::filesystem::remove_all(selectedEntry);
+    }
+    else
+    {
+        std::filesystem::remove(selectedEntry);
+    }
+    selectedEntry.clear();
 }
