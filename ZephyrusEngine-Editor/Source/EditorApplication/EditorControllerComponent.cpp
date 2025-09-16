@@ -22,6 +22,7 @@ void EditorControllerComponent::OnActionStarted(InputActions* pAction)
 		if (triggeredaction->GetName() == "rightClick")
 		{
 			mCanMove = true;
+			SDL_WarpMouseGlobal(960, 540);
 			SDL_SetRelativeMouseMode(SDL_TRUE);
 		}
 	}
@@ -29,8 +30,6 @@ void EditorControllerComponent::OnActionStarted(InputActions* pAction)
 void EditorControllerComponent::OnActionTriggered(InputActions* pAction)
 {
 	if (!mCanMove) return;
-
-	SDL_WarpMouseInWindow(SDL_GL_GetCurrentWindow(), 960, 540);
 
 	if (pAction->GetType() == ActionType::Boolean)
 	{

@@ -70,98 +70,103 @@ void InspectorPanel::Draw()
 void InspectorPanel::DrawActorComponents(Actor* pActor)
 {
 	static int selected = 0;
-		ImGui::PushFont(ZP::UI::gFonts.medium);
-		ImGui::Text("Components");
-		ImGui::PopFont();
+	ImGui::PushFont(ZP::UI::gFonts.medium);
+	ImGui::Text("Components");
+	ImGui::PopFont();
 
-		ImGui::SameLine();
+	ImGui::SameLine();
 
-		ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x + 15);
+	ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x + 15);
 
-		if (ImGui::Button("+ Add Component"))
+	if (ImGui::Button("+ Add Component"))
+	{
+		ImGui::OpenPopup("AddCompMenu");
+	}
+
+	if (ImGui::BeginPopup("AddCompMenu", ImGuiWindowFlags_NoMove))
+	{
+		for (auto componentType : ComponentFactory::Instance().GetComponentNames())
 		{
-			ImGui::OpenPopup("AddCompMenu");
-		}
-
-		if (ImGui::BeginPopup("AddCompMenu", ImGuiWindowFlags_NoMove))
-		{
-			for (auto componentType : ComponentFactory::Instance().GetComponentNames())
+			// There are some components that cannot be added because they are temporary (doom enemy component needs to be in a prefab to work)
+			if (componentType == "SkySphereComponent" || componentType == "DoomEnemyComponent") 
 			{
-				// There are some components that cannot be added because they are temporary (doom enemy component needs to be in a prefab to work)
-				if (componentType == "SkySphereComponent" || componentType == "DoomEnemyComponent") 
-				{
-					continue;
-				}
-				if (ImGui::Button(componentType.c_str()))
-				{
-					Component* c = ComponentFactory::Instance().Create(componentType, pActor);
-
-					if (!c) {
-						ZP_EDITOR_ERROR("Component " + componentType + " is invalid !");
-					}
-
-					int index = 1;
-					std::string newId;
-					do
-					{
-						newId = componentType + std::to_string(index);
-						index++;
-					} while (pActor->HasComponentId(newId));
-
-					c->SetId(newId);
-
-					pActor->AddComponent(c);
-					ZP_EDITOR_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
-				}
+				continue;
 			}
-			ImGui::EndPopup();
-		}
-
-		ImGui::Separator();
-
-		auto components = pActor->GetComponents();
-
-		if (!components.empty())
-		{
-			for (int i = 0; i < components.size(); i++)
+			if (ImGui::Button(componentType.c_str()))
 			{
-				char label[32];
+				Component* c = ComponentFactory::Instance().Create(componentType, pActor);
 
-				sprintf(label, (components[i]->GetName() + "_%i").c_str(), i);
-				ImGui::PushID(label);
-				auto pos = ImGui::GetCursorPos();
-				ImGui::SetCursorPos(ImVec2(pos.x + 10, pos.y + 5));
-				if (ImGui::Selectable(components[i]->GetName().c_str(), selected == i, 0, ImVec2(ImGui::GetContentRegionAvail().x - 10 - 25, 0)))
-				{
-					selected = i;
+				if (!c) {
+					ZP_EDITOR_ERROR("Component " + componentType + " is invalid !");
 				}
-				mActiveComponent = components[selected];
-				ImGui::PopID();
-				ImGui::SameLine();
-				auto windowSize = ImGui::GetContentRegionAvail();
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
-				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
-				if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str())) // delete a specific component
+
+				int index = 1;
+				std::string newId;
+				do
 				{
-					//TODO Event to destroy component
-					pActor->GetComponentWithId(components[i]->GetId())->OnEnd();
-					pActor->RemoveComponent(pActor->GetComponentWithId(components[i]->GetId()));
-					delete components[i];
-					ImGui::PopStyleColor();
-					break;
-				}
+					newId = componentType + std::to_string(index);
+					index++;
+				} while (pActor->HasComponentId(newId));
+
+				c->SetId(newId);
+
+				pActor->AddComponent(c);
+				ZP_EDITOR_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
+			}
+		}
+		ImGui::EndPopup();
+	}
+
+	ImGui::Separator();
+
+	auto components = pActor->GetComponents();
+
+	if (!components.empty())
+	{
+		for (int i = 0; i < components.size(); i++)
+		{
+			if (selected >= components.size())
+			{
+				selected = 0;
+			}
+
+			char label[32];
+
+			sprintf(label, (components[i]->GetName() + "_%i").c_str(), i);
+			ImGui::PushID(label);
+			auto pos = ImGui::GetCursorPos();
+			ImGui::SetCursorPos(ImVec2(pos.x + 10, pos.y + 5));
+			if (ImGui::Selectable(components[i]->GetName().c_str(), selected == i, 0, ImVec2(ImGui::GetContentRegionAvail().x - 10 - 25, 0)))
+			{
+				selected = i;
+			}
+			mActiveComponent = components[selected];
+			ImGui::PopID();
+			ImGui::SameLine();
+			auto windowSize = ImGui::GetContentRegionAvail();
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
+			if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str())) // delete a specific component
+			{
+				//TODO Event to destroy component
+				pActor->GetComponentWithId(components[i]->GetId())->OnEnd();
+				pActor->RemoveComponent(pActor->GetComponentWithId(components[i]->GetId()));
+				delete components[i];
 				ImGui::PopStyleColor();
-				if (ImGui::IsItemHovered())
-				{
-					ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-					ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-					ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-					ImGui::SetTooltip(("Delete " + components[i]->GetName()).c_str());
-					ImGui::PopStyleVar(2);
-					ImGui::PopStyleColor();
-				}
+				break;
+			}
+			ImGui::PopStyleColor();
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+				ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+				ImGui::SetTooltip(("Delete " + components[i]->GetName()).c_str());
+				ImGui::PopStyleVar(2);
+				ImGui::PopStyleColor();
 			}
 		}
+	}
 }
 
 void InspectorPanel::DrawActorInfos(Actor* pActor)
