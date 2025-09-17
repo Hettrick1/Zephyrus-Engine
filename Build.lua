@@ -1,6 +1,6 @@
 -- premake5.lua
 workspace "Zephyrus Engine"
-   architecture "x86"
+   architecture "x64"
    configurations { "Debug", "Release", "Dist" }
    startproject "ZephyrusEngine-Runtime"
 

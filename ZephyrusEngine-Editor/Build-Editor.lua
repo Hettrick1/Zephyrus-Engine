@@ -81,9 +81,9 @@ project "ZephyrusEngine-Editor"
 
    postbuildcommands
    {
-    "{COPY} ../Vendor/GL/SDL/lib/x86/SDL2.dll %{cfg.targetdir}",
-    "{COPY} ../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/Win32/glew32.dll %{cfg.targetdir}",
-    "{COPY} ../Vendor/SDL2_image-2.8.2/lib/x86/SDL2_image.dll %{cfg.targetdir}",
+    "{COPY} ../Vendor/GL/SDL/lib/x64/SDL2.dll %{cfg.targetdir}",
+    "{COPY} ../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/x64/glew32.dll %{cfg.targetdir}",
+    "{COPY} ../Vendor/SDL2_image-2.8.2/lib/x64/SDL2_image.dll %{cfg.targetdir}",
    }
 
    filter "system:windows"

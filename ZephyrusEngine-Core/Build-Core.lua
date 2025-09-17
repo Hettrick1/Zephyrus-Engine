@@ -55,12 +55,11 @@ project "ZephyrusEngine-Core"
 
    libdirs 
    {  
-    "../Vendor/GL/SDL/lib/x86",
-    "../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/Win32",
-    "../Vendor/glew-2.2.0-win32/glew-2.2.0/lib/Release/Win32",
-    "../Vendor/SDL2_image-2.8.2/lib/x86",
-    "../Vendor/freetype-2.6.1/objs/vc2010/Win32",
-    "../Vendor/reactphysics3d-v0.10.2-0/build/Debug",
+    "../Vendor/GL/SDL/lib/x64",
+    "../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/x64",
+    "../Vendor/glew-2.2.0-win32/glew-2.2.0/lib/Release/x64",
+    "../Vendor/SDL2_image-2.8.2/lib/x64",
+    "../Vendor/freetype-2.6.1/objs/vc2010/x64",
    }
 
    links
@@ -71,8 +70,7 @@ project "ZephyrusEngine-Core"
       "SDL2",
       "SDL2_image",
       "SDL2main",
-      "freetype261",
-      "reactphysics3d"
+      "freetype261d",
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
