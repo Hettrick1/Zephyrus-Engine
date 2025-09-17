@@ -52,7 +52,7 @@ void CameraManager::UpdateCurrentCamera()
 	}
 	else
 	{
-		auto cameraActor = PrefabFactory::CreateActorFromPrefab("CameraActor");
+		auto cameraActor = PrefabFactory::SpawnActorFromPrefab("CameraActor");
 		AddCamera(cameraActor->GetComponentOfType<CameraComponent>());
 		SceneManager::ActiveScene->AddActor(cameraActor);
 	}

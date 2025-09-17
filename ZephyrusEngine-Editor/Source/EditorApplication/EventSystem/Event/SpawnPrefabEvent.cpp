@@ -13,8 +13,7 @@ SpawnPrefabEvent::~SpawnPrefabEvent()
 
 void SpawnPrefabEvent::Execute()
 {
-	auto actor = PrefabFactory::CreateActorFromPrefab(mPrefabToSpawn);
-	SceneManager::ActiveScene->AddActor(actor);
+	auto actor = PrefabFactory::SpawnActorFromPrefab(mPrefabToSpawn);
 	actor->Start();
 }
 

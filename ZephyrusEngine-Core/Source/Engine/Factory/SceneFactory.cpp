@@ -43,7 +43,7 @@ bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
         {
             if (auto prefabName = Serialization::Json::ReadString(*actor, "prefabName"))
             {
-                auto actorPrefab = PrefabFactory::CreateActorFromPrefab(*prefabName);
+                auto actorPrefab = PrefabFactory::InitPrefab(*prefabName);
 
                 actorPrefab->Deserialize(*actor);
                 if (auto actorComponents = Serialization::Json::ReadArrayObject(*actor, "components"))

@@ -49,7 +49,7 @@ void Scene::PostStart()
 
 	if (doc.HasMember("player") && doc["player"].IsString())
 	{
-		mPlayerRef = PrefabFactory::CreateActorFromPrefab(doc["player"].GetString());
+		mPlayerRef = PrefabFactory::SpawnActorFromPrefab(doc["player"].GetString());
 		if (mPlayerRef)
 		{
 			if (mPlayerStart)
@@ -70,7 +70,7 @@ void Scene::PostStart()
 	}
 	else
 	{
-		mPlayerRef = PrefabFactory::CreateActorFromPrefab("CameraActor");
+		mPlayerRef = PrefabFactory::SpawnActorFromPrefab("CameraActor");
 		mPlayerRef->SetPosition(Vector3D(0));
 		mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
 		mPlayerRef->SetSize(Vector3D(1));
@@ -164,13 +164,14 @@ void Scene::SaveTo(const std::string& pFilePath)
 	writer.WriteString("player", playerPrefab);
 
 	writer.BeginArray("actors");
-	for (auto& actor : mActors)
+	for (auto& actor : mAllActors)
 	{
-		actor.second->Serialize(writer);
+		actor->Serialize(writer);
 	}
 	writer.EndArray();
 
 	writer.SaveDocument(pFilePath);
+	mSaved = true;
 }
 
 void Scene::SetPlayerStart(Actor* pPlayerStart)
@@ -199,13 +200,14 @@ void Scene::SaveScene()
 		writer.WriteString("player", playerPrefab);
 
 		writer.BeginArray("actors");
-		for (auto& actor : mActors)
+		for (auto& actor : mAllActors)
 		{
-			actor.second->Serialize(writer);
+			actor->Serialize(writer);
 		}
 		writer.EndArray();
 
 		writer.SaveDocument(mFilePath);
+		mSaved = true;
 	}
 }
 

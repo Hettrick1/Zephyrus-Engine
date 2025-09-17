@@ -212,13 +212,6 @@ void EditorApplication::RenderImgui()
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    ImGuiIO& io = ImGui::GetIO();
-
-    bool isFpsMode = mEditorController->GetComponentOfType<EditorControllerComponent>()->GetCanMove();
-
-    io.WantCaptureMouse = !isFpsMode;
-    io.MouseDrawCursor = !isFpsMode;
-
     SetEditorStyle();
 
     DrawDockSpace();
@@ -226,6 +219,8 @@ void EditorApplication::RenderImgui()
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    ImGuiIO& io = ImGui::GetIO();
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {

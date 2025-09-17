@@ -27,7 +27,16 @@ void UtilsPanel::Draw()
     ImGui::SameLine();
     
     ImGui::SetCursorPosY(buttonSize.y - 10);
-    ImGui::Text(SceneManager::ActiveScene->GetTitle().c_str());
+    std::string sceneName;
+    if (SceneManager::ActiveScene->GetIsSaved())
+    {
+        sceneName = SceneManager::ActiveScene->GetTitle();
+    }
+    else
+    {
+        sceneName = SceneManager::ActiveScene->GetTitle() + "*";
+    }
+    ImGui::Text(sceneName.c_str());
 
     ImGui::SameLine();
 

@@ -26,7 +26,7 @@ void SplashScreen::Start()
 
 	mTime = 0;
 
-	auto cam = PrefabFactory::CreateActorFromPrefab("CameraActor");
+	auto cam = PrefabFactory::SpawnActorFromPrefab("CameraActor");
 
 	Shader vert = *Assets::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
 	Shader frag = *Assets::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");

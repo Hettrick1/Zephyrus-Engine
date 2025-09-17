@@ -1,4 +1,5 @@
 #include "EventSystem.h"
+#include "SceneManager.h"
 
 std::vector<Event*> EventSystem::mAllEvents;
 std::vector<Event*> EventSystem::mUndoedEvents;
@@ -7,6 +8,7 @@ bool EventSystem::mCanRedo = false;
 
 void EventSystem::DoEvent(Event* event)
 {
+	SceneManager::ActiveScene->SetIsSaved(false);
 	event->Execute();
 	mAllEvents.push_back(event);
 	if (!mAllEvents.empty())
@@ -21,6 +23,7 @@ void EventSystem::UndoLastEvent()
 	{
 		return;
 	}
+	SceneManager::ActiveScene->SetIsSaved(false);
 	mAllEvents.back()->Undo();
 	mUndoedEvents.push_back(mAllEvents.back());
 	mAllEvents.pop_back();
@@ -37,6 +40,7 @@ void EventSystem::RedoLastUndo()
 	{
 		return;
 	}
+	SceneManager::ActiveScene->SetIsSaved(false);
 	DoEvent(mUndoedEvents.back());
 	mUndoedEvents.pop_back();
 	if (mUndoedEvents.empty())
@@ -56,6 +60,10 @@ void EventSystem::ClearAllEvents()
 	{
 		delete event;
 	}
+	mUndoedEvents.clear();
+	mAllEvents.clear(); 
+	mCanUndo = false;
+	mCanRedo = false;
 }
 
 size_t EventSystem::GetEventVectorSize()

@@ -21,10 +21,10 @@ void LVLDoom::Start()
 	
 	GetRenderer()->GetDebugRenderer()->SetDrawDebug(false);
 
-	mPlayerStart = PrefabFactory::CreateActorFromPrefab("PlayerStart");
+	mPlayerStart = PrefabFactory::SpawnActorFromPrefab("PlayerStart");
 	mPlayerStart->SetPosition(Vector3D(-45, 0, 0));
 
-	auto actor = PrefabFactory::CreateActorFromPrefab("SkyBoxActor");
+	auto actor = PrefabFactory::SpawnActorFromPrefab("SkyBoxActor");
 	CubeTextureMap cubemap;
 	std::vector<std::string> paths = {
 		"Sprites/Doom/skybox/front.png",
@@ -38,7 +38,7 @@ void LVLDoom::Start()
 	actor->GetComponentOfType<SkySphereComponent>()->SetTextureIndex(cubemap.GetID());
 	actor->GetComponentOfType<SkySphereComponent>()->SetTexturePaths(paths);
 
-	auto wall = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall->SetPosition(Vector3D(0, 50, -0.21));
 	wall->SetSize(Vector3D(50, 1, 1));
 	wall->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(50, 1, 1));
@@ -47,7 +47,7 @@ void LVLDoom::Start()
 	wall->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(150, 6));
 	wall->AddTag("Wall");
 
-	auto wall1 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall1 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall1->SetPosition(Vector3D(0, -50, -0.21));
 	wall1->SetSize(Vector3D(50, 1, 1));
 	wall1->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(50, 1, 1));
@@ -56,7 +56,7 @@ void LVLDoom::Start()
 	wall1->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(150, 6));
 	wall1->AddTag("Wall");
 
-	auto wall2 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall2 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall2->SetPosition(Vector3D(50, 0, -0.21));
 	wall2->SetSize(Vector3D(1, 50, 1));
 	wall2->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 50, 1));
@@ -64,7 +64,7 @@ void LVLDoom::Start()
 	wall2->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 150));
 	wall2->AddTag("Wall");
 
-	auto wall3 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall3 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall3->SetPosition(Vector3D(-50, 0, -0.21));
 	wall3->SetSize(Vector3D(1, 50, 1));
 	wall3->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 50, 1));
@@ -72,7 +72,7 @@ void LVLDoom::Start()
 	wall3->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 150));
 	wall3->AddTag("Wall");
 
-	auto wall4 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall4 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall4->SetPosition(Vector3D(0, -30, -0.21));
 	wall4->SetSize(Vector3D(1, 20, 1));
 	wall4->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 20, 1));
@@ -80,7 +80,7 @@ void LVLDoom::Start()
 	wall4->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 150));
 	wall4->AddTag("Wall");
 
-	auto wall5 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall5 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall5->SetPosition(Vector3D(0, 30, -0.21));
 	wall5->SetSize(Vector3D(1, 20, 1));
 	wall5->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 20, 1));
@@ -88,7 +88,7 @@ void LVLDoom::Start()
 	wall5->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 150));
 	wall5->AddTag("Wall");
 
-	auto wall6 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall6 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall6->SetPosition(Vector3D(0, -9, -0.21));
 	wall6->SetSize(Vector3D(1, 1, 1));
 	wall6->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 1, 1));
@@ -96,7 +96,7 @@ void LVLDoom::Start()
 	wall6->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall6->AddTag("Wall");
 
-	auto wall7 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall7 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall7->SetPosition(Vector3D(0, 9, -0.21));
 	wall7->SetSize(Vector3D(1, 1, 1));
 	wall7->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 1, 1));
@@ -104,7 +104,7 @@ void LVLDoom::Start()
 	wall7->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall7->AddTag("Wall");
 
-	auto wall8 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall8 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall8->SetPosition(Vector3D(0, 0, -1.2));
 	wall8->SetSize(Vector3D(50, 50, 0.1));
 	wall8->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(50, 50, 0.1));
@@ -112,7 +112,7 @@ void LVLDoom::Start()
 	wall8->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(300, 300));
 	wall8->AddTag("Wall");
 
-	auto wall9 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall9 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall9->SetPosition(Vector3D(-30, 0, -0.21));
 	wall9->SetSize(Vector3D(1, 1, 1));
 	wall9->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 1, 1));
@@ -120,7 +120,7 @@ void LVLDoom::Start()
 	wall9->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall9->AddTag("Wall");
 
-	auto wall10 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall10 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall10->SetPosition(Vector3D(-48, -10, -0.21));
 	wall10->SetSize(Vector3D(1, 1, 1));
 	wall10->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 1, 1));
@@ -128,7 +128,7 @@ void LVLDoom::Start()
 	wall10->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall10->AddTag("Wall");
 
-	auto wall11 = PrefabFactory::CreateActorFromPrefab("CubeActor");
+	auto wall11 = PrefabFactory::SpawnActorFromPrefab("CubeActor");
 	wall11->SetPosition(Vector3D(-48, 10, -0.21));
 	wall11->SetSize(Vector3D(1, 1, 1));
 	wall11->GetComponentOfType<BoxAABBComponent>()->SetSize(Vector3D(1, 1, 1));
@@ -136,28 +136,28 @@ void LVLDoom::Start()
 	wall11->GetComponentOfType<MeshComponent>()->SetTiling(Vector2D(6, 6));
 	wall11->AddTag("Wall");
 
-	auto amoPu = PrefabFactory::CreateActorFromPrefab("Doom/AmoPickUp");
+	auto amoPu = PrefabFactory::SpawnActorFromPrefab("Doom/AmoPickUp");
 	amoPu->SetPosition(Vector3D(0, 0, -0.5));
 
-	auto HealthPu = PrefabFactory::CreateActorFromPrefab("Doom/HealthPickUp");
+	auto HealthPu = PrefabFactory::SpawnActorFromPrefab("Doom/HealthPickUp");
 	HealthPu->SetPosition(Vector3D(-20, -30, -0.5));
-	auto HealthPu2 = PrefabFactory::CreateActorFromPrefab("Doom/HealthPickUp");
+	auto HealthPu2 = PrefabFactory::SpawnActorFromPrefab("Doom/HealthPickUp");
 	HealthPu2->SetPosition(Vector3D(-20, 30, -0.5));
 
-	auto shieldPu = PrefabFactory::CreateActorFromPrefab("Doom/ShieldPickUp");
+	auto shieldPu = PrefabFactory::SpawnActorFromPrefab("Doom/ShieldPickUp");
 	shieldPu->SetPosition(Vector3D(-40, -40, -0.5));
-	auto shieldPu2 = PrefabFactory::CreateActorFromPrefab("Doom/ShieldPickUp");
+	auto shieldPu2 = PrefabFactory::SpawnActorFromPrefab("Doom/ShieldPickUp");
 	shieldPu2->SetPosition(Vector3D(-40, 40, -0.5));
 
-	auto enemy = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	auto enemy = PrefabFactory::SpawnActorFromPrefab("Doom/DoomEnemy");
 	enemy->SetPosition(Vector3D(-10, -20, -0.1));
-	auto enemy2 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	auto enemy2 = PrefabFactory::SpawnActorFromPrefab("Doom/DoomEnemy");
 	enemy2->SetPosition(Vector3D(-10, 20, -0.1));
-	auto enemy3 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	auto enemy3 = PrefabFactory::SpawnActorFromPrefab("Doom/DoomEnemy");
 	enemy3->SetPosition(Vector3D(-10, 0, -0.1));
-	auto enemy4 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	auto enemy4 = PrefabFactory::SpawnActorFromPrefab("Doom/DoomEnemy");
 	enemy4->SetPosition(Vector3D(-45, -45, -0.1));
-	auto enemy5 = PrefabFactory::CreateActorFromPrefab("Doom/DoomEnemy");
+	auto enemy5 = PrefabFactory::SpawnActorFromPrefab("Doom/DoomEnemy");
 	enemy5->SetPosition(Vector3D(-45, 45, -0.1));
 
 	for (auto& actor : mActors)

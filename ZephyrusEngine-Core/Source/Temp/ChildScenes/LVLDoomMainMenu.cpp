@@ -23,8 +23,8 @@ LVLDoomMainMenu::~LVLDoomMainMenu()
 void LVLDoomMainMenu::Start()
 {
 	Scene::Start();
-	auto actor = PrefabFactory::CreateActorFromPrefab("CameraActor");
-	auto actor1 = PrefabFactory::CreateActorFromPrefab("DoomMenuPlayer");
+	auto actor = PrefabFactory::SpawnActorFromPrefab("CameraActor");
+	auto actor1 = PrefabFactory::SpawnActorFromPrefab("DoomMenuPlayer");
 }
 
 void LVLDoomMainMenu::Update()

@@ -24,6 +24,7 @@ protected:
 	bool mIsUpdatingActor;
 	Actor* mPlayerRef = nullptr;
 	Actor* mPlayerStart = nullptr;
+	bool mSaved = true;
 public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(); // Initializes the scene with the given renderer
@@ -54,6 +55,8 @@ public:
 
 	inline std::vector<Actor*> GetAllActors() const { return mAllActors; }
 	inline std::string GetTitle() const { return mTitle; }
+	inline void SetIsSaved(const bool& pSaved) { mSaved = pSaved; }
+	inline bool GetIsSaved() const { return mSaved; }
 
 public : 
 	inline IRenderer* GetRenderer() const { return mRenderer; }

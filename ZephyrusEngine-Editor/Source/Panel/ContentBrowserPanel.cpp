@@ -3,6 +3,7 @@
 #include "Assets.h"
 #include "SceneManager.h"
 #include "HudManager.h"
+#include "../EditorApplication/EventSystem/EventSystem.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
@@ -238,6 +239,7 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
                 SceneManager::mIsSceneLoaded = true;
                 SceneManager::ActiveScene->GetRenderer()->GetHud()->Unload();
                 mHierarchy->ResetSelectedActor();
+                EventSystem::ClearAllEvents();
                 resetfunc();
             }
         }
@@ -279,7 +281,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
     std::filesystem::path p(entry);
     std::string cleanPath = p.lexically_normal().generic_string();
 
-    ImGui::InvisibleButton(("##" + cleanPath).c_str(), size); // TODO clean the dropsource data function -> it's messy af
+    ImGui::InvisibleButton(("##" + cleanPath).c_str(), size); // TODO clean the dropsource data function -> it's messy rn
     if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
     {
         if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
@@ -419,8 +421,6 @@ void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)
             }
 
             actor->SerializePrefab(newPrefabPath.string());
-
-            //TODO create prefab -> we need an uuid for actors
         }
         ImGui::EndDragDropTarget();
     }
