@@ -359,7 +359,7 @@ void InspectorPanel::DrawComponentInfos()
 	if (mActiveComponent)
 	{
 		char buffer[64];
-		strncpy(buffer, mActiveComponent->GetName().c_str(), sizeof(buffer));
+		strncpy(buffer, mActiveComponent->GetId().c_str(), sizeof(buffer));
 		buffer[sizeof(buffer) - 1] = '\0';
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 4.0f));
@@ -899,7 +899,7 @@ void InspectorPanel::SetPropertyComponent(const PropertyDescriptor& pProperty, c
 
 	static int index = 0;
 
-	if (ImGui::InputText(("##String" + std::string(buffer + index)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		prop.setter(&buffer);
 		index++;

@@ -70,29 +70,6 @@ DoomEnemyComponent::DoomEnemyComponent(Actor* pOwner, int updateOder)
 		Assets::LoadTexture("Sprites/Doom/SplashBlood/1_20.png", "MDamage21"),
 		Assets::LoadTexture("Sprites/Doom/SplashBlood/1_21.png", "MDamage22"),
 	};
-
-	if (!mOwner->GetComponents().empty())
-	{
-		auto flipbooks = mOwner->GetAllComponentOfType<FlipbookComponent>();
-
-		if (flipbooks.size() >= 2)
-		{
-			if (flipbooks[0]->HasTag("enemyFB"))
-			{
-				mEnemyFbId = flipbooks[0]->GetId();
-				mSplashBloodFbId = flipbooks[1]->GetId();
-				mEnemyFb = flipbooks[0];
-				mSplashBlood = flipbooks[1];
-			}
-			else
-			{
-				mEnemyFb = flipbooks[1];
-				mSplashBlood = flipbooks[0];
-				mEnemyFbId = flipbooks[1]->GetId();
-				mSplashBloodFbId = flipbooks[0]->GetId();
-			}
-		}
-	}
 }
 
 DoomEnemyComponent::~DoomEnemyComponent()
@@ -118,6 +95,28 @@ void DoomEnemyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 void DoomEnemyComponent::OnStart()
 {
 	Component::OnStart();
+	if (!mOwner->GetComponents().empty())
+	{
+		auto flipbooks = mOwner->GetAllComponentOfType<FlipbookComponent>();
+
+		if (flipbooks.size() >= 2)
+		{
+			if (flipbooks[0]->HasTag("enemyFB"))
+			{
+				mEnemyFb = flipbooks[0];
+				mSplashBlood = flipbooks[1];
+				mEnemyFbId = mEnemyFb->GetId();
+				mSplashBloodFbId = mSplashBlood->GetId();
+			}
+			else
+			{
+				mEnemyFb = flipbooks[1];
+				mSplashBlood = flipbooks[0];
+				mEnemyFbId = mEnemyFb->GetId();
+				mSplashBloodFbId = mSplashBlood->GetId();
+			}
+		}
+	}
 }
 
 void DoomEnemyComponent::Update()
