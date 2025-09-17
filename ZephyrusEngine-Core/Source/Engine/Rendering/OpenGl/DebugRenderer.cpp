@@ -158,7 +158,8 @@ void DebugRenderer::DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, con
 
 void DebugRenderer::DrawSelectedBox(const Matrix4DRow& pWorldTransform)
 {
-	glLineWidth(6);
+	glDisable(GL_DEPTH_TEST);
+	glLineWidth(2);
 	glBindVertexArray(mDebugBoxVao);
 
 	mDebugShaderProgram.Use();
@@ -171,10 +172,11 @@ void DebugRenderer::DrawSelectedBox(const Matrix4DRow& pWorldTransform)
 
 	mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
 	mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);
-	mDebugShaderProgram.setVector3f("uColor", Vector3D(1, 1, 0));
+	mDebugShaderProgram.setVector3f("uColor", Vector3D(1.0, 0.7, 0));
 
 	glDrawArrays(GL_LINES, 0, 24);
 	glLineWidth(4);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void DebugRenderer::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit)
