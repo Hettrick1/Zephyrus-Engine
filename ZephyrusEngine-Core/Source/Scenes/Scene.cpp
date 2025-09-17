@@ -76,7 +76,6 @@ void Scene::PostStart()
 		mPlayerRef->SetSize(Vector3D(1));
 	}
 	mPlayerRef->Start();
-	//AddActor(mPlayerRef);
 }
 
 void Scene::Update()

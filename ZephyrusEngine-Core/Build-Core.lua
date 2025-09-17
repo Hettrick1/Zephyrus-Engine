@@ -70,7 +70,7 @@ project "ZephyrusEngine-Core"
       "SDL2",
       "SDL2_image",
       "SDL2main",
-      "freetype261d",
+      "freetype261",
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

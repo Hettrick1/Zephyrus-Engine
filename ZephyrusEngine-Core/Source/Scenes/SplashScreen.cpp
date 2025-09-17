@@ -26,8 +26,6 @@ void SplashScreen::Start()
 
 	mTime = 0;
 
-	auto cam = PrefabFactory::SpawnActorFromPrefab("CameraActor");
-
 	Shader vert = *Assets::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
 	Shader frag = *Assets::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
 
@@ -54,7 +52,7 @@ void SplashScreen::Update()
 	}
 	if (mTime > 3.0f)
 	{
-		SceneManager::LoadSceneWithFile(mNextScene, nullptr, false);
+		SceneManager::LoadSceneWithFile(mNextScene, nullptr, true);
 	}
 }
 
