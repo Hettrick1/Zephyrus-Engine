@@ -21,6 +21,7 @@ public:
 	FlipbookComponent(const FlipbookComponent&) = delete;
 	FlipbookComponent& operator=(const FlipbookComponent&) = delete;
 
+	void OnStart() override;
 	void OnEnd() override;
 	std::vector<PropertyDescriptor> GetProperties() override;
 

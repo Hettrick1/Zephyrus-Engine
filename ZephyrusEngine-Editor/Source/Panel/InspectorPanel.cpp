@@ -88,7 +88,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 		for (auto componentType : ComponentFactory::Instance().GetComponentNames())
 		{
 			// There are some components that cannot be added because they are temporary (doom enemy component needs to be in a prefab to work)
-			if (componentType == "SkySphereComponent" || componentType == "DoomEnemyComponent") 
+			if (componentType == "SkySphereComponent") 
 			{
 				continue;
 			}
@@ -109,6 +109,8 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 				} while (pActor->HasComponentId(newId));
 
 				c->SetId(newId);
+
+				c->OnStart();
 
 				pActor->AddComponent(c);
 				ZP_EDITOR_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
@@ -359,7 +361,7 @@ void InspectorPanel::DrawComponentInfos()
 	if (mActiveComponent)
 	{
 		char buffer[64];
-		strncpy(buffer, mActiveComponent->GetId().c_str(), sizeof(buffer));
+		strncpy(buffer, mActiveComponent->GetName().c_str(), sizeof(buffer));
 		buffer[sizeof(buffer) - 1] = '\0';
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 4.0f));
@@ -420,7 +422,6 @@ void InspectorPanel::DrawComponentInfos()
 
 		if (ImGui::CollapsingHeader("Relative Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-
 			float labelWidth = 70.0f;
 
 			float position[3] = {
@@ -974,15 +975,18 @@ void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pPropert
 			{
 				ImGui::SetTooltip(buffer);
 			}
-			ImGui::SameLine();
-			if (ImGui::Button("Remove"))
+			if (textures->size() > 1)
 			{
-				auto newVec = *textures;
-				newVec.erase(newVec.begin() + i);
-				prop.setter(&newVec);
+				ImGui::SameLine();
+				if (ImGui::Button("Remove"))
+				{
+					auto newVec = *textures;
+					newVec.erase(newVec.begin() + i);
+					prop.setter(&newVec);
 
-				ImGui::PopID();
-				break;
+					ImGui::PopID();
+					break;
+				}
 			}
 			ImGui::PopID();
 		}
