@@ -12,6 +12,8 @@ private:
 	std::vector<Texture*> EnemyDieAnim;
 	std::vector<Texture*> EnemyExplodesAnim;
 	std::vector<Texture*> EnemyDamagesAnim;
+	std::string mEnemyFbId;
+	std::string mSplashBloodFbId;
 	int mHealth;
 	float mShootCouldown;
 	bool mCanShoot, mIsDead;
@@ -27,6 +29,8 @@ public:
 	void OnStart() override;
 	void Update() override;
 	void OnEnd() override;
+
+	std::vector<PropertyDescriptor> GetProperties() override;
 
 public:
 	void TakeDamage(int pDamages, int weapon);

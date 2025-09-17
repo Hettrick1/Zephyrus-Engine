@@ -79,6 +79,8 @@ DoomEnemyComponent::DoomEnemyComponent(Actor* pOwner, int updateOder)
 		{
 			if (flipbooks[0]->HasTag("enemyFB"))
 			{
+				mEnemyFbId = flipbooks[0]->GetId();
+				mSplashBloodFbId = flipbooks[1]->GetId();
 				mEnemyFb = flipbooks[0];
 				mSplashBlood = flipbooks[1];
 			}
@@ -86,6 +88,8 @@ DoomEnemyComponent::DoomEnemyComponent(Actor* pOwner, int updateOder)
 			{
 				mEnemyFb = flipbooks[1];
 				mSplashBlood = flipbooks[0];
+				mEnemyFbId = flipbooks[1]->GetId();
+				mSplashBloodFbId = flipbooks[0]->GetId();
 			}
 		}
 	}
@@ -119,6 +123,37 @@ void DoomEnemyComponent::OnStart()
 void DoomEnemyComponent::Update()
 {
 	Component::Update();
+
+	if (mEnemyFb == nullptr)
+	{
+		if (!mEnemyFbId.empty())
+		{
+			mEnemyFb = dynamic_cast<FlipbookComponent*>(mOwner->GetComponentWithId(mEnemyFbId));
+			if (!mEnemyFb)
+			{
+				return;
+			}
+		}
+		else
+		{
+			return;
+		}
+	}
+	if (mSplashBlood == nullptr)
+	{
+		if (!mSplashBloodFbId.empty())
+		{
+			mSplashBlood = dynamic_cast<FlipbookComponent*>(mOwner->GetComponentWithId(mSplashBloodFbId));
+			if (!mSplashBlood)
+			{
+				return;
+			}
+		}
+		else
+		{
+			return;
+		}
+	}
 
 	auto playerRef = mOwner->GetScene().GetPlayerRef();
 
@@ -187,8 +222,25 @@ void DoomEnemyComponent::OnEnd()
 	Component::OnEnd();
 }
 
+std::vector<PropertyDescriptor> DoomEnemyComponent::GetProperties()
+{
+	return {
+		{"Enemy Fb : ", &mEnemyFbId, PropertyType::Component},
+		{"Splashblood Fb : ", &mSplashBloodFbId, PropertyType::Component},
+	};
+}
+
 void DoomEnemyComponent::TakeDamage(int pDamages, int weapon)
 {
+	if (mEnemyFb == nullptr)
+	{
+		return;
+	}
+	if (mSplashBlood == nullptr)
+	{
+		return;
+	}
+
 	mSplashBlood->PlayAnimation();
 	mHealth -= pDamages;
 	if (mHealth <= 0)

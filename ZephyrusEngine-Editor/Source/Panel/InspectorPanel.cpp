@@ -143,6 +143,13 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 			mActiveComponent = components[selected];
 			ImGui::PopID();
 			ImGui::SameLine();
+
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+				ImGui::SetDragDropPayload("COMPONENT", components[i]->GetId().c_str(), components[i]->GetId().size());
+				ImGui::Text(components[i]->GetId().c_str());
+				ImGui::EndDragDropSource();
+			}
+
 			auto windowSize = ImGui::GetContentRegionAvail();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
@@ -879,7 +886,37 @@ void InspectorPanel::SetPropertyPrefab(const PropertyDescriptor& pProperty, cons
 
 void InspectorPanel::SetPropertyComponent(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
+	auto prop = MakeUndoableProperty<std::string>(pProperty, mActiveComponent);
+	std::string componentVar = *static_cast<std::string*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
 
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+
+	char buffer[255];
+	strncpy(buffer, componentVar.c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	static int index = 0;
+
+	if (ImGui::InputText(("##String" + std::string(buffer + index)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		prop.setter(&buffer);
+		index++;
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("COMPONENT"))
+		{
+			std::string componentID((const char*)payload->Data, payload->DataSize);
+			prop.setter(&componentID);
+		}
+		ImGui::EndDragDropTarget();
+	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip(buffer);
+	}
 }
 
 void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
