@@ -22,6 +22,7 @@ project "ZephyrusEngine-Core"
       "../Vendor/TinyObjLoader",
       "../Vendor/reactphysics3d-v0.10.2-0/include",
       "../Vendor/stduuid-1.2.3/include",
+      "../Vendor/bullet3-3.25/src",
 
       "Source/Engine",
       "Source/Scenes",
@@ -60,6 +61,7 @@ project "ZephyrusEngine-Core"
     "../Vendor/glew-2.2.0-win32/glew-2.2.0/lib/Release/x64",
     "../Vendor/SDL2_image-2.8.2/lib/x64",
     "../Vendor/freetype-2.6.1/objs/vc2010/x64",
+    "../Vendor/bullet3-3.25/lib/Release",
    }
 
    links
@@ -70,8 +72,35 @@ project "ZephyrusEngine-Core"
       "SDL2",
       "SDL2_image",
       "SDL2main",
-      "freetype261",
+      "freetype261"
    }
+
+    -- Bullet libs selon la configuration
+    filter "configurations:Debug"
+    libdirs { "../Vendor/bullet3-3.25/lib/Debug" }
+    links
+    {
+        "BulletCollision_Debug",
+        "BulletDynamics_Debug",
+        "Bullet3Common_Debug",
+        "Bullet3Geometry_Debug",
+        "LinearMath_Debug"
+    }
+
+    filter "configurations:Release or configurations:Dist"
+    libdirs { "../Vendor/bullet3-3.25/lib/Release" }
+    links
+    {
+        "BulletCollision",
+        "BulletDynamics",
+        "Bullet3Common",
+        "Bullet3Geometry",
+        "LinearMath"
+    }
+
+    filter {} -- reset filter
+
+   filter {}
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
    objdir ("../Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")

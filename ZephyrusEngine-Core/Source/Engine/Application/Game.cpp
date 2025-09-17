@@ -6,6 +6,14 @@
 #include "TextRenderer.h"
 #include "SplashScreen.h"
 
+#include <Bullet3Common/b3Scalar.h>
+#include <Bullet3Common/b3Transform.h>
+
+#include <btBulletDynamicsCommon.h>
+#include <btBulletCollisionCommon.h>
+
+#include <iostream>
+
 Game::Game(const std::string& pTitle, const std::string& pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
     , mCameraManager(CameraManager::Instance()), mTitle(pTitle)
@@ -45,6 +53,7 @@ Game::Game(const std::string& pTitle, const std::string& pStartupScene)
     {
         mTitle = doc["gameName"].GetString();
     }
+
     Initialize();
 }
 
