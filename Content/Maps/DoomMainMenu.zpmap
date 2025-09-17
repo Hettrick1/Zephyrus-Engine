@@ -51,5 +51,26 @@
                         "playerPrefab": "../Content/Prefabs/DoomMenuPlayer.prefab"
                     }
                 }]
+        }, {
+            "prefabName": "SkySphereActor",
+            "uuid": "d30420d3-1916-46a6-ad2e-ee8f6f815a25",
+            "name": "SkySphereActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "SkySphereComponent",
+                    "componentId": "SkySphereComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isSphere": true,
+                        "textures": ["Sprites/LakeSkyTexture.png"]
+                    }
+                }]
         }]
 }

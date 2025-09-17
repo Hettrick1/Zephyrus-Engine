@@ -527,331 +527,52 @@ void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
 	ImGui::AlignTextToFramePadding();
 	float labelWidth = 125;
 	float inputWidth = ImGui::GetContentRegionAvail().x - labelWidth;
-	if (property.type == PropertyType::Texture)
+	switch (property.type)
 	{
-		Property prop;
-		if (property.isPointer)
-		{
-			prop = MakeUndoableProperty<Texture*>(property, mActiveComponent);
-		}
-		else
-		{
-			prop = MakeUndoableProperty<Texture>(property, mActiveComponent);
-		}
-		Texture* tex = static_cast<Texture*>(prop.getter());
-		if (!tex)
-		{
-			return;
-		}
-		char buffer[255];
-		strncpy(buffer, tex->GetTextureFilePath().c_str(), sizeof(buffer));
-		buffer[sizeof(buffer) - 1] = '\0';
-
-		ImGui::Text("Texture : ");
-
-		ImGui::SameLine(labelWidth);
-
-		ImGui::SetNextItemWidth(inputWidth);
-		if (ImGui::InputText(("##Texture" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-		{
-			Texture* newTex = Assets::LoadTexture(buffer, buffer);
-			if (newTex)
-			{
-				prop.setter(newTex);
-			}
-			else
-			{
-				ZP_EDITOR_ERROR("Failed to load Texture " + std::string(buffer));
-			}
-		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
-			{
-				std::string textureID((const char*)payload->Data, payload->DataSize);
-				Texture* droppedTex = Assets::LoadTexture(textureID, textureID);
-				if (droppedTex)
-				{
-					prop.setter(droppedTex);
-				}
-			}
-			ImGui::EndDragDropTarget();
-		}
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::SetTooltip(buffer);
-		}
-	}
-	else if (property.type == PropertyType::VectorTexture)
-	{
-		auto prop = MakeUndoableProperty<std::vector<Texture*>>(property, mActiveComponent);
-		auto* textures = static_cast<std::vector<Texture*>*>(prop.getter());
-		if (!textures)
-		{
-			return;
-		}
-		if (ImGui::TreeNode("Textures"))
-		{
-			for (size_t i = 0; i < textures->size(); i++)
-			{
-				Texture* tex = (*textures)[i];
-				std::string label = "Texture " + std::to_string(i);
-
-				char buffer[128];
-				if (tex)
-				{
-					strncpy(buffer, tex->GetTextureFilePath().c_str(), sizeof(buffer));
-					buffer[sizeof(buffer) - 1] = '\0';
-				}
-				else
-				{
-					buffer[0] = '\0';
-				}
-				ImGui::PushID((int)i);
-				if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-				{
-					Texture* newTex = Assets::LoadTexture(buffer, buffer);
-					if (newTex)
-					{
-						auto newVec = *textures;
-						newVec[i] = newTex;
-						prop.setter(&newVec);
-					}
-				}
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
-					{
-						std::string textureID((const char*)payload->Data, payload->DataSize);
-						Texture* droppedTex = Assets::LoadTexture(textureID, textureID);
-						if (droppedTex)
-						{
-							auto newVec = *textures;
-							newVec[i] = droppedTex;
-							prop.setter(&newVec);
-						}
-					}
-					ImGui::EndDragDropTarget();
-				}
-				if (ImGui::IsItemHovered())
-				{
-					ImGui::SetTooltip(buffer);
-				}
-				ImGui::SameLine();
-				if (ImGui::Button("Remove"))
-				{
-					auto newVec = *textures;
-					newVec.erase(newVec.begin() + i);
-					prop.setter(&newVec);
-
-					ImGui::PopID();
-					break;
-				}
-				ImGui::PopID();
-			}
-			if (ImGui::Button("+ Add Texture"))
-			{
-				auto newVec = *textures;
-				newVec.push_back(nullptr);
-				prop.setter(&newVec);
-			}
-			ImGui::TreePop();
-		}
-	}
-	else if (property.type == PropertyType::Bool)
-	{
-		auto prop = MakeUndoableProperty<bool>(property, mActiveComponent);
-		bool bVar = *static_cast<bool*>(prop.getter());
-		ImGui::Text(prop.name.c_str());
-		ImGui::SameLine(labelWidth);
-		std::string label = "##" + prop.name;
-		if (ImGui::Checkbox(label.c_str(), &bVar))
-		{
-			prop.setter(&bVar);
-		}
-	}
-	else if (property.type == PropertyType::Float)
-	{
-		auto prop = MakeUndoableProperty<float>(property, mActiveComponent);
-		float fVar = *static_cast<float*>(prop.getter());
-		ImGui::Text(prop.name.c_str());
-		ImGui::SameLine(labelWidth);
-		ImGui::SetNextItemWidth(inputWidth);
-		std::string label = "##" + prop.name;
-		if (ImGui::InputFloat(label.c_str(), &fVar))
-		{
-			prop.setter(&fVar);
-		}
-	}
-	else if (property.type == PropertyType::Int)
-	{
-		auto prop = MakeUndoableProperty<int>(property, mActiveComponent);
-		int iVar = *static_cast<int*>(prop.getter());
-		ImGui::Text(prop.name.c_str());
-		ImGui::SameLine(labelWidth);
-		ImGui::SetNextItemWidth(inputWidth);
-		std::string label = "##" + prop.name;
-		if (ImGui::InputInt(label.c_str(), &iVar))
-		{
-			prop.setter(&iVar);
-		}
-	}
-	else if (property.type == PropertyType::Mesh)
-	{
-		auto prop = MakeUndoableProperty<Mesh*>(property, mActiveComponent);
-		Mesh* mesh = static_cast<Mesh*>(prop.getter());
-		if (!mesh)
-		{
-			return;
-		}
-		char buffer[255];
-		strncpy(buffer, mesh->GetMeshFilePath().c_str(), sizeof(buffer));
-		buffer[sizeof(buffer) - 1] = '\0';
-
-		ImGui::Text("Mesh : ");
-
-		ImGui::SameLine(labelWidth);
-
-		ImGui::SetNextItemWidth(inputWidth);
-		if (ImGui::InputText(("##Mesh" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-		{
-			Mesh* newMesh = Assets::LoadMesh(buffer, buffer);
-			if (newMesh)
-			{
-				prop.setter(newMesh);
-			}
-			else
-			{
-				ZP_EDITOR_ERROR("Failed to load Mesh " + std::string(buffer));
-			}
-		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MESH"))
-			{
-				std::string meshID((const char*)payload->Data, payload->DataSize);
-				Mesh* droppedMesh = Assets::LoadMesh(meshID, meshID);
-				if (droppedMesh)
-				{
-					prop.setter(droppedMesh);
-				}
-			}
-			ImGui::EndDragDropTarget();
-		}
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::SetTooltip(buffer);
-		}
-	}
-	else if (property.type == PropertyType::Vec2)
-	{
-		auto prop = MakeUndoableProperty<Vector2D>(property, mActiveComponent);
-		Vector2D vec2Var = *static_cast<Vector2D*>(prop.getter());
-		ImGui::Text(prop.name.c_str());
-		ImGui::SameLine(labelWidth);
-		ImGui::SetNextItemWidth(inputWidth);
-		std::string label = "##" + prop.name;
-		float vec2[2] = { vec2Var.x, vec2Var.y };
-		if (ImGui::InputFloat2(label.c_str(), vec2, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
-		{
-			vec2Var = Vector2D(vec2[0], vec2[1]);
-			prop.setter(&vec2Var);
-		}
-	}
-	else if (property.type == PropertyType::String)
-	{
-		auto prop = MakeUndoableProperty<std::string>(property, mActiveComponent);
-		std::string sVar = *static_cast<std::string*>(prop.getter());
-		ImGui::Text(prop.name.c_str());
-
-		ImGui::SameLine(labelWidth);
-		ImGui::SetNextItemWidth(inputWidth);
-
-		char buffer[255];
-		strncpy(buffer, sVar.c_str(), sizeof(buffer));
-		buffer[sizeof(buffer) - 1] = '\0';
-
-		if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-		{
-			prop.setter(&buffer);
-		}
-	}
-	else if (property.type == PropertyType::Prefab)
-	{
-		auto prop = MakeUndoableProperty<std::string>(property, mActiveComponent);
-		std::string sVar = *static_cast<std::string*>(prop.getter());
-		ImGui::Text(prop.name.c_str());
-
-		ImGui::SameLine(labelWidth);
-		ImGui::SetNextItemWidth(inputWidth);
-
-		char buffer[255];
-		strncpy(buffer, sVar.c_str(), sizeof(buffer));
-		buffer[sizeof(buffer) - 1] = '\0';
-
-		if (ImGui::InputText(("##PrefabName" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-		{
-			prop.setter(&buffer);
-		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB"))
-			{
-				std::string meshID((const char*)payload->Data, payload->DataSize);
-				prop.setter(&meshID);
-			}
-			ImGui::EndDragDropTarget();
-		}
-	}
-	else if (property.type == PropertyType::CubeMap)
-	{
-		auto prop = MakeUndoableProperty<CubeTextureMap>(property, mActiveComponent);
-		CubeTextureMap* cubemap = static_cast<CubeTextureMap*>(prop.getter());
-		std::vector<std::string> newFaces = cubemap->GetTempFilePath();
-		for (size_t i = 0; i < 6; i++)
-		{
-			std::string label = "Texture " + std::to_string(i);
-
-			char buffer[128];
-			strncpy(buffer, newFaces[i].c_str(), sizeof(buffer));
-			buffer[sizeof(buffer) - 1] = '\0';
-
-			ImGui::PushID((int)i);
-			if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-			{
-				newFaces[i] = buffer;
-				cubemap->SetTempFilePath(newFaces);
-			}
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
-				{
-					std::string textureID((const char*)payload->Data, payload->DataSize);
-					newFaces[i] = textureID;
-					cubemap->SetTempFilePath(newFaces);
-				}
-				ImGui::EndDragDropTarget();
-			}
-			if (ImGui::IsItemHovered())
-			{
-				ImGui::SetTooltip(buffer);
-			}
-			ImGui::PopID();
-		}
-		if (ImGui::Button("Create Texture Map"))
-		{
-			CubeTextureMap newCubemap;
-			if (newCubemap.CreateCubeTextureMap(newFaces))
-			{
-				// reset temp files for old cubetexturemap
-				cubemap->SetTempFilePath(cubemap->GetFaceFilePath());
-				prop.setter(&newCubemap);
-			}
-			else
-			{
-				ZP_EDITOR_ERROR("cannot create the cube texture map");
-			}
-		}
+	case PropertyType::Float:
+		SetPropertyFloat(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Int:
+		SetPropertyInt(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Bool:
+		SetPropertyBool(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::String:
+		SetPropertyString(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Vec3:
+		SetPropertyVector3D(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Vec2:
+		SetPropertyVector2D(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Quaternion:
+		SetPropertyQuaternion(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Texture:
+		SetPropertyTexture(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Font:
+		SetPropertyFont(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Mesh:
+		SetPropertyMesh(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::VectorTexture:
+		SetPropertyVectorTexture(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Prefab:
+		SetPropertyPrefab(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::CubeMap:
+		SetPropertyCubemap(property, labelWidth, inputWidth);
+		break;
+	case PropertyType::Component:
+		SetPropertyComponent(property, labelWidth, inputWidth);
+		break;
+	default:
+		break;
 	}
 	ImGui::Separator();
 }
@@ -872,4 +593,368 @@ void InspectorPanel::DrawSplitterButton(float& h)
 void InspectorPanel::SetSceneHierarchy(SceneHierarchyPanel* pHierarchy)
 {
 	mHierarchy = pHierarchy;
+}
+
+void InspectorPanel::SetPropertyFloat(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<float>(pProperty, mActiveComponent);
+	float fVar = *static_cast<float*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+	std::string label = "##" + prop.name;
+	if (ImGui::InputFloat(label.c_str(), &fVar))
+	{
+		prop.setter(&fVar);
+	}
+}
+
+void InspectorPanel::SetPropertyInt(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<int>(pProperty, mActiveComponent);
+	int iVar = *static_cast<int*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+	std::string label = "##" + prop.name;
+	if (ImGui::InputInt(label.c_str(), &iVar))
+	{
+		prop.setter(&iVar);
+	}
+}
+
+void InspectorPanel::SetPropertyBool(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<bool>(pProperty, mActiveComponent);
+	bool bVar = *static_cast<bool*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+	ImGui::SameLine(pLabelWidth);
+	std::string label = "##" + prop.name;
+	if (ImGui::Checkbox(label.c_str(), &bVar))
+	{
+		prop.setter(&bVar);
+	}
+}
+
+void InspectorPanel::SetPropertyString(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<std::string>(pProperty, mActiveComponent);
+	std::string sVar = *static_cast<std::string*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+
+	char buffer[255];
+	strncpy(buffer, sVar.c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		prop.setter(&buffer);
+	}
+}
+
+void InspectorPanel::SetPropertyVector3D(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+}
+
+void InspectorPanel::SetPropertyVector2D(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<Vector2D>(pProperty, mActiveComponent);
+	Vector2D vec2Var = *static_cast<Vector2D*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+	std::string label = "##" + prop.name;
+	float vec2[2] = { vec2Var.x, vec2Var.y };
+	if (ImGui::InputFloat2(label.c_str(), vec2, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	{
+		vec2Var = Vector2D(vec2[0], vec2[1]);
+		prop.setter(&vec2Var);
+	}
+}
+
+void InspectorPanel::SetPropertyQuaternion(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+}
+
+void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	Property prop;
+	if (pProperty.isPointer)
+	{
+		prop = MakeUndoableProperty<Texture*>(pProperty, mActiveComponent);
+	}
+	else
+	{
+		prop = MakeUndoableProperty<Texture>(pProperty, mActiveComponent);
+	}
+	Texture* tex = static_cast<Texture*>(prop.getter());
+	if (!tex)
+	{
+		return;
+	}
+	char buffer[255];
+	strncpy(buffer, tex->GetTextureFilePath().c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	ImGui::Text("Texture : ");
+
+	ImGui::SameLine(pLabelWidth);
+
+	ImGui::SetNextItemWidth(pInputWidth);
+	if (ImGui::InputText(("##Texture" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		Texture* newTex = Assets::LoadTexture(buffer, buffer);
+		if (newTex)
+		{
+			prop.setter(newTex);
+		}
+		else
+		{
+			ZP_EDITOR_ERROR("Failed to load Texture " + std::string(buffer));
+		}
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+		{
+			std::string textureID((const char*)payload->Data, payload->DataSize);
+			Texture* droppedTex = Assets::LoadTexture(textureID, textureID);
+			if (droppedTex)
+			{
+				prop.setter(droppedTex);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip(buffer);
+	}
+}
+
+void InspectorPanel::SetPropertyFont(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+}
+
+void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<Mesh*>(pProperty, mActiveComponent);
+	Mesh* mesh = static_cast<Mesh*>(prop.getter());
+	if (!mesh)
+	{
+		return;
+	}
+	char buffer[255];
+	strncpy(buffer, mesh->GetMeshFilePath().c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	ImGui::Text("Mesh : ");
+
+	ImGui::SameLine(pLabelWidth);
+
+	ImGui::SetNextItemWidth(pInputWidth);
+	if (ImGui::InputText(("##Mesh" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		Mesh* newMesh = Assets::LoadMesh(buffer, buffer);
+		if (newMesh)
+		{
+			prop.setter(newMesh);
+		}
+		else
+		{
+			ZP_EDITOR_ERROR("Failed to load Mesh " + std::string(buffer));
+		}
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MESH"))
+		{
+			std::string meshID((const char*)payload->Data, payload->DataSize);
+			Mesh* droppedMesh = Assets::LoadMesh(meshID, meshID);
+			if (droppedMesh)
+			{
+				prop.setter(droppedMesh);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip(buffer);
+	}
+}
+
+void InspectorPanel::SetPropertyCubemap(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<CubeTextureMap>(pProperty, mActiveComponent);
+	CubeTextureMap* cubemap = static_cast<CubeTextureMap*>(prop.getter());
+
+	if (!cubemap)
+	{
+		return;
+	}
+
+	std::vector<std::string> newFaces = cubemap->GetTempFilePath();
+
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 1.0, 0.0, 1.0));
+	ImGui::TextWrapped("All textures must be the same size and have the same format (png, jpeg, ...) ");
+	ImGui::PopStyleColor();
+
+	for (size_t i = 0; i < 6; i++)
+	{
+		std::string label = "Texture " + std::to_string(i);
+
+		char buffer[128];
+		strncpy(buffer, newFaces[i].c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		ImGui::PushID((int)i);
+		if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+		{
+			newFaces[i] = buffer;
+			cubemap->SetTempFilePath(newFaces);
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+			{
+				std::string textureID((const char*)payload->Data, payload->DataSize);
+				newFaces[i] = textureID;
+				cubemap->SetTempFilePath(newFaces);
+			}
+			ImGui::EndDragDropTarget();
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip(buffer);
+		}
+		ImGui::PopID();
+	}
+	if (ImGui::Button("Create Texture Map"))
+	{
+		CubeTextureMap newCubemap;
+		if (newCubemap.CreateCubeTextureMap(newFaces))
+		{
+			// reset temp files for old cubetexturemap
+			cubemap->SetTempFilePath(cubemap->GetFaceFilePath());
+			prop.setter(&newCubemap);
+		}
+		else
+		{
+			ZP_EDITOR_ERROR("cannot create the cube texture map");
+		}
+	}
+}
+
+void InspectorPanel::SetPropertyPrefab(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<std::string>(pProperty, mActiveComponent);
+	std::string sVar = *static_cast<std::string*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+
+	char buffer[255];
+	strncpy(buffer, sVar.c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	if (ImGui::InputText(("##PrefabName" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		prop.setter(&buffer);
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB"))
+		{
+			std::string meshID((const char*)payload->Data, payload->DataSize);
+			prop.setter(&meshID);
+		}
+		ImGui::EndDragDropTarget();
+	}
+}
+
+void InspectorPanel::SetPropertyComponent(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+
+}
+
+void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<std::vector<Texture*>>(pProperty, mActiveComponent);
+	auto* textures = static_cast<std::vector<Texture*>*>(prop.getter());
+	if (!textures)
+	{
+		return;
+	}
+	if (ImGui::TreeNode("Textures"))
+	{
+		for (size_t i = 0; i < textures->size(); i++)
+		{
+			Texture* tex = (*textures)[i];
+			std::string label = "Texture " + std::to_string(i);
+
+			char buffer[128];
+			if (tex)
+			{
+				strncpy(buffer, tex->GetTextureFilePath().c_str(), sizeof(buffer));
+				buffer[sizeof(buffer) - 1] = '\0';
+			}
+			else
+			{
+				buffer[0] = '\0';
+			}
+			ImGui::PushID((int)i);
+			if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			{
+				Texture* newTex = Assets::LoadTexture(buffer, buffer);
+				if (newTex)
+				{
+					auto newVec = *textures;
+					newVec[i] = newTex;
+					prop.setter(&newVec);
+				}
+			}
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+				{
+					std::string textureID((const char*)payload->Data, payload->DataSize);
+					Texture* droppedTex = Assets::LoadTexture(textureID, textureID);
+					if (droppedTex)
+					{
+						auto newVec = *textures;
+						newVec[i] = droppedTex;
+						prop.setter(&newVec);
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::SetTooltip(buffer);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Remove"))
+			{
+				auto newVec = *textures;
+				newVec.erase(newVec.begin() + i);
+				prop.setter(&newVec);
+
+				ImGui::PopID();
+				break;
+			}
+			ImGui::PopID();
+		}
+		if (ImGui::Button("+ Add Texture"))
+		{
+			auto newVec = *textures;
+			newVec.push_back(nullptr);
+			prop.setter(&newVec);
+		}
+		ImGui::TreePop();
+	}
 }

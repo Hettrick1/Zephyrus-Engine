@@ -15,7 +15,8 @@ enum class PropertyType
     Mesh,
     VectorTexture,
     Prefab,
-    CubeMap
+    CubeMap,
+    Component
 };
 
 struct PropertyDescriptor {
