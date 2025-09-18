@@ -87,7 +87,6 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 	{
 		for (auto componentType : ComponentFactory::Instance().GetComponentNames())
 		{
-			// There are some components that cannot be added because they are temporary (doom enemy component needs to be in a prefab to work)
 			if (componentType == "SkySphereComponent") 
 			{
 				continue;
@@ -155,18 +154,28 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 			auto windowSize = ImGui::GetContentRegionAvail();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
-			if (ImGui::SmallButton(("X##" + std::to_string(i)).c_str())) // delete a specific component
+			bool pressed = ImGui::SmallButton(("X##" + std::to_string(i)).c_str()); // delete a specific component
+			ImGui::PopStyleColor();
+			if (pressed)
 			{
 				//TODO Event to destroy component
 				pActor->GetComponentWithId(components[i]->GetId())->OnEnd();
 				pActor->RemoveComponent(pActor->GetComponentWithId(components[i]->GetId()));
 				delete components[i];
+				std::erase(components, components[i]);
 				selected = pActor->GetComponents().size() - 1;
-				mActiveComponent = components[selected];
-				ImGui::PopStyleColor();
+				if (selected < 0)
+				{
+					mActiveComponent = nullptr;
+					selected = 0;
+					return;
+				}
+				if (mActiveComponent != components[selected])
+				{
+					mActiveComponent = components[selected];
+				}
 				break;
 			}
-			ImGui::PopStyleColor();
 			if (ImGui::IsItemHovered())
 			{
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
@@ -526,8 +535,8 @@ void InspectorPanel::DrawComponentInfos()
 				DrawProperty(property);
 			}
 		}
+		ImGui::PopStyleVar();
 	}
-	ImGui::PopStyleVar();
 }
 
 void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
