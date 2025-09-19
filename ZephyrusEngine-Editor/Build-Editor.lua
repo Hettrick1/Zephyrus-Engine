@@ -37,6 +37,7 @@ project "ZephyrusEngine-Editor"
       "../Vendor/TinyObjLoader",
       "../Vendor/imgui-1.92.2b",
       "../Vendor/imgui-1.92.2b/backends",
+      "../Vendor/bullet3-3.25/src",
 
 	  -- Include Core
 	  "../ZephyrusEngine-Core/Source",

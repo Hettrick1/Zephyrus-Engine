@@ -1,0 +1,36 @@
+{
+    "player": "../Content/Prefabs/CameraActor.prefab",
+    "actors": [{
+            "prefabName": "PlayerStart",
+            "uuid": "21688c8f-a3f9-4414-8369-3e800d17e0b3",
+            "name": "PlayerStart",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/sphere.obj",
+                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/uv_mapper.jpg"],
+                        "textureIndex": 1,
+                        "textureTiling": [1.0, 1.0]
+                    }
+                }, {
+                    "type": "PlayerStartComponent",
+                    "componentId": "PlayerStartComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "playerPrefab": "../Content/Prefabs/DoomMenuPlayer.prefab"
+                    }
+                }]
+        }]
+}

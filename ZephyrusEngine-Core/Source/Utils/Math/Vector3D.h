@@ -2,6 +2,7 @@
 #include <cmath>
 #include <string>
 #include "Vector2D.h"
+#include "btBulletDynamicsCommon.h"
 
 struct Vector3D
 {
@@ -18,6 +19,11 @@ struct Vector3D
 	const float* GetAsFloatPtr() const
 	{
 		return reinterpret_cast<const float*>(&x);
+	}
+
+	btVector3 ToBulletVec3() const
+	{
+		return btVector3(x, y, z);
 	}
 
 	// Vector addition (a + b)

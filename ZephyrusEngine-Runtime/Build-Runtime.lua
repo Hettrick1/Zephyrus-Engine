@@ -21,6 +21,7 @@ project "ZephyrusEngine-Runtime"
       "../Vendor/rapidjson-1.1.0/include",
       "../Vendor/TinyObjLoader",
       "../Vendor/reactphysics3d-v0.10.2-0/include",
+      "../Vendor/bullet3-3.25/src",
 
 	  -- Include Core
 	  "../ZephyrusEngine-Core/Source",

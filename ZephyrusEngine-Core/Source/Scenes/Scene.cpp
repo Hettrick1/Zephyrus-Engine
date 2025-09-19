@@ -12,7 +12,7 @@
 #include "PlayerStartComponent.h"
 
 Scene::Scene(std::string pTitle) 
-	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr)
+	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld())
 {
 }
 
@@ -76,10 +76,13 @@ void Scene::PostStart()
 		mPlayerRef->SetSize(Vector3D(1));
 	}
 	mPlayerRef->Start();
+
+	mPhysicWorld->Test();
 }
 
 void Scene::Update()
 {
+	mPhysicWorld->Update();
 	UpdateAllActors();
 }
 
@@ -128,6 +131,8 @@ void Scene::Unload()
 	PhysicManager::Instance().Unload();
 	CameraManager::Instance().Unload();
 	Assets::Clear();
+	delete mPhysicWorld;
+	mPhysicWorld = nullptr;
 }
 
 void Scene::Close()
@@ -147,6 +152,8 @@ void Scene::Close()
 	mRenderer->Unload();
 	PhysicManager::Instance().Unload();
 	CameraManager::Instance().Unload();
+	delete mPhysicWorld;
+	mPhysicWorld = nullptr;
 }
 
 void Scene::SaveTo(const std::string& pFilePath)

@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include "Assets.h"
+#include "Physics/Bullet/PhysicWorld.h"
 
 class Actor;
 
@@ -25,6 +26,7 @@ protected:
 	Actor* mPlayerRef = nullptr;
 	Actor* mPlayerStart = nullptr;
 	bool mSaved = true;
+	PhysicWorld* mPhysicWorld = nullptr;
 public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(); // Initializes the scene with the given renderer
@@ -57,6 +59,7 @@ public:
 	inline std::string GetTitle() const { return mTitle; }
 	inline void SetIsSaved(const bool& pSaved) { mSaved = pSaved; }
 	inline bool GetIsSaved() const { return mSaved; }
+	inline PhysicWorld* GetPhysicWorld() const { return mPhysicWorld; }
 
 public : 
 	inline IRenderer* GetRenderer() const { return mRenderer; }
