@@ -4,6 +4,8 @@
 #include "PrefabFactory.h"
 #include "BulletRigidbodyComponent.h"
 #include "CubeColliderComponent.h"
+#include "SphereColliderComponent.h"
+#include "CapsuleColliderComponent.h"
 #include "MeshComponent.h"
 
 PhysicWorld::PhysicWorld()
@@ -55,21 +57,21 @@ void PhysicWorld::Test()
         auto actor1 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(i * 3, 10, 2));
 
         auto rigidbody = new BulletRigidbodyComponent(actor1);
-        auto collider = new CubeColliderComponent(actor1);
+        auto collider = new CapsuleColliderComponent(actor1);
 
-        rigidbody->Initialize(collider->GetShape());
+        rigidbody->Initialize(collider);
 
         mRigidbodies.push_back(rigidbody);
 
         actor1->AddComponent(rigidbody);
         actor1->AddComponent(collider);
     }
-    auto actor2 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 20, -3), 0, Vector3D(10, 10, 0.2));
+    auto actor2 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, -3), 0, Vector3D(10, 10, 0.2));
 
     auto rigidbody1 = new BulletRigidbodyComponent(actor2);
     auto collider1 = new CubeColliderComponent(actor2);
 
-    rigidbody1->Initialize(collider1->GetShape());
+    rigidbody1->Initialize(collider1);
     rigidbody1->SetMass(0);
 
     mRigidbodies.push_back(rigidbody1);

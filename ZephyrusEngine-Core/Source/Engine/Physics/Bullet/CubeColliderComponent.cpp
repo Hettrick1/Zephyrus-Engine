@@ -22,7 +22,7 @@ void CubeColliderComponent::SetHalfExtents(const Vector3D& pHalfExtents)
             mShape = new btBoxShape(mHalfExtents);
             if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
             {
-                rb->Rebuild(mShape);
+                rb->Rebuild(this);
             }
         }
     }

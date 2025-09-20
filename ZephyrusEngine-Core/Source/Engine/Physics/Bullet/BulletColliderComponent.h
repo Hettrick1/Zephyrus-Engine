@@ -11,6 +11,9 @@ public:
 
     btCollisionShape* GetShape() const { return mShape; }
 
+    inline bool GetIsQuery() const { return mIsQuery; }
+
 protected:
     btCollisionShape* mShape = nullptr;
+    bool mIsQuery = false;
 };

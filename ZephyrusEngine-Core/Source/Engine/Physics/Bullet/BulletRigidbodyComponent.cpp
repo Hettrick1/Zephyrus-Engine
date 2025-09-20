@@ -5,7 +5,7 @@
 #include "Scene.h"
 
 BulletRigidbodyComponent::BulletRigidbodyComponent(Actor* pOwner)
-    : Component(pOwner,"BulletRigidBody"), mType(BodyType::Dynamic), mMass(1.0), mFriction(0.5f), mRestitution(0.5f), mLockAngle(1), mLockAxes(1)
+    : Component(pOwner,"BulletRigidBody"), mType(BodyType::Dynamic), mMass(1.0), mFriction(0.5f), mRestitution(0.5f), mLockAngles(1), mLockAxes(1)
 {
 }
 
@@ -22,17 +22,87 @@ BulletRigidbodyComponent::~BulletRigidbodyComponent()
 
 void BulletRigidbodyComponent::Deserialize(const rapidjson::Value& pData)
 {
+    Component::Deserialize(pData);
+
+    if (auto type = Serialization::Json::ReadString(pData, "bodyType"))
+    {
+        mType = StringToBodyType(*type);
+    }
+    if (auto mass = Serialization::Json::ReadFloat(pData, "mass"))
+    {
+        mMass = *mass;
+    }
+    if (auto friction = Serialization::Json::ReadFloat(pData, "friction"))
+    {
+        mFriction = *friction;
+    }
+    if (auto restitution = Serialization::Json::ReadFloat(pData, "restitution"))
+    {
+        mRestitution = *restitution;
+    }
+    if (auto lockAngles = Serialization::Json::ReadVector3D(pData, "lockAngles"))
+    {
+        mLockAngles = *lockAngles;
+    }
+    if (auto lockAxes = Serialization::Json::ReadVector3D(pData, "lockAxes"))
+    {
+        mLockAxes = *lockAxes;
+    }
+    if (auto shapeOwner = Serialization::Json::ReadString(pData, "colliderComponentID"))
+    {
+        if (auto collider = mOwner->GetComponentWithId(*shapeOwner))
+        {
+            auto colliderComponent = dynamic_cast<BulletColliderComponent*>(collider);
+            if (colliderComponent && mShapeOwner != colliderComponent)
+            {
+                mShape = colliderComponent->GetShape();
+                mShapeOwner = colliderComponent;
+                mShapeOwnerId = *shapeOwner;
+                Initialize(mShapeOwner);
+            }
+        }
+    }
+    else
+    {
+        auto colliders = mOwner->GetAllComponentOfType<BulletColliderComponent>();
+        if (!colliders.empty())
+        {
+            for (auto collider : colliders)
+            {
+                if (!collider->GetIsQuery() && mShapeOwner != collider)
+                {
+                    mShape = collider->GetShape();
+                    mShapeOwner = collider;
+                    mShapeOwnerId = collider->GetId();
+                    Initialize(mShapeOwner);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 void BulletRigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
+    Component::BeginSerialize(pWriter);
+    pWriter.WriteString("bodyType", BodyTypeToString(mType));
+    pWriter.WriteFloat("mass", mMass);
+    pWriter.WriteFloat("friction", mFriction);
+    pWriter.WriteFloat("restitution", mRestitution);
+    pWriter.WriteVector3D("lockAngles", mLockAngles);
+    pWriter.WriteVector3D("lockAxes", mLockAxes);
+    if (mShapeOwner)
+    {
+        pWriter.WriteString("colliderComponentID", mShapeOwnerId);
+    }
+    Component::EndSerialize(pWriter);
 }
 
 void BulletRigidbodyComponent::OnStart()
 {
-    if (mShape)
+    if (mShapeOwner)
     {
-        Initialize(mShape);
+        Initialize(mShapeOwner);
     }
 }
 
@@ -45,9 +115,11 @@ std::vector<PropertyDescriptor> BulletRigidbodyComponent::GetProperties()
     return std::vector<PropertyDescriptor>();
 }
 
-void BulletRigidbodyComponent::Initialize(btCollisionShape* shape)
+void BulletRigidbodyComponent::Initialize(BulletColliderComponent* pNewCollider)
 {
-    mShape = shape;
+    mShape = pNewCollider->GetShape();
+    mShapeOwner = pNewCollider;
+    mShapeOwnerId = mShapeOwner->GetId();
 
     btVector3 inertia;
     if (mMass != 0.0f)
@@ -69,7 +141,7 @@ void BulletRigidbodyComponent::Initialize(btCollisionShape* shape)
     mRigidBody->setRestitution(mRestitution);
     mRigidBody->setFriction(mFriction);
     mRigidBody->setLinearFactor(mLockAxes.ToBulletVec3());
-    mRigidBody->setAngularFactor(mLockAngle.ToBulletVec3());
+    mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
 
     SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->addRigidBody(mRigidBody);
 }
@@ -79,9 +151,9 @@ void BulletRigidbodyComponent::SetMass(float pMass)
     if (mMass != pMass)
     {
         mMass = pMass;
-        if (mShape)
+        if (mShapeOwner)
         {
-            Rebuild(mShape);
+            Rebuild(mShapeOwner);
         }
     }
 }
@@ -131,7 +203,7 @@ void BulletRigidbodyComponent::SyncTransformFromPhysics()
     mOwner->SetRotation(Quaternion(rot.x(), rot.y(), rot.z(), rot.w()));
 }
 
-void BulletRigidbodyComponent::Rebuild(btCollisionShape* newShape)
+void BulletRigidbodyComponent::Rebuild(BulletColliderComponent* pNewCollider)
 {
     if (mRigidBody)
     {
@@ -141,7 +213,7 @@ void BulletRigidbodyComponent::Rebuild(btCollisionShape* newShape)
         mRigidBody = nullptr;
     }
 
-    Initialize(newShape);
+    Initialize(pNewCollider);
 }
 
 void BulletRigidbodyComponent::SetType(BodyType pType)
@@ -165,9 +237,9 @@ void BulletRigidbodyComponent::SetType(BodyType pType)
         break;
     }
 
-    if (mShape)
+    if (mShapeOwner)
     {
-        Rebuild(mShape);
+        Rebuild(mShapeOwner);
         if (mRigidBody)
         {
             int flags = mRigidBody->getCollisionFlags();

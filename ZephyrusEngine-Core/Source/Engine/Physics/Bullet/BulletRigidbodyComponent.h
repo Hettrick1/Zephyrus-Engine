@@ -1,6 +1,9 @@
 #pragma once
 #include "Component.h"
 #include <btBulletDynamicsCommon.h>
+#include "BulletColliderComponent.h"
+
+#include <string>
 
 enum class BodyType
 {
@@ -14,12 +17,14 @@ class BulletRigidbodyComponent : public Component
 private:
     btRigidBody* mRigidBody = nullptr;
     btCollisionShape* mShape = nullptr;
+    BulletColliderComponent* mShapeOwner = nullptr;
+    std::string mShapeOwnerId;
     float mMass;
     float mFriction;
     float mRestitution;
 
     Vector3D mLockAxes;
-    Vector3D mLockAngle;
+    Vector3D mLockAngles;
 
     BodyType mType;
 public:
@@ -36,7 +41,7 @@ public:
 
     std::vector<PropertyDescriptor> GetProperties();
 
-    void Initialize(btCollisionShape* shape);
+    void Initialize(BulletColliderComponent* pNewCollider);
 
     void SetMass(float pMass);
 
@@ -49,7 +54,7 @@ public:
 
     void SyncTransformFromPhysics();
 
-    void Rebuild(btCollisionShape* newShape);
+    void Rebuild(BulletColliderComponent* pNewCollider);
 
     void SetType(BodyType pType);
 
@@ -59,7 +64,7 @@ public:
     }
     inline void LockAngle(const Vector3D& pLockAngle) 
     { 
-        mLockAngle = pLockAngle;
+        mLockAngles = pLockAngle;
     }
 
     inline void SetFriction(float pFriction) 
@@ -118,5 +123,21 @@ public:
             return mRigidBody->getWorldTransform();
         }
         return btTransform(); 
+    }
+
+    inline BodyType StringToBodyType(const std::string& str) {
+        if (str == "active") return BodyType::Dynamic;
+        if (str == "paused") return BodyType::Kinematic;
+        if (str == "dead") return BodyType::Static;
+        return BodyType::Dynamic;
+    }
+
+    inline const char* BodyTypeToString(BodyType state) {
+        switch (state) {
+        case BodyType::Dynamic: return "dynamic";
+        case BodyType::Kinematic: return "kinematic";
+        case BodyType::Static:   return "static";
+        }
+        return "dynamic";
     }
 };
