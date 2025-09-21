@@ -42,6 +42,7 @@ public:
     std::vector<PropertyDescriptor> GetProperties();
 
     void Initialize(BulletColliderComponent* pNewCollider);
+    void ClearRigidbody();
 
     void SetMass(float pMass);
 

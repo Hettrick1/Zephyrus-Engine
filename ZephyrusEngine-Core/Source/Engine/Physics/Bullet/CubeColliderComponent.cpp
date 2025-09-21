@@ -2,7 +2,7 @@
 
 #include "BulletRigidbodyComponent.h"
 #include "Actor.h"
-
+#include "SceneManager.h"
 
 CubeColliderComponent::CubeColliderComponent(Actor* pOwner)
     : BulletColliderComponent(pOwner)

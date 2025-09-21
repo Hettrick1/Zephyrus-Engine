@@ -18,6 +18,9 @@ BulletRigidbodyComponent::~BulletRigidbodyComponent()
         delete mRigidBody;
         mRigidBody = nullptr;
     }
+    mShape = nullptr;
+    mShapeOwner = nullptr;
+    mShapeOwnerId.clear();
 }
 
 void BulletRigidbodyComponent::Deserialize(const rapidjson::Value& pData)
@@ -144,6 +147,20 @@ void BulletRigidbodyComponent::Initialize(BulletColliderComponent* pNewCollider)
     mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
 
     SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->addRigidBody(mRigidBody);
+}
+
+void BulletRigidbodyComponent::ClearRigidbody()
+{
+    if (mRigidBody)
+    {
+        SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->removeRigidBody(mRigidBody);
+        delete mRigidBody->getMotionState();
+        delete mRigidBody;
+        mRigidBody = nullptr;
+    }
+    mShape = nullptr;
+    mShapeOwner = nullptr;
+    mShapeOwnerId.clear();
 }
 
 void BulletRigidbodyComponent::SetMass(float pMass)
