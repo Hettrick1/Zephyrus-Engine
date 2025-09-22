@@ -8,6 +8,10 @@ CubeColliderComponent::CubeColliderComponent(Actor* pOwner)
     : BulletColliderComponent(pOwner)
 {
     mShape = new btBoxShape(mHalfExtents);
+    if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
+    {
+        rb->AddCollider(this);
+    }
 }
 
 void CubeColliderComponent::SetHalfExtents(const Vector3D& pHalfExtents)
@@ -18,12 +22,16 @@ void CubeColliderComponent::SetHalfExtents(const Vector3D& pHalfExtents)
         mHalfExtents = newExtents;
         if (mShape)
         {
-            delete mShape;
+            btCollisionShape* oldShape = mShape;
+
             mShape = new btBoxShape(mHalfExtents);
+
             if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
             {
-                rb->Rebuild(this);
+                rb->UpdateColliderShape(this, oldShape);
             }
+
+            delete oldShape;
         }
     }
 }

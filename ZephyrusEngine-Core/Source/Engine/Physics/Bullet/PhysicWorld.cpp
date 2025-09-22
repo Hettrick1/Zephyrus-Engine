@@ -80,46 +80,37 @@ void PhysicWorld::Test()
         auto actor1 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(i * 3, 10, 2.5));
 
         auto rigidbody = new BulletRigidbodyComponent(actor1);
+        actor1->AddComponent(rigidbody);
         auto collider = new CubeColliderComponent(actor1);
-
-        rigidbody->Initialize(collider);
+        actor1->AddComponent(collider);
 
         mRigidbodies.push_back(rigidbody);
         mColliders.push_back(collider);
-
-        actor1->AddComponent(rigidbody);
-        actor1->AddComponent(collider);
     }
 
     auto actor3 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, 0.5));
 
     auto rigidbody3 = new BulletRigidbodyComponent(actor3);
+    actor3->AddComponent(rigidbody3);
     auto collider3 = new CubeColliderComponent(actor3);
-
-    rigidbody3->Initialize(collider3);
+    actor3->AddComponent(collider3);
 
     mRigidbodies.push_back(rigidbody3);
     mColliders.push_back(collider3);
 
-    actor3->AddComponent(rigidbody3);
-    actor3->AddComponent(collider3);
-
-    mColliders[3]->SetIsQuery(true);
-
-
+    collider3->SetIsQuery(true);
 
     auto actor2 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, -3), 0, Vector3D(10, 10, 0.2));
 
     auto rigidbody1 = new BulletRigidbodyComponent(actor2);
+    actor2->AddComponent(rigidbody1);
     auto collider1 = new CubeColliderComponent(actor2);
+    actor2->AddComponent(collider1);
 
-    rigidbody1->Initialize(collider1);
-    rigidbody1->SetMass(0);
+    rigidbody1->SetType(BodyType::Static);
 
     mRigidbodies.push_back(rigidbody1);
 
-    actor2->AddComponent(rigidbody1);
-    actor2->AddComponent(collider1);
-
     collider1->SetHalfExtents(Vector3D(10, 10, 0.2));
+
 }

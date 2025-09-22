@@ -10,6 +10,7 @@ Component::Component(Actor* pOwner, std::string pName, int pUpdateOder)
 
 Component::~Component()
 {
+    mOwner = nullptr;
 }
 
 void Component::SetId(const std::string& pId)
@@ -27,7 +28,6 @@ void Component::Update()
 
 void Component::OnEnd()
 {
-    mOwner = nullptr;
 }
 
 std::vector<PropertyDescriptor> Component::GetProperties()

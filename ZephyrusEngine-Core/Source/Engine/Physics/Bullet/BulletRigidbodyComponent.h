@@ -16,9 +16,8 @@ class BulletRigidbodyComponent : public Component
 {
 private:
     btRigidBody* mRigidBody = nullptr;
-    btCollisionShape* mShape = nullptr;
-    BulletColliderComponent* mShapeOwner = nullptr;
-    std::string mShapeOwnerId;
+    btCompoundShape* mCompound = nullptr;
+    std::vector<BulletColliderComponent*> mColliders;
     float mMass;
     float mFriction;
     float mRestitution;
@@ -41,7 +40,9 @@ public:
 
     std::vector<PropertyDescriptor> GetProperties();
 
-    void Initialize(BulletColliderComponent* pNewCollider);
+    void AddCollider(BulletColliderComponent* collider);
+    void RemoveCollider(BulletColliderComponent* collider);
+
     void ClearRigidbody();
 
     void SetMass(float pMass);
@@ -55,7 +56,8 @@ public:
 
     void SyncTransformFromPhysics();
 
-    void Rebuild(BulletColliderComponent* pNewCollider);
+    void Rebuild();
+    void UpdateColliderShape(BulletColliderComponent* collider, btCollisionShape* oldShape);
 
     void SetType(BodyType pType);
 

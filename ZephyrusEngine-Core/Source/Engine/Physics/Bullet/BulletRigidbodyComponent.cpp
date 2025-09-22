@@ -11,16 +11,9 @@ BulletRigidbodyComponent::BulletRigidbodyComponent(Actor* pOwner)
 
 BulletRigidbodyComponent::~BulletRigidbodyComponent()
 {
-    if (mRigidBody)
-    {
-        SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->removeRigidBody(mRigidBody);
-        delete mRigidBody->getMotionState();
-        delete mRigidBody;
-        mRigidBody = nullptr;
-    }
-    mShape = nullptr;
-    mShapeOwner = nullptr;
-    mShapeOwnerId.clear();
+    ClearRigidbody();
+    delete mCompound;
+    mCompound = nullptr;
 }
 
 void BulletRigidbodyComponent::Deserialize(const rapidjson::Value& pData)
@@ -51,38 +44,6 @@ void BulletRigidbodyComponent::Deserialize(const rapidjson::Value& pData)
     {
         mLockAxes = *lockAxes;
     }
-    if (auto shapeOwner = Serialization::Json::ReadString(pData, "colliderComponentID"))
-    {
-        if (auto collider = mOwner->GetComponentWithId(*shapeOwner))
-        {
-            auto colliderComponent = dynamic_cast<BulletColliderComponent*>(collider);
-            if (colliderComponent && mShapeOwner != colliderComponent)
-            {
-                mShape = colliderComponent->GetShape();
-                mShapeOwner = colliderComponent;
-                mShapeOwnerId = *shapeOwner;
-                Initialize(mShapeOwner);
-            }
-        }
-    }
-    else
-    {
-        auto colliders = mOwner->GetAllComponentOfType<BulletColliderComponent>();
-        if (!colliders.empty())
-        {
-            for (auto collider : colliders)
-            {
-                if (!collider->GetIsQuery() && mShapeOwner != collider)
-                {
-                    mShape = collider->GetShape();
-                    mShapeOwner = collider;
-                    mShapeOwnerId = collider->GetId();
-                    Initialize(mShapeOwner);
-                    return;
-                }
-            }
-        }
-    }
 }
 
 void BulletRigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
@@ -94,19 +55,13 @@ void BulletRigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWrite
     pWriter.WriteFloat("restitution", mRestitution);
     pWriter.WriteVector3D("lockAngles", mLockAngles);
     pWriter.WriteVector3D("lockAxes", mLockAxes);
-    if (mShapeOwner)
-    {
-        pWriter.WriteString("colliderComponentID", mShapeOwnerId);
-    }
     Component::EndSerialize(pWriter);
 }
 
 void BulletRigidbodyComponent::OnStart()
 {
-    if (mShapeOwner)
-    {
-        Initialize(mShapeOwner);
-    }
+    Component::OnStart();
+    Rebuild();
 }
 
 void BulletRigidbodyComponent::OnEnd()
@@ -118,35 +73,33 @@ std::vector<PropertyDescriptor> BulletRigidbodyComponent::GetProperties()
     return std::vector<PropertyDescriptor>();
 }
 
-void BulletRigidbodyComponent::Initialize(BulletColliderComponent* pNewCollider)
+void BulletRigidbodyComponent::AddCollider(BulletColliderComponent* collider)
 {
-    mShape = pNewCollider->GetShape();
-    mShapeOwner = pNewCollider;
-    mShapeOwnerId = mShapeOwner->GetId();
+    if (!collider || collider->GetIsQuery()) return;
 
-    btVector3 inertia;
-    if (mMass != 0.0f)
+    if (!mCompound)
     {
-        mShape->calculateLocalInertia(mMass, inertia);
+        mCompound = new btCompoundShape();
     }
 
-    auto initialRot = mOwner->GetTransformComponent().GetRotation();
-    btQuaternion initialRotation = btQuaternion(initialRot.x, initialRot.y, initialRot.z, initialRot.w);
+    btTransform local;
+    local.setRotation(collider->GetRelativeTransform().GetRotation().ToBulletQuat());
+    local.setOrigin(collider->GetRelativeTransform().GetTranslation().ToBulletVec3());
+    mCompound->addChildShape(local, collider->GetShape());
 
-    auto initialLoc = mOwner->GetTransformComponent().GetPosition();
-    btVector3 initialLocation = btVector3(initialLoc.x, initialLoc.y, initialLoc.z);
+    mColliders.push_back(collider);
 
-    btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(initialRotation, initialLocation));
+    Rebuild();
+}
 
-    btRigidBody::btRigidBodyConstructionInfo rbInfo(mMass, motionState, mShape, inertia);
-    mRigidBody = new btRigidBody(rbInfo);
+void BulletRigidbodyComponent::RemoveCollider(BulletColliderComponent* collider)
+{
+    if (!collider || !mCompound) return;
 
-    mRigidBody->setRestitution(mRestitution);
-    mRigidBody->setFriction(mFriction);
-    mRigidBody->setLinearFactor(mLockAxes.ToBulletVec3());
-    mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
+    mCompound->removeChildShape(collider->GetShape());
+    mColliders.erase(std::remove(mColliders.begin(), mColliders.end(), collider), mColliders.end());
 
-    SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->addRigidBody(mRigidBody);
+    Rebuild();
 }
 
 void BulletRigidbodyComponent::ClearRigidbody()
@@ -158,9 +111,6 @@ void BulletRigidbodyComponent::ClearRigidbody()
         delete mRigidBody;
         mRigidBody = nullptr;
     }
-    mShape = nullptr;
-    mShapeOwner = nullptr;
-    mShapeOwnerId.clear();
 }
 
 void BulletRigidbodyComponent::SetMass(float pMass)
@@ -168,10 +118,7 @@ void BulletRigidbodyComponent::SetMass(float pMass)
     if (mMass != pMass)
     {
         mMass = pMass;
-        if (mShapeOwner)
-        {
-            Rebuild(mShapeOwner);
-        }
+        Rebuild();
     }
 }
 
@@ -220,17 +167,56 @@ void BulletRigidbodyComponent::SyncTransformFromPhysics()
     mOwner->SetRotation(Quaternion(rot.x(), rot.y(), rot.z(), rot.w()));
 }
 
-void BulletRigidbodyComponent::Rebuild(BulletColliderComponent* pNewCollider)
+void BulletRigidbodyComponent::Rebuild()
 {
-    if (mRigidBody)
+    ClearRigidbody();
+
+    if (!mCompound || mColliders.empty())
+        return;
+
+    btVector3 inertia(0, 0, 0);
+    if (mMass > 0.0f)
     {
-        SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->removeRigidBody(mRigidBody);
-        delete mRigidBody->getMotionState();
-        delete mRigidBody;
-        mRigidBody = nullptr;
+        mCompound->calculateLocalInertia(mMass, inertia);
     }
 
-    Initialize(pNewCollider);
+    auto initialRot = mOwner->GetTransformComponent().GetRotation();
+    btQuaternion initialRotation(initialRot.x, initialRot.y, initialRot.z, initialRot.w);
+
+    auto initialLoc = mOwner->GetTransformComponent().GetPosition();
+    btVector3 initialLocation(initialLoc.x, initialLoc.y, initialLoc.z);
+
+    btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(initialRotation, initialLocation));
+
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(mMass, motionState, mCompound, inertia);
+    mRigidBody = new btRigidBody(rbInfo);
+
+    mRigidBody->setRestitution(mRestitution);
+    mRigidBody->setFriction(mFriction);
+    mRigidBody->setLinearFactor(mLockAxes.ToBulletVec3());
+    mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
+
+    SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->addRigidBody(mRigidBody);
+}
+
+void BulletRigidbodyComponent::UpdateColliderShape(BulletColliderComponent* collider, btCollisionShape* oldShape)
+{
+    if (!mCompound || !collider) return;
+
+    if (oldShape)
+    {
+        mCompound->removeChildShape(oldShape);
+    }
+
+    if (collider->GetShape() && !collider->GetIsQuery())
+    {
+        btTransform local;
+        local.setRotation(collider->GetRelativeTransform().GetRotation().ToBulletQuat());
+        local.setOrigin(collider->GetRelativeTransform().GetTranslation().ToBulletVec3());
+        mCompound->addChildShape(local, collider->GetShape());
+    }
+
+    Rebuild();
 }
 
 void BulletRigidbodyComponent::SetType(BodyType pType)
@@ -254,25 +240,22 @@ void BulletRigidbodyComponent::SetType(BodyType pType)
         break;
     }
 
-    if (mShapeOwner)
+    Rebuild();
+    if (mRigidBody)
     {
-        Rebuild(mShapeOwner);
-        if (mRigidBody)
-        {
-            int flags = mRigidBody->getCollisionFlags();
+        int flags = mRigidBody->getCollisionFlags();
 
-            if (mType == BodyType::Kinematic)
-            {
-                flags |= btCollisionObject::CF_KINEMATIC_OBJECT;
-                mRigidBody->setCollisionFlags(flags);
-                mRigidBody->setActivationState(DISABLE_DEACTIVATION);
-            }
-            else
-            {
-                flags &= ~(btCollisionObject::CF_KINEMATIC_OBJECT);
-                mRigidBody->setCollisionFlags(flags);
-                mRigidBody->setActivationState(ACTIVE_TAG);
-            }
+        if (mType == BodyType::Kinematic)
+        {
+            flags |= btCollisionObject::CF_KINEMATIC_OBJECT;
+            mRigidBody->setCollisionFlags(flags);
+            mRigidBody->setActivationState(DISABLE_DEACTIVATION);
+        }
+        else
+        {
+            flags &= ~(btCollisionObject::CF_KINEMATIC_OBJECT);
+            mRigidBody->setCollisionFlags(flags);
+            mRigidBody->setActivationState(ACTIVE_TAG);
         }
     }
 }

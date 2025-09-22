@@ -20,6 +20,8 @@ public:
     inline bool GetIsQuery() const { return mIsQuery; }
 
     void UpdateTrigger();
+    
+    void OnEnd() override;
 
 public:
     // Adds a collision event listener.

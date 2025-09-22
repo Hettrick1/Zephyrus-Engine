@@ -9,11 +9,6 @@ BulletColliderComponent::BulletColliderComponent(Actor* pOwner)
 
 BulletColliderComponent::~BulletColliderComponent()
 {
-    if (mShape)
-    {
-        delete mShape;
-        mShape = nullptr;
-    }
 }
 
 void BulletColliderComponent::SetIsQuery(bool pIsQuery)
@@ -23,12 +18,13 @@ void BulletColliderComponent::SetIsQuery(bool pIsQuery)
     mIsQuery = pIsQuery;
 
     auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>();
 
     if (mIsQuery)
     {
-        if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
+        if (rb) 
         {
-            rb->ClearRigidbody();
+            rb->RemoveCollider(this);
         }
 
         if (!mGhost)
@@ -56,10 +52,7 @@ void BulletColliderComponent::SetIsQuery(bool pIsQuery)
             mGhost = nullptr;
         }
 
-        if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
-        {
-            rb->Rebuild(this);
-        }
+        if (rb) rb->AddCollider(this);
     }
 }
 
@@ -102,6 +95,20 @@ void BulletColliderComponent::UpdateTrigger()
     }
 
     mPreviousOverlaps = std::move(currentOverlaps);
+}
+
+void BulletColliderComponent::OnEnd()
+{
+    if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
+    {
+        rb->RemoveCollider(this);
+    }
+    if (mShape)
+    {
+        delete mShape;
+        mShape = nullptr;
+    }
+    Component::OnEnd();
 }
 
 void BulletColliderComponent::AddListener(ICollisionListener* pListener)

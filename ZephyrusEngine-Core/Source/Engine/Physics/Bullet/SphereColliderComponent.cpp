@@ -6,6 +6,10 @@ SphereColliderComponent::SphereColliderComponent(Actor* pOwner)
 	: BulletColliderComponent(pOwner)
 {
 	mShape = new btSphereShape(mRadius);
+    if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
+    {
+        rb->AddCollider(this);
+    }
 }
 
 void SphereColliderComponent::SetRadius(const float& pRadius)
@@ -16,12 +20,16 @@ void SphereColliderComponent::SetRadius(const float& pRadius)
         mRadius = newRadius;
         if (mShape)
         {
-            delete mShape;
+            btCollisionShape* oldShape = mShape;
+
             mShape = new btSphereShape(mRadius);
+
             if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
             {
-                rb->Rebuild(this);
+                rb->UpdateColliderShape(this, oldShape);
             }
+
+            delete oldShape;
         }
     }
 }
