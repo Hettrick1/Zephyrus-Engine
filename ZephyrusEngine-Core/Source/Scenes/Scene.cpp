@@ -12,8 +12,10 @@
 #include "PlayerStartComponent.h"
 
 Scene::Scene(std::string pTitle) 
-	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld())
+	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld()), mDebugRenderer(new PhysicsDebugRenderer())
 {
+	mDebugRenderer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	mPhysicWorld->GetWorld()->setDebugDrawer(mDebugRenderer);
 }
 
 void Scene::Start()
@@ -90,6 +92,8 @@ void Scene::Render()
 {
 	mRenderer->BeginDraw();
 	mRenderer->Draw();
+	mPhysicWorld->GetWorld()->debugDrawWorld();
+	mDebugRenderer->FlushDraw();
 	mRenderer->EndDraw();
 }
 
@@ -106,6 +110,8 @@ void Scene::BeginRender()
 void Scene::RenderCurrentSceneOnly()
 {
 	mRenderer->Draw();
+	mPhysicWorld->GetWorld()->debugDrawWorld();
+	mDebugRenderer->FlushDraw();
 }
 
 void Scene::EndRender()
@@ -133,6 +139,8 @@ void Scene::Unload()
 	Assets::Clear();
 	delete mPhysicWorld;
 	mPhysicWorld = nullptr;
+	delete mDebugRenderer;
+	mDebugRenderer = nullptr;
 }
 
 void Scene::Close()
@@ -154,6 +162,8 @@ void Scene::Close()
 	CameraManager::Instance().Unload();
 	delete mPhysicWorld;
 	mPhysicWorld = nullptr;
+	delete mDebugRenderer;
+	mDebugRenderer = nullptr;
 }
 
 void Scene::SaveTo(const std::string& pFilePath)

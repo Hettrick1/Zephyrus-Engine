@@ -13,6 +13,8 @@ class Actor;
 class CameraComponent : public Component
 {
 public:
+	Matrix4DRow mViewMatrix;
+
 	CameraComponent(Actor* pOwner, int updateOder = 0);
 	~CameraComponent();
 

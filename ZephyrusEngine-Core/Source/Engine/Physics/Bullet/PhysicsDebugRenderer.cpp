@@ -1,0 +1,60 @@
+#include "PhysicsDebugRenderer.h"
+#include "Assets.h"
+#include "CameraManager.h"
+#include "CameraComponent.h"
+
+PhysicsDebugRenderer::PhysicsDebugRenderer()
+    : m_debugMode(DBG_DrawWireframe)
+{
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindVertexArray(0);
+
+    mDebugVertex = *Assets::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
+    mDebugFragment = *Assets::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
+    mDebugShaderProgram = *Assets::LoadShaderProgram({ &mDebugVertex, &mDebugFragment }, "debugSP");
+}
+
+void PhysicsDebugRenderer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
+{
+    mLines.push_back(from.x());
+    mLines.push_back(from.y());
+    mLines.push_back(from.z());
+
+    mLines.push_back(to.x());
+    mLines.push_back(to.y());
+    mLines.push_back(to.z());
+}
+
+void PhysicsDebugRenderer::FlushDraw()
+{
+    if (mLines.empty()) return;
+
+    glLineWidth(5);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, mLines.size() * sizeof(float), mLines.data(), GL_DYNAMIC_DRAW);
+
+    glBindVertexArray(vao);
+    mDebugShaderProgram.Use();
+    auto mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, 1920, 1080, 0.01f, 10000.0f);
+    auto cam = CameraManager::Instance().GetCurrentCamera();
+
+    auto mView = cam->mViewMatrix;
+    auto wt = Matrix4DRow::Identity;
+    mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
+    mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);
+    glDrawArrays(GL_LINES, 0, mLines.size() / 3);
+    glBindVertexArray(0);
+    glLineWidth(6);
+
+    mLines.clear();
+}
+

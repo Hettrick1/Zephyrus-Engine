@@ -10,11 +10,21 @@ class ICollisionListener;
 
 class BulletColliderComponent : public Component
 {
+protected:
+    btCollisionShape* mShape = nullptr;
+    btGhostObject* mGhost = nullptr;
+    std::unordered_map<const btCollisionObject*, HitResult> mPreviousOverlaps;
+    std::vector<ICollisionListener*> mListeners;
+    bool mIsQuery = false;
+    bool mIgnoreSelf = true;
 public:
     BulletColliderComponent(Actor* pOwner);
     virtual ~BulletColliderComponent();
 
     btCollisionShape* GetShape() const { return mShape; }
+
+    void CreateColliderWithoutBody();
+    void ClearGhostObject();
 
     virtual void SetIsQuery(bool pIsQuery);
     inline bool GetIsQuery() const { return mIsQuery; }
@@ -36,12 +46,4 @@ public:
     void NotifyListenersStay(HitResult* pInfos);
     // Notifies listeners that a collision has ended.
     void NotifyListenersEnded(HitResult* pInfos);
-
-
-protected:
-    btCollisionShape* mShape = nullptr;
-    btGhostObject* mGhost = nullptr;
-    std::unordered_map<const btCollisionObject*, HitResult> mPreviousOverlaps;
-    std::vector<ICollisionListener*> mListeners;
-    bool mIsQuery = false;
 };

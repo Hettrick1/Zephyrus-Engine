@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "Assets.h"
 #include "Physics/Bullet/PhysicWorld.h"
+#include "Physics/Bullet/PhysicsDebugRenderer.h"
 
 class Actor;
 
@@ -27,6 +28,7 @@ protected:
 	Actor* mPlayerStart = nullptr;
 	bool mSaved = true;
 	PhysicWorld* mPhysicWorld = nullptr;
+	PhysicsDebugRenderer* mDebugRenderer = nullptr;
 public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(); // Initializes the scene with the given renderer

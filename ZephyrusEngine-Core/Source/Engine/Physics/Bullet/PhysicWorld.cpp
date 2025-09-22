@@ -79,26 +79,33 @@ void PhysicWorld::Test()
     {
         auto actor1 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(i * 3, 10, 2.5));
 
-        auto rigidbody = new BulletRigidbodyComponent(actor1);
-        actor1->AddComponent(rigidbody);
         auto collider = new CubeColliderComponent(actor1);
         actor1->AddComponent(collider);
+        auto collider0 = new CapsuleColliderComponent(actor1);
+        actor1->AddComponent(collider0);
+        auto rigidbody = new BulletRigidbodyComponent(actor1);
+        actor1->AddComponent(rigidbody);
 
         mRigidbodies.push_back(rigidbody);
         mColliders.push_back(collider);
+        mColliders.push_back(collider0);
     }
 
     auto actor3 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, 0.5));
 
-    auto rigidbody3 = new BulletRigidbodyComponent(actor3);
-    actor3->AddComponent(rigidbody3);
     auto collider3 = new CubeColliderComponent(actor3);
     actor3->AddComponent(collider3);
 
-    mRigidbodies.push_back(rigidbody3);
     mColliders.push_back(collider3);
 
     collider3->SetIsQuery(true);
+
+    auto actor4 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(-3, 10, -0.5));
+
+    auto collider4 = new CubeColliderComponent(actor4);
+    actor4->AddComponent(collider4);
+
+    mColliders.push_back(collider4);
 
     auto actor2 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, -3), 0, Vector3D(10, 10, 0.2));
 

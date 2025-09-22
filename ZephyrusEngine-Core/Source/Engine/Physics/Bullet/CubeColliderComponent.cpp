@@ -12,6 +12,10 @@ CubeColliderComponent::CubeColliderComponent(Actor* pOwner)
     {
         rb->AddCollider(this);
     }
+    else
+    {
+        CreateColliderWithoutBody();
+    }
 }
 
 void CubeColliderComponent::SetHalfExtents(const Vector3D& pHalfExtents)

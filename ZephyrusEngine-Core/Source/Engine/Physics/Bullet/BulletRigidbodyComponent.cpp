@@ -7,6 +7,30 @@
 BulletRigidbodyComponent::BulletRigidbodyComponent(Actor* pOwner)
     : Component(pOwner,"BulletRigidBody"), mType(BodyType::Dynamic), mMass(1.0), mFriction(0.5f), mRestitution(0.5f), mLockAngles(1), mLockAxes(1)
 {
+    if (mOwner->GetComponentOfType<RigidbodyComponent>())
+    {
+        return;
+    }
+
+    auto colliders = mOwner->GetAllComponentOfType<BulletColliderComponent>();
+
+    if (!colliders.empty())
+    {
+        for (auto col : colliders)
+        {
+            if (col->GetIsQuery())
+            {
+                continue;
+            }
+            else
+            {
+                col->ClearGhostObject();
+                AddCollider(col);
+            }
+        }
+    }
+
+    Rebuild();
 }
 
 BulletRigidbodyComponent::~BulletRigidbodyComponent()
@@ -14,6 +38,13 @@ BulletRigidbodyComponent::~BulletRigidbodyComponent()
     ClearRigidbody();
     delete mCompound;
     mCompound = nullptr;
+    for (auto col : mColliders)
+    {
+        if (!col->GetIsQuery())
+        {
+            col->CreateColliderWithoutBody();
+        }
+    }
 }
 
 void BulletRigidbodyComponent::Deserialize(const rapidjson::Value& pData)
@@ -61,7 +92,6 @@ void BulletRigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWrite
 void BulletRigidbodyComponent::OnStart()
 {
     Component::OnStart();
-    Rebuild();
 }
 
 void BulletRigidbodyComponent::OnEnd()

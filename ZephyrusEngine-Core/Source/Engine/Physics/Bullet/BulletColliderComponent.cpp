@@ -11,6 +11,43 @@ BulletColliderComponent::~BulletColliderComponent()
 {
 }
 
+void BulletColliderComponent::CreateColliderWithoutBody()
+{
+    if (mIsQuery)
+    {
+        return;
+    }
+    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    if (mGhost)
+    {
+        world->RemoveGhostObject(mGhost);
+        delete mGhost;
+        mGhost = nullptr;
+    }
+    mGhost = new btGhostObject();
+    mGhost->setUserPointer(mOwner);
+    mGhost->setCollisionShape(mShape);
+
+    btTransform t;
+    auto actorRot = mOwner->GetTransformComponent().GetRotation();
+    t.setRotation(btQuaternion(actorRot.x, actorRot.y, actorRot.z, actorRot.w));
+    t.setOrigin(mOwner->GetPosition().ToBulletVec3());
+    mGhost->setWorldTransform(t);
+
+    world->AddGhostObject(mGhost);
+}
+
+void BulletColliderComponent::ClearGhostObject()
+{
+    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    if (mGhost)
+    {
+        world->RemoveGhostObject(mGhost);
+        delete mGhost;
+        mGhost = nullptr;
+    }
+}
+
 void BulletColliderComponent::SetIsQuery(bool pIsQuery)
 {
     if (mIsQuery == pIsQuery) return;
@@ -27,10 +64,13 @@ void BulletColliderComponent::SetIsQuery(bool pIsQuery)
             rb->RemoveCollider(this);
         }
 
-        if (!mGhost)
+        if (mGhost)
         {
-            mGhost = new btGhostObject();
+            world->RemoveGhostObject(mGhost);
+            delete mGhost;
+            mGhost = nullptr;
         }
+        mGhost = new btGhostObject();
         mGhost->setUserPointer(mOwner);
         mGhost->setCollisionShape(mShape);
         mGhost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
@@ -66,10 +106,19 @@ void BulletColliderComponent::UpdateTrigger()
     for (int i = 0; i < num; ++i)
     {
         const btCollisionObject* obj = mGhost->getOverlappingObject(i);
+        auto hitActor = static_cast<Actor*>(obj->getUserPointer());
+
+        if (mIgnoreSelf)
+        {
+            if (hitActor == mOwner)
+            {
+                continue;
+            }
+        }
 
         HitResult result;
         result.HasHit = true;
-        result.HitActor = static_cast<Actor*>(obj->getUserPointer());
+        result.HitActor = hitActor;
         result.HitCollider = nullptr;
         currentOverlaps[obj] = result;
 

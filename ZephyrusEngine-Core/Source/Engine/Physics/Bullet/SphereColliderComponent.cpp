@@ -10,6 +10,10 @@ SphereColliderComponent::SphereColliderComponent(Actor* pOwner)
     {
         rb->AddCollider(this);
     }
+    else
+    {
+        CreateColliderWithoutBody();
+    }
 }
 
 void SphereColliderComponent::SetRadius(const float& pRadius)

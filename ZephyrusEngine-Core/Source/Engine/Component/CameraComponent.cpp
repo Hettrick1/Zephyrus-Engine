@@ -71,6 +71,7 @@ void CameraComponent::UpdateCam()
     Vector3D up = worldTransform.GetZAxis(); 
 
     Matrix4DRow view = Matrix4DRow::CreateLookAt(camPosition, target, up);
+    mViewMatrix = view;
     SceneManager::ActiveScene->GetRenderer()->SetViewMatrix(view);
 }
 
