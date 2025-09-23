@@ -37,7 +37,7 @@ void PhysicsDebugRenderer::FlushDraw()
 {
     if (mLines.empty()) return;
 
-    glLineWidth(5);
+    glLineWidth(4);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, mLines.size() * sizeof(float), mLines.data(), GL_DYNAMIC_DRAW);

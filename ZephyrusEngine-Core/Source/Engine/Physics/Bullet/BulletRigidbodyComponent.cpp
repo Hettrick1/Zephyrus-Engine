@@ -152,35 +152,35 @@ void BulletRigidbodyComponent::SetMass(float pMass)
     }
 }
 
-void BulletRigidbodyComponent::ApplyForce(const btVector3& force)
+void BulletRigidbodyComponent::ApplyForce(const Vector3D& force)
 {
     if (mRigidBody)
     {
-        mRigidBody->applyCentralForce(force);
+        mRigidBody->applyCentralForce(force.ToBulletVec3());
     }
 }
 
-void BulletRigidbodyComponent::ApplyImpulse(const btVector3& impulse)
+void BulletRigidbodyComponent::ApplyImpulse(const Vector3D& impulse)
 {
     if (mRigidBody)
     {
-        mRigidBody->applyCentralImpulse(impulse);
+        mRigidBody->applyCentralImpulse(impulse.ToBulletVec3());
     }
 }
 
-void BulletRigidbodyComponent::ApplyTorque(const btVector3& torque)
+void BulletRigidbodyComponent::ApplyTorque(const Vector3D& torque)
 {
     if (mRigidBody) 
     {
-        mRigidBody->applyTorque(torque);
+        mRigidBody->applyTorque(torque.ToBulletVec3());
     }
 }
 
-void BulletRigidbodyComponent::ApplyTorqueImpulse(const btVector3& impulse)
+void BulletRigidbodyComponent::ApplyTorqueImpulse(const Vector3D& impulse)
 {
     if (mRigidBody) 
     {
-        mRigidBody->applyTorqueImpulse(impulse);
+        mRigidBody->applyTorqueImpulse(impulse.ToBulletVec3());
     }
 }
 
@@ -195,6 +195,29 @@ void BulletRigidbodyComponent::SyncTransformFromPhysics()
 
     mOwner->SetPosition(Vector3D(pos.x(), pos.y(), pos.z()));
     mOwner->SetRotation(Quaternion(rot.x(), rot.y(), rot.z(), rot.w()));
+}
+
+void BulletRigidbodyComponent::UpdateColliderTransform(BulletColliderComponent* collider)
+{
+    if (!mCompound) return;
+
+    int childIndex= -1;
+
+    int n = mCompound->getNumChildShapes();
+    for (int i = 0; i < n; ++i)
+    {
+        if (mCompound->getChildShape(i) == collider->GetShape())
+        {
+            childIndex = i;
+        }
+    }
+    if (childIndex < 0) return;
+
+    btTransform local;
+    local.setRotation(collider->GetRelativeTransform().GetRotation().ToBulletQuat());
+    local.setOrigin(collider->GetRelativeTransform().GetTranslation().ToBulletVec3());
+
+    mCompound->updateChildTransform(childIndex, local, true);
 }
 
 void BulletRigidbodyComponent::Rebuild()

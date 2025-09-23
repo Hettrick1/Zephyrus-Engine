@@ -28,10 +28,11 @@ void BulletColliderComponent::CreateColliderWithoutBody()
     mGhost->setUserPointer(mOwner);
     mGhost->setCollisionShape(mShape);
 
+    // TODO use the component world transform not only the actor
     btTransform t;
-    auto actorRot = mOwner->GetTransformComponent().GetRotation();
-    t.setRotation(btQuaternion(actorRot.x, actorRot.y, actorRot.z, actorRot.w));
-    t.setOrigin(mOwner->GetPosition().ToBulletVec3());
+    t.setOrigin((mOwner->GetPosition() + mRelativePosition).ToBulletVec3());
+    auto worldRot = mOwner->GetTransformComponent().GetRotation() * mRelativeRotation;
+    t.setRotation(worldRot.ToBulletQuat());
     mGhost->setWorldTransform(t);
 
     world->AddGhostObject(mGhost);
@@ -144,6 +145,22 @@ void BulletColliderComponent::UpdateTrigger()
     }
 
     mPreviousOverlaps = std::move(currentOverlaps);
+}
+
+void BulletColliderComponent::UpdateWorldTransform()
+{
+    if (mGhost)
+    {
+        btTransform t;
+        t.setOrigin((mOwner->GetPosition() + mRelativePosition).ToBulletVec3());
+        auto worldRot = mOwner->GetTransformComponent().GetRotation() * mRelativeRotation;
+        t.setRotation(btQuaternion(worldRot.x, worldRot.y, worldRot.z, worldRot.w));
+        mGhost->setWorldTransform(t);
+    }
+    else if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
+    {
+        rb->UpdateColliderTransform(this);
+    }
 }
 
 void BulletColliderComponent::OnEnd()

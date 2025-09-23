@@ -31,6 +31,10 @@ void PhysicWorld::Update()
 {
     if (mWorld)
     {
+        for (auto& collider : mColliders)
+        {
+            collider->UpdateWorldTransform();
+        }
         mWorld->stepSimulation(Timer::deltaTime);
         for (auto& rigidbody : mRigidbodies)
         {
@@ -85,6 +89,9 @@ void PhysicWorld::Test()
         actor1->AddComponent(collider0);
         auto rigidbody = new BulletRigidbodyComponent(actor1);
         actor1->AddComponent(rigidbody);
+
+
+        rigidbody->ApplyTorqueImpulse(Vector3D(1));
 
         mRigidbodies.push_back(rigidbody);
         mColliders.push_back(collider);

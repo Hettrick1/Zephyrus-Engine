@@ -30,6 +30,7 @@ public:
     inline bool GetIsQuery() const { return mIsQuery; }
 
     void UpdateTrigger();
+    void UpdateWorldTransform();
     
     void OnEnd() override;
 

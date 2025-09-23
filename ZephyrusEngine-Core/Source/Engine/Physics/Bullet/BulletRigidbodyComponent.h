@@ -47,14 +47,15 @@ public:
 
     void SetMass(float pMass);
 
-    void ApplyForce(const btVector3& force);
-    void ApplyImpulse(const btVector3& impulse);
-    void ApplyTorque(const btVector3& torque);
-    void ApplyTorqueImpulse(const btVector3& impulse);
+    void ApplyForce(const Vector3D& force);
+    void ApplyImpulse(const Vector3D& impulse);
+    void ApplyTorque(const Vector3D& torque);
+    void ApplyTorqueImpulse(const Vector3D& impulse);
 
     btRigidBody* GetRigidBody() const { return mRigidBody; }
 
     void SyncTransformFromPhysics();
+    void UpdateColliderTransform(BulletColliderComponent* collider);
 
     void Rebuild();
     void UpdateColliderShape(BulletColliderComponent* collider, btCollisionShape* oldShape);
@@ -87,11 +88,11 @@ public:
         }
         return  btVector3(0, 0, 0); 
     }
-    inline void SetAngularVelocity(const btVector3& pAngularVelocity) 
+    inline void SetAngularVelocity(const Vector3D& pAngularVelocity) 
     { 
         if (mRigidBody) 
         {
-            mRigidBody->setAngularVelocity(pAngularVelocity);
+            mRigidBody->setAngularVelocity(pAngularVelocity.ToBulletVec3());
         }
     }
 
@@ -104,19 +105,23 @@ public:
         return btVector3(0, 0, 0);
     }
 
-    inline void SetVelocity(const btVector3& pVelocity)
+    inline void SetVelocity(const Vector3D& pVelocity)
     {
         if (mRigidBody)
         {
-            mRigidBody->setLinearVelocity(pVelocity);
+            mRigidBody->setLinearVelocity(pVelocity.ToBulletVec3());
         }
     }
 
-    inline void SetWorldTransform(const btTransform& pTransform) 
+    inline void SetWorldTransform(const Vector3D& pPosition, const Quaternion& pRotation)
     {
         if (mRigidBody) 
         {
-            mRigidBody->setWorldTransform(pTransform);
+            btTransform transform;
+            transform.setOrigin(pPosition.ToBulletVec3());
+            transform.setRotation(pRotation.ToBulletQuat());
+
+            mRigidBody->setWorldTransform(transform);
         }
     }
     inline btTransform GetWorldTransform() const 
