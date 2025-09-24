@@ -18,6 +18,35 @@ CubeColliderComponent::CubeColliderComponent(Actor* pOwner)
     }
 }
 
+void CubeColliderComponent::Deserialize(const rapidjson::Value& pData)
+{
+    BulletColliderComponent::Deserialize(pData);
+    if (auto halfExtents = Serialization::Json::ReadVector3D(pData, "halfExtents"))
+    {
+        SetHalfExtents(*halfExtents);
+    }
+}
+
+void CubeColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    BulletColliderComponent::BeginSerialize(pWriter);
+    pWriter.WriteVector3D("halfExtents", Vector3D(mHalfExtents.x(), mHalfExtents.y(), mHalfExtents.z()));
+    BulletColliderComponent::EndSerialize(pWriter);
+}
+
+void CubeColliderComponent::OnStart()
+{
+}
+
+void CubeColliderComponent::OnEnd()
+{
+}
+
+std::vector<PropertyDescriptor> CubeColliderComponent::GetProperties()
+{
+    return std::vector<PropertyDescriptor>();
+}
+
 void CubeColliderComponent::SetHalfExtents(const Vector3D& pHalfExtents)
 {
     btVector3 newExtents = pHalfExtents.ToBulletVec3();

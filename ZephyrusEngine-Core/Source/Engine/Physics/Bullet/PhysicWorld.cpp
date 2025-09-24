@@ -31,6 +31,10 @@ void PhysicWorld::Update()
 {
     if (mWorld)
     {
+        for (auto& rigidbody : mRigidbodies)
+        {
+            rigidbody->SyncTransformFromWorld();
+        }
         for (auto& collider : mColliders)
         {
             collider->UpdateWorldTransform();
@@ -59,6 +63,31 @@ void PhysicWorld::AddGhostObject(btGhostObject* ghost)
 void PhysicWorld::RemoveGhostObject(btGhostObject* ghost)
 {
     mWorld->removeCollisionObject(ghost);
+}
+
+void PhysicWorld::AddRigidbody(BulletRigidbodyComponent* pRigidbody)
+{
+    if (std::find(mRigidbodies.begin(), mRigidbodies.end(), pRigidbody) == mRigidbodies.end())
+    {
+        mRigidbodies.push_back(pRigidbody);
+    }
+}
+
+void PhysicWorld::RemoveRigidbody(BulletRigidbodyComponent* pRigidbody)
+{
+    std::erase(mRigidbodies, pRigidbody);
+}
+
+void PhysicWorld::AddCollider(BulletColliderComponent* pCollider)
+{
+    if (std::find(mColliders.begin(), mColliders.end(), pCollider) == mColliders.end())
+    {
+        mColliders.push_back(pCollider);
+    }
+}
+void PhysicWorld::RemoveCollider(BulletColliderComponent* pCollider)
+{
+    std::erase(mColliders, pCollider);
 }
 
 void PhysicWorld::Unload()
@@ -92,10 +121,6 @@ void PhysicWorld::Test()
 
 
         rigidbody->ApplyTorqueImpulse(Vector3D(1));
-
-        mRigidbodies.push_back(rigidbody);
-        mColliders.push_back(collider);
-        mColliders.push_back(collider0);
     }
 
     auto actor3 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, 0.5));
@@ -103,16 +128,12 @@ void PhysicWorld::Test()
     auto collider3 = new CubeColliderComponent(actor3);
     actor3->AddComponent(collider3);
 
-    mColliders.push_back(collider3);
-
     collider3->SetIsQuery(true);
 
     auto actor4 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(-3, 10, -0.5));
 
     auto collider4 = new CubeColliderComponent(actor4);
     actor4->AddComponent(collider4);
-
-    mColliders.push_back(collider4);
 
     auto actor2 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, -3), 0, Vector3D(10, 10, 0.2));
 
@@ -122,8 +143,6 @@ void PhysicWorld::Test()
     actor2->AddComponent(collider1);
 
     rigidbody1->SetType(BodyType::Static);
-
-    mRigidbodies.push_back(rigidbody1);
 
     collider1->SetHalfExtents(Vector3D(10, 10, 0.2));
 

@@ -39,6 +39,7 @@ void SceneManager::LoadSplashScreen(Scene* pScene, IRenderer* pRenderer)
 
 void SceneManager::LoadSceneWithFile(const std::string& pFilePath, IRenderer* pRenderer, bool pCallPostStart)
 {
+	std::string filepath = pFilePath;
 	mIsSceneLoaded = false;
 	IRenderer* renderer = pRenderer;
 	if (ActiveScene != nullptr)
@@ -48,15 +49,15 @@ void SceneManager::LoadSceneWithFile(const std::string& pFilePath, IRenderer* pR
 		delete ActiveScene;
 		ActiveScene = nullptr;
 	}
-	std::filesystem::path fsPath(pFilePath);
+	std::filesystem::path fsPath(filepath);
 	std::string filename = fsPath.filename().string();
 
 	ActiveScene = new Scene(filename);
 	if (renderer != nullptr)
 	{
 		ActiveScene->SetRenderer(renderer);
-		ActiveScene->SetFilePath(pFilePath);
-		SceneFactory::PopulateSceneFromFile(pFilePath);
+		ActiveScene->SetFilePath(filepath);
+		SceneFactory::PopulateSceneFromFile(filepath);
 		ActiveScene->Start();
 		if (pCallPostStart)
 		{

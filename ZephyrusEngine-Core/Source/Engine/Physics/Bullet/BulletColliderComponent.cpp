@@ -5,10 +5,32 @@
 BulletColliderComponent::BulletColliderComponent(Actor* pOwner)
     : Component(pOwner)
 {
+    SceneManager::ActiveScene->GetPhysicWorld()->AddCollider(this);
 }
 
 BulletColliderComponent::~BulletColliderComponent()
 {
+}
+
+void BulletColliderComponent::Deserialize(const rapidjson::Value& pData)
+{
+    Component::Deserialize(pData);
+    if (auto query = Serialization::Json::ReadBool(pData, "isQuery"))
+    {
+        SetIsQuery(*query);
+    }
+    if (auto ignoreSelf = Serialization::Json::ReadBool(pData, "ignoreSelf"))
+    {
+        mIgnoreSelf = *ignoreSelf;
+    }
+}
+
+void BulletColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    Component::BeginSerialize(pWriter);
+    pWriter.WriteBool("isQuery", mIsQuery);
+    pWriter.WriteBool("ignoreSelf", mIgnoreSelf);
+    Component::EndSerialize(pWriter);
 }
 
 void BulletColliderComponent::CreateColliderWithoutBody()
@@ -28,7 +50,6 @@ void BulletColliderComponent::CreateColliderWithoutBody()
     mGhost->setUserPointer(mOwner);
     mGhost->setCollisionShape(mShape);
 
-    // TODO use the component world transform not only the actor
     btTransform t;
     t.setOrigin((mOwner->GetPosition() + mRelativePosition).ToBulletVec3());
     auto worldRot = mOwner->GetTransformComponent().GetRotation() * mRelativeRotation;
@@ -161,6 +182,10 @@ void BulletColliderComponent::UpdateWorldTransform()
     {
         rb->UpdateColliderTransform(this);
     }
+}
+
+void BulletColliderComponent::OnStart()
+{
 }
 
 void BulletColliderComponent::OnEnd()

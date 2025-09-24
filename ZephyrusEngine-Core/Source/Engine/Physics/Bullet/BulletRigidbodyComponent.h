@@ -55,6 +55,8 @@ public:
     btRigidBody* GetRigidBody() const { return mRigidBody; }
 
     void SyncTransformFromPhysics();
+    void SyncTransformFromWorld();
+    void ForceSyncFromActor();
     void UpdateColliderTransform(BulletColliderComponent* collider);
 
     void Rebuild();

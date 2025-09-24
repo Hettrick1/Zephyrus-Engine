@@ -16,6 +16,41 @@ CapsuleColliderComponent::CapsuleColliderComponent(Actor* pOwner)
     }
 }
 
+void CapsuleColliderComponent::Deserialize(const rapidjson::Value& pData)
+{
+    BulletColliderComponent::Deserialize(pData);
+    if (auto radius = Serialization::Json::ReadFloat(pData, "radius"))
+    {
+        mRadius = *radius;
+    }
+    if (auto height = Serialization::Json::ReadFloat(pData, "height"))
+    {
+        mHeight = *height;
+    }
+    SetRadiusAndHeight(mRadius, mHeight);
+}
+
+void CapsuleColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    BulletColliderComponent::BeginSerialize(pWriter);
+    pWriter.WriteFloat("radius", mRadius);
+    pWriter.WriteFloat("height", mHeight);
+    BulletColliderComponent::EndSerialize(pWriter);
+}
+
+void CapsuleColliderComponent::OnStart()
+{
+}
+
+void CapsuleColliderComponent::OnEnd()
+{
+}
+
+std::vector<PropertyDescriptor> CapsuleColliderComponent::GetProperties()
+{
+    return std::vector<PropertyDescriptor>();
+}
+
 void CapsuleColliderComponent::SetRadiusAndHeight(const float& pRadius, const float& pHeight)
 {
     float newRadius = pRadius;

@@ -16,6 +16,35 @@ SphereColliderComponent::SphereColliderComponent(Actor* pOwner)
     }
 }
 
+void SphereColliderComponent::Deserialize(const rapidjson::Value& pData)
+{
+    BulletColliderComponent::Deserialize(pData);
+    if (auto radius = Serialization::Json::ReadFloat(pData, "radius"))
+    {
+        SetRadius(*radius);
+    }
+}
+
+void SphereColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
+    BulletColliderComponent::BeginSerialize(pWriter);
+    pWriter.WriteFloat("radius", mRadius);
+    BulletColliderComponent::EndSerialize(pWriter);
+}
+
+void SphereColliderComponent::OnStart()
+{
+}
+
+void SphereColliderComponent::OnEnd()
+{
+}
+
+std::vector<PropertyDescriptor> SphereColliderComponent::GetProperties()
+{
+    return std::vector<PropertyDescriptor>();
+}
+
 void SphereColliderComponent::SetRadius(const float& pRadius)
 {
     float newRadius = pRadius;

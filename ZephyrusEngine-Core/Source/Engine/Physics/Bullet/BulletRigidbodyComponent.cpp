@@ -31,6 +31,8 @@ BulletRigidbodyComponent::BulletRigidbodyComponent(Actor* pOwner)
     }
 
     Rebuild();
+    ForceSyncFromActor();
+    SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
 }
 
 BulletRigidbodyComponent::~BulletRigidbodyComponent()
@@ -195,6 +197,43 @@ void BulletRigidbodyComponent::SyncTransformFromPhysics()
 
     mOwner->SetPosition(Vector3D(pos.x(), pos.y(), pos.z()));
     mOwner->SetRotation(Quaternion(rot.x(), rot.y(), rot.z(), rot.w()));
+}
+
+void BulletRigidbodyComponent::SyncTransformFromWorld()
+{
+    if (!mCompound || !mRigidBody) return;
+    if (mType == BodyType::Kinematic || mType == BodyType::Static)
+    {
+        btTransform trans;
+        trans.setOrigin(mOwner->GetPosition().ToBulletVec3());
+        trans.setRotation(mOwner->GetTransformComponent().GetRotation().ToBulletQuat());
+
+        mRigidBody->setWorldTransform(trans);
+
+        if (mRigidBody->getMotionState())
+        {
+            mRigidBody->getMotionState()->setWorldTransform(trans);
+        }
+    }
+}
+
+void BulletRigidbodyComponent::ForceSyncFromActor()
+{
+    if (!mRigidBody) return;
+
+    btTransform trans;
+    trans.setOrigin(mOwner->GetPosition().ToBulletVec3());
+    trans.setRotation(mOwner->GetTransformComponent().GetRotation().ToBulletQuat());
+
+    mRigidBody->setWorldTransform(trans);
+
+    if (mRigidBody->getMotionState())
+    {
+        mRigidBody->getMotionState()->setWorldTransform(trans);
+    }
+
+    mRigidBody->getCollisionShape()->setLocalScaling(mOwner->GetSize().ToBulletVec3());
+    mRigidBody->activate(true);
 }
 
 void BulletRigidbodyComponent::UpdateColliderTransform(BulletColliderComponent* collider)

@@ -27,8 +27,11 @@ public:
     void Unload();
 
     void AddGhostObject(btGhostObject* ghost);
-
     void RemoveGhostObject(btGhostObject* ghost);
+    void AddRigidbody(BulletRigidbodyComponent* pRigidbody);
+    void RemoveRigidbody(BulletRigidbodyComponent* pRigidbody);
+    void AddCollider(BulletColliderComponent* pCollider);
+    void RemoveCollider(BulletColliderComponent* pCollider);
 
     void Test();
 

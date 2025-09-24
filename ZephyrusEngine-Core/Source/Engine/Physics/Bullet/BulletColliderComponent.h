@@ -21,6 +21,12 @@ public:
     BulletColliderComponent(Actor* pOwner);
     virtual ~BulletColliderComponent();
 
+    virtual void Deserialize(const rapidjson::Value& pData) override;
+    virtual void Serialize(Serialization::Json::JsonWriter& pWriter) override;
+
+    void OnStart() override;
+    void OnEnd() override;
+
     btCollisionShape* GetShape() const { return mShape; }
 
     void CreateColliderWithoutBody();
@@ -31,8 +37,6 @@ public:
 
     void UpdateTrigger();
     void UpdateWorldTransform();
-    
-    void OnEnd() override;
 
 public:
     // Adds a collision event listener.
