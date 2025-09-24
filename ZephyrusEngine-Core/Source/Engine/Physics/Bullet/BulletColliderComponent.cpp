@@ -104,8 +104,9 @@ void BulletColliderComponent::SetIsQuery(bool pIsQuery)
         mGhost->setWorldTransform(t);
 
         world->AddGhostObject(mGhost);
+        return;
     }
-    else
+    else if (rb)
     {
         if (mGhost)
         {
@@ -113,9 +114,16 @@ void BulletColliderComponent::SetIsQuery(bool pIsQuery)
             delete mGhost;
             mGhost = nullptr;
         }
-
-        if (rb) rb->AddCollider(this);
+        rb->AddCollider(this);
+        return;
     }
+    else if (mGhost)
+    {
+        world->RemoveGhostObject(mGhost);
+        delete mGhost;
+        mGhost = nullptr;
+    }
+    CreateColliderWithoutBody();
 }
 
 void BulletColliderComponent::UpdateTrigger()
@@ -182,6 +190,58 @@ void BulletColliderComponent::UpdateWorldTransform()
     {
         rb->UpdateColliderTransform(this);
     }
+}
+
+void BulletColliderComponent::RebuildCollider()
+{
+    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>();
+
+    if (mIsQuery)
+    {
+        if (rb)
+        {
+            rb->RemoveCollider(this);
+        }
+
+        if (mGhost)
+        {
+            world->RemoveGhostObject(mGhost);
+            delete mGhost;
+            mGhost = nullptr;
+        }
+        mGhost = new btGhostObject();
+        mGhost->setUserPointer(mOwner);
+        mGhost->setCollisionShape(mShape);
+        mGhost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
+
+        btTransform t;
+        auto actorRot = mOwner->GetTransformComponent().GetRotation();
+        t.setRotation(btQuaternion(actorRot.x, actorRot.y, actorRot.z, actorRot.w));
+        t.setOrigin(mOwner->GetPosition().ToBulletVec3());
+        mGhost->setWorldTransform(t);
+
+        world->AddGhostObject(mGhost);
+        return;
+    }
+    else if (rb)
+    {
+        if (mGhost)
+        {
+            world->RemoveGhostObject(mGhost);
+            delete mGhost;
+            mGhost = nullptr;
+        }
+        rb->AddCollider(this);
+        return;
+    }
+    else if (mGhost)
+    {
+        world->RemoveGhostObject(mGhost);
+        delete mGhost;
+        mGhost = nullptr;
+    }
+    CreateColliderWithoutBody();
 }
 
 void BulletColliderComponent::OnStart()

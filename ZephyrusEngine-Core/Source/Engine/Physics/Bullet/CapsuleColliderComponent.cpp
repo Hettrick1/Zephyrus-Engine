@@ -80,5 +80,9 @@ void CapsuleColliderComponent::SetRadiusAndHeight(const float& pRadius, const fl
 
             delete oldShape;
         }
+        if (mGhost)
+        {
+            RebuildCollider();
+        }
     }
 }

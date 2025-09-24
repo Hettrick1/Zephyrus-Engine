@@ -56,6 +56,7 @@ public:
 
 	virtual void SetSpriteShaderProgram(class ShaderProgram& pShaderProgram) {}
 	virtual void SetViewMatrix(const Matrix4DRow& pViewMatrix) {}
+	virtual void SetProjMatrix(const Matrix4DRow& pProjMatrix) {}
 
 	virtual void SetSelectedActor(Actor* pSelectedActor) {};
 

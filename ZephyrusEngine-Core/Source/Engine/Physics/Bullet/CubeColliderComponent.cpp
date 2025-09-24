@@ -72,5 +72,9 @@ void CubeColliderComponent::SetHalfExtents(const Vector3D& pHalfExtents)
 
             delete oldShape;
         }
+        if (mGhost)
+        {
+            RebuildCollider();
+        }
     }
 }

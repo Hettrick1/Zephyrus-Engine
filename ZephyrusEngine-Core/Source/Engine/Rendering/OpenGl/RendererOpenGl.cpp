@@ -82,7 +82,6 @@ void RendererOpenGl::BeginDraw()
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(mWindow->GetDimensions().x), static_cast<float>(mWindow->GetDimensions().y), 0.000001f, 100000);
-	mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.01f, 10000.0f);
 }
 
 void RendererOpenGl::Draw()
@@ -196,6 +195,11 @@ void RendererOpenGl::SetViewMatrix(const Matrix4DRow& pViewMatrix)
 {
 	mView = pViewMatrix;
 	mDebugRenderer->SetViewMatrix(pViewMatrix);
+}
+
+void RendererOpenGl::SetProjMatrix(const Matrix4DRow& pProjMatrix)
+{
+	mProj = pProjMatrix;
 }
 
 void RendererOpenGl::DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const

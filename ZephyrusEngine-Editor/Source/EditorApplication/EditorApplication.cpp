@@ -191,16 +191,43 @@ void EditorApplication::Update()
             mEditorController->GetComponentOfType<EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
         }
     }
+    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    world->Update();
 }
 
 void EditorApplication::Render()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFrameBuffer);
 
+    auto it = mAllPanels.find(scenePanelName);
+    if (it != mAllPanels.end())
+    {
+        if (auto scenePanel = dynamic_cast<ScenePanel*>(it->second.get()))
+        {
+            Matrix4DRow proj = Matrix4DRow::CreatePerspectiveFOV(70.0f, scenePanel->GetDimensions().x, scenePanel->GetDimensions().y, 0.01f, 10000.0f);
+            SceneManager::ActiveScene->GetPhysicDebugRenderer()->SetProjectionMatrix(proj);
+            SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(proj);
+        }
+    }
+    else
+    {
+        glViewport(0, 0, mGameWindow->GetDimensions().x, mGameWindow->GetDimensions().y);
+    }
+
     SceneManager::BeginRender();
     SceneManager::RenderScene();
+    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    world->GetWorld()->debugDrawWorld();
+    auto debugRenderer = SceneManager::ActiveScene->GetPhysicDebugRenderer();
+    debugRenderer->FlushDraw();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, mGameWindow->GetDimensions().x, mGameWindow->GetDimensions().y);
+    if (it != mAllPanels.end())
+    {
+        if (auto scenePanel = dynamic_cast<ScenePanel*>(it->second.get()))
+        {
+            glViewport(0, 0, scenePanel->GetDimensions().x, scenePanel->GetDimensions().y);
+        }
+    }
 
     RenderImgui();
     SceneManager::EndRender();

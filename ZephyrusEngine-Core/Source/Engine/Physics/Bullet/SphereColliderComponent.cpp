@@ -71,5 +71,9 @@ void SphereColliderComponent::SetRadius(const float& pRadius)
 
             delete oldShape;
         }
+        if (mGhost)
+        {
+            RebuildCollider();
+        }
     }
 }

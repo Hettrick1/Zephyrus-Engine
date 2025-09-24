@@ -62,7 +62,7 @@ public:
 	inline void SetIsSaved(const bool& pSaved) { mSaved = pSaved; }
 	inline bool GetIsSaved() const { return mSaved; }
 	inline PhysicWorld* GetPhysicWorld() const { return mPhysicWorld; }
-
+	inline PhysicsDebugRenderer* GetPhysicDebugRenderer() const { return mDebugRenderer; }
 public : 
 	inline IRenderer* GetRenderer() const { return mRenderer; }
 };

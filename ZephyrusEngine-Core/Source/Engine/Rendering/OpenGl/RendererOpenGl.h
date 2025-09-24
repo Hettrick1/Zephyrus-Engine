@@ -69,6 +69,7 @@ public:
 
 	// Sets the view matrix for rendering
 	void SetViewMatrix(const Matrix4DRow& pViewMatrix) override;
+	void SetProjMatrix(const Matrix4DRow& pProjMatrix) override;
 
 	// Draws a sprite for the given actor with the specified parameters
 	void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;

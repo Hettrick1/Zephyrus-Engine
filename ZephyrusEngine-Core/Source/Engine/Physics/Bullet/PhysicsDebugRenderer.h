@@ -15,6 +15,7 @@ private :
     Shader mDebugVertex;
     Shader mDebugFragment;
     ShaderProgram mDebugShaderProgram;
+    Matrix4DRow mProj;
 public:
     PhysicsDebugRenderer();
 
@@ -25,6 +26,8 @@ public:
     void draw3dText(const btVector3&, const char*) override {}
     void setDebugMode(int debugMode) override { m_debugMode = debugMode; }
     int getDebugMode() const override { return m_debugMode; }
+
+    void SetProjectionMatrix(const Matrix4DRow& pProj);
 
     void FlushDraw();
 };

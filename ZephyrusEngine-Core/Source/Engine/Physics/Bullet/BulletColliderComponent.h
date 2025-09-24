@@ -38,6 +38,8 @@ public:
     void UpdateTrigger();
     void UpdateWorldTransform();
 
+    void RebuildCollider();
+
 public:
     // Adds a collision event listener.
     void AddListener(ICollisionListener* pListener);

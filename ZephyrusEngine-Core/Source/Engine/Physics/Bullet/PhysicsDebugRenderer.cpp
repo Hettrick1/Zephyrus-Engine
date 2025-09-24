@@ -33,6 +33,11 @@ void PhysicsDebugRenderer::drawLine(const btVector3& from, const btVector3& to, 
     mLines.push_back(to.z());
 }
 
+void PhysicsDebugRenderer::SetProjectionMatrix(const Matrix4DRow& pProj)
+{
+    mProj = pProj;
+}
+
 void PhysicsDebugRenderer::FlushDraw()
 {
     if (mLines.empty()) return;
@@ -44,7 +49,6 @@ void PhysicsDebugRenderer::FlushDraw()
 
     glBindVertexArray(vao);
     mDebugShaderProgram.Use();
-    auto mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, 1920, 1080, 0.01f, 10000.0f);
     auto cam = CameraManager::Instance().GetCurrentCamera();
 
     auto mView = cam->mViewMatrix;

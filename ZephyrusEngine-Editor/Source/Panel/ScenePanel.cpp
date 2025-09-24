@@ -22,7 +22,7 @@ void ScenePanel::Draw()
 	ImGui::Begin(mName.c_str());
 
 	ImVec2 size = ImGui::GetContentRegionAvail();
-
+	mDimensions = Vector2D(size.x, size.y);
 
 	ImGui::Image(
 		(ImTextureID)(intptr_t)mSceneRenderTexture,

@@ -110,9 +110,6 @@ void Scene::BeginRender()
 void Scene::RenderCurrentSceneOnly()
 {
 	mRenderer->Draw();
-	mPhysicWorld->Update();
-	mPhysicWorld->GetWorld()->debugDrawWorld();
-	mDebugRenderer->FlushDraw();
 }
 
 void Scene::EndRender()

@@ -83,7 +83,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [50.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -116,7 +116,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [50.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -149,7 +149,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 50.0, 1.0]
                     }
                 }]
         }, {
@@ -182,7 +182,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 50.0, 1.0]
                     }
                 }]
         }, {
@@ -215,7 +215,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 20.0, 1.0]
                     }
                 }]
         }, {
@@ -248,7 +248,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 20.0, 1.0]
                     }
                 }]
         }, {
@@ -281,7 +281,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -314,7 +314,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -347,7 +347,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [50.0, 50.0, 0.1]
                     }
                 }]
         }, {
@@ -380,7 +380,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -413,7 +413,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -446,7 +446,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
