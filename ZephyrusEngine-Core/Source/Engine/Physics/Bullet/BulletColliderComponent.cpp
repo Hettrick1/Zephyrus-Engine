@@ -2,8 +2,8 @@
 #include "SceneManager.h"
 #include "ICollisionListener.h"
 
-BulletColliderComponent::BulletColliderComponent(Actor* pOwner)
-    : Component(pOwner)
+BulletColliderComponent::BulletColliderComponent(Actor* pOwner, const std::string& pName)
+    : Component(pOwner, pName)
 {
     SceneManager::ActiveScene->GetPhysicWorld()->AddCollider(this);
 }

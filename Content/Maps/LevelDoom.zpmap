@@ -77,8 +77,8 @@
                         "textureTiling": [150.0, 6.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -110,8 +110,8 @@
                         "textureTiling": [150.0, 6.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -143,8 +143,8 @@
                         "textureTiling": [6.0, 150.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -176,8 +176,8 @@
                         "textureTiling": [6.0, 150.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -209,8 +209,8 @@
                         "textureTiling": [6.0, 150.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -242,8 +242,8 @@
                         "textureTiling": [6.0, 150.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -275,8 +275,8 @@
                         "textureTiling": [6.0, 6.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -308,8 +308,8 @@
                         "textureTiling": [6.0, 6.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -341,8 +341,8 @@
                         "textureTiling": [300.0, 300.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -374,8 +374,8 @@
                         "textureTiling": [6.0, 6.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -407,8 +407,8 @@
                         "textureTiling": [6.0, 6.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -440,8 +440,8 @@
                         "textureTiling": [6.0, 6.0]
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],

@@ -5,9 +5,9 @@
 #include "SceneManager.h"
 
 CubeColliderComponent::CubeColliderComponent(Actor* pOwner)
-    : BulletColliderComponent(pOwner)
+    : BulletColliderComponent(pOwner, "CubeColliderComponent")
 {
-    mShape = new btBoxShape(mHalfExtents);
+    mShape = new btBoxShape(mHalfExtents.ToBulletVec3());
     if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
     {
         rb->AddCollider(this);
@@ -30,7 +30,7 @@ void CubeColliderComponent::Deserialize(const rapidjson::Value& pData)
 void CubeColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
     BulletColliderComponent::BeginSerialize(pWriter);
-    pWriter.WriteVector3D("halfExtents", Vector3D(mHalfExtents.x(), mHalfExtents.y(), mHalfExtents.z()));
+    pWriter.WriteVector3D("halfExtents", mHalfExtents);
     BulletColliderComponent::EndSerialize(pWriter);
 }
 
@@ -44,20 +44,26 @@ void CubeColliderComponent::OnEnd()
 
 std::vector<PropertyDescriptor> CubeColliderComponent::GetProperties()
 {
-    return std::vector<PropertyDescriptor>();
+    SetHalfExtents(mHalfExtents);
+    SetIsQuery(mIsQuery);
+    return
+    {
+        {"Is Querry : ", &mIsQuery, PropertyType::Bool},
+        {"Ignore Self : ",&mIgnoreSelf, PropertyType::Bool},
+        {"Half Extents : ", &mHalfExtents, PropertyType::Vec3}
+    };
 }
 
 void CubeColliderComponent::SetHalfExtents(const Vector3D& pHalfExtents)
 {
-    btVector3 newExtents = pHalfExtents.ToBulletVec3();
-    if (newExtents != mHalfExtents)
+    if (pHalfExtents != mHalfExtents)
     {
-        mHalfExtents = newExtents;
+        mHalfExtents = pHalfExtents;
         if (mShape)
         {
             btCollisionShape* oldShape = mShape;
 
-            mShape = new btBoxShape(mHalfExtents);
+            mShape = new btBoxShape(mHalfExtents.ToBulletVec3());
 
             if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
             {

@@ -40,55 +40,72 @@ public:
 
     std::vector<PropertyDescriptor> GetProperties();
 
-    void AddCollider(BulletColliderComponent* collider);
-    void RemoveCollider(BulletColliderComponent* collider);
+    void AddCollider(BulletColliderComponent* pCollider);
+    void RemoveCollider(BulletColliderComponent* pCollider);
 
     void ClearRigidbody();
 
     void SetMass(float pMass);
 
-    void ApplyForce(const Vector3D& force);
-    void ApplyImpulse(const Vector3D& impulse);
-    void ApplyTorque(const Vector3D& torque);
-    void ApplyTorqueImpulse(const Vector3D& impulse);
+    void ApplyForce(const Vector3D& pForce);
+    void ApplyImpulse(const Vector3D& pImpulse);
+    void ApplyTorque(const Vector3D& pTorque);
+    void ApplyTorqueImpulse(const Vector3D& pImpulse);
 
     btRigidBody* GetRigidBody() const { return mRigidBody; }
 
     void SyncTransformFromPhysics();
     void SyncTransformFromWorld();
     void ForceSyncFromActor();
-    void UpdateColliderTransform(BulletColliderComponent* collider);
+    void UpdateColliderTransform(BulletColliderComponent* pCollider);
 
     void Rebuild();
-    void UpdateColliderShape(BulletColliderComponent* collider, btCollisionShape* oldShape);
+    void UpdateColliderShape(BulletColliderComponent* pCollider, btCollisionShape* pOldShape);
 
     void SetType(BodyType pType);
 
     inline void LockAxes(const Vector3D& pLockAxes) 
     { 
-        mLockAxes = pLockAxes;
+        if (mLockAxes != pLockAxes)
+        {
+            mLockAxes = pLockAxes;
+            mRigidBody->setLinearFactor(mLockAxes.ToBulletVec3());
+        }
     }
     inline void LockAngle(const Vector3D& pLockAngle) 
     { 
-        mLockAngles = pLockAngle;
+        if (mLockAngles != pLockAngle)
+        {
+            mLockAngles = pLockAngle;
+            mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
+        }
     }
 
     inline void SetFriction(float pFriction) 
     { 
-        mFriction = pFriction;
+        if (mFriction != pFriction)
+        {
+            mFriction = pFriction;
+            mRigidBody->setFriction(mFriction);
+        }
     }
     inline void SetRestitution(float pRestitution) 
     { 
-        mRestitution = pRestitution;
+        if (mRestitution != pRestitution)
+        {
+            mRestitution = pRestitution;
+            mRigidBody->setRestitution(mRestitution);
+        }
     }
 
-    inline btVector3 GetAngularVelocity() const 
+    inline Vector3D GetAngularVelocity() const 
     { 
         if (mRigidBody)
         {
-            return mRigidBody->getAngularVelocity();
+            btVector3 vec = mRigidBody->getAngularVelocity();
+            return Vector3D(vec.x(), vec.y(), vec.z());
         }
-        return  btVector3(0, 0, 0); 
+        return  Vector3D(0);
     }
     inline void SetAngularVelocity(const Vector3D& pAngularVelocity) 
     { 
@@ -98,13 +115,14 @@ public:
         }
     }
 
-    inline btVector3 GetVelocity() const
+    inline Vector3D GetVelocity() const
     {
         if (mRigidBody)
         {
-            return mRigidBody->getLinearVelocity();
+            btVector3 vec = mRigidBody->getLinearVelocity();
+            return Vector3D(vec.x(), vec.y(), vec.z());
         }
-        return btVector3(0, 0, 0);
+        return Vector3D(0);
     }
 
     inline void SetVelocity(const Vector3D& pVelocity)

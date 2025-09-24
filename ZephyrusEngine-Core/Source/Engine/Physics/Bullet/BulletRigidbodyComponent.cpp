@@ -102,7 +102,20 @@ void BulletRigidbodyComponent::OnEnd()
 
 std::vector<PropertyDescriptor> BulletRigidbodyComponent::GetProperties()
 {
-    return std::vector<PropertyDescriptor>();
+    SetMass(mMass);
+    SetFriction(mFriction);
+    SetRestitution(mRestitution);
+    LockAngle(mLockAngles);
+    LockAxes(mLockAxes);
+    return
+    {
+        //TODO bodytype enum
+        {"Mass : ", &mMass, PropertyType::Float},
+        {"Friction : ", &mFriction, PropertyType::Float},
+        {"Restitution : ", &mRestitution, PropertyType::Float},
+        {"Lock Angles : ", &mLockAngles, PropertyType::Vec3},
+        {"Lock Axes : ", &mLockAxes, PropertyType::Vec3}
+    };
 }
 
 void BulletRigidbodyComponent::AddCollider(BulletColliderComponent* collider)

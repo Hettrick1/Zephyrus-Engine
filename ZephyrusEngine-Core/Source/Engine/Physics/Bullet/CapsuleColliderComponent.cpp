@@ -3,7 +3,7 @@
 #include "BulletRigidbodyComponent.h"
 
 CapsuleColliderComponent::CapsuleColliderComponent(Actor* pOwner)
-	: BulletColliderComponent(pOwner)
+    : BulletColliderComponent(pOwner, "CapsuleColliderComponent")
 {
 	mShape = new btCapsuleShapeZ(mRadius, mHeight);
     if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
@@ -48,7 +48,15 @@ void CapsuleColliderComponent::OnEnd()
 
 std::vector<PropertyDescriptor> CapsuleColliderComponent::GetProperties()
 {
-    return std::vector<PropertyDescriptor>();
+    SetRadiusAndHeight(mRadius, mHeight);
+    SetIsQuery(mIsQuery);
+    return
+    {
+        {"Is Querry : ", &mIsQuery, PropertyType::Bool},
+        {"Ignore Self : ",&mIgnoreSelf, PropertyType::Bool},
+        {"Radius : ", &mRadius, PropertyType::Float},
+        {"Height : ", &mHeight, PropertyType::Float}
+    };
 }
 
 void CapsuleColliderComponent::SetRadiusAndHeight(const float& pRadius, const float& pHeight)

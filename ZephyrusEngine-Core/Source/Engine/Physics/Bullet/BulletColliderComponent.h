@@ -18,7 +18,7 @@ protected:
     bool mIsQuery = false;
     bool mIgnoreSelf = true;
 public:
-    BulletColliderComponent(Actor* pOwner);
+    BulletColliderComponent(Actor* pOwner, const std::string& pName = "");
     virtual ~BulletColliderComponent();
 
     virtual void Deserialize(const rapidjson::Value& pData) override;

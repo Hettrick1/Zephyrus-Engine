@@ -112,6 +112,15 @@ struct Vector3D
 		return temp;
 	}
 
+	bool operator!=(const Vector3D& other) const
+	{
+		return x != other.x || y != other.y || z != other.z;
+	}
+	bool operator==(const Vector3D& other) const
+	{
+		return x == other.x && y == other.y && z == other.z;
+	}
+
 	// Normalize the provided vector
 	static Vector3D Normalize(const Vector3D& vec)
 	{

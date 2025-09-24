@@ -49,6 +49,7 @@ void PhysicsDebugRenderer::FlushDraw()
 
     auto mView = cam->mViewMatrix;
     auto wt = Matrix4DRow::Identity;
+    mDebugShaderProgram.setVector3f("uColor", Vector3D(0.0, 1.0, 0));
     mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
     mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);
     glDrawArrays(GL_LINES, 0, mLines.size() / 3);
