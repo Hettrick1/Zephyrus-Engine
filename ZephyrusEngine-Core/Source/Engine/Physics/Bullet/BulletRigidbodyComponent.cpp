@@ -5,7 +5,7 @@
 #include "Scene.h"
 
 BulletRigidbodyComponent::BulletRigidbodyComponent(Actor* pOwner)
-    : Component(pOwner,"BulletRigidBody"), mType(BodyType::Dynamic), mMass(1.0), mFriction(0.5f), mRestitution(0.5f), mLockAngles(1), mLockAxes(1)
+    : Component(pOwner,"BulletRigidBodyComponent"), mType(BodyType::Dynamic), mMass(1.0), mFriction(0.5f), mRestitution(0.5f), mLockAngles(1), mLockAxes(1)
 {
     if (mOwner->GetComponentOfType<RigidbodyComponent>())
     {

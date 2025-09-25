@@ -141,7 +141,7 @@ Component* PrefabFactory::CreateAndAttachComponent(const rapidjson::Value& compo
     Component* c = ComponentFactory::Instance().Create(type, actor);
 
     if (!c) {
-        ZP_CORE_ERROR("Component " + type + " is invalid !");
+        ZP_EDITOR_ERROR("Component " + type + " is invalid !");
         return nullptr;
     }
     if (auto id = Serialization::Json::ReadString(componentJson, "componentId"))

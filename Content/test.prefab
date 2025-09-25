@@ -1,0 +1,45 @@
+{
+    "name": "test",
+    "state": "active",
+    "transform": {
+        "position": [0.0, -0.0, -0.1],
+        "rotation": [-0.0, 0.0, -0.0],
+        "size": [1.0, 1.0, 1.0]
+    },
+    "components": [{
+            "type": "MeshComponent",
+            "componentId": "MeshComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "mesh": "../Content/Meshes/cube.obj",
+                "textures": ["../Content/Sprites/planks.png"],
+                "textureIndex": 0,
+                "textureTiling": [1.0, 1.0]
+            }
+        }, {
+            "type": "CubeColliderComponent",
+            "componentId": "CubeColliderComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "halfExtents": [1.0, 1.0, 1.0]
+            }
+        }, {
+            "type": "BulletRigidbodyComponent",
+            "componentId": "BulletRigidbodyComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "bodyType": "dynamic",
+                "mass": 1.0,
+                "friction": 0.5,
+                "restitution": 0.5,
+                "lockAngles": [1.0, 1.0, 1.0],
+                "lockAxes": [1.0, 1.0, 1.0]
+            }
+        }]
+}
