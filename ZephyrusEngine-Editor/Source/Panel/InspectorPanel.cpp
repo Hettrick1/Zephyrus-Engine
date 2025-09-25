@@ -674,6 +674,18 @@ void InspectorPanel::SetPropertyString(const PropertyDescriptor& pProperty, cons
 
 void InspectorPanel::SetPropertyVector3D(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
+	auto prop = MakeUndoableProperty<Vector3D>(pProperty, mActiveComponent);
+	Vector3D vec3Var = *static_cast<Vector3D*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+	std::string label = "##" + prop.name;
+	float vec3[3] = { vec3Var.x, vec3Var.y, vec3Var.z };
+	if (ImGui::InputFloat3(label.c_str(), vec3, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	{
+		vec3Var = Vector3D(vec3[0], vec3[1], vec3[2]);
+		prop.setter(&vec3Var);
+	}
 }
 
 void InspectorPanel::SetPropertyVector2D(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)

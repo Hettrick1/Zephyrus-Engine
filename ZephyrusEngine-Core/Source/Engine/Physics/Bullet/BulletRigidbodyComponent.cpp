@@ -246,7 +246,6 @@ void BulletRigidbodyComponent::ForceSyncFromActor()
         mRigidBody->getMotionState()->setWorldTransform(trans);
     }
 
-    mRigidBody->getCollisionShape()->setLocalScaling(mOwner->GetSize().ToBulletVec3());
     mRigidBody->activate(true);
 }
 
