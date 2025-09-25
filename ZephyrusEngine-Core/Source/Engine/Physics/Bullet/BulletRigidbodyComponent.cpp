@@ -283,6 +283,7 @@ void BulletRigidbodyComponent::Rebuild()
     if (mMass > 0.0f)
     {
         mCompound->calculateLocalInertia(mMass, inertia);
+        mCompound->setUserPointer(mOwner);
     }
 
     auto initialRot = mOwner->GetTransformComponent().GetRotation();
@@ -300,6 +301,7 @@ void BulletRigidbodyComponent::Rebuild()
     mRigidBody->setFriction(mFriction);
     mRigidBody->setLinearFactor(mLockAxes.ToBulletVec3());
     mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
+    mRigidBody->setUserPointer(mOwner);
 
     SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->addRigidBody(mRigidBody);
 }

@@ -3,6 +3,7 @@
 #include "CameraManager.h"
 #include "CameraComponent.h"
 #include "DoomPlayerComponent.h"
+#include "Physics/Bullet/CubeColliderComponent.h"
 
 PickUpComponent::PickUpComponent(Actor* pOwner, int updateOder)
 	: Component(pOwner,"PickUpComponent", updateOder), mType(PickUpType::Amo)
@@ -33,7 +34,7 @@ void PickUpComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 void PickUpComponent::OnStart()
 {
 	Component::OnStart();
-	mOwner->GetComponentOfType<ColliderComponent>()->AddListener(this);
+	mOwner->GetComponentOfType<CubeColliderComponent>()->AddListener(this);
 }
 
 void PickUpComponent::Update()

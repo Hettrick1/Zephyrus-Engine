@@ -503,13 +503,15 @@
                         "type": "amo"
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": true
+                        "isQuery": true,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -542,13 +544,15 @@
                         "type": "health"
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": true
+                        "isQuery": true,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -581,13 +585,15 @@
                         "type": "health"
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": true
+                        "isQuery": true,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -620,13 +626,15 @@
                         "type": "shield"
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": true
+                        "isQuery": true,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -659,13 +667,15 @@
                         "type": "shield"
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": true
+                        "isQuery": true,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }, {
@@ -705,13 +715,16 @@
                         "isLooping": false
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CapsuleColliderComponent",
+                    "componentId": "CapsuleColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "radius": 1.0,
+                        "height": 2.0
                     }
                 }, {
                     "type": "DoomEnemyComponent",
@@ -759,13 +772,16 @@
                         "isLooping": false
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CapsuleColliderComponent",
+                    "componentId": "CapsuleColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "radius": 1.0,
+                        "height": 2.0
                     }
                 }, {
                     "type": "DoomEnemyComponent",
@@ -813,13 +829,16 @@
                         "isLooping": false
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CapsuleColliderComponent",
+                    "componentId": "CapsuleColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "radius": 1.0,
+                        "height": 2.0
                     }
                 }, {
                     "type": "DoomEnemyComponent",
@@ -867,13 +886,16 @@
                         "isLooping": false
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CapsuleColliderComponent",
+                    "componentId": "CapsuleColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "radius": 1.0,
+                        "height": 2.0
                     }
                 }, {
                     "type": "DoomEnemyComponent",
@@ -921,13 +943,16 @@
                         "isLooping": false
                     }
                 }, {
-                    "type": "BoxAABBComponent",
-                    "componentId": "BoxAABBComponent1",
+                    "type": "CapsuleColliderComponent",
+                    "componentId": "CapsuleColliderComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuerry": false
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "radius": 1.0,
+                        "height": 2.0
                     }
                 }, {
                     "type": "DoomEnemyComponent",

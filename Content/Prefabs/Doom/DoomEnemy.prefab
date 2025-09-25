@@ -28,8 +28,8 @@
             }
         },
         {
-            "type": "BoxAABBComponent",
-            "componentId": "BoxAABBComponent1",
+            "type": "CapsuleColliderComponent",
+            "componentId": "CapsuleColliderComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0]   
