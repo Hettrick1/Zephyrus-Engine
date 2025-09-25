@@ -6,6 +6,8 @@ CapsuleColliderComponent::CapsuleColliderComponent(Actor* pOwner)
     : BulletColliderComponent(pOwner, "CapsuleColliderComponent")
 {
 	mShape = new btCapsuleShapeZ(mRadius, mHeight);
+    mAppliedRadius = mRadius;
+    mAppliedHeight = mHeight;
     if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
     {
         rb->AddCollider(this);
@@ -63,10 +65,19 @@ void CapsuleColliderComponent::SetRadiusAndHeight(const float& pRadius, const fl
 {
     float newRadius = pRadius;
     float newHeight = pHeight;
-    if (newRadius != mRadius || newHeight != mHeight)
+    if (newRadius != mAppliedRadius || newHeight != mAppliedHeight)
     {
         mRadius = newRadius;
         mHeight = newHeight;
+        mAppliedRadius = mRadius;
+        mAppliedHeight = mHeight;
+        if (mGhost)
+        {
+            delete mShape;
+            mShape = new btCapsuleShapeZ(mRadius, mHeight);
+            RebuildCollider();
+            return;
+        }
         if (mShape)
         {
             btCollisionShape* oldShape = mShape;
@@ -79,10 +90,6 @@ void CapsuleColliderComponent::SetRadiusAndHeight(const float& pRadius, const fl
             }
 
             delete oldShape;
-        }
-        if (mGhost)
-        {
-            RebuildCollider();
         }
     }
 }

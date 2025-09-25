@@ -6,6 +6,8 @@ class CapsuleColliderComponent : public BulletColliderComponent
 private:
     float mRadius = 1;
     float mHeight = 2;
+    float mAppliedRadius = -1;
+    float mAppliedHeight = -2;
 public:
     CapsuleColliderComponent(Actor* pOwner);
 

@@ -6,6 +6,7 @@ SphereColliderComponent::SphereColliderComponent(Actor* pOwner)
     : BulletColliderComponent(pOwner, "SphereColliderComponent")
 {
 	mShape = new btSphereShape(mRadius);
+    mAppliedRadius = mRadius;
     if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
     {
         rb->AddCollider(this);
@@ -54,14 +55,20 @@ std::vector<PropertyDescriptor> SphereColliderComponent::GetProperties()
 
 void SphereColliderComponent::SetRadius(const float& pRadius)
 {
-    float newRadius = pRadius;
-    if (newRadius != mRadius)
+    if (pRadius != mAppliedRadius)
     {
-        mRadius = newRadius;
-        if (mShape)
+        mRadius = pRadius;
+        mAppliedRadius = pRadius;
+
+        if (mGhost)
+        {
+            delete mShape;
+            mShape = new btSphereShape(mRadius);
+            RebuildCollider();
+        }
+        else if (mShape)
         {
             btCollisionShape* oldShape = mShape;
-
             mShape = new btSphereShape(mRadius);
 
             if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
@@ -70,10 +77,6 @@ void SphereColliderComponent::SetRadius(const float& pRadius)
             }
 
             delete oldShape;
-        }
-        if (mGhost)
-        {
-            RebuildCollider();
         }
     }
 }

@@ -5,6 +5,7 @@ class SphereColliderComponent : public BulletColliderComponent
 {
 private:
     float mRadius = 1;
+    float mAppliedRadius = -1.0f;
 public:
     SphereColliderComponent(Actor* pOwner);
 

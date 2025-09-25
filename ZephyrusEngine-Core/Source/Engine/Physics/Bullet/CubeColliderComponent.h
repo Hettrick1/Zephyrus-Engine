@@ -5,6 +5,7 @@ class CubeColliderComponent : public BulletColliderComponent
 {
 private:
     Vector3D mHalfExtents = 1;
+    Vector3D mAppliedHalfExtents = -1;
 public:
     CubeColliderComponent(Actor* pOwner);
 
