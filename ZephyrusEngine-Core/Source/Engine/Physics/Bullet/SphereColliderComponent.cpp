@@ -29,6 +29,7 @@ void SphereColliderComponent::Deserialize(const rapidjson::Value& pData)
 void SphereColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
     BulletColliderComponent::BeginSerialize(pWriter);
+    BulletColliderComponent::Serialize(pWriter);
     pWriter.WriteFloat("radius", mRadius);
     BulletColliderComponent::EndSerialize(pWriter);
 }

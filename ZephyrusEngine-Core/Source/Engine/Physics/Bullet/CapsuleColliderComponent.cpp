@@ -35,6 +35,7 @@ void CapsuleColliderComponent::Deserialize(const rapidjson::Value& pData)
 void CapsuleColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
     BulletColliderComponent::BeginSerialize(pWriter);
+    BulletColliderComponent::Serialize(pWriter);
     pWriter.WriteFloat("radius", mRadius);
     pWriter.WriteFloat("height", mHeight);
     BulletColliderComponent::EndSerialize(pWriter);

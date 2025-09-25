@@ -41,11 +41,19 @@ void BulletColliderComponent::Deserialize(const rapidjson::Value& pData)
     }
 }
 
-void BulletColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+void BulletColliderComponent::BeginSerialize(Serialization::Json::JsonWriter& pWriter)
 {
     Component::BeginSerialize(pWriter);
+}
+
+void BulletColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+{
     pWriter.WriteBool("isQuery", mIsQuery);
     pWriter.WriteBool("ignoreSelf", mIgnoreSelf);
+}
+
+void BulletColliderComponent::EndSerialize(Serialization::Json::JsonWriter& pWriter)
+{
     Component::EndSerialize(pWriter);
 }
 

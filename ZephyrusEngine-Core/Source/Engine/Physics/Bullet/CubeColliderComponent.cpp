@@ -31,6 +31,7 @@ void CubeColliderComponent::Deserialize(const rapidjson::Value& pData)
 void CubeColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
     BulletColliderComponent::BeginSerialize(pWriter);
+    BulletColliderComponent::Serialize(pWriter);
     pWriter.WriteVector3D("halfExtents", mHalfExtents);
     BulletColliderComponent::EndSerialize(pWriter);
 }
