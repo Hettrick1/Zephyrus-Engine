@@ -200,6 +200,7 @@ void RendererOpenGl::SetViewMatrix(const Matrix4DRow& pViewMatrix)
 void RendererOpenGl::SetProjMatrix(const Matrix4DRow& pProjMatrix)
 {
 	mProj = pProjMatrix;
+	mDebugRenderer->SetProjMatrix(pProjMatrix);
 }
 
 void RendererOpenGl::DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const

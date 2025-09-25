@@ -48,6 +48,7 @@ public:
 
 	/// Sets the view matrix for debug rendering.
 	void SetViewMatrix(const Matrix4DRow& pViewMatrix);
+	void SetProjMatrix(const Matrix4DRow& pProjMatrix);
 
 	void SetDrawDebug(bool pDraw);
 	void SetDrawLines(bool pDraw);

@@ -91,7 +91,6 @@ void DebugRenderer::Draw(IRenderer& pRenderer)
 	glEnable(GL_DEPTH_TEST);
 	if (mDrawSelected || mDrawDebug)
 	{
-		mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.01f, 10000.0f);
 		mDebugShaderProgram.Use();
 		mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
 	}
@@ -224,6 +223,11 @@ void DebugRenderer::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, 
 void DebugRenderer::SetViewMatrix(const Matrix4DRow& pViewMatrix)
 {
 	mView = pViewMatrix;
+}
+
+void DebugRenderer::SetProjMatrix(const Matrix4DRow& pProjMatrix)
+{
+	mProj = pProjMatrix;
 }
 
 void DebugRenderer::SetDrawDebug(bool pDraw)

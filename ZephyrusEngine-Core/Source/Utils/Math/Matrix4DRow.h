@@ -368,8 +368,10 @@ public:
 
 	static Matrix4DRow CreatePerspectiveFOV(float fovY, float width, float height, float near, float far)
 	{
+		float aspect = width / height;
 		float yScale = Maths::Cot(fovY / 2.0f);
-		float xScale = yScale * height / width;
+		float xScale = yScale / aspect;
+
 		float temp[4][4] =
 		{
 			{ xScale, 0.0f, 0.0f, 0.0f },
@@ -377,6 +379,28 @@ public:
 			{ 0.0f, 0.0f, far / (far - near), 1.0f },
 			{ 0.0f, 0.0f, -near * far / (far - near), 0.0f }
 		};
+		return Matrix4DRow(temp);
+	}
+
+	static Matrix4DRow CreatePerspectiveFovX(float fovX, float width, float height, float near, float far)
+	{
+		float aspect = width / height;
+
+		float FovXRad = Maths::ToRad(fovX);
+
+		float fovY = 2.0f * atan(tan(FovXRad * 0.5f) / aspect);
+
+		float yScale = 1.0f / tan(fovY / 2.0f);
+		float xScale = yScale / aspect;
+
+		float temp[4][4] =
+		{
+			{ xScale, 0.0f, 0.0f, 0.0f },
+			{ 0.0f, yScale, 0.0f, 0.0f },
+			{ 0.0f, 0.0f, far / (far - near), 1.0f },
+			{ 0.0f, 0.0f, -near * far / (far - near), 0.0f }
+		};
+
 		return Matrix4DRow(temp);
 	}
 
