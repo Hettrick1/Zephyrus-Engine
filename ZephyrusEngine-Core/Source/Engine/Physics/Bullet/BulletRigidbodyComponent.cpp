@@ -151,6 +151,7 @@ void BulletRigidbodyComponent::ClearRigidbody()
 {
     if (mRigidBody)
     {
+        SceneManager::ActiveScene->GetPhysicWorld()->RemoveRigidbody(this);
         SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->removeRigidBody(mRigidBody);
         delete mRigidBody->getMotionState();
         delete mRigidBody;

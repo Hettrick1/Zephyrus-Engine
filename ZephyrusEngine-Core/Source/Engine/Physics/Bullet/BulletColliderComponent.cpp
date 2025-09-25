@@ -10,6 +10,22 @@ BulletColliderComponent::BulletColliderComponent(Actor* pOwner, const std::strin
 
 BulletColliderComponent::~BulletColliderComponent()
 {
+    if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
+    {
+        rb->RemoveCollider(this);
+    }
+    if (mShape)
+    {
+        delete mShape;
+        mShape = nullptr;
+    }
+    if (mGhost)
+    {
+        SceneManager::ActiveScene->GetPhysicWorld()->RemoveGhostObject(mGhost);
+        delete mGhost;
+        mGhost = nullptr;
+    }
+    SceneManager::ActiveScene->GetPhysicWorld()->RemoveCollider(this);
 }
 
 void BulletColliderComponent::Deserialize(const rapidjson::Value& pData)
@@ -250,15 +266,6 @@ void BulletColliderComponent::OnStart()
 
 void BulletColliderComponent::OnEnd()
 {
-    if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
-    {
-        rb->RemoveCollider(this);
-    }
-    if (mShape)
-    {
-        delete mShape;
-        mShape = nullptr;
-    }
     Component::OnEnd();
 }
 
