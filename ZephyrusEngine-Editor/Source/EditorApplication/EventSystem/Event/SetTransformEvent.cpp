@@ -1,5 +1,6 @@
 #include "SetTransformEvent.h"
 #include "Actor.h"
+#include "Bullet/BulletRigidbodyComponent.h"
 
 SetPositionEvent::SetPositionEvent(Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
 	: Event("Move Actor"), mActor(pActor), mNextPosition(pNextPosition), mLastPosition(pCurrentPosition)
@@ -16,6 +17,14 @@ void SetPositionEvent::Execute()
 	if (mActor)
 	{
 		mActor->SetPosition(mNextPosition);
+		std::vector<BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<BulletRigidbodyComponent>();
+		if (!rigidbodies.empty())
+		{
+			for (auto rb : rigidbodies)
+			{
+				rb->ForceSyncFromActor();
+			}
+		}
 	}
 }
 
@@ -24,6 +33,14 @@ void SetPositionEvent::Undo()
 	if (mActor)
 	{
 		mActor->SetPosition(mLastPosition);
+		std::vector<BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<BulletRigidbodyComponent>();
+		if (!rigidbodies.empty())
+		{
+			for (auto rb : rigidbodies)
+			{
+				rb->ForceSyncFromActor();
+			}
+		}
 	}
 }
 
@@ -42,6 +59,14 @@ void SetRotationEvent::Execute()
 	if (mActor)
 	{
 		mActor->SetRotation(mNextRotation);
+		std::vector<BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<BulletRigidbodyComponent>();
+		if (!rigidbodies.empty())
+		{
+			for (auto rb : rigidbodies)
+			{
+				rb->ForceSyncFromActor();
+			}
+		}
 	}
 }
 
@@ -50,6 +75,14 @@ void SetRotationEvent::Undo()
 	if (mActor)
 	{
 		mActor->SetRotation(mLastRotation);
+		std::vector<BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<BulletRigidbodyComponent>();
+		if (!rigidbodies.empty())
+		{
+			for (auto rb : rigidbodies)
+			{
+				rb->ForceSyncFromActor();
+			}
+		}
 	}
 }
 

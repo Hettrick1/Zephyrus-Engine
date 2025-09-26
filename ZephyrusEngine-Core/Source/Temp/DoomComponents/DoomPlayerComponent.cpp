@@ -1,12 +1,11 @@
 #include "DoomPlayerComponent.h"
 #include "Log.h"
 #include "Timer.h"
-#include "Physics/CollisionManager.h"
-#include "Physics/PhysicManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Temp/ChildScenes/LVLDoomMainMenu.h"
 #include "DoomEnemyComponent.h"
+#include "CameraComponent.h"
 
 float bobingTime = 0;
 const float gunDamages = 25;
@@ -92,6 +91,11 @@ void DoomPlayerComponent::OnStart()
 	mDamageIndicatorImage = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
 	mDamageIndicatorImage->SetDrawOrder(0.0f);
 	mDamageIndicatorImage->SetTint(Vector4D(1.0, 1.0, 1.0, 0.0));
+	CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
+	if (cam)
+	{
+		mGun->SetParent(cam);
+	}
 }
 
 void DoomPlayerComponent::Update()
@@ -111,7 +115,7 @@ void DoomPlayerComponent::Update()
 	else
 	{
 		float lerpRelativeSpeed = 8;
-		Vector3D lerpRelative = Vector3D::Lerp(mGun->GetRelativePosition(), Vector3D(0.0f, 2.0f, 0.2f), Timer::deltaTime * lerpRelativeSpeed);
+		Vector3D lerpRelative = Vector3D::Lerp(mGun->GetRelativePosition(), Vector3D(0.0f, 2.0f, -0.2f), Timer::deltaTime * lerpRelativeSpeed);
 		mGun->SetRelativePosition(lerpRelative);
 		bobingTime = 0;
 	}
@@ -157,15 +161,16 @@ void DoomPlayerComponent::ChangeWeapon()
 
 void DoomPlayerComponent::Shoot(int pAmoQuantity)
 {
+	CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
 	switch (mWeapon) {
 	case Weapons::Gun:
 	{
 		const float range = gunRange;
 		Vector3D start = mOwner->GetTransformComponent().GetPosition();
 		start.z -= 0.0f;
-		Vector3D end = start + mOwner->GetTransformComponent().GetWorldTransform().GetYAxis() * range;
+		Vector3D end = start + cam->GetWorldTransform().GetYAxis() * range;
 		HitResult hit;
-		PhysicManager::Instance().LineTrace(start, end, hit, mOwner);
+		SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
 		DebugLine* line = new DebugLine(start, end, hit);
 		mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 		UseAmo(pAmoQuantity);
@@ -185,7 +190,7 @@ void DoomPlayerComponent::Shoot(int pAmoQuantity)
 	{
 		Vector3D start = mOwner->GetTransformComponent().GetPosition();
 		start.z -= 0.0f;
-		Vector3D baseDirection = mOwner->GetTransformComponent().GetWorldTransform().GetYAxis();
+		Vector3D baseDirection = cam->GetWorldTransform().GetYAxis();
 
 		const float spreadAngle = shotgunSpreadAngle;
 		const float range = shotgunRange;
@@ -203,7 +208,7 @@ void DoomPlayerComponent::Shoot(int pAmoQuantity)
 
 			Vector3D end = start + dir * range;
 			HitResult hit;
-			PhysicManager::Instance().LineTrace(start, end, hit, mOwner);
+			SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
 			DebugLine* line = new DebugLine(start, end, hit);
 			mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 			if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))

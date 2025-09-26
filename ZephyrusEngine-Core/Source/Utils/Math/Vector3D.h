@@ -10,6 +10,7 @@ struct Vector3D
 	Vector3D() :x(0.0), y(0.0), z(0.0){}
 	Vector3D(float pX, float pY, float pZ) : x(pX), y(pY), z(pZ){}
 	Vector3D(float size) : x(size), y(size), z(size){}
+	Vector3D(const btVector3& vec) : x(vec.x()), y(vec.y()), z(vec.z()) {}
 
 	void Set(float xP, float yP, float zP);
 	float LengthSq() const;

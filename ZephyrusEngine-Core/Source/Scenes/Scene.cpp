@@ -68,6 +68,11 @@ void Scene::PostStart()
 				mPlayerRef->SetSize(Vector3D(1));
 			}
 			mPlayerRef->AddTag("Player");
+			auto rb = mPlayerRef->GetRigidBody();
+			if (rb)
+			{
+				rb->ForceSyncFromActor();
+			}
 		}
 	}
 	else
@@ -78,8 +83,6 @@ void Scene::PostStart()
 		mPlayerRef->SetSize(Vector3D(1));
 	}
 	mPlayerRef->Start();
-
-	mPhysicWorld->Test();
 }
 
 void Scene::Update()

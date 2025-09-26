@@ -718,13 +718,13 @@
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "isQuery": false,
                         "ignoreSelf": true,
-                        "radius": 1.0,
-                        "height": 2.0
+                        "radius": 0.6,
+                        "height": 1.2
                     }
                 }, {
                     "type": "DoomEnemyComponent",
@@ -775,13 +775,13 @@
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "isQuery": false,
                         "ignoreSelf": true,
-                        "radius": 1.0,
-                        "height": 2.0
+                        "radius": 0.6,
+                        "height": 1.2
                     }
                 }, {
                     "type": "DoomEnemyComponent",
@@ -832,13 +832,13 @@
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "isQuery": false,
                         "ignoreSelf": true,
-                        "radius": 1.0,
-                        "height": 2.0
+                        "radius": 0.6,
+                        "height": 1.2
                     }
                 }, {
                     "type": "DoomEnemyComponent",
@@ -889,13 +889,13 @@
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "isQuery": false,
                         "ignoreSelf": true,
-                        "radius": 1.0,
-                        "height": 2.0
+                        "radius": 0.6,
+                        "height": 1.2
                     }
                 }, {
                     "type": "DoomEnemyComponent",
@@ -946,13 +946,13 @@
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "isQuery": false,
                         "ignoreSelf": true,
-                        "radius": 1.0,
-                        "height": 2.0
+                        "radius": 0.6,
+                        "height": 1.2
                     }
                 }, {
                     "type": "DoomEnemyComponent",

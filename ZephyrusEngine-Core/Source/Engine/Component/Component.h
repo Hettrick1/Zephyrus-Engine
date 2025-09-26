@@ -28,6 +28,9 @@ protected:
 	std::vector<std::string> mComponentTags;
 	std::string mComponentName;
 	std::string mComponentId;
+protected:
+	Component* mParent = nullptr;
+	std::vector<Component*> mChildren;
 public:
 	Component() = delete;
 	Component(Actor* pOwner, std::string pName = "", int pUpdateOder = 0);
@@ -91,4 +94,29 @@ public:
 	Vector3D GetWorldPosition() const;
 	inline std::string GetName() const { return mComponentName; }
 	inline std::vector<std::string> GetTag() const { return mComponentTags; }
+
+	void SetParent(Component* parent)
+	{
+		if (mParent)
+		{
+			auto& siblings = mParent->mChildren;
+			siblings.erase(std::remove(siblings.begin(), siblings.end(), this), siblings.end());
+		}
+
+		mParent = parent;
+
+		if (mParent)
+		{
+			mParent->mChildren.push_back(this);
+		}
+	}
+
+	void AddChild(Component* child)
+	{
+		if (!child) return;
+		child->SetParent(this);
+	}
+
+	const Component* GetParent() const { return mParent; }
+	const std::vector<Component*>& GetChildren() const { return mChildren; }
 };

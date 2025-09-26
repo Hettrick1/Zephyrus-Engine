@@ -11,7 +11,7 @@ RigidbodyComponent::RigidbodyComponent(Actor* pOwner, int pUpdateOrder)
 	mBounciness(0.5f), mIsGrounded(false), mIsStatic(false)
 {
     PhysicManager::Instance().RegisterRigidBody(pOwner, this);
-    pOwner->SetRigidBody(this);
+    //pOwner->SetRigidBody(this);
 }
 
 void RigidbodyComponent::Deserialize(const rapidjson::Value& pData)

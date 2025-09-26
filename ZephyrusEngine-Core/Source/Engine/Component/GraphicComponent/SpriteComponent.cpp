@@ -108,26 +108,29 @@ void SpriteComponent::SetCullOff(bool cull)
 
 Matrix4DRow SpriteComponent::GetWorldTransform()
 {
-	if (mOwner)
+	Vector3D spriteSize = mRelativeSize;
+
+	if (mTexWidth > mTexHeight)
 	{
-		Vector3D spriteSize = mRelativeSize;
-
-		if (mTexWidth > mTexHeight)
-		{
-			spriteSize.x *= aspectRatio;
-		}
-		else
-		{
-			spriteSize.y *= aspectRatioInv;
-		}
-
-		mRelativeTransform = Matrix4DRow::CreateScale(spriteSize);
-		mRelativeTransform *= Matrix4DRow::CreateFromQuaternion(mRelativeRotation);
-		mRelativeTransform *= Matrix4DRow::CreateTranslation(mRelativePosition);
-
-		return mRelativeTransform * mOwner->GetTransformComponent().GetWorldTransform();
+		spriteSize.x *= aspectRatio;
+	}
+	else
+	{
+		spriteSize.y *= aspectRatioInv;
 	}
 
+	mRelativeTransform = Matrix4DRow::CreateScale(spriteSize);
+	mRelativeTransform *= Matrix4DRow::CreateFromQuaternion(mRelativeRotation);
+	mRelativeTransform *= Matrix4DRow::CreateTranslation(mRelativePosition);
+
+	if (mParent)
+	{
+		return mRelativeTransform * mParent->GetWorldTransform();
+	}
+	else if (mOwner)
+	{
+		return  mRelativeTransform * mOwner->GetTransformComponent().GetWorldTransform();
+	}
 	return mRelativeTransform;
 }
 

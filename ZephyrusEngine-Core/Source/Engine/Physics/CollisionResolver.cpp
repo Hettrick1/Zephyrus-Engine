@@ -179,8 +179,8 @@ void CollisionResolver::CalculatePhysicCollisions()
 
 		std::pair<Actor*, Actor*> actors = collision->actorPair;
 
-		RigidbodyComponent* rbA = actors.first->GetRigidBody(); 
-		RigidbodyComponent* rbB = actors.second->GetRigidBody();
+		RigidbodyComponent* rbA = nullptr; 
+		RigidbodyComponent* rbB = nullptr;
 
 		Vector3D vA = collision->velocityPair.first;
 		Vector3D vB = collision->velocityPair.second;
@@ -282,8 +282,8 @@ void CollisionResolver::ApplyReactionForce()
 
 void CollisionResolver::ResolvePenetration(Actor* actorA, Actor* actorB, Vector3D normal, float depth)
 {
-	RigidbodyComponent* rbA = actorA->GetRigidBody();
-	RigidbodyComponent* rbB = actorB->GetRigidBody();
+	RigidbodyComponent* rbA = nullptr;
+	RigidbodyComponent* rbB = nullptr;
 
 	bool isStaticA = (rbA && rbA->IsStatic()) || (rbA && rbA->GetMass() > 10000);
 	bool isStaticB = (rbB && rbB->IsStatic()) || (rbB && rbB->GetMass() > 10000);

@@ -6,6 +6,41 @@
 
 #include <vector>
 
+struct CustomRayResultCallback : public btCollisionWorld::ClosestRayResultCallback {
+    Actor* mIgnoreActor;
+
+    CustomRayResultCallback(const btVector3& pFrom, const btVector3& pTo, Actor* pIgnore)
+        : btCollisionWorld::ClosestRayResultCallback(pFrom, pTo), mIgnoreActor(pIgnore) {}
+
+    virtual bool needsCollision(btBroadphaseProxy* proxy) const override
+    {
+        if (!btCollisionWorld::ClosestRayResultCallback::needsCollision(proxy))
+            return false;
+
+        btCollisionObject* obj = static_cast<btCollisionObject*>(proxy->m_clientObject);
+        if (!obj) return false;
+
+        if (obj->getUserPointer() == mIgnoreActor)
+            return false;
+
+        if (obj->getCollisionFlags() & btCollisionObject::CF_NO_CONTACT_RESPONSE)
+            return false;
+
+        return true;
+    }
+
+    btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override {
+        const btCollisionObject* obj = rayResult.m_collisionObject;
+        if (obj && obj->getUserPointer()) {
+            Actor* actor = static_cast<Actor*>(obj->getUserPointer());
+            if (actor == mIgnoreActor) {
+                return 1.0f;
+            }
+        }
+        return ClosestRayResultCallback::addSingleResult(rayResult, normalInWorldSpace);
+    }
+};
+
 class PhysicWorld
 {
 private:
@@ -33,7 +68,7 @@ public:
     void AddCollider(BulletColliderComponent* pCollider);
     void RemoveCollider(BulletColliderComponent* pCollider);
 
-    void Test();
+    bool LineTrace(const Vector3D& pStart,const Vector3D& pEnd,HitResult& pOutHit,Actor* pIgnoreActor = nullptr);
 
     btDiscreteDynamicsWorld* GetWorld() { return mWorld; }
 };

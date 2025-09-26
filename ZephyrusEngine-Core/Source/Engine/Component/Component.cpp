@@ -150,11 +150,18 @@ void Component::RemoveTag(std::string_view pTag)
 
 Matrix4DRow Component::GetWorldTransform()
 {
-    if (mOwner)
+    if (mParent)
+    {
+        return  mRelativeTransform * mParent->GetWorldTransform();
+    }
+    else if (mOwner)
     {
         return mRelativeTransform * mOwner->GetTransformComponent().GetWorldTransform();
     }
-    return mRelativeTransform;
+    else
+    {
+        return mRelativeTransform;
+    }
 }
 
 void Component::ComputeRelativeTransform()

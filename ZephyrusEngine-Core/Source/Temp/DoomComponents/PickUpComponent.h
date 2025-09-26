@@ -36,7 +36,7 @@ public:
 	inline const char* PickUpTypeToString(PickUpType state);
 
 public:
-	void OnTriggerEnter(ColliderComponent* collider, HitResult* infos) override;
-	void OnTriggerStay(ColliderComponent* collider, HitResult* infos) override;
-	void OnTriggerExit(ColliderComponent* collider, HitResult* infos) override;
+	void OnTriggerEnter(BulletColliderComponent* collider, HitResult* infos) override;
+	void OnTriggerStay(BulletColliderComponent* collider, HitResult* infos) override;
+	void OnTriggerExit(BulletColliderComponent* collider, HitResult* infos) override;
 };

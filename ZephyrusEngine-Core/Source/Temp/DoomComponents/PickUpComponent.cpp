@@ -75,7 +75,7 @@ inline const char* PickUpComponent::PickUpTypeToString(PickUpType state) {
 	return "active";
 }
 
-void PickUpComponent::OnTriggerEnter(ColliderComponent* collider, HitResult* infos)
+void PickUpComponent::OnTriggerEnter(BulletColliderComponent* collider, HitResult* infos)
 {
 	if (infos->HitActor->HasTag("Player"))
 	{
@@ -109,10 +109,10 @@ void PickUpComponent::OnTriggerEnter(ColliderComponent* collider, HitResult* inf
 	}
 }
 
-void PickUpComponent::OnTriggerStay(ColliderComponent* collider, HitResult* infos)
+void PickUpComponent::OnTriggerStay(BulletColliderComponent* collider, HitResult* infos)
 {
 }
 
-void PickUpComponent::OnTriggerExit(ColliderComponent* collider, HitResult* infos)
+void PickUpComponent::OnTriggerExit(BulletColliderComponent* collider, HitResult* infos)
 {
 }

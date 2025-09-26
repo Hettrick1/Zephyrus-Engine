@@ -90,6 +90,33 @@ void PhysicWorld::RemoveCollider(BulletColliderComponent* pCollider)
     std::erase(mColliders, pCollider);
 }
 
+bool PhysicWorld::LineTrace(const Vector3D& pStart, const Vector3D& pEnd, HitResult& pOutHit, Actor* pIgnoreActor)
+{
+    pOutHit.Reset();
+
+    CustomRayResultCallback rayCallback(btVector3(pStart.x, pStart.y, pStart.z),
+        btVector3(pEnd.x, pEnd.y, pEnd.z),
+        pIgnoreActor);
+
+    mWorld->rayTest(rayCallback.m_rayFromWorld, rayCallback.m_rayToWorld, rayCallback);
+
+    if (rayCallback.hasHit()) {
+        pOutHit.HasHit = true;
+        pOutHit.HitPoint = Vector3D(rayCallback.m_hitPointWorld);
+        pOutHit.Normal = Vector3D(rayCallback.m_hitNormalWorld);
+
+        const btCollisionObject* hitObj = rayCallback.m_collisionObject;
+        if (hitObj && hitObj->getUserPointer()) {
+            pOutHit.HitActor = static_cast<Actor*>(hitObj->getUserPointer());
+            pOutHit.HitCollider = nullptr;
+        }
+
+        pOutHit.Distance = (pOutHit.HitPoint - pStart).Length();
+        return true;
+    }
+    return false;
+}
+
 void PhysicWorld::Unload()
 {
     delete mWorld; 
@@ -106,44 +133,44 @@ void PhysicWorld::Unload()
     mGhostCallback = nullptr;
 }
  
-void PhysicWorld::Test()
-{
-    for (int i = -1; i < 2; i++)
-    {
-        auto actor1 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(i * 3, 10, 2.5));
-
-        auto collider = new CubeColliderComponent(actor1);
-        actor1->AddComponent(collider);
-        auto collider0 = new CapsuleColliderComponent(actor1);
-        actor1->AddComponent(collider0);
-        auto rigidbody = new BulletRigidbodyComponent(actor1);
-        actor1->AddComponent(rigidbody);
-
-
-        rigidbody->ApplyTorqueImpulse(Vector3D(1));
-    }
-
-    auto actor3 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, 0.5));
-
-    auto collider3 = new CubeColliderComponent(actor3);
-    actor3->AddComponent(collider3);
-
-    collider3->SetIsQuery(true);
-
-    auto actor4 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(-3, 10, -0.5));
-
-    auto collider4 = new CubeColliderComponent(actor4);
-    actor4->AddComponent(collider4);
-
-    auto actor2 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, -3), 0, Vector3D(10, 10, 0.2));
-
-    auto rigidbody1 = new BulletRigidbodyComponent(actor2);
-    actor2->AddComponent(rigidbody1);
-    auto collider1 = new CubeColliderComponent(actor2);
-    actor2->AddComponent(collider1);
-
-    rigidbody1->SetType(BodyType::Static);
-
-    collider1->SetHalfExtents(Vector3D(10, 10, 0.2));
-
-}
+//void PhysicWorld::Test()
+//{
+//    for (int i = -1; i < 2; i++)
+//    {
+//        auto actor1 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(i * 3, 10, 2.5));
+//
+//        auto collider = new CubeColliderComponent(actor1);
+//        actor1->AddComponent(collider);
+//        auto collider0 = new CapsuleColliderComponent(actor1);
+//        actor1->AddComponent(collider0);
+//        auto rigidbody = new BulletRigidbodyComponent(actor1);
+//        actor1->AddComponent(rigidbody);
+//
+//
+//        rigidbody->ApplyTorqueImpulse(Vector3D(1));
+//    }
+//
+//    auto actor3 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, 0.5));
+//
+//    auto collider3 = new CubeColliderComponent(actor3);
+//    actor3->AddComponent(collider3);
+//
+//    collider3->SetIsQuery(true);
+//
+//    auto actor4 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(-3, 10, -0.5));
+//
+//    auto collider4 = new CubeColliderComponent(actor4);
+//    actor4->AddComponent(collider4);
+//
+//    auto actor2 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, -3), 0, Vector3D(10, 10, 0.2));
+//
+//    auto rigidbody1 = new BulletRigidbodyComponent(actor2);
+//    actor2->AddComponent(rigidbody1);
+//    auto collider1 = new CubeColliderComponent(actor2);
+//    actor2->AddComponent(collider1);
+//
+//    rigidbody1->SetType(BodyType::Static);
+//
+//    collider1->SetHalfExtents(Vector3D(10, 10, 0.2));
+//
+//}

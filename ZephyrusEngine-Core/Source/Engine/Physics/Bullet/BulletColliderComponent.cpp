@@ -5,7 +5,6 @@
 BulletColliderComponent::BulletColliderComponent(Actor* pOwner, const std::string& pName)
     : Component(pOwner, pName)
 {
-    SceneManager::ActiveScene->GetPhysicWorld()->AddCollider(this);
 }
 
 BulletColliderComponent::~BulletColliderComponent()
@@ -270,6 +269,8 @@ void BulletColliderComponent::RebuildCollider()
 
 void BulletColliderComponent::OnStart()
 {
+    Component::OnStart();
+    SceneManager::ActiveScene->GetPhysicWorld()->AddCollider(this);
 }
 
 void BulletColliderComponent::OnEnd()

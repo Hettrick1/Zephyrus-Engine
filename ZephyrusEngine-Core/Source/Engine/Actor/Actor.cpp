@@ -283,7 +283,7 @@ void Actor::SetPrefab(const std::string& pPrefab)
     mPrefab = pPrefab;
 }
 
-void Actor::SetRigidBody(RigidbodyComponent* pRigidbody)
+void Actor::SetRigidBody(BulletRigidbodyComponent* pRigidbody)
 {
     if (mRigidbody == nullptr)
     {

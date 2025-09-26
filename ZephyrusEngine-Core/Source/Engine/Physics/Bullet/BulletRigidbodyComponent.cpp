@@ -7,7 +7,8 @@
 BulletRigidbodyComponent::BulletRigidbodyComponent(Actor* pOwner)
     : Component(pOwner,"BulletRigidBodyComponent"), mType(BodyType::Dynamic), mMass(1.0), mFriction(0.5f), mRestitution(0.5f), mLockAngles(1), mLockAxes(1)
 {
-    if (mOwner->GetComponentOfType<RigidbodyComponent>())
+    pOwner->SetRigidBody(this);
+    if (mOwner->GetAllComponentOfType<BulletRigidbodyComponent>().size() > 1)
     {
         return;
     }
@@ -32,7 +33,6 @@ BulletRigidbodyComponent::BulletRigidbodyComponent(Actor* pOwner)
 
     Rebuild();
     ForceSyncFromActor();
-    SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
 }
 
 BulletRigidbodyComponent::~BulletRigidbodyComponent()
@@ -94,6 +94,7 @@ void BulletRigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWrite
 void BulletRigidbodyComponent::OnStart()
 {
     Component::OnStart();
+    SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
 }
 
 void BulletRigidbodyComponent::OnEnd()
@@ -209,7 +210,7 @@ void BulletRigidbodyComponent::SyncTransformFromPhysics()
     btVector3 pos = trans.getOrigin();
     btQuaternion rot = trans.getRotation();
 
-    mOwner->SetPosition(Vector3D(pos.x(), pos.y(), pos.z()));
+    mOwner->SetPosition(Vector3D(pos));
     mOwner->SetRotation(Quaternion(rot.x(), rot.y(), rot.z(), rot.w()));
 }
 

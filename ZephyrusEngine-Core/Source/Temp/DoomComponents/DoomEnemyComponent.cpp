@@ -9,7 +9,7 @@
 #include "CameraManager.h"
 #include "CameraComponent.h"
 #include "DoomPlayerComponent.h"
-#include "BoxAABBComponent.h"
+#include "SceneManager.h"
 
 const float damages = 20;
 const float weaponRange = 60;
@@ -205,7 +205,8 @@ void DoomEnemyComponent::Update()
 
 			Vector3D end = start + dir * range;
 			HitResult hit;
-			PhysicManager::Instance().LineTrace(start, end, hit, mOwner);
+			SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
+			//PhysicManager::Instance().LineTrace(start, end, hit, mOwner);
 			DebugLine* line = new DebugLine(start, end, hit);
 			mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 			if (hit.HitActor != nullptr && hit.HitActor->HasTag("Player"))
@@ -259,6 +260,6 @@ void DoomEnemyComponent::TakeDamage(int pDamages, int weapon)
 		mIsDead = true;
 		mEnemyFb->PlayAnimation();
 		mEnemyFb->SetCanPlay(false);
-		mOwner->GetComponentOfType<BoxAABBComponent>()->SetActive(false);
+		//mOwner->GetComponentOfType<BoxAABBComponent>()->SetActive(false);
 	}
 }

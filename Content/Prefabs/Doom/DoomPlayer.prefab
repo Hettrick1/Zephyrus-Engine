@@ -2,19 +2,21 @@
     "name": "DoomPlayerActor",
     "state": "active",
     "transform": {
-        "position": [-48, 0, 0],
+        "position": [0, 0, 0],
         "size": [1, 1, 1],
         "rotation": [0, 0, -90]
     },
     "components": [
         {
-            "type": "RigidbodyComponent",
-            "componentId": "RigidbodyComponent1",
+            "type": "BulletRigidbodyComponent",
+            "componentId": "BulletRigidbodyComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
-                "relativeRotation" : [90, 0, 0],
-                "isStatic" : true,
-                "friction" : 1.0
+                "relativeRotation" : [0, 0, 0],
+                "mass" : 1.0,
+                "friction" : 10.0,
+                "restitution" : 0.0,
+                "lockAngles" : [0, 0, 0]
             }
         },
         {
@@ -29,7 +31,7 @@
             "type": "CameraComponent",
             "componentId": "CameraComponent1",
             "properties": {
-                "relativePosition" : [0, 0, 0.4],
+                "relativePosition" : [0, 0, 0.8],
                 "relativeRotation" : [0, 0, 0]
             }
         },
@@ -37,7 +39,7 @@
             "type": "FlipbookComponent",
             "componentId": "FlipbookComponent1", 
             "properties": {
-                "relativePosition" : [0, 2, 0.2],
+                "relativePosition" : [0, 2, -0.2],
                 "relativeRotation" : [90, 0, 0],
                 "cullOff" : true
             }
@@ -48,7 +50,7 @@
             "properties": {
                 "relativePosition" : [0, 0, 0.4],
                 "relativeRotation" : [0, 0, 0],
-                "isQuerry" : true
+                "isQuery" : true
             }
         },
         {
@@ -57,7 +59,9 @@
             "properties": {
                 "relativePosition" : [0, 0, 0.4],
                 "relativeRotation" : [0, 0, 0],
-                "isQuerry" : false
+                "radius" : 0.5,
+                "height" : 1,
+                "isQuery" : false
             }
         },
         {

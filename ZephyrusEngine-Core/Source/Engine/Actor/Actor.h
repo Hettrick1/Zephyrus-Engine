@@ -1,7 +1,7 @@
 #pragma once
 #include "ActorState.h"
 #include "TransformComponent.h"
-#include "RigidbodyComponent.h"
+#include "Bullet/BulletRigidbodyComponent.h"
 #include <vector>
 #include <algorithm>
 #include <string_view>
@@ -20,7 +20,7 @@ protected:
 	Scene& mScene;
 	ActorState mState;
 	TransformComponent mTransformComponent;
-	RigidbodyComponent* mRigidbody;
+	BulletRigidbodyComponent* mRigidbody;
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mPendingComponents;
 	bool mIsUpdatingComponents = false;
@@ -58,7 +58,7 @@ public:
 	void SetName(const std::string& pName);
 	void SetUUID(const std::string& pUUID);
 	void SetPrefab(const std::string& pPrefab);
-	void SetRigidBody(RigidbodyComponent* pRigidbody);
+	void SetRigidBody(BulletRigidbodyComponent* pRigidbody);
 	void AddTag(std::string_view  pTag);
 	void RemoveTag(std::string_view pTag);
 	inline bool HasTag(std::string_view pTag) const
@@ -78,7 +78,7 @@ public:
 	inline ActorState GetState() const { return mState; }
 	inline Scene& GetScene() const { return mScene; }
 	inline TransformComponent& GetTransformComponent() { return mTransformComponent; }
-	inline RigidbodyComponent* GetRigidBody() const { return mRigidbody; }
+	inline BulletRigidbodyComponent* GetRigidBody() const { return mRigidbody; }
 	inline std::vector<std::string> GetTag() const { return mTags; }
 	inline float GetLod() const { return mLod; }
 	inline std::string GetUUID() const { return mUUID; }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IActionListener.h"
-#include "RigidbodyComponent.h"
 #include "Component.h"
 
 class DoomPC : public IActionListener, public Component
@@ -24,7 +23,6 @@ public:
 public :
 	void Update() override;
 private:
-	RigidbodyComponent* playerRbRef;
 	bool goRight, goLeft, goForward, goBackward;
 };
 
