@@ -56,7 +56,7 @@ void CameraComponent::ComputeRelativeTransform()
 void CameraComponent::UpdateCam()
 {
     Matrix4DRow worldTransform = GetWorldTransform();
-    Vector3D camPosition = GetWorldTransform().GetTranslation();
+    Vector3D camPosition = worldTransform.GetTranslation();
     Vector3D forward = worldTransform.GetYAxis();
     Vector3D target = camPosition + forward * 400.0f;
     Vector3D up = worldTransform.GetZAxis(); 

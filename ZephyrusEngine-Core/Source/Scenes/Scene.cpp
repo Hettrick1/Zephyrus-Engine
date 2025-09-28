@@ -94,8 +94,8 @@ void Scene::Render()
 {
 	mRenderer->BeginDraw();
 	mRenderer->Draw();
-	mPhysicWorld->GetWorld()->debugDrawWorld();
-	mDebugRenderer->FlushDraw();
+	//mPhysicWorld->GetWorld()->debugDrawWorld();
+	//mDebugRenderer->FlushDraw();
 	mRenderer->EndDraw();
 }
 
@@ -136,10 +136,10 @@ void Scene::Unload()
 	mRenderer->Unload();
 	CameraManager::Instance().Unload();
 	Assets::Clear();
-	delete mPhysicWorld;
-	mPhysicWorld = nullptr;
 	delete mDebugRenderer;
 	mDebugRenderer = nullptr;
+	delete mPhysicWorld;
+	mPhysicWorld = nullptr;
 }
 
 void Scene::Close()
@@ -158,10 +158,10 @@ void Scene::Close()
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
 	CameraManager::Instance().Unload();
-	delete mPhysicWorld;
-	mPhysicWorld = nullptr;
 	delete mDebugRenderer;
 	mDebugRenderer = nullptr;
+	delete mPhysicWorld;
+	mPhysicWorld = nullptr;
 }
 
 void Scene::SaveTo(const std::string& pFilePath)

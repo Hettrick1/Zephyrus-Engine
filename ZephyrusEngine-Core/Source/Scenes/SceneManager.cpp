@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "SceneFactory.h"
 #include <filesystem>
+#include "NewCameraComponent.h"
 
 bool SceneManager::mIsSceneLoaded = false;
 Scene* SceneManager::ActiveScene = nullptr;
