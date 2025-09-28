@@ -338,7 +338,7 @@
             "uuid": "da2c19b5-2982-4a15-aa61-8a3a45e2997d",
             "name": "CubeActor",
             "state": "active",
-            "actorTags": ["Wall"],
+            "actorTags": ["Wall", "Ground"],
             "transform": {
                 "position": [0.0, 0.0, -1.2],
                 "rotation": [0.0, 0.0, 0.0],
@@ -479,7 +479,7 @@
             "name": "AmoPickUpActor",
             "state": "active",
             "transform": {
-                "position": [0.0, 0.0, -0.5],
+                "position": [0.0, 0.0, 0.1],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -487,7 +487,7 @@
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/amoPu.png",
@@ -520,7 +520,7 @@
             "name": "HealthPickUpActor",
             "state": "active",
             "transform": {
-                "position": [-20.0, -30.0, -0.5],
+                "position": [-20.0, -30.0, 0.1],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -528,7 +528,7 @@
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/lifePu.png",
@@ -561,7 +561,7 @@
             "name": "HealthPickUpActor",
             "state": "active",
             "transform": {
-                "position": [-20.0, 30.0, -0.5],
+                "position": [-20.0, 30.0, 0.1],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -569,7 +569,7 @@
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/lifePu.png",
@@ -602,7 +602,7 @@
             "name": "ShieldPickUpActor",
             "state": "active",
             "transform": {
-                "position": [-40.0, -40.0, -0.5],
+                "position": [-40.0, -40.0, 0.1],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -610,7 +610,7 @@
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/armorPu.png",
@@ -643,7 +643,7 @@
             "name": "ShieldPickUpActor",
             "state": "active",
             "transform": {
-                "position": [-40.0, 40.0, -0.5],
+                "position": [-40.0, 40.0, 0.1],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -651,7 +651,7 @@
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
                     "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/armorPu.png",

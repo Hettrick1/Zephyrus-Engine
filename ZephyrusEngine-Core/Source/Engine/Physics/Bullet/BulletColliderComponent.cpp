@@ -5,6 +5,11 @@
 BulletColliderComponent::BulletColliderComponent(Actor* pOwner, const std::string& pName)
     : Component(pOwner, pName)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
+    SceneManager::ActiveScene->GetPhysicWorld()->AddCollider(this);
 }
 
 BulletColliderComponent::~BulletColliderComponent()
@@ -100,7 +105,7 @@ void BulletColliderComponent::SetIsQuery(bool pIsQuery)
     mIsQuery = pIsQuery;
 
     auto world = SceneManager::ActiveScene->GetPhysicWorld();
-    auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>();
+    auto rb = mOwner->GetRigidBody();
 
     if (mIsQuery)
     {
@@ -178,12 +183,14 @@ void BulletColliderComponent::UpdateTrigger()
         if (mPreviousOverlaps.find(obj) == mPreviousOverlaps.end())
         {
             NotifyListenersStarted(&result);
-            ZP_CORE_INFO("Enter");
+            //DEBUG FOR NOW
+            ZP_CORE_INFO("Enter" + mOwner->GetPrefabName());
         }
         else
         {
             NotifyListenersStay(&result);
-            ZP_CORE_WARN("Stay");
+            //DEBUG FOR NOW
+            ZP_CORE_INFO("Stay" + mOwner->GetPrefabName() + " Collide " + result.HitActor->GetPrefabName() + (result.HitActor->HasTag("Ground") ? " ground " : " false "));
         }
     }
 
@@ -192,7 +199,8 @@ void BulletColliderComponent::UpdateTrigger()
         if (currentOverlaps.find(prev.first) == currentOverlaps.end())
         {
             NotifyListenersEnded(&prev.second);
-            ZP_CORE_ERROR("Exit");
+            //DEBUG FOR NOW
+            ZP_CORE_ERROR("Exit" + mOwner->GetPrefabName());
         }
     }
 
@@ -274,11 +282,6 @@ void BulletColliderComponent::RebuildCollider()
 void BulletColliderComponent::OnStart()
 {
     Component::OnStart();
-    if (!mIsActive)
-    {
-        return;
-    }
-    SceneManager::ActiveScene->GetPhysicWorld()->AddCollider(this);
 }
 
 void BulletColliderComponent::OnEnd()

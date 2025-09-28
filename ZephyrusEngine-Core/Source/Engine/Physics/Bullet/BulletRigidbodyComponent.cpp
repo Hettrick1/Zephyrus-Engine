@@ -101,11 +101,6 @@ void BulletRigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWrite
 void BulletRigidbodyComponent::OnStart()
 {
     Component::OnStart();
-    if (!mIsActive)
-    {
-        return;
-    }
-    //SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
 }
 
 void BulletRigidbodyComponent::OnEnd()
@@ -142,9 +137,14 @@ void BulletRigidbodyComponent::AddCollider(BulletColliderComponent* collider)
     btTransform local;
     local.setRotation(collider->GetRelativeTransform().GetRotation().ToBulletQuat());
     local.setOrigin(collider->GetRelativeTransform().GetTranslation().ToBulletVec3());
-    mCompound->addChildShape(local, collider->GetShape());
 
+    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    world->RemoveRigidbody(this);
+
+    mCompound->addChildShape(local, collider->GetShape());
     mColliders.push_back(collider);
+
+    world->AddRigidbody(this);
 
     Rebuild();
 }
@@ -153,10 +153,25 @@ void BulletRigidbodyComponent::RemoveCollider(BulletColliderComponent* collider)
 {
     if (!collider || !mCompound) return;
 
+    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+
+    world->RemoveRigidbody(this);
+
     mCompound->removeChildShape(collider->GetShape());
     mColliders.erase(std::remove(mColliders.begin(), mColliders.end(), collider), mColliders.end());
 
-    Rebuild();
+    world->AddRigidbody(this);
+
+    if (mColliders.empty())
+    {
+        ClearRigidbody();
+        delete mCompound;
+        mCompound = nullptr;
+    }
+    else
+    {
+        Rebuild();
+    }
 }
 
 void BulletRigidbodyComponent::ClearRigidbody()
@@ -436,8 +451,4 @@ void BulletRigidbodyComponent::SetActive(bool pActive)
         }
     }
     Rebuild();
-    if (SceneManager::ActiveScene && SceneManager::ActiveScene->GetPhysicWorld())
-    {
-        SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
-    }
 }

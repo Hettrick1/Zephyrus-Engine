@@ -8,10 +8,6 @@ CapsuleColliderComponent::CapsuleColliderComponent(Actor* pOwner)
 	mShape = new btCapsuleShapeZ(mRadius, mHeight);
     mAppliedRadius = mRadius;
     mAppliedHeight = mHeight;
-    if (!mIsActive)
-    {
-        return;
-    }
     if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
     {
         rb->AddCollider(this);

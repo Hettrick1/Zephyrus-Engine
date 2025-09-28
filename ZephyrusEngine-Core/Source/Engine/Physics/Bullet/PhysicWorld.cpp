@@ -67,16 +67,27 @@ void PhysicWorld::RemoveGhostObject(btGhostObject* ghost)
 
 void PhysicWorld::AddRigidbody(BulletRigidbodyComponent* pRigidbody)
 {
+    if (!pRigidbody) return;
+
+    auto rb = pRigidbody->GetRigidBody();
+    if (!rb) return;
+
     if (std::find(mRigidbodies.begin(), mRigidbodies.end(), pRigidbody) == mRigidbodies.end())
     {
-        mWorld->addRigidBody(pRigidbody->GetRigidBody());
+        mWorld->addRigidBody(rb);
         mRigidbodies.push_back(pRigidbody);
     }
 }
 
 void PhysicWorld::RemoveRigidbody(BulletRigidbodyComponent* pRigidbody)
 {
-    mWorld->removeRigidBody(pRigidbody->GetRigidBody());
+    if (!pRigidbody) return;
+
+    auto rb = pRigidbody->GetRigidBody();
+    if (rb)
+    {
+        mWorld->removeRigidBody(rb);
+    }
     std::erase(mRigidbodies, pRigidbody);
 }
 
@@ -134,45 +145,3 @@ void PhysicWorld::Unload()
     delete mGhostCallback;
     mGhostCallback = nullptr;
 }
- 
-//void PhysicWorld::Test()
-//{
-//    for (int i = -1; i < 2; i++)
-//    {
-//        auto actor1 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(i * 3, 10, 2.5));
-//
-//        auto collider = new CubeColliderComponent(actor1);
-//        actor1->AddComponent(collider);
-//        auto collider0 = new CapsuleColliderComponent(actor1);
-//        actor1->AddComponent(collider0);
-//        auto rigidbody = new BulletRigidbodyComponent(actor1);
-//        actor1->AddComponent(rigidbody);
-//
-//
-//        rigidbody->ApplyTorqueImpulse(Vector3D(1));
-//    }
-//
-//    auto actor3 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, 0.5));
-//
-//    auto collider3 = new CubeColliderComponent(actor3);
-//    actor3->AddComponent(collider3);
-//
-//    collider3->SetIsQuery(true);
-//
-//    auto actor4 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(-3, 10, -0.5));
-//
-//    auto collider4 = new CubeColliderComponent(actor4);
-//    actor4->AddComponent(collider4);
-//
-//    auto actor2 = PrefabFactory::SpawnActorFromPrefab("CubeActor", Vector3D(0, 10, -3), 0, Vector3D(10, 10, 0.2));
-//
-//    auto rigidbody1 = new BulletRigidbodyComponent(actor2);
-//    actor2->AddComponent(rigidbody1);
-//    auto collider1 = new CubeColliderComponent(actor2);
-//    actor2->AddComponent(collider1);
-//
-//    rigidbody1->SetType(BodyType::Static);
-//
-//    collider1->SetHalfExtents(Vector3D(10, 10, 0.2));
-//
-//}
