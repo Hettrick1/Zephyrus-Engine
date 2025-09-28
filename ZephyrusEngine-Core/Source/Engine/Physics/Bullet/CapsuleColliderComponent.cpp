@@ -8,6 +8,10 @@ CapsuleColliderComponent::CapsuleColliderComponent(Actor* pOwner)
 	mShape = new btCapsuleShapeZ(mRadius, mHeight);
     mAppliedRadius = mRadius;
     mAppliedHeight = mHeight;
+    if (!mIsActive)
+    {
+        return;
+    }
     if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
     {
         rb->AddCollider(this);
@@ -43,6 +47,7 @@ void CapsuleColliderComponent::Serialize(Serialization::Json::JsonWriter& pWrite
 
 void CapsuleColliderComponent::OnStart()
 {
+    BulletColliderComponent::OnStart();
 }
 
 void CapsuleColliderComponent::OnEnd()
@@ -64,6 +69,10 @@ std::vector<PropertyDescriptor> CapsuleColliderComponent::GetProperties()
 
 void CapsuleColliderComponent::SetRadiusAndHeight(const float& pRadius, const float& pHeight)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     float newRadius = pRadius;
     float newHeight = pHeight;
     if (newRadius != mAppliedRadius || newHeight != mAppliedHeight)

@@ -6,6 +6,10 @@ Component::Component(Actor* pOwner, std::string pName, int pUpdateOder)
     : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
     mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1), mComponentName(pName)
 {
+    if (mOwner->GetState() != ActorState::Active)
+    {
+        mIsActive = false;
+    }
 }
 
 Component::~Component()
@@ -150,6 +154,7 @@ void Component::RemoveTag(std::string_view pTag)
 
 Matrix4DRow Component::GetWorldTransform()
 {
+    ComputeRelativeTransform();
     if (mParent)
     {
         return  mRelativeTransform * mParent->GetWorldTransform();

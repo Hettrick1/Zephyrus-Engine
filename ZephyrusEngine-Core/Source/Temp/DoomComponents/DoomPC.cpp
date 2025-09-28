@@ -109,7 +109,7 @@ void DoomPC::OnActionTriggered(InputActions* action)
 					rb->GetRigidBody()->activate(true);
 					btVector3 vel = rb->GetRigidBody()->getLinearVelocity();
 					btVector3 horizontalVel(vel.x(), vel.y(), 0);
-					float maxSpeed = 4.0f;
+					float maxSpeed = 2.0f;
 
 					if (horizontalVel.length() > maxSpeed)
 					{

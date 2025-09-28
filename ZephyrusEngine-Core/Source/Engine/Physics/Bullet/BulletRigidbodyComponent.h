@@ -153,6 +153,8 @@ public:
         return btTransform(); 
     }
 
+    void SetActive(bool pActive) override;
+
     inline BodyType StringToBodyType(const std::string& str) {
         if (str == "active") return BodyType::Dynamic;
         if (str == "paused") return BodyType::Kinematic;

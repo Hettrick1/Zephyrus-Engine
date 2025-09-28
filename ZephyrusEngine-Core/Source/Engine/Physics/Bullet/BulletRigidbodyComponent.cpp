@@ -12,7 +12,10 @@ BulletRigidbodyComponent::BulletRigidbodyComponent(Actor* pOwner)
     {
         return;
     }
-
+    if (!mIsActive)
+    {
+        return;
+    }
     auto colliders = mOwner->GetAllComponentOfType<BulletColliderComponent>();
 
     if (!colliders.empty())
@@ -40,6 +43,10 @@ BulletRigidbodyComponent::~BulletRigidbodyComponent()
     ClearRigidbody();
     delete mCompound;
     mCompound = nullptr;
+    if (!mIsActive)
+    {
+        return;
+    }
     for (auto col : mColliders)
     {
         if (!col->GetIsQuery())
@@ -94,7 +101,11 @@ void BulletRigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWrite
 void BulletRigidbodyComponent::OnStart()
 {
     Component::OnStart();
-    SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
+    if (!mIsActive)
+    {
+        return;
+    }
+    //SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
 }
 
 void BulletRigidbodyComponent::OnEnd()
@@ -121,7 +132,7 @@ std::vector<PropertyDescriptor> BulletRigidbodyComponent::GetProperties()
 
 void BulletRigidbodyComponent::AddCollider(BulletColliderComponent* collider)
 {
-    if (!collider || collider->GetIsQuery()) return;
+    if (!collider || collider->GetIsQuery() || !mIsActive) return;
 
     if (!mCompound)
     {
@@ -153,7 +164,6 @@ void BulletRigidbodyComponent::ClearRigidbody()
     if (mRigidBody)
     {
         SceneManager::ActiveScene->GetPhysicWorld()->RemoveRigidbody(this);
-        SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->removeRigidBody(mRigidBody);
         delete mRigidBody->getMotionState();
         delete mRigidBody;
         mRigidBody = nullptr;
@@ -162,6 +172,10 @@ void BulletRigidbodyComponent::ClearRigidbody()
 
 void BulletRigidbodyComponent::SetMass(float pMass)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     if (mMass != pMass)
     {
         mMass = pMass;
@@ -171,6 +185,10 @@ void BulletRigidbodyComponent::SetMass(float pMass)
 
 void BulletRigidbodyComponent::ApplyForce(const Vector3D& force)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     if (mRigidBody)
     {
         mRigidBody->applyCentralForce(force.ToBulletVec3());
@@ -179,6 +197,10 @@ void BulletRigidbodyComponent::ApplyForce(const Vector3D& force)
 
 void BulletRigidbodyComponent::ApplyImpulse(const Vector3D& impulse)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     if (mRigidBody)
     {
         mRigidBody->applyCentralImpulse(impulse.ToBulletVec3());
@@ -187,6 +209,10 @@ void BulletRigidbodyComponent::ApplyImpulse(const Vector3D& impulse)
 
 void BulletRigidbodyComponent::ApplyTorque(const Vector3D& torque)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     if (mRigidBody) 
     {
         mRigidBody->applyTorque(torque.ToBulletVec3());
@@ -195,6 +221,10 @@ void BulletRigidbodyComponent::ApplyTorque(const Vector3D& torque)
 
 void BulletRigidbodyComponent::ApplyTorqueImpulse(const Vector3D& impulse)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     if (mRigidBody) 
     {
         mRigidBody->applyTorqueImpulse(impulse.ToBulletVec3());
@@ -203,7 +233,7 @@ void BulletRigidbodyComponent::ApplyTorqueImpulse(const Vector3D& impulse)
 
 void BulletRigidbodyComponent::SyncTransformFromPhysics()
 {
-    if (!mRigidBody) return;
+    if (!mRigidBody || !mIsActive) return;
 
     btTransform trans;
     mRigidBody->getMotionState()->getWorldTransform(trans);
@@ -216,7 +246,7 @@ void BulletRigidbodyComponent::SyncTransformFromPhysics()
 
 void BulletRigidbodyComponent::SyncTransformFromWorld()
 {
-    if (!mCompound || !mRigidBody) return;
+    if (!mCompound || !mRigidBody || !mIsActive) return;
     if (mType == BodyType::Kinematic || mType == BodyType::Static)
     {
         btTransform trans;
@@ -252,7 +282,7 @@ void BulletRigidbodyComponent::ForceSyncFromActor()
 
 void BulletRigidbodyComponent::UpdateColliderTransform(BulletColliderComponent* collider)
 {
-    if (!mCompound) return;
+    if (!mCompound || !mIsActive) return;
 
     int childIndex= -1;
 
@@ -275,6 +305,10 @@ void BulletRigidbodyComponent::UpdateColliderTransform(BulletColliderComponent* 
 
 void BulletRigidbodyComponent::Rebuild()
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     ClearRigidbody();
 
     if (!mCompound || mColliders.empty())
@@ -304,12 +338,12 @@ void BulletRigidbodyComponent::Rebuild()
     mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
     mRigidBody->setUserPointer(mOwner);
 
-    SceneManager::ActiveScene->GetPhysicWorld()->GetWorld()->addRigidBody(mRigidBody);
+    SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
 }
 
 void BulletRigidbodyComponent::UpdateColliderShape(BulletColliderComponent* collider, btCollisionShape* oldShape)
 {
-    if (!mCompound || !collider) return;
+    if (!mCompound || !collider || !mIsActive) return;
 
     if (oldShape)
     {
@@ -329,7 +363,7 @@ void BulletRigidbodyComponent::UpdateColliderShape(BulletColliderComponent* coll
 
 void BulletRigidbodyComponent::SetType(BodyType pType)
 {
-    if (mType == pType && mRigidBody) return;
+    if (mType == pType || !mIsActive) return;
 
     mType = pType;
 
@@ -365,5 +399,46 @@ void BulletRigidbodyComponent::SetType(BodyType pType)
             mRigidBody->setCollisionFlags(flags);
             mRigidBody->setActivationState(ACTIVE_TAG);
         }
+    }
+}
+
+void BulletRigidbodyComponent::SetActive(bool pActive)
+{
+    Component::SetActive(pActive);
+    if (!mIsActive)
+    {
+        if (mRigidBody)
+        {
+            ClearRigidbody();
+        }
+        return;
+    }
+    if (mRigidBody)
+    {
+        if (SceneManager::ActiveScene && SceneManager::ActiveScene->GetPhysicWorld())
+        {
+            Rebuild();
+            SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
+        }
+        return;
+    }
+    if (!mCompound && !mColliders.empty())
+    {
+        mCompound = new btCompoundShape();
+        for (auto col : mColliders)
+        {
+            if (!col || col->GetIsQuery()) continue;
+            btCollisionShape* shape = col->GetShape();
+            if (!shape) continue;
+            btTransform local;
+            local.setRotation(col->GetRelativeTransform().GetRotation().ToBulletQuat());
+            local.setOrigin(col->GetRelativeTransform().GetTranslation().ToBulletVec3());
+            mCompound->addChildShape(local, shape);
+        }
+    }
+    Rebuild();
+    if (SceneManager::ActiveScene && SceneManager::ActiveScene->GetPhysicWorld())
+    {
+        SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
     }
 }

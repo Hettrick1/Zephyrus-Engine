@@ -39,15 +39,6 @@ void CameraComponent::OnEnd()
     Component::OnEnd();
 }
 
-Matrix4DRow CameraComponent::GetWorldTransform()
-{
-    if (mOwner)
-    {
-        return mRelativeTransform * mOwner->GetTransformComponent().GetWorldTransform();
-    }
-    return mRelativeTransform;
-}
-
 void CameraComponent::ComputeRelativeTransform()
 {
     if (mOwner)
@@ -65,7 +56,7 @@ void CameraComponent::ComputeRelativeTransform()
 void CameraComponent::UpdateCam()
 {
     Matrix4DRow worldTransform = GetWorldTransform();
-    Vector3D camPosition = mOwner->GetTransformComponent().GetPosition() + GetRelativePosition();
+    Vector3D camPosition = GetWorldTransform().GetTranslation();
     Vector3D forward = worldTransform.GetYAxis();
     Vector3D target = camPosition + forward * 400.0f;
     Vector3D up = worldTransform.GetZAxis(); 

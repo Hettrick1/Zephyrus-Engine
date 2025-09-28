@@ -58,7 +58,7 @@ void BulletColliderComponent::EndSerialize(Serialization::Json::JsonWriter& pWri
 
 void BulletColliderComponent::CreateColliderWithoutBody()
 {
-    if (mIsQuery)
+    if (mIsQuery || mOwner->GetState() != ActorState::Active)
     {
         return;
     }
@@ -95,7 +95,7 @@ void BulletColliderComponent::ClearGhostObject()
 
 void BulletColliderComponent::SetIsQuery(bool pIsQuery)
 {
-    if (mIsQuery == pIsQuery) return;
+    if (mIsQuery == pIsQuery || mOwner->GetState() != ActorState::Active) return;
 
     mIsQuery = pIsQuery;
 
@@ -151,7 +151,7 @@ void BulletColliderComponent::SetIsQuery(bool pIsQuery)
 
 void BulletColliderComponent::UpdateTrigger()
 {
-    if (!mIsQuery || !mGhost) return;
+    if (!mIsQuery || !mGhost || mOwner->GetState() != ActorState::Active) return;
 
     std::unordered_map<const btCollisionObject*, HitResult> currentOverlaps;
 
@@ -217,6 +217,10 @@ void BulletColliderComponent::UpdateWorldTransform()
 
 void BulletColliderComponent::RebuildCollider()
 {
+    if (mOwner->GetState() != ActorState::Active)
+    {
+        return;
+    }
     auto world = SceneManager::ActiveScene->GetPhysicWorld();
     auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>();
 
@@ -270,12 +274,72 @@ void BulletColliderComponent::RebuildCollider()
 void BulletColliderComponent::OnStart()
 {
     Component::OnStart();
+    if (!mIsActive)
+    {
+        return;
+    }
     SceneManager::ActiveScene->GetPhysicWorld()->AddCollider(this);
 }
 
 void BulletColliderComponent::OnEnd()
 {
     Component::OnEnd();
+}
+
+void BulletColliderComponent::SetActive(bool pActive)
+{
+    Component::SetActive(pActive);
+
+    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>();
+
+    if (mIsActive)
+    {
+        if (mIsQuery)
+        {
+            if (!mGhost)
+            {
+                mGhost = new btGhostObject();
+                mGhost->setUserPointer(mOwner);
+                mGhost->setCollisionShape(mShape);
+                mGhost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
+
+                btTransform t;
+                auto actorRot = mOwner->GetTransformComponent().GetRotation();
+                t.setRotation(btQuaternion(actorRot.x, actorRot.y, actorRot.z, actorRot.w));
+                t.setOrigin(mOwner->GetPosition().ToBulletVec3());
+                mGhost->setWorldTransform(t);
+
+                world->AddGhostObject(mGhost);
+            }
+        }
+        else if (rb)
+        {
+            rb->AddCollider(this);
+        }
+        else
+        {
+            CreateColliderWithoutBody();
+        }
+
+        world->AddCollider(this);
+    }
+    else
+    {
+        if (mGhost)
+        {
+            world->RemoveGhostObject(mGhost);
+            delete mGhost;
+            mGhost = nullptr;
+        }
+
+        if (rb)
+        {
+            rb->RemoveCollider(this);
+        }
+
+        world->RemoveCollider(this);
+    }
 }
 
 void BulletColliderComponent::AddListener(ICollisionListener* pListener)

@@ -69,12 +69,14 @@ void PhysicWorld::AddRigidbody(BulletRigidbodyComponent* pRigidbody)
 {
     if (std::find(mRigidbodies.begin(), mRigidbodies.end(), pRigidbody) == mRigidbodies.end())
     {
+        mWorld->addRigidBody(pRigidbody->GetRigidBody());
         mRigidbodies.push_back(pRigidbody);
     }
 }
 
 void PhysicWorld::RemoveRigidbody(BulletRigidbodyComponent* pRigidbody)
 {
+    mWorld->removeRigidBody(pRigidbody->GetRigidBody());
     std::erase(mRigidbodies, pRigidbody);
 }
 

@@ -7,6 +7,10 @@ SphereColliderComponent::SphereColliderComponent(Actor* pOwner)
 {
 	mShape = new btSphereShape(mRadius);
     mAppliedRadius = mRadius;
+    if (!mIsActive)
+    {
+        return;
+    }
     if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
     {
         rb->AddCollider(this);
@@ -36,6 +40,7 @@ void SphereColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter
 
 void SphereColliderComponent::OnStart()
 {
+    BulletColliderComponent::OnStart();
 }
 
 void SphereColliderComponent::OnEnd()
@@ -56,6 +61,10 @@ std::vector<PropertyDescriptor> SphereColliderComponent::GetProperties()
 
 void SphereColliderComponent::SetRadius(const float& pRadius)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     if (pRadius != mAppliedRadius)
     {
         mRadius = pRadius;

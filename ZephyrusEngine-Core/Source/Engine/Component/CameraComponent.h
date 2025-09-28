@@ -26,9 +26,6 @@ public:
 
 	static Component* Create(Actor* pOwner) { return new CameraComponent(pOwner); }
 
-	// Returns the world transform matrix of the camera
-	Matrix4DRow GetWorldTransform();
-
 	// Computes the relative transform of the camera
 	void ComputeRelativeTransform();
 

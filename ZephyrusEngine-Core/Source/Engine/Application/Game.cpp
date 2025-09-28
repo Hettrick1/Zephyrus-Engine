@@ -93,8 +93,8 @@ void Game::Loop()
 void Game::Update()
 {
     mPhysicManager.Update();
-    mCameraManager.UpdateCurrentCamera();
     SceneManager::Update();
+    mCameraManager.UpdateCurrentCamera();
 }
 
 void Game::Render()

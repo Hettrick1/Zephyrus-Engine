@@ -29,6 +29,8 @@ public:
     void OnStart() override;
     void OnEnd() override;
 
+    void SetActive(bool pActive) override;
+
     btCollisionShape* GetShape() const { return mShape; }
 
     void CreateColliderWithoutBody();

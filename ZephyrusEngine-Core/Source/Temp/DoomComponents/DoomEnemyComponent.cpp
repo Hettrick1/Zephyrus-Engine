@@ -260,6 +260,9 @@ void DoomEnemyComponent::TakeDamage(int pDamages, int weapon)
 		mIsDead = true;
 		mEnemyFb->PlayAnimation();
 		mEnemyFb->SetCanPlay(false);
-		//mOwner->GetComponentOfType<BoxAABBComponent>()->SetActive(false);
+		if (auto col = mOwner->GetComponentOfType<BulletColliderComponent>())
+		{
+			col->SetActive(false);
+		}
 	}
 }

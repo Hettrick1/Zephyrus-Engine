@@ -9,6 +9,10 @@ CubeColliderComponent::CubeColliderComponent(Actor* pOwner)
 {
     mShape = new btBoxShape(mHalfExtents.ToBulletVec3());
     mAppliedHalfExtents = mHalfExtents;
+    if (!mIsActive)
+    {
+        return;
+    }
     if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
     {
         rb->AddCollider(this);
@@ -38,6 +42,7 @@ void CubeColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 
 void CubeColliderComponent::OnStart()
 {
+    BulletColliderComponent::OnStart();
 }
 
 void CubeColliderComponent::OnEnd()
@@ -58,6 +63,10 @@ std::vector<PropertyDescriptor> CubeColliderComponent::GetProperties()
 
 void CubeColliderComponent::SetHalfExtents(const Vector3D& pHalfExtents)
 {
+    if (!mIsActive)
+    {
+        return;
+    }
     if (pHalfExtents != mAppliedHalfExtents)
     {
         mHalfExtents = pHalfExtents;

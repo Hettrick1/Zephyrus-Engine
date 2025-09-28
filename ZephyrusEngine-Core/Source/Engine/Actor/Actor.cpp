@@ -75,6 +75,18 @@ void Actor::RemoveComponent(Component* pComponent)
 void Actor::SetActive(const ActorState& pState)
 {
     mState = pState;
+    if (mState != ActorState::Active)
+    {
+        for (auto& comp : mComponents)
+        {
+            comp->SetActive(false);
+        }
+        return;
+    }
+    for (auto& comp : mComponents)
+    {
+        comp->SetActive(true);
+    }
 }
 
 void Actor::SetPosition(const Vector3D& pPosition) 

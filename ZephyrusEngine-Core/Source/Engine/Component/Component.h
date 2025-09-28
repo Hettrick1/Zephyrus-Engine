@@ -57,6 +57,9 @@ public:
 	void RelativeRotateY(float pAngle);
 	void RelativeRotateZ(float pAngle);
 
+	virtual inline void SetActive(bool pActive) { mIsActive = pActive; }
+	inline bool GetActive() const { return mIsActive; }
+
 	void AddTag(std::string_view pTag);
 	void RemoveTag(std::string_view pTag);
 	inline bool HasTag(std::string_view pTag) const
