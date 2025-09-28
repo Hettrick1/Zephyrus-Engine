@@ -9,7 +9,7 @@ public:
 	~LVLDoom();
 	void Start() override;
 	void PostStart() override;
-	void Update() override;
+	void Update(float pDetltaTime) override;
 	void Render() override;
 	void Close() override;
 };

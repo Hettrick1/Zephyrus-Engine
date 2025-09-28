@@ -36,9 +36,9 @@ void SplashScreen::Start()
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
-void SplashScreen::Update()
+void SplashScreen::Update(float pDetltaTime)
 {
-	Scene::Update();
+	Scene::Update(pDetltaTime);
 	mTime += Timer::deltaTime;
 	if (mTime > 0.2f && mTime < 0.7)
 	{

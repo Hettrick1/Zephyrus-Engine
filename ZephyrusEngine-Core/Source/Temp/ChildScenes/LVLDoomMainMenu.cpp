@@ -27,9 +27,9 @@ void LVLDoomMainMenu::Start()
 	auto actor1 = PrefabFactory::SpawnActorFromPrefab("DoomMenuPlayer");
 }
 
-void LVLDoomMainMenu::Update()
+void LVLDoomMainMenu::Update(float pDetltaTime)
 {
-	Scene::Update();
+	Scene::Update(0);
 }
 
 void LVLDoomMainMenu::Render()

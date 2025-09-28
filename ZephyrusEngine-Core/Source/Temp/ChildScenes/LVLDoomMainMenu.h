@@ -11,7 +11,7 @@ public:
 	LVLDoomMainMenu();
 	~LVLDoomMainMenu();
 	void Start() override;
-	void Update() override;
+	void Update(float pDetltaTime) override;
 	void Render() override;
 	void Close() override;
 private:

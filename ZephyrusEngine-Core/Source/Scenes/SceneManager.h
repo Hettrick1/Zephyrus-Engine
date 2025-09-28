@@ -24,7 +24,7 @@ public:
 	static void StartScene();
 	static void PostStartScene();
 
-	static void Update();
+	static void Update(float pDetltaTime);
 	static void RenderAll();
 
 	static void BeginRender();

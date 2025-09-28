@@ -58,7 +58,7 @@ public:
     PhysicWorld();
     ~PhysicWorld();
 
-    void Update();
+    void Update(float pDetltaTime);
     void Unload();
 
     void AddGhostObject(btGhostObject* ghost);

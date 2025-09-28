@@ -15,7 +15,7 @@ public:
 	SplashScreen(const std::string& pNextScene);
 	~SplashScreen();
 	void Start() override;
-	void Update() override;
+	void Update(float pDetltaTime) override;
 	void Render() override;
 	void Close() override;
 };

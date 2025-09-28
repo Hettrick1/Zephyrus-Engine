@@ -172,9 +172,9 @@ void LVLDoom::PostStart()
 
 }
 
-void LVLDoom::Update()
+void LVLDoom::Update(float pDetltaTime)
 {
-	Scene::Update();
+	Scene::Update(pDetltaTime);
 }
 
 void LVLDoom::Render()

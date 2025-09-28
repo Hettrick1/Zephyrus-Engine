@@ -192,7 +192,7 @@ void EditorApplication::Update()
         }
     }
     auto world = SceneManager::ActiveScene->GetPhysicWorld();
-    world->Update();
+    world->Update(0);
 }
 
 void EditorApplication::Render()

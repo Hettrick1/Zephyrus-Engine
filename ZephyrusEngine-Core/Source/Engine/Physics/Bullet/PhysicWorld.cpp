@@ -27,7 +27,7 @@ PhysicWorld::~PhysicWorld()
     Unload();
 }
 
-void PhysicWorld::Update()
+void PhysicWorld::Update(float pDetltaTime)
 {
     if (mWorld)
     {
@@ -39,7 +39,7 @@ void PhysicWorld::Update()
         {
             collider->UpdateWorldTransform();
         }
-        mWorld->stepSimulation(Timer::deltaTime);
+        mWorld->stepSimulation(pDetltaTime);
         for (auto& rigidbody : mRigidbodies)
         {
             rigidbody->SyncTransformFromPhysics();

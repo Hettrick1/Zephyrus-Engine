@@ -33,7 +33,7 @@ public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(); // Initializes the scene with the given renderer
 	virtual void PostStart();
-	virtual void Update(); // Updates the scene and its actors
+	virtual void Update(float pDetltaTime); // Updates the scene and its actors
 	virtual void Render();
 	void SetRenderer(IRenderer* pRenderer);
 	void BeginRender();

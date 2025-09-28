@@ -93,7 +93,7 @@ void Game::Loop()
 void Game::Update()
 {
     mPhysicManager.Update();
-    SceneManager::Update();
+    SceneManager::Update(Timer::deltaTime);
     mCameraManager.UpdateCurrentCamera();
 }
 

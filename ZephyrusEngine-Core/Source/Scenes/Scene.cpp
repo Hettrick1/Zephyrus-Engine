@@ -85,9 +85,9 @@ void Scene::PostStart()
 	mPlayerRef->Start();
 }
 
-void Scene::Update()
+void Scene::Update(float pDetltaTime)
 {
-	mPhysicWorld->Update();
+	mPhysicWorld->Update(pDetltaTime);
 	UpdateAllActors();
 }
 

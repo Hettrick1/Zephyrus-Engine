@@ -80,10 +80,10 @@ void SceneManager::PostStartScene()
 	ActiveScene->PostStart();
 }
 
-void SceneManager::Update()
+void SceneManager::Update(float pDetltaTime)
 {
 	mIsSceneLoaded = true;
-	ActiveScene->Update();
+	ActiveScene->Update(pDetltaTime);
 }
 
 void SceneManager::RenderAll()
