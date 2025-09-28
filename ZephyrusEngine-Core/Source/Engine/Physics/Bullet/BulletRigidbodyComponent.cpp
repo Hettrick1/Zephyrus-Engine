@@ -418,7 +418,6 @@ void BulletRigidbodyComponent::SetActive(bool pActive)
         if (SceneManager::ActiveScene && SceneManager::ActiveScene->GetPhysicWorld())
         {
             Rebuild();
-            SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
         }
         return;
     }
