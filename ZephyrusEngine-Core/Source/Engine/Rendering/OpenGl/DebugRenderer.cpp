@@ -1,6 +1,5 @@
 #include "DebugRenderer.h"
 #include "DebugLine.h"
-#include "ColliderComponent.h"
 #include "Assets.h"
 
 DebugRenderer::DebugRenderer()
@@ -74,7 +73,6 @@ void DebugRenderer::Initialize(Window& pWindow)
 
 void DebugRenderer::Unload()
 {
-	mCollider.clear();
 	for (auto& line : mLines)
 	{
 		if (line)
@@ -95,18 +93,6 @@ void DebugRenderer::Draw(IRenderer& pRenderer)
 		mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
 	}
 	if (mDrawDebug) {
-		if (mDrawBoxes)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			for (auto& collider : mCollider) // DEBUG ONLY
-			{
-				if (collider->GetIsActive()) {
-					collider->DebugDraw(pRenderer);
-				}
-			}
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glDisable(GL_BLEND);
-		}
 		if (mDrawLines)
 		{
 			for (auto& line : mLines) // DEBUG ONLY
@@ -117,18 +103,6 @@ void DebugRenderer::Draw(IRenderer& pRenderer)
 		}
 	}
 	glDisable(GL_DEPTH_TEST);
-}
-
-void DebugRenderer::AddDebugCollider(ColliderComponent* pCol)
-{
-	mCollider.push_back(pCol);
-}
-
-void DebugRenderer::RemoveDebugCollider(ColliderComponent* pCol)
-{
-	std::vector<ColliderComponent*>::iterator cc;
-	cc = std::find(mCollider.begin(), mCollider.end(), pCol);
-	mCollider.erase(cc);
 }
 
 void DebugRenderer::AddDebugLine(DebugLine* pLine)

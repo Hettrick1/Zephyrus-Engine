@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ActorMovementComponent.h"
 #include "IActionListener.h"
+#include "Component/Component.h"
 
-class PlayerController2D : public ActorMovementComponent, IActionListener
+class PlayerController2D : public Component, IActionListener
 {
 private:
 	bool mCanGoRight, mCanGoLeft, mCanGoUp, mCanGoDown;

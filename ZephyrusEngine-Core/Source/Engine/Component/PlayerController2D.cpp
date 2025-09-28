@@ -6,7 +6,7 @@
 #include <iostream>
 
 PlayerController2D::PlayerController2D(Actor* pOwner, int pUpdateOrder)
-	: ActorMovementComponent(pOwner, pUpdateOrder), mCanGoRight(true), mCanGoLeft(true), mCanGoUp(true), mCanGoDown(true)
+	: Component(pOwner, "PlayerController2D", pUpdateOrder), mCanGoRight(true), mCanGoLeft(true), mCanGoUp(true), mCanGoDown(true)
 {
 	InputManager& inputManager = InputManager::Instance();
 	inputManager.CreateNewBooleanKeyBinding(this, "jump", SDLK_SPACE);
@@ -28,94 +28,15 @@ void PlayerController2D::OnActionStarted(InputActions* pAction)
 
 void PlayerController2D::OnActionTriggered(InputActions* pAction)
 {
-	if (pAction->GetType() == ActionType::Boolean)
-	{
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction);
-		if (Triggeredaction && Triggeredaction->GetName() == "up") 
-		{
-			if (mCanGoUp)
-			{
-				SetSpeedY(50);
-			}
-			else {
-				SetSpeedY(0);
-			}
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "left") 
-		{
-			if (mCanGoLeft)
-			{
-				SetSpeedX(-50);
-			}
-			else {
-				SetSpeedX(0);
-			}
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "down") 
-		{
-			if (mCanGoDown)
-			{
-				SetSpeedY(-50);
-			}
-			else {
-				SetSpeedY(0);
-			}
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "right") 
-		{
-			if (mCanGoRight)
-			{
-				SetSpeedX(50);
-			}
-			else {
-				SetSpeedX(0);
-			}
-		}
-	}
 }
 
 void PlayerController2D::OnActionEnded(InputActions* pAction)
 {
-	if (pAction->GetType() == ActionType::Boolean) {
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction);
-		if (Triggeredaction && Triggeredaction->GetName() == "up")
-		{
-			SetSpeedY(0);
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "left")
-		{
-			SetSpeedX(0);
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "down")
-		{
-			SetSpeedY(0);
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "right")
-		{
-			SetSpeedX(0);
-		}
-	}
 }
 
 void PlayerController2D::Update()
 {
-	ActorMovementComponent::Update();
-	FlipbookComponent* flipbook = mOwner->GetComponentOfType<FlipbookComponent>();
-	if (flipbook)
-	{
-		if (mSpeed.x < 0) {
-			flipbook->SetFlipMethode(IRenderer::Flip::Horizontal);
-		}
-		else if (mSpeed.x > 0) {
-			flipbook->SetFlipMethode(IRenderer::Flip::None);
-		}
-		if (Maths::NearZero(mSpeed.Length())) {
-			flipbook->SetAnimationFps(0);
-		}
-		else {
-			flipbook->SetAnimationFps(5);
-		}
-	}
+	Component::Update();
 }
 
 void PlayerController2D::EnableDirection(const Vector2D& pDirection)

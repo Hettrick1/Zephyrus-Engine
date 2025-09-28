@@ -17,7 +17,6 @@ private:
 	ShaderProgram mDebugShaderProgram;
 	Matrix4DRow mView, mProj;
 	Window* mWindow;
-	std::vector<ColliderComponent*> mCollider;
 	std::vector<DebugLine*> mLines;
 	GLuint mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
 	bool mDrawDebug = false, mDrawLines = false, mDrawBoxes = false, mDrawSelected = false;
@@ -33,8 +32,6 @@ public:
 
 	void Draw(IRenderer& pRenderer);
 
-	void AddDebugCollider(ColliderComponent* pCol);
-	void RemoveDebugCollider(ColliderComponent* pCol);
 	void AddDebugLine(DebugLine* pLine);
 	void RemoveDebugLine(DebugLine* pLine);
 

@@ -60,9 +60,6 @@ public:
 
 	void SetSelectedActor(Actor* pSelectedActor) override;
 
-	// Adds a collider to the debug renderer for visualization
-	void AddDebugCollider(ColliderComponent* pCol) override;
-	void RemoveDebugCollider(ColliderComponent* pCol) override;
 	// Adds a debug line to the debug renderer
 	void AddDebugLine(DebugLine* pLine) override;
 	void RemoveDebugLine(DebugLine* pLine) override;

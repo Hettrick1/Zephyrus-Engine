@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ActorMovementComponent.h"
 #include "IActionListener.h"
+#include "Component/Component.h"
 
-class PlayerController3D : public ActorMovementComponent, IActionListener
+class PlayerController3D : public Component, IActionListener
 {
 private:
 	//temp

@@ -5,7 +5,6 @@
 #include "Scene.h"
 #include "Timer.h"
 #include "InputManager.h"
-#include "Physics/PhysicManager.h"
 #include "CameraManager.h"
 #include "SceneManager.h"
 #include "Panel/Panel.h"
@@ -25,7 +24,6 @@ private:
 	IRenderer* mRenderer = nullptr;
 	std::string mStartUpScene;
 	InputManager& mInputManager;
-	PhysicManager& mPhysicManager;
 	CameraManager& mCameraManager;
 	bool mIsRunning = true;
 	std::unordered_map<std::string, std::unique_ptr<Panel>> mAllPanels;

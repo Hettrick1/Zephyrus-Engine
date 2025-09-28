@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include "Timer.h"
 #include "InputManager.h"
-#include "Physics/PhysicManager.h"
 #include "CameraManager.h"
 #include "SceneManager.h"
 #include <iostream>
@@ -23,7 +22,6 @@ private:
 	IRenderer* mRenderer = nullptr;
 	std::string mStartUpScene;
 	InputManager& mInputManager;
-	PhysicManager& mPhysicManager;
 	CameraManager& mCameraManager;
 	bool mIsRunning = true;
 public:

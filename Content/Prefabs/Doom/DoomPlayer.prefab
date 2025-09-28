@@ -8,8 +8,8 @@
     },
     "components": [
         {
-            "type": "BulletRigidbodyComponent",
-            "componentId": "BulletRigidbodyComponent1",
+            "type": "RigidbodyComponent",
+            "componentId": "RigidbodyComponent1",
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0],

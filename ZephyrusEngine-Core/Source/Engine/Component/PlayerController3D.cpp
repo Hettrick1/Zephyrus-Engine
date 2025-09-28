@@ -8,7 +8,7 @@
 #include "Timer.h"
 
 PlayerController3D::PlayerController3D(Actor* pOwner, int pUpdateOrder)
-	: ActorMovementComponent(pOwner, pUpdateOrder),
+	: Component(pOwner, "PlayerController3D", pUpdateOrder),
 	mCanGoRight(true), mCanGoLeft(true), mCanGoUp(true), mCanGoDown(true), mCanGoBackward(true), mCanGoForward(true),
 	mSpeed(10), mYaw(0), mPitch(0)
 {
@@ -29,73 +29,7 @@ void PlayerController3D::OnActionStarted(InputActions* pAction)
 
 void PlayerController3D::OnActionTriggered(InputActions* pAction)
 {
-	if (pAction->GetType() == ActionType::Boolean)
-	{
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction);
-		if (Triggeredaction && Triggeredaction->GetName() == "forward")
-		{
-			if (mCanGoUp)
-			{
-				SetSpeedZ(mSpeed);
-			}
-			else {
-				SetSpeedZ(0);
-			}
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "left")
-		{
-			if (mCanGoLeft)
-			{
-				SetSpeedX(-mSpeed);
-			}
-			else {
-				SetSpeedX(0);
-			}
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "backward")
-		{
-			if (mCanGoDown)
-			{
-				SetSpeedZ(-mSpeed);
-			}
-			else {
-				SetSpeedZ(0);
-			}
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "right")
-		{
-			if (mCanGoRight)
-			{
-				SetSpeedX(mSpeed);
-			}
-			else {
-				SetSpeedX(0);
-			}
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "up")
-		{
-			if (mCanGoUp)
-			{
-				SetSpeedY(mSpeed);
-			}
-			else
-			{
-				SetSpeedY(0);
-			}
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "down")
-		{
-			if (mCanGoDown)
-			{
-				SetSpeedY(-mSpeed);
-			}
-			else
-			{
-				SetSpeedY(0);
-			}
-		}
-	}
-	else if (pAction->GetType() == ActionType::Axis2D)
+	if (pAction->GetType() == ActionType::Axis2D)
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "1", SDL_HINT_OVERRIDE); 
@@ -111,38 +45,11 @@ void PlayerController3D::OnActionTriggered(InputActions* pAction)
 
 void PlayerController3D::OnActionEnded(InputActions* pAction)
 {
-	if (pAction->GetType() == ActionType::Boolean) { 
-		auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction); 
-		if (Triggeredaction && Triggeredaction->GetName() == "up") 
-		{
-			SetSpeedY(0);
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "left")
-		{
-			SetSpeedX(0);
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "down")
-		{
-			SetSpeedY(0); 
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "right")
-		{
-			SetSpeedX(0);
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "forward")
-		{
-			SetSpeedZ(0);
-		}
-		else if (Triggeredaction && Triggeredaction->GetName() == "backward")
-		{
-			SetSpeedZ(0);
-		}
-	}
 }
 
 void PlayerController3D::Update()
 {
-	ActorMovementComponent::Update();
+	Component::Update();
 }
 
 void PlayerController3D::SetMovementSpeed(float pSpeed)

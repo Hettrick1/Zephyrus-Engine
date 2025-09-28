@@ -1,7 +1,6 @@
 #include "Scene.h"
 
 #include "Actor.h"
-#include "Physics/PhysicManager.h"
 #include "CameraManager.h"
 #include <algorithm>
 #include "SceneManager.h"
@@ -135,7 +134,6 @@ void Scene::Unload()
 	mActors.clear();
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
-	PhysicManager::Instance().Unload();
 	CameraManager::Instance().Unload();
 	Assets::Clear();
 	delete mPhysicWorld;
@@ -159,7 +157,6 @@ void Scene::Close()
 	mActors.clear();
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
-	PhysicManager::Instance().Unload();
 	CameraManager::Instance().Unload();
 	delete mPhysicWorld;
 	mPhysicWorld = nullptr;

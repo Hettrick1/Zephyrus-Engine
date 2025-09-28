@@ -1,7 +1,6 @@
 #include "RendererOpenGl.h"
 #include "SpriteComponent.h"
 #include "MeshComponent.h"
-#include "ColliderComponent.h"
 #include "TransformComponent.h"
 #include "Maths.h"
 #include "Actor.h"
@@ -169,16 +168,6 @@ void RendererOpenGl::RemoveSkySphere()
 void RendererOpenGl::SetSelectedActor(Actor* pSelectedActor)
 {
 	mSelectedActor = pSelectedActor;
-}
-
-void RendererOpenGl::AddDebugCollider(ColliderComponent* pCol)
-{
-	mDebugRenderer->AddDebugCollider(pCol);
-}
-
-void RendererOpenGl::RemoveDebugCollider(ColliderComponent* pCol)
-{
-	mDebugRenderer->RemoveDebugCollider(pCol);
 }
 
 void RendererOpenGl::AddDebugLine(DebugLine* pLine)

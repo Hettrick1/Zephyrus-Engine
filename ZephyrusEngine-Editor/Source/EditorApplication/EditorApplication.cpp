@@ -23,8 +23,7 @@
 #include "HudManager.h"
 
 EditorApplication::EditorApplication(const std::string& pTitle, const std::string& pStartupScene)
-    : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mPhysicManager(PhysicManager::Instance())
-    , mCameraManager(CameraManager::Instance()), mTitle(pTitle)
+    : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mCameraManager(CameraManager::Instance()), mTitle(pTitle)
 {
     Zephyrus::Log::Init();
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
