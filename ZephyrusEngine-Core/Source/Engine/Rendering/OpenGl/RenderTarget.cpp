@@ -1,4 +1,5 @@
 #include "RenderTarget.h"
+#include "Log.h"
 
 RenderTarget::RenderTarget(int pWidth, int pHeight)
 	: mWidth(pWidth), mHeight(pHeight)
@@ -49,7 +50,7 @@ void RenderTarget::Init()
         GL_TEXTURE_2D, mDepthTexture, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        std::cerr << "ERROR::RenderTarget:: Framebuffer is not complete!" << std::endl;
+        ZP_CORE_ERROR("ERROR::RenderTarget:: Framebuffer is not complete!");
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

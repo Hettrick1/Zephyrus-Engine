@@ -15,6 +15,7 @@
 #include "Physics/Bullet/CubeColliderComponent.h"
 #include "Physics/Bullet/SphereColliderComponent.h"
 #include "Physics/Bullet/CapsuleColliderComponent.h"
+#include "NewCameraComponent.h"
 
 void ComponentRegister::RegisterAllComponents()
 {
@@ -33,4 +34,5 @@ void ComponentRegister::RegisterAllComponents()
 	ComponentFactory::Instance().Register("CubeColliderComponent", CubeColliderComponent::Create);
 	ComponentFactory::Instance().Register("SphereColliderComponent", SphereColliderComponent::Create);
 	ComponentFactory::Instance().Register("CapsuleColliderComponent", CapsuleColliderComponent::Create);
+	ComponentFactory::Instance().Register("NewCameraComponent", NewCameraComponent::Create);
 }

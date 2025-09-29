@@ -25,4 +25,5 @@ public:
     void Resize(int pWidth, int pHeight);
 
     inline Vector2D GetDimensions() const { return Vector2D(mWidth, mHeight); }
+    inline unsigned int GetColorTexture() const { return mColorTexture; }
 };

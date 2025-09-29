@@ -11,7 +11,8 @@
 #include "PlayerStartComponent.h"
 
 Scene::Scene(std::string pTitle) 
-	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld()), mDebugRenderer(new PhysicsDebugRenderer())
+	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld()), mDebugRenderer(new PhysicsDebugRenderer()),
+	mCameraManager(new NewCameraManager())
 {
 	mDebugRenderer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 	mPhysicWorld->GetWorld()->setDebugDrawer(mDebugRenderer);
@@ -82,21 +83,23 @@ void Scene::PostStart()
 		mPlayerRef->SetSize(Vector3D(1));
 	}
 	mPlayerRef->Start();
+	mCameraManager->OnPlay();
 }
 
 void Scene::Update(float pDetltaTime)
 {
 	mPhysicWorld->Update(pDetltaTime);
+	mCameraManager->Update();
 	UpdateAllActors();
 }
 
 void Scene::Render()
 {
-	mRenderer->BeginDraw();
-	mRenderer->Draw();
-	//mPhysicWorld->GetWorld()->debugDrawWorld();
-	//mDebugRenderer->FlushDraw();
-	mRenderer->EndDraw();
+	mCameraManager->RenderActiveCamera();
+	mRenderer->RenderActiveCamera(mCameraManager->GetActiveCamera());
+	//mRenderer->BeginDraw();
+	//mRenderer->Draw();
+	//mRenderer->EndDraw();
 }
 
 void Scene::SetRenderer(IRenderer* pRenderer)
@@ -136,6 +139,9 @@ void Scene::Unload()
 	mRenderer->Unload();
 	CameraManager::Instance().Unload();
 	Assets::Clear();
+	mCameraManager->Unload();
+	delete mCameraManager;
+	mCameraManager = nullptr;
 	delete mDebugRenderer;
 	mDebugRenderer = nullptr;
 	delete mPhysicWorld;
@@ -158,6 +164,9 @@ void Scene::Close()
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
 	CameraManager::Instance().Unload();
+	mCameraManager->Unload();
+	delete mCameraManager;
+	mCameraManager = nullptr;
 	delete mDebugRenderer;
 	mDebugRenderer = nullptr;
 	delete mPhysicWorld;

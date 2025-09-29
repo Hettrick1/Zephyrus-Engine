@@ -9,6 +9,7 @@
 #include "HudManager.h"
 #include "TextRenderer.h"
 #include "Assets.h"
+#include "NewCameraComponent.h"
 #include <algorithm>
 
 RendererOpenGl::RendererOpenGl()
@@ -64,6 +65,12 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 	SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 
 	mVAO = new VertexArray(spriteVertices, 4);
+	mFullscreenQuadVAO = new VertexArray(fullscreenQuadVertices, 4);
+
+	mFullscreenVertexShader = *Assets::LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuad");
+	mFullscreenFragmentShader = *Assets::LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuad");
+	mFullscreenShaderProgram = *Assets::LoadShaderProgram({ &mFullscreenVertexShader, &mFullscreenFragmentShader }, "FullscreenQuadSP");
+
 	mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.000001f, 100000);
 	mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 	mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.01f, 10000.0f);
@@ -77,7 +84,6 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 
 void RendererOpenGl::BeginDraw()
 {
-	glViewport(0, 0, mWindow->GetDimensions().x, mWindow->GetDimensions().y);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(mWindow->GetDimensions().x), static_cast<float>(mWindow->GetDimensions().y), 0.000001f, 100000);
@@ -99,6 +105,23 @@ void RendererOpenGl::Draw()
 void RendererOpenGl::EndDraw()
 {
 	SDL_GL_SwapWindow(mWindow->GetSdlWindow());
+}
+
+void RendererOpenGl::RenderActiveCamera(NewCameraComponent* cam)
+{
+	if (!cam || !cam->renderTarget) return;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, mWindow->GetDimensions().x, mWindow->GetDimensions().y);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	mFullscreenShaderProgram.Use();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, cam->renderTarget->GetColorTexture());
+	//mFullscreenShaderProgram.setInteger("uTexture", 0);
+
+	mFullscreenQuadVAO->SetActive();
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 void RendererOpenGl::Close()

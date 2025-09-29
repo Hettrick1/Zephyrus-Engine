@@ -45,6 +45,15 @@
             }
         },
         {
+            "type": "CubeColliderComponent",
+            "componentId": "CubeColliderComponent1",
+            "properties": {
+                "relativePosition" : [0, 0, 0.4],
+                "relativeRotation" : [0, 0, 0],
+                "isQuery" : true
+            }
+        },
+        {
             "type": "CapsuleColliderComponent",
             "componentId": "CapsuleColliderComponent1",
             "properties": {

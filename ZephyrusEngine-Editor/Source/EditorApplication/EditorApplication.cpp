@@ -56,6 +56,10 @@ void EditorApplication::Initialize()
         SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
         SDL_FreeSurface(icon);
 
+        auto editorController = new EditorControllerActor();
+        mEditorController = editorController;
+        mEditorController->Start();
+
         InitializeImGui();
 
         InitializeFrameBuffer();
@@ -125,7 +129,7 @@ void EditorApplication::InitializePanels()
 {
     std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(prefabPanelName);
     std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(consolePanelName);
-    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mRenderTexture);
+    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mEditorController->GetComponentOfType<NewCameraComponent>()->renderTarget->GetColorTexture());
     std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
     std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
@@ -160,10 +164,6 @@ void EditorApplication::Loop()
 
     SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);
 
-    auto editorController = new EditorControllerActor();
-    mEditorController = editorController;
-    mEditorController->Start();
-
     while (mIsRunning) {
         Timer::ComputeDeltaTime();
         Input();
@@ -177,7 +177,16 @@ void EditorApplication::Loop()
 
 void EditorApplication::Update()
 {
-    mCameraManager.UpdateCurrentCamera();
+    //mCameraManager.UpdateCurrentCamera();
+    mEditorController->GetComponentOfType<NewCameraComponent>()->UpdateMatrices();
+    auto scene = mAllPanels.find(scenePanelName);
+    if (scene != mAllPanels.end())
+    {
+        if (auto scenePanel = dynamic_cast<ScenePanel*>(scene->second.get()))
+        {
+            mEditorController->GetComponentOfType<NewCameraComponent>()->SetDimensions(scenePanel->GetDimensions());
+        }
+    }
     for (auto& panel : mAllPanels)
     {
         panel.second->Update();
@@ -196,7 +205,7 @@ void EditorApplication::Update()
 
 void EditorApplication::Render()
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, mFrameBuffer);
+    /*glBindFramebuffer(GL_FRAMEBUFFER, mFrameBuffer);
 
     auto it = mAllPanels.find(scenePanelName);
     if (it != mAllPanels.end())
@@ -219,17 +228,11 @@ void EditorApplication::Render()
     world->GetWorld()->debugDrawWorld();
     auto debugRenderer = SceneManager::ActiveScene->GetPhysicDebugRenderer();
     debugRenderer->FlushDraw();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    if (it != mAllPanels.end())
-    {
-        if (auto scenePanel = dynamic_cast<ScenePanel*>(it->second.get()))
-        {
-            glViewport(0, 0, scenePanel->GetDimensions().x, scenePanel->GetDimensions().y);
-        }
-    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
+    
+    mEditorController->GetComponentOfType<NewCameraComponent>()->RenderScene();
 
     RenderImgui();
-    SceneManager::EndRender();
 }
 
 void EditorApplication::RenderImgui()

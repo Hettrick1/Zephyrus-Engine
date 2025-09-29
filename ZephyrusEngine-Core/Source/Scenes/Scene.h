@@ -5,6 +5,7 @@
 #include "Assets.h"
 #include "Physics/Bullet/PhysicWorld.h"
 #include "Physics/Bullet/PhysicsDebugRenderer.h"
+#include "NewCameraManager.h"
 
 class Actor;
 
@@ -29,6 +30,7 @@ protected:
 	bool mSaved = true;
 	PhysicWorld* mPhysicWorld = nullptr;
 	PhysicsDebugRenderer* mDebugRenderer = nullptr;
+	NewCameraManager* mCameraManager = nullptr;
 public:
 	Scene(std::string pTitle = "Scene");
 	virtual void Start(); // Initializes the scene with the given renderer
@@ -63,6 +65,7 @@ public:
 	inline bool GetIsSaved() const { return mSaved; }
 	inline PhysicWorld* GetPhysicWorld() const { return mPhysicWorld; }
 	inline PhysicsDebugRenderer* GetPhysicDebugRenderer() const { return mDebugRenderer; }
+	inline NewCameraManager* GetCameraManager() const { return mCameraManager; }
 public : 
 	inline IRenderer* GetRenderer() const { return mRenderer; }
 };

@@ -19,6 +19,7 @@ class RendererOpenGl : public IRenderer
 {
 private:
 	Window* mWindow;
+	VertexArray* mFullscreenQuadVAO;
 	VertexArray* mVAO;
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;
@@ -29,6 +30,9 @@ private:
 	Shader mSpriteVertexShader;
 	Shader mSpriteFragmentShader;
 	ShaderProgram mSpriteShaderProgramTemp;
+	Shader mFullscreenVertexShader;
+	Shader mFullscreenFragmentShader;
+	ShaderProgram mFullscreenShaderProgram;
 	HudManager* mHud;
 	DebugRenderer* mDebugRenderer;
 	bool mWireFrameMode;
@@ -46,6 +50,9 @@ public:
 	void BeginDraw() override;
 	void Draw() override;
 	void EndDraw() override;
+
+	void RenderActiveCamera(NewCameraComponent* cam) override;
+
 	void Close() override;
 	void Unload() override;
 

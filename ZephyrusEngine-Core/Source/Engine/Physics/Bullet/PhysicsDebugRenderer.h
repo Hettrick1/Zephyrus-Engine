@@ -5,6 +5,7 @@
 
 #include "Shader.h"
 #include "ShaderProgram.h"
+#include "NewCameraComponent.h"
 
 class PhysicsDebugRenderer : public btIDebugDraw
 {
@@ -29,5 +30,5 @@ public:
 
     void SetProjectionMatrix(const Matrix4DRow& pProj);
 
-    void FlushDraw();
+    void FlushDraw(NewCameraComponent* cam = nullptr);
 };

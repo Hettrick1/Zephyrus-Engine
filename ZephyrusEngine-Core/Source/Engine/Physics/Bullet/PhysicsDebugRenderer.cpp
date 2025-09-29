@@ -39,7 +39,7 @@ void PhysicsDebugRenderer::SetProjectionMatrix(const Matrix4DRow& pProj)
     mProj = pProj;
 }
 
-void PhysicsDebugRenderer::FlushDraw()
+void PhysicsDebugRenderer::FlushDraw(NewCameraComponent* cam)
 {
     if (mLines.empty()) return;
 
@@ -50,9 +50,17 @@ void PhysicsDebugRenderer::FlushDraw()
 
     glBindVertexArray(vao);
     mDebugShaderProgram.Use();
-    auto cam = CameraManager::Instance().GetCurrentCamera();
-
-    auto mView = cam->mViewMatrix;
+    Matrix4DRow mView;
+    if (cam == nullptr)
+    {
+        auto camera = CameraManager::Instance().GetCurrentCamera();
+        mView = camera->mViewMatrix;
+    }
+    else
+    {
+        mView = cam->GetViewMatrix();
+        mProj = cam->GetProjMatrix();
+    }
     auto wt = Matrix4DRow::Identity;
     mDebugShaderProgram.setVector3f("uColor", Vector3D(0.0, 1.0, 0));
     mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
