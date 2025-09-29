@@ -4,6 +4,7 @@
 #include "CameraComponent.h"
 #include "DoomPlayerComponent.h"
 #include "Physics/Bullet/CubeColliderComponent.h"
+#include "SceneManager.h"
 
 PickUpComponent::PickUpComponent(Actor* pOwner, int updateOder)
 	: Component(pOwner,"PickUpComponent", updateOder), mType(PickUpType::Amo)
@@ -40,7 +41,8 @@ void PickUpComponent::OnStart()
 void PickUpComponent::Update()
 {
 	Component::Update();
-	Vector3D camPos = CameraManager::Instance().GetCurrentCamera()->GetWorldTransform().GetTranslation();
+	//Vector3D camPos = CameraManager::Instance().GetCurrentCamera()->GetWorldTransform().GetTranslation();
+	Vector3D camPos = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
 	Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
 	float angleZ = Maths::ATan2(direction.y, direction.x);

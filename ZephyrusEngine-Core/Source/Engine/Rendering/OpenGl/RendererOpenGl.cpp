@@ -13,7 +13,7 @@
 #include <algorithm>
 
 RendererOpenGl::RendererOpenGl()
-	: mVAO(nullptr), mWindow(nullptr), mSpriteShaderProgram(nullptr), mHud(nullptr), mDebugRenderer(nullptr), mWireFrameMode(false), mSkySphereComponent(nullptr)
+	: mVAO(nullptr), mWindow(nullptr), mSpriteShaderProgram(nullptr), mHud(nullptr), mDebugRenderer(nullptr), mWireFrameMode(false), mSkySphereComponent(nullptr), mFullscreenQuadVAO(nullptr)
 {
 }
 
@@ -67,13 +67,13 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 	mVAO = new VertexArray(spriteVertices, 4);
 	mFullscreenQuadVAO = new VertexArray(fullscreenQuadVertices, 4);
 
-	mFullscreenVertexShader = *Assets::LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuad");
-	mFullscreenFragmentShader = *Assets::LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuad");
-	mFullscreenShaderProgram = *Assets::LoadShaderProgram({ &mFullscreenVertexShader, &mFullscreenFragmentShader }, "FullscreenQuadSP");
+	mFullscreenVertexShader = *Assets::LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuadvert");
+	mFullscreenFragmentShader = *Assets::LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuadfrag");
+	mFullscreenShaderProgram = Assets::LoadShaderProgram({ &mFullscreenVertexShader, &mFullscreenFragmentShader }, "FullscreenQuadSP");
 
-	mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.000001f, 100000);
+	mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.1f, 100000);
 	mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
-	mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.01f, 10000.0f);
+	mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.1f, 10000.0f);
 
 	mHud = new HudManager();
 	mDebugRenderer = new DebugRenderer();
@@ -114,14 +114,14 @@ void RendererOpenGl::RenderActiveCamera(NewCameraComponent* cam)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, mWindow->GetDimensions().x, mWindow->GetDimensions().y);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	mFullscreenShaderProgram.Use();
+	glDisable(GL_DEPTH);
+	mFullscreenQuadVAO->SetActive();
+	mFullscreenShaderProgram->Use();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cam->renderTarget->GetColorTexture());
-	//mFullscreenShaderProgram.setInteger("uTexture", 0);
 
-	mFullscreenQuadVAO->SetActive();
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glEnable(GL_DEPTH);
 }
 
 void RendererOpenGl::Close()

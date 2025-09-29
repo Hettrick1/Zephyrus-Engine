@@ -963,5 +963,24 @@
                         "relativeRotation": [0.0, 0.0, 0.0]
                     }
                 }]
+        }, {
+            "prefabName": "EmptyActor",
+            "uuid": "643552cf-7218-4df3-80bf-adc6d19352d2",
+            "name": "EmptyActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "NewCameraComponent",
+                    "componentId": "NewCameraComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
         }]
 }

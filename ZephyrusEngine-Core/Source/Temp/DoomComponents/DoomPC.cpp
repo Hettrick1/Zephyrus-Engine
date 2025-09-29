@@ -72,7 +72,7 @@ void DoomPC::OnActionTriggered(InputActions* action)
 {
 	if (action->GetType() == ActionType::Axis2D)
 	{
-		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
+		NewCameraComponent* cam = mOwner->GetComponentOfType<NewCameraComponent>();
 		Axis2DAction* Triggeredaction = static_cast<Axis2DAction*>(action);
 		DoomPlayerComponent* playerComponentRef = mOwner->GetComponentOfType<DoomPlayerComponent>();
 		if (Triggeredaction && Triggeredaction->GetName() == "Mouse")

@@ -28,10 +28,10 @@
             }
         },
         {
-            "type": "CameraComponent",
-            "componentId": "CameraComponent1",
+            "type": "NewCameraComponent",
+            "componentId": "NewCameraComponent1",
             "properties": {
-                "relativePosition" : [0, 0, 0.8],
+                "relativePosition" : [0, 0.0, 0.8],
                 "relativeRotation" : [0, 0, 0]
             }
         },
@@ -42,15 +42,6 @@
                 "relativePosition" : [0, 2, -0.2],
                 "relativeRotation" : [90, 0, 0],
                 "cullOff" : true
-            }
-        },
-        {
-            "type": "CubeColliderComponent",
-            "componentId": "CubeColliderComponent1",
-            "properties": {
-                "relativePosition" : [0, 0, 0.4],
-                "relativeRotation" : [0, 0, 0],
-                "isQuery" : true
             }
         },
         {

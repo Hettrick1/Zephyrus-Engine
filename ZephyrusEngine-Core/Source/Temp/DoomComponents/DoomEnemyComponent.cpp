@@ -155,7 +155,7 @@ void DoomEnemyComponent::Update()
 	auto playerRef = mOwner->GetScene().GetPlayerRef();
 
 	// bilboard
-	Vector3D camPos = CameraManager::Instance().GetCurrentCamera()->GetWorldTransform().GetTranslation();
+	Vector3D camPos = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
 	Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
 	float angleZ = Maths::ATan2(direction.y, direction.x);

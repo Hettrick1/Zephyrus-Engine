@@ -32,7 +32,7 @@ private:
 	ShaderProgram mSpriteShaderProgramTemp;
 	Shader mFullscreenVertexShader;
 	Shader mFullscreenFragmentShader;
-	ShaderProgram mFullscreenShaderProgram;
+	ShaderProgram* mFullscreenShaderProgram = nullptr;
 	HudManager* mHud;
 	DebugRenderer* mDebugRenderer;
 	bool mWireFrameMode;

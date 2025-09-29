@@ -1,7 +1,6 @@
 #include "Scene.h"
 
 #include "Actor.h"
-#include "CameraManager.h"
 #include <algorithm>
 #include "SceneManager.h"
 #include "InputManager.h"
@@ -89,17 +88,14 @@ void Scene::PostStart()
 void Scene::Update(float pDetltaTime)
 {
 	mPhysicWorld->Update(pDetltaTime);
-	mCameraManager->Update();
 	UpdateAllActors();
+	mCameraManager->Update();
 }
 
 void Scene::Render()
 {
 	mCameraManager->RenderActiveCamera();
 	mRenderer->RenderActiveCamera(mCameraManager->GetActiveCamera());
-	//mRenderer->BeginDraw();
-	//mRenderer->Draw();
-	//mRenderer->EndDraw();
 }
 
 void Scene::SetRenderer(IRenderer* pRenderer)
@@ -137,7 +133,6 @@ void Scene::Unload()
 	mActors.clear();
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
-	CameraManager::Instance().Unload();
 	Assets::Clear();
 	mCameraManager->Unload();
 	delete mCameraManager;
@@ -163,7 +158,6 @@ void Scene::Close()
 	mActors.clear();
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
-	CameraManager::Instance().Unload();
 	mCameraManager->Unload();
 	delete mCameraManager;
 	mCameraManager = nullptr;

@@ -30,12 +30,12 @@ void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 void CameraComponent::OnStart()
 {
     Component::OnStart();
-    CameraManager::Instance().AddCamera(this);
+    //CameraManager::Instance().AddCamera(this);
 }
 
 void CameraComponent::OnEnd()
 {
-    CameraManager::Instance().RemoveCamera(this);
+    //CameraManager::Instance().RemoveCamera(this);
     Component::OnEnd();
 }
 

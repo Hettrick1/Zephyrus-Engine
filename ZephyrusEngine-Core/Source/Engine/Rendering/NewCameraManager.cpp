@@ -8,11 +8,10 @@ void NewCameraManager::AddCamera(NewCameraComponent* pCam)
     if (std::find(mCameras.begin(), mCameras.end(), pCam) == mCameras.end())
     {
         mCameras.push_back(pCam);
-    }
-
-    if (!mActiveCamera && pCam->usage == CameraUsage::Game)
-    {
-        mActiveCamera = pCam;
+        if (pCam->usage == CameraUsage::Game)
+        {
+            mActiveCamera = pCam;
+        }
     }
 }
 
@@ -71,7 +70,7 @@ void NewCameraManager::Unload()
 {
      for (auto* cam : mCameras)
      {
-         cam->Update();
+         cam->UpdateMatrices();
      }
 }
 

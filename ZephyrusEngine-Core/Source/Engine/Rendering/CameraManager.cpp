@@ -46,7 +46,7 @@ void CameraManager::RemoveCamera(CameraComponent* pCameraToRemove)
 
 void CameraManager::UpdateCurrentCamera()
 {
-	if (mActiveCamera)
+	/*if (mActiveCamera)
 	{
 		mActiveCamera->UpdateCam();
 	}
@@ -54,7 +54,7 @@ void CameraManager::UpdateCurrentCamera()
 	{
 		auto cameraActor = PrefabFactory::SpawnActorFromPrefab("CameraActor");
 		AddCamera(cameraActor->GetComponentOfType<CameraComponent>());
-	}
+	}*/
 }
 
 void CameraManager::SetCurrentCamera(int pIndex)

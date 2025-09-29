@@ -7,6 +7,7 @@ NewCameraComponent::NewCameraComponent(Actor* pOwner, int pWidth, int pHeight, C
     : Component(pOwner, "NewCameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
 {
     renderTarget = new RenderTarget(pWidth, pHeight);
+    mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
     if (pUsage == CameraUsage::Game)
     {
         SceneManager::ActiveScene->GetCameraManager()->AddCamera(this);
