@@ -1,6 +1,6 @@
 #include "EditorControllerActor.h"
 #include "SceneManager.h"
-#include "NewCameraComponent.h"
+#include "CameraComponent.h"
 #include "EditorControllerComponent.h"
 
 EditorControllerActor::EditorControllerActor(const Vector3D& pPos, const Vector3D& pSize, const Quaternion& pRotation)
@@ -20,8 +20,6 @@ EditorControllerActor::~EditorControllerActor()
 void EditorControllerActor::Start()
 {
 	Actor::Start();
-	//CameraManager::Instance().SetCurrentCamera(GetComponentOfType<CameraComponent>());
-	//SceneManager::ActiveScene->GetCameraManager()->AddCamera(GetComponentOfType<NewCameraComponent>());
 }
 
 void EditorControllerActor::Update()

@@ -5,7 +5,7 @@
 
 #include "Shader.h"
 #include "ShaderProgram.h"
-#include "NewCameraComponent.h"
+#include "CameraComponent.h"
 
 class PhysicsDebugRenderer : public btIDebugDraw
 {

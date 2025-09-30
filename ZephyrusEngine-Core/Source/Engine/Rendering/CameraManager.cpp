@@ -1,8 +1,8 @@
-#include "NewCameraManager.h"
+#include "CameraManager.h"
 #include "PrefabFactory.h"
 #include "Log.h"
 
-void NewCameraManager::AddCamera(CameraComponent* pCam)
+void CameraManager::AddCamera(CameraComponent* pCam)
 {
     if (!pCam) return;
 
@@ -16,7 +16,7 @@ void NewCameraManager::AddCamera(CameraComponent* pCam)
     }
 }
 
-void NewCameraManager::RemoveCamera(CameraComponent* pCam)
+void CameraManager::RemoveCamera(CameraComponent* pCam)
 {
     auto it = std::find(mCameras.begin(), mCameras.end(), pCam);
     if (it != mCameras.end())
@@ -29,7 +29,7 @@ void NewCameraManager::RemoveCamera(CameraComponent* pCam)
     }
 }
 
-void NewCameraManager::SetActiveCamera(CameraComponent* pCam)
+void CameraManager::SetActiveCamera(CameraComponent* pCam)
 {
     if (!pCam) return;
     if (std::find(mCameras.begin(), mCameras.end(), pCam) != mCameras.end())
@@ -42,7 +42,7 @@ void NewCameraManager::SetActiveCamera(CameraComponent* pCam)
     }
 }
 
-void NewCameraManager::OnPlay()
+void CameraManager::OnPlay()
 {
     if (!mActiveCamera)
     {
@@ -57,17 +57,17 @@ void NewCameraManager::OnPlay()
     }
 }
 
-void NewCameraManager::OnStop()
+void CameraManager::OnStop()
 {
     mActiveCamera = nullptr;
 }
 
-void NewCameraManager::Unload()
+void CameraManager::Unload()
 {
     mCameras.clear();
 }
 
- void NewCameraManager::Update()
+ void CameraManager::Update()
 {
      if (mActiveCamera)
      {
@@ -75,7 +75,7 @@ void NewCameraManager::Unload()
      }
 }
 
- void NewCameraManager::RenderActiveCamera()
+ void CameraManager::RenderActiveCamera()
  {
      if (mActiveCamera)
      {

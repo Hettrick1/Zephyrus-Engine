@@ -1,4 +1,4 @@
-#include "NewCameraComponent.h"
+#include "CameraComponent.h"
 #include "SceneManager.h"
 #include "Log.h"
 #include <glew.h>

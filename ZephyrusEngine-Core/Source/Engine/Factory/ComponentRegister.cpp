@@ -14,7 +14,7 @@
 #include "Physics/Bullet/CubeColliderComponent.h"
 #include "Physics/Bullet/SphereColliderComponent.h"
 #include "Physics/Bullet/CapsuleColliderComponent.h"
-#include "NewCameraComponent.h"
+#include "CameraComponent.h"
 
 void ComponentRegister::RegisterAllComponents()
 {

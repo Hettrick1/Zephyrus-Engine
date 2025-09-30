@@ -9,7 +9,7 @@
 #include "HudManager.h"
 #include "TextRenderer.h"
 #include "Assets.h"
-#include "NewCameraComponent.h"
+#include "CameraComponent.h"
 #include <algorithm>
 
 RendererOpenGl::RendererOpenGl()

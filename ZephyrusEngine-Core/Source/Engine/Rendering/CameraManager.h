@@ -1,15 +1,15 @@
 #pragma once
 
-#include "NewCameraComponent.h"
+#include "CameraComponent.h"
 
-class NewCameraManager
+class CameraManager
 {
 private:
     std::vector<CameraComponent*> mCameras;
     CameraComponent* mActiveCamera = nullptr;
 public:
-    NewCameraManager() = default;
-    ~NewCameraManager() = default;
+    CameraManager() = default;
+    ~CameraManager() = default;
 
     void AddCamera(CameraComponent* pCam);
     void RemoveCamera(CameraComponent* pCam);

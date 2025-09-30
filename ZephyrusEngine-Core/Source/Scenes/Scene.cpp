@@ -11,7 +11,7 @@
 
 Scene::Scene(std::string pTitle) 
 	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld()), mDebugRenderer(new PhysicsDebugRenderer()),
-	mCameraManager(new NewCameraManager())
+	mCameraManager(new CameraManager())
 {
 	mDebugRenderer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 	mPhysicWorld->GetWorld()->setDebugDrawer(mDebugRenderer);
