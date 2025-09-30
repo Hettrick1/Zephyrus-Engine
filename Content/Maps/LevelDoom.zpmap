@@ -1,5 +1,5 @@
 {
-    "player": "Doom/DoomPlayer",
+    "player": "../Content/DoomPlayerActorTest.prefab",
     "actors": [{
             "prefabName": "PlayerStart",
             "uuid": "4ffcff19-d0dd-4d7f-a843-82d65a2bff92",
@@ -29,7 +29,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "playerPrefab": "Doom/DoomPlayer"
+                        "playerPrefab": "../Content/DoomPlayerActorTest.prefab"
                     }
                 }]
         }, {
@@ -957,25 +957,6 @@
                 }, {
                     "type": "DoomEnemyComponent",
                     "componentId": "DoomEnemyComponent1",
-                    "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
-                        "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [0.0, 0.0, 0.0]
-                    }
-                }]
-        }, {
-            "prefabName": "EmptyActor",
-            "uuid": "643552cf-7218-4df3-80bf-adc6d19352d2",
-            "name": "EmptyActor",
-            "state": "active",
-            "transform": {
-                "position": [0.0, 0.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "size": [1.0, 1.0, 1.0]
-            },
-            "components": [{
-                    "type": "CameraComponent",
-                    "componentId": "CameraComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],

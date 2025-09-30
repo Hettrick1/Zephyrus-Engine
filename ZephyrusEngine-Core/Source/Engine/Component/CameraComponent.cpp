@@ -25,19 +25,65 @@ CameraComponent::~CameraComponent()
 void CameraComponent::Deserialize(const rapidjson::Value& pData)
 {
     Component::Deserialize(pData);
+    if (auto fov = Serialization::Json::ReadFloat(pData, "fov"))
+    {
+        mFov = *fov;
+    }
+    if (auto width = Serialization::Json::ReadFloat(pData, "width"))
+    {
+        mWidth = *width;
+    }
+    if (auto height = Serialization::Json::ReadFloat(pData, "height"))
+    {
+        mHeight = *height;
+    }
+    if (auto nearClip = Serialization::Json::ReadFloat(pData, "nearClip"))
+    {
+        mNearClip = *nearClip;
+    }
+    if (auto farClip = Serialization::Json::ReadFloat(pData, "farClip"))
+    {
+        mFarClip = *farClip;
+    }
+    SetFov(mFov);
+    SetDimensions(Vector2D(mWidth, mHeight));
+    SetClipping(mNearClip, mFarClip);
 }
 
 void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
-    Component::Serialize(pWriter);
+    Component::BeginSerialize(pWriter);
+    pWriter.WriteFloat("fov", mFov);
+    pWriter.WriteFloat("width", mWidth);
+    pWriter.WriteFloat("height", mHeight);
+    pWriter.WriteFloat("nearClip", mNearClip);
+    pWriter.WriteFloat("farClip", mFarClip);
+    Component::EndSerialize(pWriter);
+}
+
+std::vector<PropertyDescriptor> CameraComponent::GetProperties()
+{
+    SetFov(mFov);
+    SetDimensions(Vector2D(mWidth, mHeight));
+    SetClipping(mNearClip, mFarClip);
+    return 
+    {
+        {"Fov : ", &mFov, PropertyType::Float},
+        {"Width : ", &mWidth, PropertyType::Float},
+        {"Height : ", &mHeight, PropertyType::Float},
+        {"NearClip : ", &mNearClip, PropertyType::Float},
+        {"FarClip : ", &mFarClip, PropertyType::Float},
+    };
 }
 
 void CameraComponent::SetDimensions(const Vector2D& pDimensions)
 {
-    if (mWidth == pDimensions.x && mHeight == pDimensions.y)
+    if (mOldWidth == pDimensions.x && mOldHeight == pDimensions.y)
     {
         return;
     }
+    mOldWidth = pDimensions.x;
+    mOldHeight = pDimensions.y;
     mWidth = pDimensions.x;
     mHeight = pDimensions.y;
     mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
@@ -45,15 +91,39 @@ void CameraComponent::SetDimensions(const Vector2D& pDimensions)
     SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
 }
 
-inline void CameraComponent::SetFOV(float pFov)
+inline void CameraComponent::SetFov(float pFov)
 {
-    mFov = pFov;
+    if (mOldFov == pFov)
+    {
+        return;
+    }
+    if (pFov > 120)
+    {
+        mOldFov = 120;
+        mFov = 120;
+    }
+    else if (pFov < 40)
+    {
+        mOldFov = 40;
+        mFov = 40;
+    }
+    else
+    {
+        mOldFov = pFov;
+        mFov = pFov;
+    }
     mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
     SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
 }
 
 inline void CameraComponent::SetClipping(float pNearPlane, float pFarPlane)
 {
+    if (mOldNear == pNearPlane && mOldFar == pFarPlane)
+    {
+        return;
+    }
+    mOldNear = pNearPlane;
+    mOldFar = pFarPlane;
     mNearClip = pNearPlane;
     mFarClip = pFarPlane;
     mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);

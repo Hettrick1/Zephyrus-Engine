@@ -6,6 +6,7 @@
 #include "DebugLine.h"
 #include "DoomPlayerComponent.h"
 #include "SceneManager.h"
+#include "ZPCommons.h"
 
 const float damages = 20;
 const float weaponRange = 60;
@@ -153,7 +154,8 @@ void DoomEnemyComponent::Update()
 	auto playerRef = mOwner->GetScene().GetPlayerRef();
 
 	// bilboard
-	Vector3D camPos = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
+	//Vector3D camPos = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
+	Vector3D camPos = Zephyrus::Commons::GetCurrentCamera()->GetWorldTransform().GetTranslation();
 	Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
 	float angleZ = Maths::ATan2(direction.y, direction.x);
@@ -202,7 +204,6 @@ void DoomEnemyComponent::Update()
 			Vector3D end = start + dir * range;
 			HitResult hit;
 			SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
-			//PhysicManager::Instance().LineTrace(start, end, hit, mOwner);
 			DebugLine* line = new DebugLine(start, end, hit);
 			mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 			if (hit.HitActor != nullptr && hit.HitActor->HasTag("Player"))
