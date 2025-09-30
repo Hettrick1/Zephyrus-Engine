@@ -32,5 +32,5 @@ void ComponentRegister::RegisterAllComponents()
 	ComponentFactory::Instance().Register("CubeColliderComponent", CubeColliderComponent::Create);
 	ComponentFactory::Instance().Register("SphereColliderComponent", SphereColliderComponent::Create);
 	ComponentFactory::Instance().Register("CapsuleColliderComponent", CapsuleColliderComponent::Create);
-	ComponentFactory::Instance().Register("NewCameraComponent", NewCameraComponent::Create);
+	ComponentFactory::Instance().Register("CameraComponent", CameraComponent::Create);
 }

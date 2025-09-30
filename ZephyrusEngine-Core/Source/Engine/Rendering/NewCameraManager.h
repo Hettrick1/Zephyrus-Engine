@@ -5,17 +5,17 @@
 class NewCameraManager
 {
 private:
-    std::vector<NewCameraComponent*> mCameras;
-    NewCameraComponent* mActiveCamera = nullptr;
+    std::vector<CameraComponent*> mCameras;
+    CameraComponent* mActiveCamera = nullptr;
 public:
     NewCameraManager() = default;
     ~NewCameraManager() = default;
 
-    void AddCamera(NewCameraComponent* pCam);
-    void RemoveCamera(NewCameraComponent* pCam);
+    void AddCamera(CameraComponent* pCam);
+    void RemoveCamera(CameraComponent* pCam);
 
-    void SetActiveCamera(NewCameraComponent* pCam);
-    inline NewCameraComponent* GetActiveCamera() const { return mActiveCamera; }
+    void SetActiveCamera(CameraComponent* pCam);
+    inline CameraComponent* GetActiveCamera() const { return mActiveCamera; }
 
     void OnPlay();
     void OnStop();

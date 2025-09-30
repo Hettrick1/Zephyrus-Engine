@@ -51,7 +51,7 @@ public:
 	void Draw() override;
 	void EndDraw() override;
 
-	void RenderActiveCamera(NewCameraComponent* cam) override;
+	void RenderActiveCamera(CameraComponent* cam) override;
 
 	void Close() override;
 	void Unload() override;

@@ -33,7 +33,7 @@ protected:
 	std::vector<Component*> mChildren;
 public:
 	Component() = delete;
-	Component(Actor* pOwner, std::string pName = "", int pUpdateOder = 0);
+	Component(Actor* pOwner, const std::string& pName = "", int pUpdateOder = 0);
 	virtual ~Component();
 
 	void SetId(const std::string& pId);

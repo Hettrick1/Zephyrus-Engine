@@ -28,8 +28,8 @@
             }
         },
         {
-            "type": "NewCameraComponent",
-            "componentId": "NewCameraComponent1",
+            "type": "CameraComponent",
+            "componentId": "CameraComponent1",
             "properties": {
                 "relativePosition" : [0, 0.0, 0.8],
                 "relativeRotation" : [0, 0, 0]

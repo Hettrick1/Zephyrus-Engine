@@ -15,7 +15,7 @@ struct DebugLine;
 struct DebugBox;
 class DebugRenderer;
 class SkySphereComponent;
-class NewCameraComponent;
+class CameraComponent;
 
 class IRenderer 
 {
@@ -38,7 +38,7 @@ public:
 	virtual void Draw() = 0;
 	virtual void EndDraw() = 0;
 
-	virtual void RenderActiveCamera(NewCameraComponent* cam) {}
+	virtual void RenderActiveCamera(CameraComponent* cam) {}
 
 	virtual void Close() = 0;
 	virtual void Unload() = 0;

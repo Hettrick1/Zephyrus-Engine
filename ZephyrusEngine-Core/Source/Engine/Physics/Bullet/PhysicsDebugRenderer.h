@@ -30,5 +30,5 @@ public:
 
     void SetProjectionMatrix(const Matrix4DRow& pProj);
 
-    void FlushDraw(NewCameraComponent* cam = nullptr);
+    void FlushDraw(CameraComponent* cam = nullptr);
 };

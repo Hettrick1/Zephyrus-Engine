@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "Log.h"
 
-Component::Component(Actor* pOwner, std::string pName, int pUpdateOder)
+Component::Component(Actor* pOwner, const std::string& pName, int pUpdateOder)
     : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
     mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1), mComponentName(pName)
 {

@@ -89,7 +89,7 @@ void DoomPlayerComponent::OnStart()
 	mDamageIndicatorImage = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
 	mDamageIndicatorImage->SetDrawOrder(0.0f);
 	mDamageIndicatorImage->SetTint(Vector4D(1.0, 1.0, 1.0, 0.0));
-	NewCameraComponent* cam = mOwner->GetComponentOfType<NewCameraComponent>();
+	CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
 	if (cam)
 	{
 		mGun->SetParent(cam);
@@ -159,7 +159,7 @@ void DoomPlayerComponent::ChangeWeapon()
 
 void DoomPlayerComponent::Shoot(int pAmoQuantity)
 {
-	NewCameraComponent* cam = mOwner->GetComponentOfType<NewCameraComponent>();
+	CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
 	switch (mWeapon) {
 	case Weapons::Gun:
 	{

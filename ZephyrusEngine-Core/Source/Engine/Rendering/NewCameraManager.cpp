@@ -1,7 +1,8 @@
 #include "NewCameraManager.h"
+#include "PrefabFactory.h"
 #include "Log.h"
 
-void NewCameraManager::AddCamera(NewCameraComponent* pCam)
+void NewCameraManager::AddCamera(CameraComponent* pCam)
 {
     if (!pCam) return;
 
@@ -15,7 +16,7 @@ void NewCameraManager::AddCamera(NewCameraComponent* pCam)
     }
 }
 
-void NewCameraManager::RemoveCamera(NewCameraComponent* pCam)
+void NewCameraManager::RemoveCamera(CameraComponent* pCam)
 {
     auto it = std::find(mCameras.begin(), mCameras.end(), pCam);
     if (it != mCameras.end())
@@ -28,7 +29,7 @@ void NewCameraManager::RemoveCamera(NewCameraComponent* pCam)
     }
 }
 
-void NewCameraManager::SetActiveCamera(NewCameraComponent* pCam)
+void NewCameraManager::SetActiveCamera(CameraComponent* pCam)
 {
     if (!pCam) return;
     if (std::find(mCameras.begin(), mCameras.end(), pCam) != mCameras.end())
@@ -81,12 +82,20 @@ void NewCameraManager::Unload()
          mActiveCamera->UpdateMatrices();
          mActiveCamera->RenderScene();
      }
+     else
+     {
+         auto cameraActor = PrefabFactory::SpawnActorFromPrefab("CameraComponent");
+         mActiveCamera = cameraActor->GetComponentOfType<CameraComponent>();
+         mActiveCamera->UpdateMatrices();
+         mActiveCamera->RenderScene();
+     }
 
-     /*for (auto* cam : mCameras)
+     /*for (auto* cam : mCameraInRenderTargets)
      {
          if (cam != mActiveCamera)
          {
             cam->UpdateMatrices();
+            cam->RenderScene();
          }
      }*/
  }

@@ -107,7 +107,7 @@ void RendererOpenGl::EndDraw()
 	SDL_GL_SwapWindow(mWindow->GetSdlWindow());
 }
 
-void RendererOpenGl::RenderActiveCamera(NewCameraComponent* cam)
+void RendererOpenGl::RenderActiveCamera(CameraComponent* cam)
 {
 	if (!cam || !cam->renderTarget) return;
 

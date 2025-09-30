@@ -97,7 +97,7 @@ void EditorApplication::InitializePanels()
 {
     std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(prefabPanelName);
     std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(consolePanelName);
-    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mEditorController->GetComponentOfType<NewCameraComponent>()->renderTarget->GetColorTexture());
+    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mEditorController->GetComponentOfType<CameraComponent>()->renderTarget->GetColorTexture());
     std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
     std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
@@ -145,13 +145,13 @@ void EditorApplication::Loop()
 
 void EditorApplication::Update()
 {
-    mEditorController->GetComponentOfType<NewCameraComponent>()->UpdateMatrices();
+    mEditorController->GetComponentOfType<CameraComponent>()->UpdateMatrices();
     auto scene = mAllPanels.find(scenePanelName);
     if (scene != mAllPanels.end())
     {
         if (auto scenePanel = dynamic_cast<ScenePanel*>(scene->second.get()))
         {
-            mEditorController->GetComponentOfType<NewCameraComponent>()->SetDimensions(scenePanel->GetDimensions());
+            mEditorController->GetComponentOfType<CameraComponent>()->SetDimensions(scenePanel->GetDimensions());
         }
     }
     for (auto& panel : mAllPanels)
@@ -172,7 +172,7 @@ void EditorApplication::Update()
 
 void EditorApplication::Render()
 {
-    mEditorController->GetComponentOfType<NewCameraComponent>()->RenderScene();
+    mEditorController->GetComponentOfType<CameraComponent>()->RenderScene();
 
     RenderImgui();
 }

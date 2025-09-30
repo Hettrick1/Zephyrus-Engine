@@ -11,8 +11,8 @@
                 "size": [1.0, 1.0, 1.0]
             },
             "components": [{
-                    "type": "NewCameraComponent",
-                    "componentId": "NewCameraComponent1",
+                    "type": "CameraComponent",
+                    "componentId": "CameraComponent1",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],

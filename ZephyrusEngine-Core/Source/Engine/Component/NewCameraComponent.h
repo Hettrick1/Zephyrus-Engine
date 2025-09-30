@@ -11,7 +11,7 @@ enum class CameraUsage
     Editor 
 };
 
-class NewCameraComponent : public Component
+class CameraComponent : public Component
 {
 private:
     Matrix4DRow mViewMatrix;
@@ -23,13 +23,13 @@ private:
     float mNearClip = 0.1f;
     float mFarClip = 10000.0f;
 public:
-    NewCameraComponent(Actor* pOwner, int pWidth = 1920, int pHeight = 1080, CameraUsage pUsage = CameraUsage::Game);
-    ~NewCameraComponent();
+    CameraComponent(Actor* pOwner, int pWidth = 1920, int pHeight = 1080, CameraUsage pUsage = CameraUsage::Game);
+    ~CameraComponent();
 
     void Deserialize(const rapidjson::Value& pData) override;
     void Serialize(Serialization::Json::JsonWriter& pWriter) override;
 
-    static Component* Create(Actor* pOwner) { return new NewCameraComponent(pOwner); }
+    static Component* Create(Actor* pOwner) { return new CameraComponent(pOwner); }
 
     inline Matrix4DRow GetViewMatrix() const { return mViewMatrix; }
     inline Matrix4DRow GetProjMatrix() const { return mProjMatrix; }

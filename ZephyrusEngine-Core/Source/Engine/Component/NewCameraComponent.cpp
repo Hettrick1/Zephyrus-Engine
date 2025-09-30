@@ -3,8 +3,8 @@
 #include "Log.h"
 #include <glew.h>
 
-NewCameraComponent::NewCameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)
-    : Component(pOwner, "NewCameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
+CameraComponent::CameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)
+    : Component(pOwner, "CameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
 {
     renderTarget = new RenderTarget(pWidth, pHeight);
     mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
@@ -14,7 +14,7 @@ NewCameraComponent::NewCameraComponent(Actor* pOwner, int pWidth, int pHeight, C
     }
 }
 
-NewCameraComponent::~NewCameraComponent()
+CameraComponent::~CameraComponent()
 {
     if (renderTarget) {
         delete renderTarget;
@@ -22,17 +22,17 @@ NewCameraComponent::~NewCameraComponent()
     }
 }
 
-void NewCameraComponent::Deserialize(const rapidjson::Value& pData)
+void CameraComponent::Deserialize(const rapidjson::Value& pData)
 {
     Component::Deserialize(pData);
 }
 
-void NewCameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 {
     Component::Serialize(pWriter);
 }
 
-void NewCameraComponent::SetDimensions(const Vector2D& pDimensions)
+void CameraComponent::SetDimensions(const Vector2D& pDimensions)
 {
     if (mWidth == pDimensions.x && mHeight == pDimensions.y)
     {
@@ -45,14 +45,14 @@ void NewCameraComponent::SetDimensions(const Vector2D& pDimensions)
     SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
 }
 
-inline void NewCameraComponent::SetFOV(float pFov)
+inline void CameraComponent::SetFOV(float pFov)
 {
     mFov = pFov;
     mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
     SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
 }
 
-inline void NewCameraComponent::SetClipping(float pNearPlane, float pFarPlane)
+inline void CameraComponent::SetClipping(float pNearPlane, float pFarPlane)
 {
     mNearClip = pNearPlane;
     mFarClip = pFarPlane;
@@ -60,10 +60,10 @@ inline void NewCameraComponent::SetClipping(float pNearPlane, float pFarPlane)
     SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
 }
 
-void NewCameraComponent::UpdateMatrices()
+void CameraComponent::UpdateMatrices()
 {
     if (!mOwner) {
-        ZP_CORE_ERROR("NewCameraComponent::UpdateMatrices: Owner actor is null!");
+        ZP_CORE_ERROR("CameraComponent::UpdateMatrices: Owner actor is null!");
         return;
     }
 
@@ -78,7 +78,7 @@ void NewCameraComponent::UpdateMatrices()
     SceneManager::ActiveScene->GetRenderer()->SetViewMatrix(mViewMatrix);
 }
 
-void NewCameraComponent::RenderScene()
+void CameraComponent::RenderScene()
 {
     if (!renderTarget) return;
 
