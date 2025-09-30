@@ -68,9 +68,9 @@ void NewCameraManager::Unload()
 
  void NewCameraManager::Update()
 {
-     for (auto* cam : mCameras)
+     if (mActiveCamera)
      {
-         cam->UpdateMatrices();
+         mActiveCamera->UpdateMatrices();
      }
 }
 
@@ -78,6 +78,7 @@ void NewCameraManager::Unload()
  {
      if (mActiveCamera)
      {
+         mActiveCamera->UpdateMatrices();
          mActiveCamera->RenderScene();
      }
 
@@ -85,7 +86,7 @@ void NewCameraManager::Unload()
      {
          if (cam != mActiveCamera)
          {
-
+            cam->UpdateMatrices();
          }
      }*/
  }

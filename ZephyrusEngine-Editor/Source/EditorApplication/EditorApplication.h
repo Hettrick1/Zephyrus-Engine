@@ -5,7 +5,6 @@
 #include "Scene.h"
 #include "Timer.h"
 #include "InputManager.h"
-#include "CameraManager.h"
 #include "SceneManager.h"
 #include "Panel/Panel.h"
 #include <iostream>
@@ -24,7 +23,6 @@ private:
 	IRenderer* mRenderer = nullptr;
 	std::string mStartUpScene;
 	InputManager& mInputManager;
-	CameraManager& mCameraManager;
 	bool mIsRunning = true;
 	std::unordered_map<std::string, std::unique_ptr<Panel>> mAllPanels;
 
@@ -41,7 +39,6 @@ public:
 	// Initializes the game systems and window
 	void Initialize();
 	void InitializeImGui();
-	void InitializeFrameBuffer();
 	void InitializePanels();
 
 	// Main game loop

@@ -4,7 +4,6 @@
 #include "InputManager.h"
 #include "Actor.h"
 #include "Log.h"
-#include "CameraComponent.h"
 #include "Timer.h"
 
 PlayerController3D::PlayerController3D(Actor* pOwner, int pUpdateOrder)

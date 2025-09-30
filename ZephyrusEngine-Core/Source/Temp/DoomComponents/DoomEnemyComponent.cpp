@@ -4,8 +4,6 @@
 #include "Timer.h"
 #include "DebugRenderer.h"
 #include "DebugLine.h"
-#include "CameraManager.h"
-#include "CameraComponent.h"
 #include "DoomPlayerComponent.h"
 #include "SceneManager.h"
 

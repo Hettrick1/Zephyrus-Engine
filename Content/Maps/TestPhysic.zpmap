@@ -1,5 +1,5 @@
 {
-    "player": "../Content/Prefabs/CameraActor.prefab",
+    "player": "../Content/Prefabs/DoomMenuPlayer.prefab",
     "actors": [{
             "prefabName": "PlayerStart",
             "uuid": "21688c8f-a3f9-4414-8369-3e800d17e0b3",

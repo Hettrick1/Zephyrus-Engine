@@ -1,7 +1,5 @@
 #include "PickUpComponent.h"
 #include "Actor/Actor.h"
-#include "CameraManager.h"
-#include "CameraComponent.h"
 #include "DoomPlayerComponent.h"
 #include "Physics/Bullet/CubeColliderComponent.h"
 #include "SceneManager.h"

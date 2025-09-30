@@ -4,7 +4,6 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "DoomEnemyComponent.h"
-#include "CameraComponent.h"
 
 float bobingTime = 0;
 const float gunDamages = 25;

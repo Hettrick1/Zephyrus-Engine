@@ -1,7 +1,6 @@
 #include "PhysicsDebugRenderer.h"
 #include "Assets.h"
-#include "CameraManager.h"
-#include "CameraComponent.h"
+#include "SceneManager.h"
 
 PhysicsDebugRenderer::PhysicsDebugRenderer()
     : m_debugMode(DBG_DrawWireframe)
@@ -53,8 +52,9 @@ void PhysicsDebugRenderer::FlushDraw(NewCameraComponent* cam)
     Matrix4DRow mView;
     if (cam == nullptr)
     {
-        auto camera = CameraManager::Instance().GetCurrentCamera();
-        mView = camera->mViewMatrix;
+        auto camera = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera();
+        mView = camera->GetViewMatrix();
+        mProj = camera->GetProjMatrix();
     }
     else
     {

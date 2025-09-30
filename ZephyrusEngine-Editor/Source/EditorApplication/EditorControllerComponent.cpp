@@ -3,7 +3,6 @@
 #include "Axis2DAction.h"
 #include "InputManager.h"
 #include "Log.h"
-#include "CameraComponent.h"
 #include "Timer.h"
 #include "Actor.h"
 

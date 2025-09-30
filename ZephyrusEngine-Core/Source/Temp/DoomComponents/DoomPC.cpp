@@ -6,7 +6,6 @@
 #include "Actor.h"
 #include "Log.h"
 #include "Timer.h"
-#include "CameraComponent.h"
 #include "FlipbookComponent.h"
 #include "Scene.h"
 #include "SceneManager.h"

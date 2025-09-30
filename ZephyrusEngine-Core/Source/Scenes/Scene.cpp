@@ -89,7 +89,6 @@ void Scene::Update(float pDetltaTime)
 {
 	mPhysicWorld->Update(pDetltaTime);
 	UpdateAllActors();
-	mCameraManager->Update();
 }
 
 void Scene::Render()

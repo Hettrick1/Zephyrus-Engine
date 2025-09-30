@@ -23,7 +23,7 @@
 #include "HudManager.h"
 
 EditorApplication::EditorApplication(const std::string& pTitle, const std::string& pStartupScene)
-    : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mCameraManager(CameraManager::Instance()), mTitle(pTitle)
+    : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
 {
     Zephyrus::Log::Init();
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -62,8 +62,6 @@ void EditorApplication::Initialize()
 
         InitializeImGui();
 
-        InitializeFrameBuffer();
-
         InitializePanels();
 
         Loop();
@@ -93,36 +91,6 @@ void EditorApplication::InitializeImGui()
 
     ImGui_ImplSDL2_InitForOpenGL(mGameWindow->GetSdlWindow(), SDL_GL_GetCurrentContext());
     ImGui_ImplOpenGL3_Init("#version 450");
-}
-
-void EditorApplication::InitializeFrameBuffer()
-{
-    glGenFramebuffers(1, &mFrameBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, mFrameBuffer);
-
-    glGenTextures(1, &mRenderTexture);
-
-    glBindTexture(GL_TEXTURE_2D, mRenderTexture);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-    glGenRenderbuffers(1, &mDepthRenderBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, mDepthRenderBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1920, 1080);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, mDepthRenderBuffer);
-
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, mRenderTexture, 0);
-
-    GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
-    glDrawBuffers(1, DrawBuffers);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-    {
-        ZP_EDITOR_ERROR("Frame buffer init failed !");
-    }
 }
 
 void EditorApplication::InitializePanels()
@@ -177,7 +145,6 @@ void EditorApplication::Loop()
 
 void EditorApplication::Update()
 {
-    //mCameraManager.UpdateCurrentCamera();
     mEditorController->GetComponentOfType<NewCameraComponent>()->UpdateMatrices();
     auto scene = mAllPanels.find(scenePanelName);
     if (scene != mAllPanels.end())
@@ -205,31 +172,6 @@ void EditorApplication::Update()
 
 void EditorApplication::Render()
 {
-    /*glBindFramebuffer(GL_FRAMEBUFFER, mFrameBuffer);
-
-    auto it = mAllPanels.find(scenePanelName);
-    if (it != mAllPanels.end())
-    {
-        if (auto scenePanel = dynamic_cast<ScenePanel*>(it->second.get()))
-        {
-            Matrix4DRow proj = Matrix4DRow::CreatePerspectiveFOV(70.0f, scenePanel->GetDimensions().x, scenePanel->GetDimensions().y, 0.01f, 10000.0f);
-            SceneManager::ActiveScene->GetPhysicDebugRenderer()->SetProjectionMatrix(proj);
-            SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(proj);
-        }
-    }
-    else
-    {
-        glViewport(0, 0, mGameWindow->GetDimensions().x, mGameWindow->GetDimensions().y);
-    }
-
-    SceneManager::BeginRender();
-    SceneManager::RenderScene();
-    auto world = SceneManager::ActiveScene->GetPhysicWorld();
-    world->GetWorld()->debugDrawWorld();
-    auto debugRenderer = SceneManager::ActiveScene->GetPhysicDebugRenderer();
-    debugRenderer->FlushDraw();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
-    
     mEditorController->GetComponentOfType<NewCameraComponent>()->RenderScene();
 
     RenderImgui();
