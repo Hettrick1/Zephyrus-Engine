@@ -28,6 +28,8 @@ private:
     float mFarClip = 10000.0f;
     float mOldFar = mFarClip;
 public:
+    GLsync mFence = 0;
+
     CameraComponent(Actor* pOwner, int pWidth = 1920, int pHeight = 1080, CameraUsage pUsage = CameraUsage::Game);
     ~CameraComponent();
 

@@ -369,7 +369,7 @@ public:
 	static Matrix4DRow CreatePerspectiveFOV(float fovY, float width, float height, float near, float far)
 	{
 		float aspect = width / height;
-		float yScale = Maths::Cot(fovY / 2.0f);
+		float yScale = Maths::Cot(Maths::ToRad(fovY) / 2.0f);
 		float xScale = yScale / aspect;
 
 		float temp[4][4] =

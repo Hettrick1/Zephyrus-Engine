@@ -88,7 +88,6 @@ void CameraComponent::SetDimensions(const Vector2D& pDimensions)
     mHeight = pDimensions.y;
     mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
     renderTarget->Resize(mWidth, mHeight);
-    SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
 }
 
 inline void CameraComponent::SetFov(float pFov)
@@ -113,7 +112,6 @@ inline void CameraComponent::SetFov(float pFov)
         mFov = pFov;
     }
     mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
-    SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
 }
 
 inline void CameraComponent::SetClipping(float pNearPlane, float pFarPlane)
@@ -127,7 +125,6 @@ inline void CameraComponent::SetClipping(float pNearPlane, float pFarPlane)
     mNearClip = pNearPlane;
     mFarClip = pFarPlane;
     mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
-    SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
 }
 
 void CameraComponent::UpdateMatrices()
@@ -145,7 +142,6 @@ void CameraComponent::UpdateMatrices()
 
     Matrix4DRow view = Matrix4DRow::CreateLookAt(camPosition, target, up);
     mViewMatrix = view;
-    SceneManager::ActiveScene->GetRenderer()->SetViewMatrix(mViewMatrix);
 }
 
 void CameraComponent::RenderScene()
@@ -154,13 +150,15 @@ void CameraComponent::RenderScene()
 
     renderTarget->Bind();
     glViewport(0, 0, renderTarget->GetDimensions().x, renderTarget->GetDimensions().y);
+
+    SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
+    SceneManager::ActiveScene->GetRenderer()->SetViewMatrix(mViewMatrix);
+
     SceneManager::ActiveScene->BeginRender();
     SceneManager::ActiveScene->RenderCurrentSceneOnly();
     auto world = SceneManager::ActiveScene->GetPhysicWorld();
     world->GetWorld()->debugDrawWorld();
     auto debugRenderer = SceneManager::ActiveScene->GetPhysicDebugRenderer();
     debugRenderer->FlushDraw(this);
-    SceneManager::ActiveScene->EndRender();
-
     RenderTarget::Unbind();
 }

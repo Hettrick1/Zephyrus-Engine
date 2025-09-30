@@ -1,5 +1,5 @@
 {
-    "player": "../Content/DoomPlayerActorTest.prefab",
+    "player": "../Content/Prefabs/Doom/DoomPlayer.prefab",
     "actors": [{
             "prefabName": "PlayerStart",
             "uuid": "4ffcff19-d0dd-4d7f-a843-82d65a2bff92",
@@ -29,7 +29,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "playerPrefab": "../Content/DoomPlayerActorTest.prefab"
+                        "playerPrefab": "../Content/Prefabs/Doom/DoomPlayer.prefab"
                     }
                 }]
         }, {

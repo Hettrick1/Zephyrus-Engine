@@ -1,6 +1,7 @@
 #pragma once
 #include "Panel.h"
 #include "SceneHierarchyPanel.h"
+#include "CameraComponent.h"
 
 class Component;
 struct PropertyDescriptor;
@@ -20,6 +21,17 @@ public:
 	void DrawProperty(const PropertyDescriptor& property);
 	void DrawSplitterButton(float& h);
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
+
+	inline CameraComponent* GetCurrentCameraComponent() const
+	{
+		CameraComponent* cameraComp = dynamic_cast<CameraComponent*>(mActiveComponent);
+		if (cameraComp)
+		{
+			return cameraComp;
+		}
+		return nullptr;
+	}
+
 public:
 	void SetPropertyFloat(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	void SetPropertyInt(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);

@@ -1,5 +1,6 @@
 #include "CameraManager.h"
 #include "PrefabFactory.h"
+#include "ZPCommons.h"
 #include "Log.h"
 
 void CameraManager::AddCamera(CameraComponent* pCam)
@@ -89,6 +90,7 @@ void CameraManager::Unload()
          mActiveCamera->UpdateMatrices();
          mActiveCamera->RenderScene();
      }
+     Zephyrus::Commons::GetCurrentScene()->EndRender();
 
      /*for (auto* cam : mCameraInRenderTargets)
      {
