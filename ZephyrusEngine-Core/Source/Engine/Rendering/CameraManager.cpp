@@ -85,7 +85,7 @@ void CameraManager::Unload()
      }
      else
      {
-         auto cameraActor = PrefabFactory::SpawnActorFromPrefab("CameraComponent");
+         auto cameraActor = PrefabFactory::SpawnActorFromPrefab("CameraActor");
          mActiveCamera = cameraActor->GetComponentOfType<CameraComponent>();
          mActiveCamera->UpdateMatrices();
          mActiveCamera->RenderScene();
