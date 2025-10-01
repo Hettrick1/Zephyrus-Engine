@@ -8,13 +8,13 @@
 class ComponentFactory
 {
 public:
-	using Creator = std::function<Component* (Actor*)>;
+	using Creator = std::function<Zephyrus::ActorComponent::Component* (Zephyrus::ActorComponent::Actor*)>;
 
 	static ComponentFactory& Instance();
 
     bool Register(const std::string& pName, Creator pCreateFn);
 
-    Component* Create(const std::string& pName, Actor* pOwner);
+    Zephyrus::ActorComponent::Component* Create(const std::string& pName, Zephyrus::ActorComponent::Actor* pOwner);
 
     inline std::vector<std::string> GetComponentNames() const { return mComponentNames; }
 

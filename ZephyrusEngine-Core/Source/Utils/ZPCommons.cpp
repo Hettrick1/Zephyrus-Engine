@@ -10,7 +10,7 @@ Scene* Zephyrus::Commons::GetCurrentScene()
     return nullptr;
 }
 
-Actor* Zephyrus::Commons::GetPlayerRef()
+Zephyrus::ActorComponent::Actor* Zephyrus::Commons::GetPlayerRef()
 {
     auto playerRef = SceneManager::ActiveScene->GetPlayerRef();
     if (playerRef)
@@ -20,7 +20,7 @@ Actor* Zephyrus::Commons::GetPlayerRef()
     return nullptr;
 }
 
-CameraComponent* Zephyrus::Commons::GetCurrentCamera()
+Zephyrus::ActorComponent::CameraComponent* Zephyrus::Commons::GetCurrentCamera()
 {
     auto currentCamera = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera();
     if (currentCamera)

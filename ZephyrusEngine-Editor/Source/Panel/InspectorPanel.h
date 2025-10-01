@@ -10,21 +10,21 @@ class InspectorPanel : public Panel
 {
 private:
 	SceneHierarchyPanel* mHierarchy = nullptr;
-	Component* mActiveComponent = nullptr;
+	Zephyrus::ActorComponent::Component* mActiveComponent = nullptr;
 public:
 	InspectorPanel(const std::string& pName);
 	~InspectorPanel();
 	void Draw() override;
-	void DrawActorComponents(Actor* pActor);
-	void DrawActorInfos(Actor* pActor);
+	void DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor);
+	void DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor);
 	void DrawComponentInfos();
 	void DrawProperty(const PropertyDescriptor& property);
 	void DrawSplitterButton(float& h);
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
 
-	inline CameraComponent* GetCurrentCameraComponent() const
+	inline Zephyrus::ActorComponent::CameraComponent* GetCurrentCameraComponent() const
 	{
-		CameraComponent* cameraComp = dynamic_cast<CameraComponent*>(mActiveComponent);
+		Zephyrus::ActorComponent::CameraComponent* cameraComp = dynamic_cast<Zephyrus::ActorComponent::CameraComponent*>(mActiveComponent);
 		if (cameraComp)
 		{
 			return cameraComp;

@@ -8,7 +8,10 @@
 #include "DebugRenderer.h"
 #include "SkySphereComponent.h"
 
-class Actor;
+namespace Zephyrus::ActorComponent {
+	class Actor;
+}
+
 class Texture;
 
 /**
@@ -22,8 +25,8 @@ private:
 	VertexArray* mFullscreenQuadVAO;
 	VertexArray* mVAO;
 	SDL_GLContext mContext;
-	std::vector<SpriteComponent*> mSprites;
-	std::vector<MeshComponent*> mMeshes;
+	std::vector<Zephyrus::ActorComponent::SpriteComponent*> mSprites;
+	std::vector<Zephyrus::ActorComponent::MeshComponent*> mMeshes;
 	ShaderProgram* mSpriteShaderProgram;
 	Matrix4DRow mSpriteViewProj;
 	Matrix4DRow mView, mProj;
@@ -36,8 +39,8 @@ private:
 	HudManager* mHud;
 	DebugRenderer* mDebugRenderer;
 	bool mWireFrameMode;
-	SkySphereComponent* mSkySphereComponent;
-	Actor* mSelectedActor = nullptr;
+	Zephyrus::ActorComponent::SkySphereComponent* mSkySphereComponent;
+	Zephyrus::ActorComponent::Actor* mSelectedActor = nullptr;
 
 public:
 	RendererOpenGl();
@@ -51,21 +54,21 @@ public:
 	void Draw() override;
 	void EndDraw() override;
 
-	void RenderActiveCamera(CameraComponent* cam) override;
+	void RenderActiveCamera(Zephyrus::ActorComponent::CameraComponent* cam) override;
 
 	void Close() override;
 	void Unload() override;
 
-	void AddSprite(SpriteComponent* pSprite) override;
-	void RemoveSprite(SpriteComponent* pSprite) override;
+	void AddSprite(Zephyrus::ActorComponent::SpriteComponent* pSprite) override;
+	void RemoveSprite(Zephyrus::ActorComponent::SpriteComponent* pSprite) override;
 
-	void AddMesh(MeshComponent* pMesh) override;
-	void RemoveMesh(MeshComponent* pMesh) override;
+	void AddMesh(Zephyrus::ActorComponent::MeshComponent* pMesh) override;
+	void RemoveMesh(Zephyrus::ActorComponent::MeshComponent* pMesh) override;
 
-	void AddSkySphere(SkySphereComponent* pSkySphere) override;
+	void AddSkySphere(Zephyrus::ActorComponent::SkySphereComponent* pSkySphere) override;
 	void RemoveSkySphere() override;
 
-	void SetSelectedActor(Actor* pSelectedActor) override;
+	void SetSelectedActor(Zephyrus::ActorComponent::Actor* pSelectedActor) override;
 
 	// Adds a debug line to the debug renderer
 	void AddDebugLine(DebugLine* pLine) override;
@@ -76,7 +79,7 @@ public:
 	void SetProjMatrix(const Matrix4DRow& pProjMatrix) override;
 
 	// Draws a sprite for the given actor with the specified parameters
-	void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
+	void DrawSprite(Zephyrus::ActorComponent::Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
 	// Draws a debug box using min/max points and a world transform
 	void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) override;
 	// Draws a debug line between two points with hit information

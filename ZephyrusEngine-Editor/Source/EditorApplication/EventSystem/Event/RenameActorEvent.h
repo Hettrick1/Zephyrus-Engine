@@ -2,16 +2,19 @@
 #include "Event.h"
 #include <string>
 
-class Actor;
+namespace Zephyrus::ActorComponent 
+{
+	class Actor;
+}
 
 class RenameActorEvent : public Event
 {
 private:
 	std::string mNewName;
 	std::string mPreviousName;
-	Actor* mActorToRename = nullptr;
+	Zephyrus::ActorComponent::Actor* mActorToRename = nullptr;
 public:
-	RenameActorEvent(Actor* pActorToRename, const std::string& pNewName);
+	RenameActorEvent(Zephyrus::ActorComponent::Actor* pActorToRename, const std::string& pNewName);
 	~RenameActorEvent();
 
 	void Execute() override;

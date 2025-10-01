@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "Bullet/BulletRigidbodyComponent.h"
 
-SetPositionEvent::SetPositionEvent(Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
+SetPositionEvent::SetPositionEvent(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
 	: Event("Move Actor"), mActor(pActor), mNextPosition(pNextPosition), mLastPosition(pCurrentPosition)
 {
 }
@@ -17,7 +17,7 @@ void SetPositionEvent::Execute()
 	if (mActor)
 	{
 		mActor->SetPosition(mNextPosition);
-		std::vector<BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<BulletRigidbodyComponent>();
+		std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletRigidbodyComponent>();
 		if (!rigidbodies.empty())
 		{
 			for (auto rb : rigidbodies)
@@ -33,7 +33,7 @@ void SetPositionEvent::Undo()
 	if (mActor)
 	{
 		mActor->SetPosition(mLastPosition);
-		std::vector<BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<BulletRigidbodyComponent>();
+		std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletRigidbodyComponent>();
 		if (!rigidbodies.empty())
 		{
 			for (auto rb : rigidbodies)
@@ -44,7 +44,7 @@ void SetPositionEvent::Undo()
 	}
 }
 
-SetRotationEvent::SetRotationEvent(Actor* pActor, const Quaternion& pCurrentRotation, const Quaternion& pNextRotation)
+SetRotationEvent::SetRotationEvent(Zephyrus::ActorComponent::Actor* pActor, const Quaternion& pCurrentRotation, const Quaternion& pNextRotation)
 	: Event("Rotate Actor"), mActor(pActor), mNextRotation(pNextRotation), mLastRotation(pCurrentRotation)
 {
 }
@@ -59,7 +59,7 @@ void SetRotationEvent::Execute()
 	if (mActor)
 	{
 		mActor->SetRotation(mNextRotation);
-		std::vector<BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<BulletRigidbodyComponent>();
+		std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletRigidbodyComponent>();
 		if (!rigidbodies.empty())
 		{
 			for (auto rb : rigidbodies)
@@ -75,7 +75,7 @@ void SetRotationEvent::Undo()
 	if (mActor)
 	{
 		mActor->SetRotation(mLastRotation);
-		std::vector<BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<BulletRigidbodyComponent>();
+		std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> rigidbodies = mActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletRigidbodyComponent>();
 		if (!rigidbodies.empty())
 		{
 			for (auto rb : rigidbodies)
@@ -86,7 +86,7 @@ void SetRotationEvent::Undo()
 	}
 }
 
-SetSizeEvent::SetSizeEvent(Actor* pActor, const Vector3D& pCurrentSize, const Vector3D& pNextSize)
+SetSizeEvent::SetSizeEvent(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentSize, const Vector3D& pNextSize)
 	: Event("Resize Actor"), mActor(pActor), mNextSize(pNextSize), mLastSize(pCurrentSize)
 {
 }

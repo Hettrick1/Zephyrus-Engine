@@ -5,15 +5,18 @@
 #include "Mesh.h"
 #include "Maths.h"
 
-class CubeMapMeshComponent : public MeshComponent
+namespace Zephyrus::ActorComponent
 {
-public:
-	CubeMapMeshComponent(Actor* pOwner, Mesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram = nullptr);
-	virtual ~CubeMapMeshComponent();
-	void Draw(const Matrix4DRow& viewProj) override;
+	class CubeMapMeshComponent : public MeshComponent
+	{
+	public:
+		CubeMapMeshComponent(Actor* pOwner, Mesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram = nullptr);
+		virtual ~CubeMapMeshComponent();
+		void Draw(const Matrix4DRow& viewProj) override;
 
-	inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
+		inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
 
-protected:
-	CubeTextureMap mCubeMapTexture;
-};
+	protected:
+		CubeTextureMap mCubeMapTexture;
+	};
+}

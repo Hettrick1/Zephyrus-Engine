@@ -9,53 +9,56 @@
  * @brief Component that manages and renders a sky sphere or skybox in the scene.
  * It handles the mesh, textures, shaders, and rendering logic for the sky.
  */
-class SkySphereComponent : public Component
+namespace Zephyrus::ActorComponent
 {
-protected:
-	Mesh* mMesh = nullptr;
-	Shader mVertexShader, mFragmentShader, mTescShader, mTeseShader;
-	ShaderProgram mShaderProgram;
-	CubeTextureMap mCubeMap;
-	Vector2D mTiling;
-	unsigned int mTextureIndex = 0;
-	Texture* mSphereTexture = nullptr;
-	bool mIsSphere = false;
-	VertexArray* mVao = nullptr;
-	GLenum mTextureType;
+	class SkySphereComponent : public Component
+	{
+	protected:
+		Mesh* mMesh = nullptr;
+		Shader mVertexShader, mFragmentShader, mTescShader, mTeseShader;
+		ShaderProgram mShaderProgram;
+		CubeTextureMap mCubeMap;
+		Vector2D mTiling;
+		unsigned int mTextureIndex = 0;
+		Texture* mSphereTexture = nullptr;
+		bool mIsSphere = false;
+		VertexArray* mVao = nullptr;
+		GLenum mTextureType;
 
-	std::vector<std::string> mTexturesPaths;
+		std::vector<std::string> mTexturesPaths;
 
-public:
-	SkySphereComponent(Actor* pOwner);
-	virtual ~SkySphereComponent();
+	public:
+		SkySphereComponent(Actor* pOwner);
+		virtual ~SkySphereComponent();
 
-	void Deserialize(const rapidjson::Value& pData) override;
-	void Serialize(Serialization::Json::JsonWriter& pWriter) override;
-	static Component* Create(Actor* pOwner) { return new SkySphereComponent(pOwner); }
-	
-	void OnEnd() override;
+		void Deserialize(const rapidjson::Value& pData) override;
+		void Serialize(Serialization::Json::JsonWriter& pWriter) override;
+		static Component* Create(Actor* pOwner) { return new SkySphereComponent(pOwner); }
 
-	std::vector<PropertyDescriptor> GetProperties() override;
+		void OnEnd() override;
 
-	// Sets the index of the texture to use
-	void SetTextureIndex(unsigned int pTextureIndex);
+		std::vector<PropertyDescriptor> GetProperties() override;
 
-	// Sets the shader program used for rendering
-	void SetShaderProgram(const ShaderProgram& pShaderProgram);
+		// Sets the index of the texture to use
+		void SetTextureIndex(unsigned int pTextureIndex);
 
-	// Sets the tiling factor for the sky texture
-	void SetTiling(const Vector2D& pTiling);
+		// Sets the shader program used for rendering
+		void SetShaderProgram(const ShaderProgram& pShaderProgram);
 
-	void SetTexturePaths(std::vector<std::string>& pTexturesPaths);
+		// Sets the tiling factor for the sky texture
+		void SetTiling(const Vector2D& pTiling);
 
-	inline Mesh* GetMesh() const { return mMesh; }
-	inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
-	inline CubeTextureMap& GetCubeMap() { return mCubeMap; }
-	inline unsigned int& GetTextureIndex() { return mTextureIndex; }
-	inline VertexArray* GetVao() const { return mVao; }
-	inline GLenum& GetTextureType() { return mTextureType; }
-	inline bool GetIsSphere() const { return mIsSphere; }
-	inline Texture* GetSphereTexture() const { return mSphereTexture; }
+		void SetTexturePaths(std::vector<std::string>& pTexturesPaths);
 
-	static int index;
-};
+		inline Mesh* GetMesh() const { return mMesh; }
+		inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
+		inline CubeTextureMap& GetCubeMap() { return mCubeMap; }
+		inline unsigned int& GetTextureIndex() { return mTextureIndex; }
+		inline VertexArray* GetVao() const { return mVao; }
+		inline GLenum& GetTextureType() { return mTextureType; }
+		inline bool GetIsSphere() const { return mIsSphere; }
+		inline Texture* GetSphereTexture() const { return mSphereTexture; }
+
+		static int index;
+	};
+}

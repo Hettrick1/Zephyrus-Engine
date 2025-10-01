@@ -3,13 +3,16 @@
 #include "Vector3D.h"
 
 class BulletColliderComponent;
-class Actor;
+namespace Zephyrus::ActorComponent
+{
+    class Actor;
+}
 
 struct HitResult {
     bool HasHit = 0;          
     Vector3D HitPoint = Vector3D::zero;  
     Vector3D Normal = Vector3D::zero;
-    Actor* HitActor = nullptr;
+    Zephyrus::ActorComponent::Actor* HitActor = nullptr;
     BulletColliderComponent* HitCollider = nullptr;
     float Distance = 0;
 

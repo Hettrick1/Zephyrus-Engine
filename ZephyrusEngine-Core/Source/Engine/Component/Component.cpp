@@ -2,193 +2,196 @@
 #include "Actor.h"
 #include "Log.h"
 
-Component::Component(Actor* pOwner, const std::string& pName, int pUpdateOder)
-    : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
-    mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1), mComponentName(pName)
+namespace Zephyrus::ActorComponent
 {
-    if (mOwner->GetState() != ActorState::Active)
+    Component::Component(Actor* pOwner, const std::string& pName, int pUpdateOder)
+        : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
+        mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1), mComponentName(pName)
     {
-        mIsActive = false;
-    }
-}
-
-Component::~Component()
-{
-    mOwner = nullptr;
-}
-
-void Component::SetId(const std::string& pId)
-{
-    mComponentId = pId;
-}
-
-void Component::OnStart()
-{
-}
-
-void Component::Update()
-{
-}
-
-void Component::OnEnd()
-{
-}
-
-std::vector<PropertyDescriptor> Component::GetProperties()
-{
-    return std::vector<PropertyDescriptor>();
-}
-
-void Component::Deserialize(const rapidjson::Value& pData)
-{
-    if (auto pos = Serialization::Json::ReadVector3D(pData, "relativePosition"))
-    {
-        SetRelativePosition(*pos);
-    }
-
-    if (auto size = Serialization::Json::ReadVector3D(pData, "relativeSize"))
-    {
-        SetRelativeSize(*size);
-    }
-
-    if (auto rot = Serialization::Json::ReadVector3D(pData, "relativeRotation"))
-    {
-        SetRelativeRotation(Quaternion(*rot));
-    }
-
-    if (auto arr = Serialization::Json::ReadArrayString(pData, "tags"))
-    {
-        for (auto& element : *arr)
+        if (mOwner->GetState() != ActorState::Active)
         {
-            AddTag(element);
+            mIsActive = false;
         }
     }
-}
 
-void Component::BeginSerialize(Serialization::Json::JsonWriter& pWriter)
-{
-    pWriter.BeginObject();
-    pWriter.WriteString("type", mComponentName);
-    pWriter.WriteString("componentId", mComponentId);
-    pWriter.BeginObject("properties");
-    pWriter.WriteVector3D("relativePosition", mRelativePosition);
-    pWriter.WriteVector3D("relativeSize", mRelativeSize);
-    pWriter.WriteVector3D("relativeRotation", mRelativeRotation.ToEuler());
-    if (!mComponentTags.empty())
+    Component::~Component()
     {
-        pWriter.BeginArray("tags");
-        for (auto& tag : mComponentTags)
+        mOwner = nullptr;
+    }
+
+    void Component::SetId(const std::string& pId)
+    {
+        mComponentId = pId;
+    }
+
+    void Component::OnStart()
+    {
+    }
+
+    void Component::Update()
+    {
+    }
+
+    void Component::OnEnd()
+    {
+    }
+
+    std::vector<PropertyDescriptor> Component::GetProperties()
+    {
+        return std::vector<PropertyDescriptor>();
+    }
+
+    void Component::Deserialize(const rapidjson::Value& pData)
+    {
+        if (auto pos = Serialization::Json::ReadVector3D(pData, "relativePosition"))
         {
-            pWriter.PushString(tag);
+            SetRelativePosition(*pos);
         }
-        pWriter.EndArray();
+
+        if (auto size = Serialization::Json::ReadVector3D(pData, "relativeSize"))
+        {
+            SetRelativeSize(*size);
+        }
+
+        if (auto rot = Serialization::Json::ReadVector3D(pData, "relativeRotation"))
+        {
+            SetRelativeRotation(Quaternion(*rot));
+        }
+
+        if (auto arr = Serialization::Json::ReadArrayString(pData, "tags"))
+        {
+            for (auto& element : *arr)
+            {
+                AddTag(element);
+            }
+        }
     }
-}
 
-void Component::Serialize(Serialization::Json::JsonWriter& pWriter)
-{
-    BeginSerialize(pWriter);
-    EndSerialize(pWriter);
-}
-
-void Component::EndSerialize(Serialization::Json::JsonWriter& pWriter)
-{
-    pWriter.EndObject();
-    pWriter.EndObject();
-}
-
-void Component::SetRelativePosition(const Vector3D& pPosition)
-{
-    mRelativePosition = pPosition;
-    ComputeRelativeTransform();
-}
-
-void Component::SetRelativeSize(const Vector3D& pSize)
-{
-    mRelativeSize = pSize;
-    ComputeRelativeTransform();
-}
-
-void Component::SetRelativeRotation(const Quaternion& pRotation)
-{
-    mRelativeRotation = pRotation;
-    ComputeRelativeTransform();
-}
-
-void Component::RelativeRotateX(float pAngle)
-{
-    float piAngle = Maths::ToRad(pAngle);
-    Quaternion newX(Vector3D::unitX, piAngle);
-    mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
-    ComputeRelativeTransform();
-}
-
-void Component::RelativeRotateY(float pAngle)
-{
-    float piAngle = Maths::ToRad(pAngle);
-    Quaternion newX(Vector3D::unitY, piAngle);
-    mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
-    ComputeRelativeTransform();
-}
-
-void Component::RelativeRotateZ(float pAngle)
-{
-    float piAngle = Maths::ToRad(pAngle);
-    Quaternion newX(Vector3D::unitZ, piAngle);
-    mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
-    ComputeRelativeTransform();
-}
-
-void Component::AddTag(std::string_view pTag)
-{
-    if (std::find(mComponentTags.begin(), mComponentTags.end(), pTag) == mComponentTags.end())
+    void Component::BeginSerialize(Serialization::Json::JsonWriter& pWriter)
     {
-        mComponentTags.emplace_back(pTag);
+        pWriter.BeginObject();
+        pWriter.WriteString("type", mComponentName);
+        pWriter.WriteString("componentId", mComponentId);
+        pWriter.BeginObject("properties");
+        pWriter.WriteVector3D("relativePosition", mRelativePosition);
+        pWriter.WriteVector3D("relativeSize", mRelativeSize);
+        pWriter.WriteVector3D("relativeRotation", mRelativeRotation.ToEuler());
+        if (!mComponentTags.empty())
+        {
+            pWriter.BeginArray("tags");
+            for (auto& tag : mComponentTags)
+            {
+                pWriter.PushString(tag);
+            }
+            pWriter.EndArray();
+        }
     }
-}
 
-void Component::RemoveTag(std::string_view pTag)
-{
-    mComponentTags.erase(std::remove(mComponentTags.begin(), mComponentTags.end(), pTag),mComponentTags.end());
-}
+    void Component::Serialize(Serialization::Json::JsonWriter& pWriter)
+    {
+        BeginSerialize(pWriter);
+        EndSerialize(pWriter);
+    }
 
-Matrix4DRow Component::GetWorldTransform()
-{
-    ComputeRelativeTransform();
-    if (mParent)
+    void Component::EndSerialize(Serialization::Json::JsonWriter& pWriter)
     {
-        return  mRelativeTransform * mParent->GetWorldTransform();
+        pWriter.EndObject();
+        pWriter.EndObject();
     }
-    else if (mOwner)
-    {
-        return mRelativeTransform * mOwner->GetTransformComponent().GetWorldTransform();
-    }
-    else
-    {
-        return mRelativeTransform;
-    }
-}
 
-void Component::ComputeRelativeTransform()
-{
-    if (mOwner)
+    void Component::SetRelativePosition(const Vector3D& pPosition)
     {
-        mRelativeTransform = Matrix4DRow::CreateScale(mRelativeSize);
-        mRelativeTransform *= Matrix4DRow::CreateFromQuaternion(mRelativeRotation);
-        mRelativeTransform *= Matrix4DRow::CreateTranslation(mRelativePosition);
+        mRelativePosition = pPosition;
+        ComputeRelativeTransform();
     }
-    else
+
+    void Component::SetRelativeSize(const Vector3D& pSize)
     {
-        mRelativeTransform = Matrix4DRow::Identity;
+        mRelativeSize = pSize;
+        ComputeRelativeTransform();
     }
-}
 
-Actor* Component::GetOwner() const
-{
-    return mOwner;
-}
+    void Component::SetRelativeRotation(const Quaternion& pRotation)
+    {
+        mRelativeRotation = pRotation;
+        ComputeRelativeTransform();
+    }
 
-Vector3D Component::GetWorldPosition() const
-{
-    return mOwner->GetTransformComponent().GetPosition() + mRelativePosition;
+    void Component::RelativeRotateX(float pAngle)
+    {
+        float piAngle = Maths::ToRad(pAngle);
+        Quaternion newX(Vector3D::unitX, piAngle);
+        mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
+        ComputeRelativeTransform();
+    }
+
+    void Component::RelativeRotateY(float pAngle)
+    {
+        float piAngle = Maths::ToRad(pAngle);
+        Quaternion newX(Vector3D::unitY, piAngle);
+        mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
+        ComputeRelativeTransform();
+    }
+
+    void Component::RelativeRotateZ(float pAngle)
+    {
+        float piAngle = Maths::ToRad(pAngle);
+        Quaternion newX(Vector3D::unitZ, piAngle);
+        mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
+        ComputeRelativeTransform();
+    }
+
+    void Component::AddTag(std::string_view pTag)
+    {
+        if (std::find(mComponentTags.begin(), mComponentTags.end(), pTag) == mComponentTags.end())
+        {
+            mComponentTags.emplace_back(pTag);
+        }
+    }
+
+    void Component::RemoveTag(std::string_view pTag)
+    {
+        mComponentTags.erase(std::remove(mComponentTags.begin(), mComponentTags.end(), pTag), mComponentTags.end());
+    }
+
+    Matrix4DRow Component::GetWorldTransform()
+    {
+        ComputeRelativeTransform();
+        if (mParent)
+        {
+            return  mRelativeTransform * mParent->GetWorldTransform();
+        }
+        else if (mOwner)
+        {
+            return mRelativeTransform * mOwner->GetTransformComponent().GetWorldTransform();
+        }
+        else
+        {
+            return mRelativeTransform;
+        }
+    }
+
+    void Component::ComputeRelativeTransform()
+    {
+        if (mOwner)
+        {
+            mRelativeTransform = Matrix4DRow::CreateScale(mRelativeSize);
+            mRelativeTransform *= Matrix4DRow::CreateFromQuaternion(mRelativeRotation);
+            mRelativeTransform *= Matrix4DRow::CreateTranslation(mRelativePosition);
+        }
+        else
+        {
+            mRelativeTransform = Matrix4DRow::Identity;
+        }
+    }
+
+    Actor* Component::GetOwner() const
+    {
+        return mOwner;
+    }
+
+    Vector3D Component::GetWorldPosition() const
+    {
+        return mOwner->GetTransformComponent().GetPosition() + mRelativePosition;
+    }
 }

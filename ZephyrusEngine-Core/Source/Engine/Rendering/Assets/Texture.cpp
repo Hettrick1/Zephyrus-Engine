@@ -1,6 +1,5 @@
 #include "Texture.h"
 
-#include "RendererSdl.h"
 #include "RendererOpenGl.h"
 
 Texture::Texture()
@@ -25,10 +24,6 @@ bool Texture::Load(IRenderer& pRenderer, const std::string& pFilename)
 	mWidth = surface->w;
 	mHeight = surface->h;
 
-	if (pRenderer.GetType() == IRenderer::RendererType::SDL)
-	{
-		return LoadSdl(static_cast<RendererSdl*>(&pRenderer), pFilename, surface);
-	}
 	return LoadGl(static_cast<RendererOpenGl*>(&pRenderer), pFilename, surface);
 }
 
@@ -59,17 +54,6 @@ void Texture::OverrideTextureSize(int width, int height)
 {
 	mWidth = width;
 	mHeight = height;
-}
-
-bool Texture::LoadSdl(RendererSdl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface)
-{
-	mSdlTexture = SDL_CreateTextureFromSurface(pRenderer->ToSdlRenderer(), pSurface);
-	SDL_FreeSurface(pSurface);
-	if (!mSdlTexture) { 
-		ZP_CORE_ERROR("Failed to convert surface to texture :" + mFilePath);
-		return false;
-	}
-	return true;
 }
 
 bool Texture::LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface)

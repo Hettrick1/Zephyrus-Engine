@@ -3,162 +3,165 @@
 #include "Log.h"
 #include <glew.h>
 
-CameraComponent::CameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)
-    : Component(pOwner, "CameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
+namespace Zephyrus::ActorComponent
 {
-    renderTarget = new RenderTarget(pWidth, pHeight);
-    mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
-    if (pUsage == CameraUsage::Game)
+    CameraComponent::CameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)
+        : Component(pOwner, "CameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
     {
-        SceneManager::ActiveScene->GetCameraManager()->AddCamera(this);
+        renderTarget = new RenderTarget(pWidth, pHeight);
+        mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
+        if (pUsage == CameraUsage::Game)
+        {
+            SceneManager::ActiveScene->GetCameraManager()->AddCamera(this);
+        }
     }
-}
 
-CameraComponent::~CameraComponent()
-{
-    if (renderTarget) {
-        delete renderTarget;
-        renderTarget = nullptr;
-    }
-}
-
-void CameraComponent::Deserialize(const rapidjson::Value& pData)
-{
-    Component::Deserialize(pData);
-    if (auto fov = Serialization::Json::ReadFloat(pData, "fov"))
+    CameraComponent::~CameraComponent()
     {
-        mFov = *fov;
+        if (renderTarget) {
+            delete renderTarget;
+            renderTarget = nullptr;
+        }
     }
-    if (auto width = Serialization::Json::ReadFloat(pData, "width"))
+
+    void CameraComponent::Deserialize(const rapidjson::Value& pData)
     {
-        mWidth = *width;
+        Component::Deserialize(pData);
+        if (auto fov = Serialization::Json::ReadFloat(pData, "fov"))
+        {
+            mFov = *fov;
+        }
+        if (auto width = Serialization::Json::ReadFloat(pData, "width"))
+        {
+            mWidth = *width;
+        }
+        if (auto height = Serialization::Json::ReadFloat(pData, "height"))
+        {
+            mHeight = *height;
+        }
+        if (auto nearClip = Serialization::Json::ReadFloat(pData, "nearClip"))
+        {
+            mNearClip = *nearClip;
+        }
+        if (auto farClip = Serialization::Json::ReadFloat(pData, "farClip"))
+        {
+            mFarClip = *farClip;
+        }
+        SetFov(mFov);
+        SetDimensions(Vector2D(mWidth, mHeight));
+        SetClipping(mNearClip, mFarClip);
     }
-    if (auto height = Serialization::Json::ReadFloat(pData, "height"))
+
+    void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
     {
-        mHeight = *height;
+        Component::BeginSerialize(pWriter);
+        pWriter.WriteFloat("fov", mFov);
+        pWriter.WriteFloat("width", mWidth);
+        pWriter.WriteFloat("height", mHeight);
+        pWriter.WriteFloat("nearClip", mNearClip);
+        pWriter.WriteFloat("farClip", mFarClip);
+        Component::EndSerialize(pWriter);
     }
-    if (auto nearClip = Serialization::Json::ReadFloat(pData, "nearClip"))
+
+    std::vector<PropertyDescriptor> CameraComponent::GetProperties()
     {
-        mNearClip = *nearClip;
+        SetFov(mFov);
+        SetDimensions(Vector2D(mWidth, mHeight));
+        SetClipping(mNearClip, mFarClip);
+        return
+        {
+            {"Fov : ", &mFov, PropertyType::Float},
+            {"Width : ", &mWidth, PropertyType::Float},
+            {"Height : ", &mHeight, PropertyType::Float},
+            {"NearClip : ", &mNearClip, PropertyType::Float},
+            {"FarClip : ", &mFarClip, PropertyType::Float},
+        };
     }
-    if (auto farClip = Serialization::Json::ReadFloat(pData, "farClip"))
+
+    void CameraComponent::SetDimensions(const Vector2D& pDimensions)
     {
-        mFarClip = *farClip;
+        if (mOldWidth == pDimensions.x && mOldHeight == pDimensions.y)
+        {
+            return;
+        }
+        mOldWidth = pDimensions.x;
+        mOldHeight = pDimensions.y;
+        mWidth = pDimensions.x;
+        mHeight = pDimensions.y;
+        mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
+        renderTarget->Resize(mWidth, mHeight);
     }
-    SetFov(mFov);
-    SetDimensions(Vector2D(mWidth, mHeight));
-    SetClipping(mNearClip, mFarClip);
-}
 
-void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
-{
-    Component::BeginSerialize(pWriter);
-    pWriter.WriteFloat("fov", mFov);
-    pWriter.WriteFloat("width", mWidth);
-    pWriter.WriteFloat("height", mHeight);
-    pWriter.WriteFloat("nearClip", mNearClip);
-    pWriter.WriteFloat("farClip", mFarClip);
-    Component::EndSerialize(pWriter);
-}
-
-std::vector<PropertyDescriptor> CameraComponent::GetProperties()
-{
-    SetFov(mFov);
-    SetDimensions(Vector2D(mWidth, mHeight));
-    SetClipping(mNearClip, mFarClip);
-    return 
+    inline void CameraComponent::SetFov(float pFov)
     {
-        {"Fov : ", &mFov, PropertyType::Float},
-        {"Width : ", &mWidth, PropertyType::Float},
-        {"Height : ", &mHeight, PropertyType::Float},
-        {"NearClip : ", &mNearClip, PropertyType::Float},
-        {"FarClip : ", &mFarClip, PropertyType::Float},
-    };
-}
+        if (mOldFov == pFov)
+        {
+            return;
+        }
+        if (pFov > 120)
+        {
+            mOldFov = 120;
+            mFov = 120;
+        }
+        else if (pFov < 40)
+        {
+            mOldFov = 40;
+            mFov = 40;
+        }
+        else
+        {
+            mOldFov = pFov;
+            mFov = pFov;
+        }
+        mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
+    }
 
-void CameraComponent::SetDimensions(const Vector2D& pDimensions)
-{
-    if (mOldWidth == pDimensions.x && mOldHeight == pDimensions.y)
+    inline void CameraComponent::SetClipping(float pNearPlane, float pFarPlane)
     {
-        return;
+        if (mOldNear == pNearPlane && mOldFar == pFarPlane)
+        {
+            return;
+        }
+        mOldNear = pNearPlane;
+        mOldFar = pFarPlane;
+        mNearClip = pNearPlane;
+        mFarClip = pFarPlane;
+        mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
     }
-    mOldWidth = pDimensions.x;
-    mOldHeight = pDimensions.y;
-    mWidth = pDimensions.x;
-    mHeight = pDimensions.y;
-    mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
-    renderTarget->Resize(mWidth, mHeight);
-}
 
-inline void CameraComponent::SetFov(float pFov)
-{
-    if (mOldFov == pFov)
+    void CameraComponent::UpdateMatrices()
     {
-        return;
+        if (!mOwner) {
+            ZP_CORE_ERROR("CameraComponent::UpdateMatrices: Owner actor is null!");
+            return;
+        }
+
+        Matrix4DRow worldTransform = GetWorldTransform();
+        Vector3D camPosition = worldTransform.GetTranslation();
+        Vector3D forward = worldTransform.GetYAxis();
+        Vector3D target = camPosition + forward * 400.0f;
+        Vector3D up = worldTransform.GetZAxis();
+
+        Matrix4DRow view = Matrix4DRow::CreateLookAt(camPosition, target, up);
+        mViewMatrix = view;
     }
-    if (pFov > 120)
+
+    void CameraComponent::RenderScene()
     {
-        mOldFov = 120;
-        mFov = 120;
+        if (!renderTarget) return;
+
+        renderTarget->Bind();
+        glViewport(0, 0, renderTarget->GetDimensions().x, renderTarget->GetDimensions().y);
+
+        SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
+        SceneManager::ActiveScene->GetRenderer()->SetViewMatrix(mViewMatrix);
+
+        SceneManager::ActiveScene->BeginRender();
+        SceneManager::ActiveScene->RenderCurrentSceneOnly();
+        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        world->GetWorld()->debugDrawWorld();
+        auto debugRenderer = SceneManager::ActiveScene->GetPhysicDebugRenderer();
+        debugRenderer->FlushDraw(this);
+        RenderTarget::Unbind();
     }
-    else if (pFov < 40)
-    {
-        mOldFov = 40;
-        mFov = 40;
-    }
-    else
-    {
-        mOldFov = pFov;
-        mFov = pFov;
-    }
-    mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
-}
-
-inline void CameraComponent::SetClipping(float pNearPlane, float pFarPlane)
-{
-    if (mOldNear == pNearPlane && mOldFar == pFarPlane)
-    {
-        return;
-    }
-    mOldNear = pNearPlane;
-    mOldFar = pFarPlane;
-    mNearClip = pNearPlane;
-    mFarClip = pFarPlane;
-    mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
-}
-
-void CameraComponent::UpdateMatrices()
-{
-    if (!mOwner) {
-        ZP_CORE_ERROR("CameraComponent::UpdateMatrices: Owner actor is null!");
-        return;
-    }
-
-    Matrix4DRow worldTransform = GetWorldTransform();
-    Vector3D camPosition = worldTransform.GetTranslation();
-    Vector3D forward = worldTransform.GetYAxis();
-    Vector3D target = camPosition + forward * 400.0f;
-    Vector3D up = worldTransform.GetZAxis();
-
-    Matrix4DRow view = Matrix4DRow::CreateLookAt(camPosition, target, up);
-    mViewMatrix = view;
-}
-
-void CameraComponent::RenderScene()
-{
-    if (!renderTarget) return;
-
-    renderTarget->Bind();
-    glViewport(0, 0, renderTarget->GetDimensions().x, renderTarget->GetDimensions().y);
-
-    SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
-    SceneManager::ActiveScene->GetRenderer()->SetViewMatrix(mViewMatrix);
-
-    SceneManager::ActiveScene->BeginRender();
-    SceneManager::ActiveScene->RenderCurrentSceneOnly();
-    auto world = SceneManager::ActiveScene->GetPhysicWorld();
-    world->GetWorld()->debugDrawWorld();
-    auto debugRenderer = SceneManager::ActiveScene->GetPhysicDebugRenderer();
-    debugRenderer->FlushDraw(this);
-    RenderTarget::Unbind();
 }

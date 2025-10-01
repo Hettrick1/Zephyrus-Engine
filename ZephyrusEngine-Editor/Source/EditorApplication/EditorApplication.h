@@ -12,7 +12,10 @@
 #include <unordered_map>
 #include <memory>
 
-class EditorControllerActor;
+namespace Zephyrus::ActorComponent
+{
+	class EditorControllerActor;
+}
 
 class EditorApplication
 {
@@ -30,7 +33,7 @@ private:
 	GLuint mRenderTexture = 0;
 	GLuint mDepthRenderBuffer = 0;
 
-	EditorControllerActor* mEditorController = nullptr;
+	Zephyrus::ActorComponent::EditorControllerActor* mEditorController = nullptr;
 
 public:
 	EditorApplication(const std::string& pTitle, const std::string& pStartupScene);

@@ -1,7 +1,7 @@
 #include "RenameActorEvent.h"
 #include "Actor.h"
 
-RenameActorEvent::RenameActorEvent(Actor* pActorToRename, const std::string& pNewName)
+RenameActorEvent::RenameActorEvent(Zephyrus::ActorComponent::Actor* pActorToRename, const std::string& pNewName)
 	: Event("Rename Actor"), mNewName(pNewName), mPreviousName(pActorToRename->GetName()), mActorToRename(pActorToRename)
 {
 }

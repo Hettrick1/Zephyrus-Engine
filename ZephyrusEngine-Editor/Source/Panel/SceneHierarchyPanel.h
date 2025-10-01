@@ -1,16 +1,20 @@
 #pragma once
 #include "Panel.h"
 
-class Actor;
+namespace Zephyrus::ActorComponent
+{
+	class Actor;
+}
+
 
 class SceneHierarchyPanel : public Panel
 {
 private:
-	Actor* mSelectedActor = nullptr;
+	Zephyrus::ActorComponent::Actor* mSelectedActor = nullptr;
 public:
 	SceneHierarchyPanel(const std::string& pName);
 	~SceneHierarchyPanel();
 	void Draw() override;
 	void ResetSelectedActor();
-	Actor* GetSelectedActor() const;
+	Zephyrus::ActorComponent::Actor* GetSelectedActor() const;
 };

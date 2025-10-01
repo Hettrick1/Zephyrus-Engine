@@ -87,7 +87,7 @@ void SceneHierarchyPanel::ResetSelectedActor()
 	}
 }
 
-Actor* SceneHierarchyPanel::GetSelectedActor() const
+Zephyrus::ActorComponent::Actor* SceneHierarchyPanel::GetSelectedActor() const
 {
 	return mSelectedActor;
 }

@@ -38,7 +38,7 @@ void PhysicsDebugRenderer::SetProjectionMatrix(const Matrix4DRow& pProj)
     mProj = pProj;
 }
 
-void PhysicsDebugRenderer::FlushDraw(CameraComponent* cam)
+void PhysicsDebugRenderer::FlushDraw(Zephyrus::ActorComponent::CameraComponent* cam)
 {
     if (mLines.empty()) return;
 

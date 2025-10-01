@@ -18,19 +18,19 @@
 
 void ComponentRegister::RegisterAllComponents()
 {
-	ComponentFactory::Instance().Register("SkySphereComponent", SkySphereComponent::Create);
-	ComponentFactory::Instance().Register("DoomMenuPC", DoomMenuPC::Create);
-	ComponentFactory::Instance().Register("MeshComponent", MeshComponent::Create);
-	ComponentFactory::Instance().Register("SpriteComponent", SpriteComponent::Create);
-	ComponentFactory::Instance().Register("PickUpComponent", PickUpComponent::Create);
-	ComponentFactory::Instance().Register("DoomPC", DoomPC::Create);
-	ComponentFactory::Instance().Register("DoomPlayerComponent", DoomPlayerComponent::Create);
-	ComponentFactory::Instance().Register("FlipbookComponent", FlipbookComponent::Create);
-	ComponentFactory::Instance().Register("DoomEnemyComponent", DoomEnemyComponent::Create);
-	ComponentFactory::Instance().Register("PlayerStartComponent", PlayerStartComponent::Create);
-	ComponentFactory::Instance().Register("RigidbodyComponent", BulletRigidbodyComponent::Create);
-	ComponentFactory::Instance().Register("CubeColliderComponent", CubeColliderComponent::Create);
-	ComponentFactory::Instance().Register("SphereColliderComponent", SphereColliderComponent::Create);
-	ComponentFactory::Instance().Register("CapsuleColliderComponent", CapsuleColliderComponent::Create);
-	ComponentFactory::Instance().Register("CameraComponent", CameraComponent::Create);
+	ComponentFactory::Instance().Register("SkySphereComponent", Zephyrus::ActorComponent::SkySphereComponent::Create);
+	ComponentFactory::Instance().Register("DoomMenuPC", Zephyrus::ActorComponent::DoomMenuPC::Create);
+	ComponentFactory::Instance().Register("MeshComponent", Zephyrus::ActorComponent::MeshComponent::Create);
+	ComponentFactory::Instance().Register("SpriteComponent", Zephyrus::ActorComponent::SpriteComponent::Create);
+	ComponentFactory::Instance().Register("PickUpComponent", Zephyrus::ActorComponent::PickUpComponent::Create);
+	ComponentFactory::Instance().Register("DoomPC", Zephyrus::ActorComponent::DoomPC::Create);
+	ComponentFactory::Instance().Register("DoomPlayerComponent", Zephyrus::ActorComponent::DoomPlayerComponent::Create);
+	ComponentFactory::Instance().Register("FlipbookComponent", Zephyrus::ActorComponent::FlipbookComponent::Create);
+	ComponentFactory::Instance().Register("DoomEnemyComponent", Zephyrus::ActorComponent::DoomEnemyComponent::Create);
+	ComponentFactory::Instance().Register("PlayerStartComponent", Zephyrus::ActorComponent::PlayerStartComponent::Create);
+	ComponentFactory::Instance().Register("RigidbodyComponent", Zephyrus::ActorComponent::BulletRigidbodyComponent::Create);
+	ComponentFactory::Instance().Register("CubeColliderComponent", Zephyrus::ActorComponent::CubeColliderComponent::Create);
+	ComponentFactory::Instance().Register("SphereColliderComponent", Zephyrus::ActorComponent::SphereColliderComponent::Create);
+	ComponentFactory::Instance().Register("CapsuleColliderComponent", Zephyrus::ActorComponent::CapsuleColliderComponent::Create);
+	ComponentFactory::Instance().Register("CameraComponent", Zephyrus::ActorComponent::CameraComponent::Create);
 }

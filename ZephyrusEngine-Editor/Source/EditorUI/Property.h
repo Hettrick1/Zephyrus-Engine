@@ -17,7 +17,7 @@ struct Property {
 };
 
 template<typename T>
-Property MakeUndoableProperty(const PropertyDescriptor& desc, Component* owner) {
+Property MakeUndoableProperty(const PropertyDescriptor& desc, Zephyrus::ActorComponent::Component* owner) {
     if constexpr (std::is_pointer_v<T>) 
     {
         // For T = Mesh*, Texture*, ...

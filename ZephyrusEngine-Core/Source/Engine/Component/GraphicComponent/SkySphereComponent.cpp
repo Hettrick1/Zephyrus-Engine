@@ -9,149 +9,152 @@
 #include "ComponentFactory.h"
 #include "JSONUtils.h"
 
-int SkySphereComponent::index = 0;
-
-SkySphereComponent::SkySphereComponent(Actor* pOwner)
-	: Component(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D), mVao(nullptr)
+namespace Zephyrus::ActorComponent
 {
-	mOwner->GetScene().GetRenderer()->AddSkySphere(this);
-}
+	int SkySphereComponent::index = 0;
 
-SkySphereComponent::~SkySphereComponent()
-{
-	mOwner->GetScene().GetRenderer()->AddSkySphere(nullptr);
-}
-
-void SkySphereComponent::OnEnd()
-{
-	// TODO Remove sky sphere if it's the one used
-}
-
-std::vector<PropertyDescriptor> SkySphereComponent::GetProperties()
-{
-	std::vector<PropertyDescriptor> prop;
-	if (mIsSphere)
+	SkySphereComponent::SkySphereComponent(Actor* pOwner)
+		: Component(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D), mVao(nullptr)
 	{
-		prop = {
-			{"Texture : ", &mSphereTexture, PropertyType::Texture, true}
-		};
-	}
-	else
-	{
-		prop = {
-			{"Textures : ", &mCubeMap, PropertyType::CubeMap}
-		};
+		mOwner->GetScene().GetRenderer()->AddSkySphere(this);
 	}
 
-	return prop;
-}
-
-void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
-{
-	Component::Deserialize(pData);
-	if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && pData["isSphere"].GetBool())
+	SkySphereComponent::~SkySphereComponent()
 	{
-		mIsSphere = true;
-		mVertexShader = *Assets::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
-		mFragmentShader = *Assets::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
-		mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "skySphereSP");
+		mOwner->GetScene().GetRenderer()->AddSkySphere(nullptr);
+	}
 
-		Texture* tex = nullptr;
-		if (pData.HasMember("textures") && pData["textures"].IsArray())
+	void SkySphereComponent::OnEnd()
+	{
+		// TODO Remove sky sphere if it's the one used
+	}
+
+	std::vector<PropertyDescriptor> SkySphereComponent::GetProperties()
+	{
+		std::vector<PropertyDescriptor> prop;
+		if (mIsSphere)
 		{
-			const auto& arr = pData["textures"].GetArray();
-			if (!arr.Empty() && arr[0].IsString())
-			{
-				tex = Assets::LoadTexture(arr[0].GetString(), arr[0].GetString());
-				mTexturesPaths.push_back(arr[0].GetString());
-				mSphereTexture = tex;
-				mTextureIndex = tex->GetId();
-				mMesh = Assets::LoadMesh("sphere.obj", "sphere");
-				mVao = mMesh->GetVao();
-				mTextureType = GL_TEXTURE_2D;
-			}
-			else
-			{
-				ZP_CORE_ERROR("Textures array must contain at least one string!");
-			}
+			prop = {
+				{"Texture : ", &mSphereTexture, PropertyType::Texture, true}
+			};
 		}
-	}
-	else if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && !pData["isSphere"].GetBool())
-	{
-		mIsSphere = false;
-		mVertexShader = *Assets::LoadShader("VertFrag/SkyBox.vert", ShaderType::VERTEX, "SkyBoxVert");
-		mFragmentShader = *Assets::LoadShader("VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "SkyBoxFrag");
-		mTescShader = *Assets::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
-		mTeseShader = *Assets::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
-
-		mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader }, "skyboxSP");
-
-		mMesh = Assets::LoadMesh("cube.obj", "cube");
-		mVao = mMesh->GetVao();
-
-		std::vector<std::string> faces;
-		mTexturesPaths.clear();
-
-		if (pData.HasMember("textures") && pData["textures"].IsArray())
+		else
 		{
-			bool cubemapSuccess = false;
-			const auto& arr = pData["textures"].GetArray();
-			
-			if (!arr.Empty() && arr.Size() == 6)
+			prop = {
+				{"Textures : ", &mCubeMap, PropertyType::CubeMap}
+			};
+		}
+
+		return prop;
+	}
+
+	void SkySphereComponent::Deserialize(const rapidjson::Value& pData)
+	{
+		Component::Deserialize(pData);
+		if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && pData["isSphere"].GetBool())
+		{
+			mIsSphere = true;
+			mVertexShader = *Assets::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
+			mFragmentShader = *Assets::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
+			mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "skySphereSP");
+
+			Texture* tex = nullptr;
+			if (pData.HasMember("textures") && pData["textures"].IsArray())
 			{
-				for (auto& element : arr) 
+				const auto& arr = pData["textures"].GetArray();
+				if (!arr.Empty() && arr[0].IsString())
 				{
-					if (element.IsString())
-					{
-						faces.push_back(element.GetString());
-						mTexturesPaths.push_back(element.GetString());
-					}
+					tex = Assets::LoadTexture(arr[0].GetString(), arr[0].GetString());
+					mTexturesPaths.push_back(arr[0].GetString());
+					mSphereTexture = tex;
+					mTextureIndex = tex->GetId();
+					mMesh = Assets::LoadMesh("sphere.obj", "sphere");
+					mVao = mMesh->GetVao();
+					mTextureType = GL_TEXTURE_2D;
 				}
-				cubemapSuccess = mCubeMap.CreateCubeTextureMap(faces);
-				ZP_CORE_ASSERT(cubemapSuccess, "Cubemap creation failed!");
-				mTextureIndex = mCubeMap.GetID();
-				mTextureType = GL_TEXTURE_CUBE_MAP;
+				else
+				{
+					ZP_CORE_ERROR("Textures array must contain at least one string!");
+				}
 			}
-			else
+		}
+		else if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && !pData["isSphere"].GetBool())
+		{
+			mIsSphere = false;
+			mVertexShader = *Assets::LoadShader("VertFrag/SkyBox.vert", ShaderType::VERTEX, "SkyBoxVert");
+			mFragmentShader = *Assets::LoadShader("VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "SkyBoxFrag");
+			mTescShader = *Assets::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
+			mTeseShader = *Assets::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
+
+			mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader }, "skyboxSP");
+
+			mMesh = Assets::LoadMesh("cube.obj", "cube");
+			mVao = mMesh->GetVao();
+
+			std::vector<std::string> faces;
+			mTexturesPaths.clear();
+
+			if (pData.HasMember("textures") && pData["textures"].IsArray())
 			{
-				ZP_CORE_ASSERT(arr.Size() == 6, "Textures array must contain 6 strings!");
+				bool cubemapSuccess = false;
+				const auto& arr = pData["textures"].GetArray();
+
+				if (!arr.Empty() && arr.Size() == 6)
+				{
+					for (auto& element : arr)
+					{
+						if (element.IsString())
+						{
+							faces.push_back(element.GetString());
+							mTexturesPaths.push_back(element.GetString());
+						}
+					}
+					cubemapSuccess = mCubeMap.CreateCubeTextureMap(faces);
+					ZP_CORE_ASSERT(cubemapSuccess, "Cubemap creation failed!");
+					mTextureIndex = mCubeMap.GetID();
+					mTextureType = GL_TEXTURE_CUBE_MAP;
+				}
+				else
+				{
+					ZP_CORE_ASSERT(arr.Size() == 6, "Textures array must contain 6 strings!");
+				}
 			}
 		}
 	}
-}
 
-void SkySphereComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
-{
-	Component::BeginSerialize(pWriter);
-
-	pWriter.WriteBool("isSphere", mIsSphere);
-
-	pWriter.BeginArray("textures");
-	for (auto texture : mTexturesPaths)
+	void SkySphereComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
 	{
-		pWriter.PushString(texture);
+		Component::BeginSerialize(pWriter);
+
+		pWriter.WriteBool("isSphere", mIsSphere);
+
+		pWriter.BeginArray("textures");
+		for (auto texture : mTexturesPaths)
+		{
+			pWriter.PushString(texture);
+		}
+		pWriter.EndArray();
+
+		Component::EndSerialize(pWriter);
 	}
-	pWriter.EndArray();
 
-	Component::EndSerialize(pWriter);
-}
+	void SkySphereComponent::SetTextureIndex(unsigned int pTextureIndex)
+	{
+		mTextureIndex = pTextureIndex;
+	}
 
-void SkySphereComponent::SetTextureIndex(unsigned int pTextureIndex)
-{
-	mTextureIndex = pTextureIndex;
-}
+	void SkySphereComponent::SetShaderProgram(const ShaderProgram& pShaderProgram)
+	{
+		mShaderProgram = pShaderProgram;
+	}
 
-void SkySphereComponent::SetShaderProgram(const ShaderProgram& pShaderProgram)
-{
-	mShaderProgram = pShaderProgram;
-}
+	void SkySphereComponent::SetTiling(const Vector2D& pTiling)
+	{
+		mTiling = pTiling;
+	}
 
-void SkySphereComponent::SetTiling(const Vector2D& pTiling)
-{
-	mTiling = pTiling;
-}
-
-void SkySphereComponent::SetTexturePaths(std::vector<std::string>& pTexturesPaths)
-{
-	mTexturesPaths = pTexturesPaths;
+	void SkySphereComponent::SetTexturePaths(std::vector<std::string>& pTexturesPaths)
+	{
+		mTexturesPaths = pTexturesPaths;
+	}
 }

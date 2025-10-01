@@ -1,38 +1,41 @@
 #include "CubeMapMeshComponent.h"
 #include "VertexArray.h"
 
-CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Mesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram)
-	:MeshComponent(pOwner), mCubeMapTexture(pCubeMap)
+namespace Zephyrus::ActorComponent
 {
-	MeshComponent::SetMesh(*pMesh);
-	MeshComponent::SetShaderProgram(*pProgram);
-}
-
-CubeMapMeshComponent::~CubeMapMeshComponent()
-{
-}
-
-void CubeMapMeshComponent::Draw(const Matrix4DRow& viewProj)
-{
-	if (mMesh)
+	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Mesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram)
+		:MeshComponent(pOwner), mCubeMapTexture(pCubeMap)
 	{
-		Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
-		mShaderProgram.Use();
-		mShaderProgram.setMatrix4Row("uViewProj", viewProj);
-		mShaderProgram.setMatrix4Row("uWorldTransform", wt);
-		mShaderProgram.setVector2f("uTiling", mTiling);
-		mShaderProgram.setFloat("uLod", mOwner->GetLod());
-		mShaderProgram.setFloat("uTime", SDL_GetTicks());
-		mCubeMapTexture.SetActive();
-		mMesh->GetVao()->SetActive();
-		if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+		MeshComponent::SetMesh(*pMesh);
+		MeshComponent::SetShaderProgram(*pProgram);
+	}
+
+	CubeMapMeshComponent::~CubeMapMeshComponent()
+	{
+	}
+
+	void CubeMapMeshComponent::Draw(const Matrix4DRow& viewProj)
+	{
+		if (mMesh)
 		{
-			//glPatchParameteri(GL_PATCH_VERTICES, 3);
-			glDrawArrays(GL_PATCHES, 0, mMesh->GetVao()->GetVerticeCount());
-		}
-		else
-		{
-			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
+			Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
+			mShaderProgram.Use();
+			mShaderProgram.setMatrix4Row("uViewProj", viewProj);
+			mShaderProgram.setMatrix4Row("uWorldTransform", wt);
+			mShaderProgram.setVector2f("uTiling", mTiling);
+			mShaderProgram.setFloat("uLod", mOwner->GetLod());
+			mShaderProgram.setFloat("uTime", SDL_GetTicks());
+			mCubeMapTexture.SetActive();
+			mMesh->GetVao()->SetActive();
+			if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+			{
+				//glPatchParameteri(GL_PATCH_VERTICES, 3);
+				glDrawArrays(GL_PATCHES, 0, mMesh->GetVao()->GetVerticeCount());
+			}
+			else
+			{
+				glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
+			}
 		}
 	}
 }

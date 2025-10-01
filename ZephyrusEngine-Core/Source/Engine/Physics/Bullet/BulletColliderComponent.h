@@ -6,55 +6,57 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <unordered_map>
 
-class ICollisionListener;
+namespace Zephyrus::ActorComponent {
+    class ICollisionListener;
 
-class BulletColliderComponent : public Component
-{
-protected:
-    btCollisionShape* mShape = nullptr;
-    btGhostObject* mGhost = nullptr;
-    std::unordered_map<const btCollisionObject*, HitResult> mPreviousOverlaps;
-    std::vector<ICollisionListener*> mListeners;
-    bool mIsQuery = false;
-    bool mIgnoreSelf = true;
-public:
-    BulletColliderComponent(Actor* pOwner, const std::string& pName = "");
-    virtual ~BulletColliderComponent();
+    class BulletColliderComponent : public Component
+    {
+    protected:
+        btCollisionShape* mShape = nullptr;
+        btGhostObject* mGhost = nullptr;
+        std::unordered_map<const btCollisionObject*, HitResult> mPreviousOverlaps;
+        std::vector<ICollisionListener*> mListeners;
+        bool mIsQuery = false;
+        bool mIgnoreSelf = true;
+    public:
+        BulletColliderComponent(Actor* pOwner, const std::string& pName = "");
+        virtual ~BulletColliderComponent();
 
-    virtual void Deserialize(const rapidjson::Value& pData) override;
-    void BeginSerialize(Serialization::Json::JsonWriter& pWriter) override;
-    virtual void Serialize(Serialization::Json::JsonWriter& pWriter) override;
-    void EndSerialize(Serialization::Json::JsonWriter& pWriter) override;
+        virtual void Deserialize(const rapidjson::Value& pData) override;
+        void BeginSerialize(Serialization::Json::JsonWriter& pWriter) override;
+        virtual void Serialize(Serialization::Json::JsonWriter& pWriter) override;
+        void EndSerialize(Serialization::Json::JsonWriter& pWriter) override;
 
-    void OnStart() override;
-    void OnEnd() override;
+        void OnStart() override;
+        void OnEnd() override;
 
-    void SetActive(bool pActive) override;
+        void SetActive(bool pActive) override;
 
-    btCollisionShape* GetShape() const { return mShape; }
+        btCollisionShape* GetShape() const { return mShape; }
 
-    void CreateColliderWithoutBody();
-    void ClearGhostObject();
+        void CreateColliderWithoutBody();
+        void ClearGhostObject();
 
-    virtual void SetIsQuery(bool pIsQuery);
-    inline bool GetIsQuery() const { return mIsQuery; }
+        virtual void SetIsQuery(bool pIsQuery);
+        inline bool GetIsQuery() const { return mIsQuery; }
 
-    void UpdateTrigger();
-    void UpdateWorldTransform();
+        void UpdateTrigger();
+        void UpdateWorldTransform();
 
-    void RebuildCollider();
+        void RebuildCollider();
 
-public:
-    // Adds a collision event listener.
-    void AddListener(ICollisionListener* pListener);
-    // Removes a collision event listener.
-    void RemoveListener(ICollisionListener* pListener);
+    public:
+        // Adds a collision event listener.
+        void AddListener(ICollisionListener* pListener);
+        // Removes a collision event listener.
+        void RemoveListener(ICollisionListener* pListener);
 
-public:
-    // Notifies listeners that a collision has started.
-    void NotifyListenersStarted(HitResult* pInfos);
-    // Notifies listeners that a collision is ongoing.
-    void NotifyListenersStay(HitResult* pInfos);
-    // Notifies listeners that a collision has ended.
-    void NotifyListenersEnded(HitResult* pInfos);
-};
+    public:
+        // Notifies listeners that a collision has started.
+        void NotifyListenersStarted(HitResult* pInfos);
+        // Notifies listeners that a collision is ongoing.
+        void NotifyListenersStay(HitResult* pInfos);
+        // Notifies listeners that a collision has ended.
+        void NotifyListenersEnded(HitResult* pInfos);
+    };
+}

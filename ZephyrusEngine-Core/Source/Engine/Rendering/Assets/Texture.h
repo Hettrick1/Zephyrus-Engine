@@ -21,8 +21,6 @@ private:
 	SDL_Texture* mSdlTexture = nullptr;
 	int mWidth, mHeight;
 	GLuint mTextureId = 0;
-	// Loads a texture using SDL renderer
-	bool LoadSdl(RendererSdl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
 	// Loads a texture using OpenGL renderer
 	bool LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
 

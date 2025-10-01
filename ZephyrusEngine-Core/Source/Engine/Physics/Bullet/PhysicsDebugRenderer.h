@@ -30,5 +30,5 @@ public:
 
     void SetProjectionMatrix(const Matrix4DRow& pProj);
 
-    void FlushDraw(CameraComponent* cam = nullptr);
+    void FlushDraw(Zephyrus::ActorComponent::CameraComponent* cam = nullptr);
 };

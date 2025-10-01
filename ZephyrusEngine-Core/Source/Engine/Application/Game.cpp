@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "Defs.h"
 #include "Log.h"
-#include "RendererSdl.h"
 #include "RendererOpenGl.h"
 #include "TextRenderer.h"
 #include "SplashScreen.h"

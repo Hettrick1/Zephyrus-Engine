@@ -7,13 +7,13 @@ template<typename T>
 class SetGenericPropertyEvent : public Event
 {
 private:
-    Component* mComponent = nullptr;
+    Zephyrus::ActorComponent::Component* mComponent = nullptr;
     T* mField = nullptr;
     T mOldValue;
     T mNewValue;
 
 public:
-    SetGenericPropertyEvent(Component* component, T* field, const T oldValue, const T newValue)
+    SetGenericPropertyEvent(Zephyrus::ActorComponent::Component* component, T* field, const T oldValue, const T newValue)
         : Event("Set Property"), mComponent(component), mField(field), mOldValue(oldValue), mNewValue(newValue)
     {
     }

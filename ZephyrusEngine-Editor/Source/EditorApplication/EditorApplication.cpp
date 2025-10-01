@@ -56,7 +56,7 @@ void EditorApplication::Initialize()
         SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
         SDL_FreeSurface(icon);
 
-        auto editorController = new EditorControllerActor();
+        auto editorController = new Zephyrus::ActorComponent::EditorControllerActor();
         mEditorController = editorController;
         mEditorController->Start();
 
@@ -97,7 +97,7 @@ void EditorApplication::InitializePanels()
 {
     std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(prefabPanelName);
     std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(consolePanelName);
-    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mEditorController->GetComponentOfType<CameraComponent>()->renderTarget->GetColorTexture());
+    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->renderTarget->GetColorTexture());
     std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
     std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
@@ -145,7 +145,7 @@ void EditorApplication::Loop()
 
 void EditorApplication::Update()
 {
-    mEditorController->GetComponentOfType<CameraComponent>()->UpdateMatrices();
+    mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->UpdateMatrices();
     auto inspector = mAllPanels.find(inspectorPanelName);
     if (inspector != mAllPanels.end())
     {
@@ -163,7 +163,7 @@ void EditorApplication::Update()
     {
         if (auto scenePanel = dynamic_cast<ScenePanel*>(scene->second.get()))
         {
-            mEditorController->GetComponentOfType<CameraComponent>()->SetDimensions(scenePanel->GetDimensions());
+            mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->SetDimensions(scenePanel->GetDimensions());
         }
     }
     for (auto& panel : mAllPanels)
@@ -175,7 +175,7 @@ void EditorApplication::Update()
     {
         if (auto scenePanel = dynamic_cast<ScenePanel*>(it->second.get()))
         {
-            mEditorController->GetComponentOfType<EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
+            mEditorController->GetComponentOfType<Zephyrus::ActorComponent::EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
         }
     }
     auto world = SceneManager::ActiveScene->GetPhysicWorld();
@@ -196,7 +196,7 @@ void EditorApplication::Render()
             }
         }
     }
-    mEditorController->GetComponentOfType<CameraComponent>()->RenderScene();
+    mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->RenderScene();
     SceneManager::ActiveScene->EndRender();
 
     RenderImgui();

@@ -1,37 +1,39 @@
 #include "PlayerStartComponent.h"
-
-PlayerStartComponent::PlayerStartComponent(Actor* pOwner, int updateOder)
-	: Component(pOwner, "PlayerStartComponent", updateOder)
+namespace Zephyrus::ActorComponent
 {
-}
-
-PlayerStartComponent::~PlayerStartComponent()
-{
-}
-
-void PlayerStartComponent::Deserialize(const rapidjson::Value& pData)
-{
-	Component::Deserialize(pData);
-	if (auto playerPrefabName = Serialization::Json::ReadString(pData, "playerPrefab"))
+	PlayerStartComponent::PlayerStartComponent(Actor* pOwner, int updateOder)
+		: Component(pOwner, "PlayerStartComponent", updateOder)
 	{
-		mPlayerPrefabName = *playerPrefabName;
 	}
-}
 
-void PlayerStartComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
-{
-	Component::BeginSerialize(pWriter);
-	pWriter.WriteString("playerPrefab", mPlayerPrefabName);
-	Component::EndSerialize(pWriter);
-}
+	PlayerStartComponent::~PlayerStartComponent()
+	{
+	}
 
-void PlayerStartComponent::OnEnd()
-{
-}
+	void PlayerStartComponent::Deserialize(const rapidjson::Value& pData)
+	{
+		Component::Deserialize(pData);
+		if (auto playerPrefabName = Serialization::Json::ReadString(pData, "playerPrefab"))
+		{
+			mPlayerPrefabName = *playerPrefabName;
+		}
+	}
 
-std::vector<PropertyDescriptor> PlayerStartComponent::GetProperties()
-{
-	return {
-		{ "Player Prefab : ", &mPlayerPrefabName, PropertyType::Prefab }
-	};
+	void PlayerStartComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+	{
+		Component::BeginSerialize(pWriter);
+		pWriter.WriteString("playerPrefab", mPlayerPrefabName);
+		Component::EndSerialize(pWriter);
+	}
+
+	void PlayerStartComponent::OnEnd()
+	{
+	}
+
+	std::vector<PropertyDescriptor> PlayerStartComponent::GetProperties()
+	{
+		return {
+			{ "Player Prefab : ", &mPlayerPrefabName, PropertyType::Prefab }
+		};
+	}
 }

@@ -3,30 +3,32 @@
 #include "CameraComponent.h"
 #include "EditorControllerComponent.h"
 
-EditorControllerActor::EditorControllerActor(const Vector3D& pPos, const Vector3D& pSize, const Quaternion& pRotation)
-	: Actor(pPos, pSize, pRotation)
-{
-	auto camera = new CameraComponent(this, 1920, 1080, CameraUsage::Editor);
-	AddComponent(camera);
-	
-	auto editorController = new EditorControllerComponent(this);
-	AddComponent(editorController);
-}
+namespace Zephyrus::ActorComponent {
+	EditorControllerActor::EditorControllerActor(const Vector3D& pPos, const Vector3D& pSize, const Quaternion& pRotation)
+		: Actor(pPos, pSize, pRotation)
+	{
+		auto camera = new CameraComponent(this, 1920, 1080, CameraUsage::Editor);
+		AddComponent(camera);
 
-EditorControllerActor::~EditorControllerActor()
-{
-}
+		auto editorController = new EditorControllerComponent(this);
+		AddComponent(editorController);
+	}
 
-void EditorControllerActor::Start()
-{
-	Actor::Start();
-}
+	EditorControllerActor::~EditorControllerActor()
+	{
+	}
 
-void EditorControllerActor::Update()
-{
-}
+	void EditorControllerActor::Start()
+	{
+		Actor::Start();
+	}
 
-void EditorControllerActor::Destroy()
-{;
-	Actor::Destroy();
+	void EditorControllerActor::Update()
+	{
+	}
+
+	void EditorControllerActor::Destroy()
+	{
+		Actor::Destroy();
+	}
 }

@@ -7,9 +7,9 @@
 #include <vector>
 
 struct CustomRayResultCallback : public btCollisionWorld::ClosestRayResultCallback {
-    Actor* mIgnoreActor;
+    Zephyrus::ActorComponent::Actor* mIgnoreActor;
 
-    CustomRayResultCallback(const btVector3& pFrom, const btVector3& pTo, Actor* pIgnore)
+    CustomRayResultCallback(const btVector3& pFrom, const btVector3& pTo, Zephyrus::ActorComponent::Actor* pIgnore)
         : btCollisionWorld::ClosestRayResultCallback(pFrom, pTo), mIgnoreActor(pIgnore) {}
 
     virtual bool needsCollision(btBroadphaseProxy* proxy) const override
@@ -32,7 +32,7 @@ struct CustomRayResultCallback : public btCollisionWorld::ClosestRayResultCallba
     btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override {
         const btCollisionObject* obj = rayResult.m_collisionObject;
         if (obj && obj->getUserPointer()) {
-            Actor* actor = static_cast<Actor*>(obj->getUserPointer());
+            Zephyrus::ActorComponent::Actor* actor = static_cast<Zephyrus::ActorComponent::Actor*>(obj->getUserPointer());
             if (actor == mIgnoreActor) {
                 return 1.0f;
             }
@@ -51,8 +51,8 @@ private:
     btDiscreteDynamicsWorld* mWorld = nullptr;
     btGhostPairCallback* mGhostCallback = nullptr;
 
-    std::vector<BulletRigidbodyComponent*> mRigidbodies;
-    std::vector<BulletColliderComponent*> mColliders;
+    std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> mRigidbodies;
+    std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> mColliders;
 
 public:
     PhysicWorld();
@@ -63,12 +63,12 @@ public:
 
     void AddGhostObject(btGhostObject* ghost);
     void RemoveGhostObject(btGhostObject* ghost);
-    void AddRigidbody(BulletRigidbodyComponent* pRigidbody);
-    void RemoveRigidbody(BulletRigidbodyComponent* pRigidbody);
-    void AddCollider(BulletColliderComponent* pCollider);
-    void RemoveCollider(BulletColliderComponent* pCollider);
+    void AddRigidbody(Zephyrus::ActorComponent::BulletRigidbodyComponent* pRigidbody);
+    void RemoveRigidbody(Zephyrus::ActorComponent::BulletRigidbodyComponent* pRigidbody);
+    void AddCollider(Zephyrus::ActorComponent::BulletColliderComponent* pCollider);
+    void RemoveCollider(Zephyrus::ActorComponent::BulletColliderComponent* pCollider);
 
-    bool LineTrace(const Vector3D& pStart,const Vector3D& pEnd,HitResult& pOutHit,Actor* pIgnoreActor = nullptr);
+    bool LineTrace(const Vector3D& pStart,const Vector3D& pEnd,HitResult& pOutHit, Zephyrus::ActorComponent::Actor* pIgnoreActor = nullptr);
 
     btDiscreteDynamicsWorld* GetWorld() { return mWorld; }
 };
