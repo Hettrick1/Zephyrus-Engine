@@ -190,7 +190,7 @@ void Scene::SaveTo(const std::string& pFilePath)
 	mSaved = true;
 }
 
-void Scene::SetPlayerStart(Zephyrus::ActorComponent::Actor* pPlayerStart)
+void Scene::SetPlayerStart(Actor* pPlayerStart)
 {
 	mPlayerStart = pPlayerStart;
 }
@@ -227,7 +227,7 @@ void Scene::SaveScene()
 	}
 }
 
-void Scene::AddActor(Zephyrus::ActorComponent::Actor* pActor)
+void Scene::AddActor(Actor* pActor)
 {
 	pActor->AttachScene(*this);
 	if (mIsUpdatingActor) 
@@ -260,7 +260,7 @@ void Scene::UpdateAllActors()
 		actor->Update();
 	}
 	mIsUpdatingActor = false;
-	for (Zephyrus::ActorComponent::Actor* actor : mPendingActors)
+	for (Actor* actor : mPendingActors)
 	{
 		if (!SceneManager::mIsSceneLoaded)
 		{
@@ -282,10 +282,10 @@ void Scene::UpdateAllActors()
 	}
 }
 
-void Scene::RemoveActor(Zephyrus::ActorComponent::Actor* pActor)
+void Scene::RemoveActor(Actor* pActor)
 {
 	RemoveActorWithID(pActor->GetUUID());
-	std::vector<Zephyrus::ActorComponent::Actor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), pActor);
+	std::vector<Actor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), pActor);
 	if (it != mPendingActors.end())
 	{
 		iter_swap(it, mPendingActors.end() - 1);
@@ -308,7 +308,7 @@ void Scene::RemoveActorWithID(const std::string& pId)
 	}
 }
 
-Zephyrus::ActorComponent::Actor* Scene::GetActorWithID(const std::string& pID)
+Actor* Scene::GetActorWithID(const std::string& pID)
 {
 	auto it = mActors.find(pID);
 	if (it != mActors.end())

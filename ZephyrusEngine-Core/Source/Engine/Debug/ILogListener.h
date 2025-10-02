@@ -3,7 +3,7 @@
 
 #include "LogEnum.h"
 
-namespace Zephyrus
+namespace Zephyrus::Debug
 {
     class ILogListener
     {

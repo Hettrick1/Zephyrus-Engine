@@ -3,21 +3,21 @@
 #include "ZPCommons.h"
 #include "Log.h"
 
-void CameraManager::AddCamera(zpActorComp::CameraComponent* pCam)
+void CameraManager::AddCamera(CameraComponent* pCam)
 {
     if (!pCam) return;
 
     if (std::find(mCameras.begin(), mCameras.end(), pCam) == mCameras.end())
     {
         mCameras.push_back(pCam);
-        if (pCam->usage == zpActorComp::CameraUsage::Game)
+        if (pCam->usage == CameraUsage::Game)
         {
             mActiveCamera = pCam;
         }
     }
 }
 
-void CameraManager::RemoveCamera(zpActorComp::CameraComponent* pCam)
+void CameraManager::RemoveCamera(CameraComponent* pCam)
 {
     auto it = std::find(mCameras.begin(), mCameras.end(), pCam);
     if (it != mCameras.end())
@@ -30,7 +30,7 @@ void CameraManager::RemoveCamera(zpActorComp::CameraComponent* pCam)
     }
 }
 
-void CameraManager::SetActiveCamera(zpActorComp::CameraComponent* pCam)
+void CameraManager::SetActiveCamera(CameraComponent* pCam)
 {
     if (!pCam) return;
     if (std::find(mCameras.begin(), mCameras.end(), pCam) != mCameras.end())
@@ -49,7 +49,7 @@ void CameraManager::OnPlay()
     {
         for (auto* cam : mCameras)
         {
-            if (cam->usage == zpActorComp::CameraUsage::Game)
+            if (cam->usage == CameraUsage::Game)
             {
                 mActiveCamera = cam;
                 break;
@@ -86,7 +86,7 @@ void CameraManager::Unload()
      else
      {
          auto cameraActor = PrefabFactory::SpawnActorFromPrefab("CameraActor");
-         mActiveCamera = cameraActor->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>();
+         mActiveCamera = cameraActor->GetComponentOfType<CameraComponent>();
          mActiveCamera->UpdateMatrices();
          mActiveCamera->RenderScene();
      }

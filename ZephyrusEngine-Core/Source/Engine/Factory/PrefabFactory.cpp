@@ -9,7 +9,7 @@
 #include <sstream>
 #include <filesystem>
 
-Zephyrus::ActorComponent::EmptyActor* PrefabFactory::SpawnActorFromPrefab(const std::string& pPrefabName, const Vector3D& pInitialPos, const Vector3D& pInitialRot, const Vector3D& pInitialSize)
+Actor* PrefabFactory::SpawnActorFromPrefab(const std::string& pPrefabName, const Vector3D& pInitialPos, const Vector3D& pInitialRot, const Vector3D& pInitialSize)
 {
     std::string fullPath;
     // TODO -> only work with full path, no longer spawn prefab with name
@@ -42,7 +42,7 @@ Zephyrus::ActorComponent::EmptyActor* PrefabFactory::SpawnActorFromPrefab(const 
         return nullptr;
     }
 
-    auto actor = new Zephyrus::ActorComponent::EmptyActor();
+    auto actor = new Actor();
     actor->SetPrefab(pPrefabName);
 
     actor->Deserialize(doc);
@@ -66,7 +66,7 @@ Zephyrus::ActorComponent::EmptyActor* PrefabFactory::SpawnActorFromPrefab(const 
     return actor;
 }
 
-Zephyrus::ActorComponent::EmptyActor* PrefabFactory::InitPrefab(const std::string& pPrefabName)
+Actor* PrefabFactory::InitPrefab(const std::string& pPrefabName)
 {
     std::string fullPath;
 
@@ -100,7 +100,7 @@ Zephyrus::ActorComponent::EmptyActor* PrefabFactory::InitPrefab(const std::strin
         return nullptr;
     }
 
-    auto actor = new Zephyrus::ActorComponent::EmptyActor();
+    auto actor = new Actor();
     actor->SetPrefab(pPrefabName);
 
     actor->Deserialize(doc);
@@ -135,10 +135,10 @@ std::vector<std::string> PrefabFactory::GetPrefabFiles(const std::string& folder
     return prefabs;
 }
 
-Zephyrus::ActorComponent::Component* PrefabFactory::CreateAndAttachComponent(const rapidjson::Value& componentJson, Zephyrus::ActorComponent::EmptyActor* actor, bool doDeserialize)
+Component* PrefabFactory::CreateAndAttachComponent(const rapidjson::Value& componentJson, Actor* actor, bool doDeserialize)
 {
     std::string type = *Serialization::Json::ReadString(componentJson, "type");
-    Zephyrus::ActorComponent::Component* c = ComponentFactory::Instance().Create(type, actor);
+    Component* c = ComponentFactory::Instance().Create(type, actor);
 
     if (!c) {
         ZP_EDITOR_ERROR("Component " + type + " is invalid !");

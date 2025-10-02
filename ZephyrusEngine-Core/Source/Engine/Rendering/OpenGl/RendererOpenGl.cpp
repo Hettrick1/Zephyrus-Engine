@@ -107,7 +107,7 @@ void RendererOpenGl::EndDraw()
 	SDL_GL_SwapWindow(mWindow->GetSdlWindow());
 }
 
-void RendererOpenGl::RenderActiveCamera(Zephyrus::ActorComponent::CameraComponent* cam)
+void RendererOpenGl::RenderActiveCamera(CameraComponent* cam)
 {
 	if (!cam || !cam->renderTarget) return;
 
@@ -142,10 +142,10 @@ void RendererOpenGl::Unload()
 	mSkySphereComponent = nullptr;
 }
 
-void RendererOpenGl::AddSprite(Zephyrus::ActorComponent::SpriteComponent* pSprite)
+void RendererOpenGl::AddSprite(SpriteComponent* pSprite)
 {
 	int spriteDrawOrder = pSprite->GetDrawOrder();
-	std::vector<Zephyrus::ActorComponent::SpriteComponent*>::iterator sc;
+	std::vector<SpriteComponent*>::iterator sc;
 	for (sc = mSprites.begin(); sc != mSprites.end(); ++sc)
 	{
 		if (spriteDrawOrder < (*sc)->GetDrawOrder())
@@ -156,26 +156,26 @@ void RendererOpenGl::AddSprite(Zephyrus::ActorComponent::SpriteComponent* pSprit
 	mSprites.insert(sc, pSprite);
 }
 
-void RendererOpenGl::RemoveSprite(Zephyrus::ActorComponent::SpriteComponent* pSprite)
+void RendererOpenGl::RemoveSprite(SpriteComponent* pSprite)
 {
-	std::vector<Zephyrus::ActorComponent::SpriteComponent*>::iterator sc;
+	std::vector<SpriteComponent*>::iterator sc;
 	sc = std::find(mSprites.begin(), mSprites.end(), pSprite); 
 	mSprites.erase(sc); 
 }
 
-void RendererOpenGl::AddMesh(Zephyrus::ActorComponent::MeshComponent* pMesh)
+void RendererOpenGl::AddMesh(MeshComponent* pMesh)
 {
 	mMeshes.push_back(pMesh);
 }
 
-void RendererOpenGl::RemoveMesh(Zephyrus::ActorComponent::MeshComponent* pMesh)
+void RendererOpenGl::RemoveMesh(MeshComponent* pMesh)
 {
-	std::vector<Zephyrus::ActorComponent::MeshComponent*>::iterator sc;
+	std::vector<MeshComponent*>::iterator sc;
 	sc = std::find(mMeshes.begin(), mMeshes.end(), pMesh);
 	mMeshes.erase(sc); 
 }
 
-void RendererOpenGl::AddSkySphere(Zephyrus::ActorComponent::SkySphereComponent* pSkySphere)
+void RendererOpenGl::AddSkySphere(SkySphereComponent* pSkySphere)
 {
 	if (mSkySphereComponent != nullptr) {
 		ZP_CORE_WARN("You had already a skysphere, the old one has been replaced");
@@ -188,17 +188,17 @@ void RendererOpenGl::RemoveSkySphere()
 	mSkySphereComponent = nullptr;
 }
 
-void RendererOpenGl::SetSelectedActor(Zephyrus::ActorComponent::Actor* pSelectedActor)
+void RendererOpenGl::SetSelectedActor(Actor* pSelectedActor)
 {
 	mSelectedActor = pSelectedActor;
 }
 
-void RendererOpenGl::AddDebugLine(DebugLine* pLine)
+void RendererOpenGl::AddDebugLine(Zephyrus::Debug::DebugLine* pLine)
 {
 	mDebugRenderer->AddDebugLine(pLine);
 }
 
-void RendererOpenGl::RemoveDebugLine(DebugLine* pLine)
+void RendererOpenGl::RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine)
 {
 	mDebugRenderer->RemoveDebugLine(pLine);
 }
@@ -215,7 +215,7 @@ void RendererOpenGl::SetProjMatrix(const Matrix4DRow& pProjMatrix)
 	mDebugRenderer->SetProjMatrix(pProjMatrix);
 }
 
-void RendererOpenGl::DrawSprite(Zephyrus::ActorComponent::Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
+void RendererOpenGl::DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
 {
 	if (mSpriteShaderProgram == nullptr)
 	{
@@ -266,8 +266,8 @@ void RendererOpenGl::DrawMeshes()
 	glPolygonMode(GL_FRONT_AND_BACK, drawMethod);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-	Zephyrus::ActorComponent::MeshComponent* activeMesh = nullptr;
-	for (Zephyrus::ActorComponent::MeshComponent* m : mMeshes)
+	MeshComponent* activeMesh = nullptr;
+	for (MeshComponent* m : mMeshes)
 	{
 		if (m->GetOwner()->GetState() == ActorState::Active)
 		{

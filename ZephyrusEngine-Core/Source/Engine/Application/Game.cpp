@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "Defs.h"
 #include "Log.h"
 #include "RendererOpenGl.h"
 #include "TextRenderer.h"
@@ -16,7 +15,7 @@
 Game::Game(const std::string& pTitle, const std::string& pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
 {
-    Zephyrus::Log::Init();
+    Zephyrus::Debug::Log::Init();
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
@@ -63,7 +62,7 @@ Game::~Game()
 
 void Game::Initialize()
 {
-    mGameWindow = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, false);
+    mGameWindow = new Window(1920, 1080, false);
     mRenderer = new RendererOpenGl();
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) {
         #ifdef _DEBUG
@@ -121,5 +120,5 @@ void Game::Close()
 {
     SceneManager::Unload();
     mGameWindow->Close();
-    Zephyrus::Log::Shutdown();
+    Zephyrus::Debug::Log::Shutdown();
 }

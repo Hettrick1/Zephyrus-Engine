@@ -1,5 +1,4 @@
 #include "DebugRenderer.h"
-#include "DebugLine.h"
 #include "Assets.h"
 
 DebugRenderer::DebugRenderer()
@@ -105,14 +104,14 @@ void DebugRenderer::Draw(IRenderer& pRenderer)
 	glDisable(GL_DEPTH_TEST);
 }
 
-void DebugRenderer::AddDebugLine(DebugLine* pLine)
+void DebugRenderer::AddDebugLine(Zephyrus::Debug::DebugLine* pLine)
 {
 	mLines.push_back(pLine);
 }
 
-void DebugRenderer::RemoveDebugLine(DebugLine* pLine)
+void DebugRenderer::RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine)
 {
-	std::vector<DebugLine*>::iterator dl;
+	std::vector<Zephyrus::Debug::DebugLine*>::iterator dl;
 	dl = std::find(mLines.begin(), mLines.end(), pLine);
 	mLines.erase(dl);
 }

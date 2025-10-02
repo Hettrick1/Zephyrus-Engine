@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Zephyrus
+namespace Zephyrus::Debug
 {
     enum class LogType {
         ZLT_INFO,

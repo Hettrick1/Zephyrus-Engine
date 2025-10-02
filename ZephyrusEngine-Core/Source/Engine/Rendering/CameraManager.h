@@ -2,22 +2,23 @@
 
 #include "CameraComponent.h"
 
-namespace zpActorComp = Zephyrus::ActorComponent;
+using Zephyrus::ActorComponent::CameraComponent;
+using Zephyrus::ActorComponent::CameraUsage;
 
 class CameraManager
 {
 private:
-    std::vector<zpActorComp::CameraComponent*> mCameras;
-    zpActorComp::CameraComponent* mActiveCamera = nullptr;
+    std::vector<CameraComponent*> mCameras;
+    CameraComponent* mActiveCamera = nullptr;
 public:
     CameraManager() = default;
     ~CameraManager() = default;
 
-    void AddCamera(zpActorComp::CameraComponent* pCam);
-    void RemoveCamera(zpActorComp::CameraComponent* pCam);
+    void AddCamera(CameraComponent* pCam);
+    void RemoveCamera(CameraComponent* pCam);
 
-    void SetActiveCamera(zpActorComp::CameraComponent* pCam);
-    inline zpActorComp::CameraComponent* GetActiveCamera() const { return mActiveCamera; }
+    void SetActiveCamera(CameraComponent* pCam);
+    inline CameraComponent* GetActiveCamera() const { return mActiveCamera; }
 
     void OnPlay();
     void OnStop();

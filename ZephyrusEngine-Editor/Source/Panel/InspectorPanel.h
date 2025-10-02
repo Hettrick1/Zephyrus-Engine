@@ -3,6 +3,11 @@
 #include "SceneHierarchyPanel.h"
 #include "CameraComponent.h"
 
+using Zephyrus::ActorComponent::Actor;
+using Zephyrus::ActorComponent::Component;
+using Zephyrus::ActorComponent::CameraComponent;
+using Zephyrus::ActorComponent::ActorState;
+
 class Component;
 struct PropertyDescriptor;
 
@@ -10,7 +15,7 @@ class InspectorPanel : public Panel
 {
 private:
 	SceneHierarchyPanel* mHierarchy = nullptr;
-	Zephyrus::ActorComponent::Component* mActiveComponent = nullptr;
+	Component* mActiveComponent = nullptr;
 public:
 	InspectorPanel(const std::string& pName);
 	~InspectorPanel();
@@ -22,9 +27,9 @@ public:
 	void DrawSplitterButton(float& h);
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
 
-	inline Zephyrus::ActorComponent::CameraComponent* GetCurrentCameraComponent() const
+	inline CameraComponent* GetCurrentCameraComponent() const
 	{
-		Zephyrus::ActorComponent::CameraComponent* cameraComp = dynamic_cast<Zephyrus::ActorComponent::CameraComponent*>(mActiveComponent);
+		CameraComponent* cameraComp = dynamic_cast<CameraComponent*>(mActiveComponent);
 		if (cameraComp)
 		{
 			return cameraComp;

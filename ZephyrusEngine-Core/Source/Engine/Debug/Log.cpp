@@ -1,6 +1,6 @@
 #include "Log.h"
 
-namespace Zephyrus
+namespace Zephyrus::Debug
 {
     std::vector<ILogListener*> Log::mListeners;
 

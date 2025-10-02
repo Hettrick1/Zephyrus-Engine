@@ -30,7 +30,7 @@ void InspectorPanel::Draw()
 
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
-	Zephyrus::ActorComponent::Actor* actor = mHierarchy->GetSelectedActor();
+	Actor* actor = mHierarchy->GetSelectedActor();
 	if (actor)
 	{
 		static float h = 200.0f;
@@ -67,7 +67,7 @@ void InspectorPanel::Draw()
 	Panel::EndDraw();
 }
 
-void InspectorPanel::DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor)
+void InspectorPanel::DrawActorComponents(Actor* pActor)
 {
 	static int selected = 0;
 	ImGui::PushFont(ZP::UI::gFonts.medium);
@@ -93,7 +93,7 @@ void InspectorPanel::DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor
 			}
 			if (ImGui::Button(componentType.c_str()))
 			{
-				Zephyrus::ActorComponent::Component* c = ComponentFactory::Instance().Create(componentType, pActor);
+				Component* c = ComponentFactory::Instance().Create(componentType, pActor);
 
 				if (!c) {
 					ZP_EDITOR_ERROR("Component " + componentType + " is invalid !");
@@ -189,7 +189,7 @@ void InspectorPanel::DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor
 	}
 }
 
-void InspectorPanel::DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor)
+void InspectorPanel::DrawActorInfos(Actor* pActor)
 {
 	char buffer[64];
 	strncpy(buffer, pActor->GetName().c_str(), sizeof(buffer));

@@ -42,9 +42,9 @@ namespace Zephyrus::ActorComponent
 		Actor(const std::string& pName, const std::string& pPrefab);
 		~Actor();
 
-		virtual void Start() = 0;
-		virtual void Update() = 0;
-		virtual void Destroy() = 0;
+		virtual void Start();
+		virtual void Update();
+		virtual void Destroy();
 
 		virtual void Deserialize(const rapidjson::Value& pData);
 		virtual void Serialize(Serialization::Json::JsonWriter& pWriter);
@@ -123,8 +123,5 @@ namespace Zephyrus::ActorComponent
 			}
 			return result;
 		}
-
-		// Update the transform of all components
-		void UpdateComponentsTransform();
 	};
 }

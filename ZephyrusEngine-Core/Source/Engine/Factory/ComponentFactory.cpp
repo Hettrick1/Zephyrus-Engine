@@ -12,7 +12,7 @@ bool ComponentFactory::Register(const std::string& pName, Creator pCreateFn)
     return mCreators.emplace(pName, pCreateFn).second;
 }
 
-Zephyrus::ActorComponent::Component* ComponentFactory::Create(const std::string& pName, Zephyrus::ActorComponent::Actor* pOwner)
+Component* ComponentFactory::Create(const std::string& pName, Actor* pOwner)
 {
     auto it = mCreators.find(pName);
     if (it != mCreators.end()) {

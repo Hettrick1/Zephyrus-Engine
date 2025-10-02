@@ -76,19 +76,19 @@ void ConsolePanel::Draw()
     {
         ImVec4 color;
         switch (message.pType) {
-        case Zephyrus::LogType::ZLT_INFO:
+        case Zephyrus::Debug::LogType::ZLT_INFO:
             color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
             break;
-        case Zephyrus::LogType::ZLT_LOAD:
+        case Zephyrus::Debug::LogType::ZLT_LOAD:
             color = ImVec4(0.0f, 0.8, 0.1f, 1.0f);
             break;
-        case Zephyrus::LogType::ZLT_WARN:
+        case Zephyrus::Debug::LogType::ZLT_WARN:
             color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
             break;
-        case Zephyrus::LogType::ZLT_ERROR:
+        case Zephyrus::Debug::LogType::ZLT_ERROR:
             color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
             break;
-        case Zephyrus::LogType::ZLT_ASSERT:
+        case Zephyrus::Debug::LogType::ZLT_ASSERT:
             color = ImVec4(0.5f, 0.0f, 0.0f, 1.0f);
             break;
         default:
@@ -96,10 +96,10 @@ void ConsolePanel::Draw()
             break;
         }
 
-        if (message.pType == Zephyrus::LogType::ZLT_INFO && !mShowInfos
-            || message.pType == Zephyrus::LogType::ZLT_LOAD && !mShowLoads
-            || message.pType == Zephyrus::LogType::ZLT_WARN && !mShowWarns
-            || message.pType == Zephyrus::LogType::ZLT_ERROR && !mShowErrors)
+        if (message.pType == Zephyrus::Debug::LogType::ZLT_INFO && !mShowInfos
+            || message.pType == Zephyrus::Debug::LogType::ZLT_LOAD && !mShowLoads
+            || message.pType == Zephyrus::Debug::LogType::ZLT_WARN && !mShowWarns
+            || message.pType == Zephyrus::Debug::LogType::ZLT_ERROR && !mShowErrors)
         {
             continue;
         }
@@ -124,9 +124,9 @@ void ConsolePanel::Draw()
 
 }
 
-void ConsolePanel::OnLogMessage(const Zephyrus::ZPMessage& pMessage)
+void ConsolePanel::OnLogMessage(const Zephyrus::Debug::ZPMessage& pMessage)
 {
-	if (pMessage.pLogger == Zephyrus::Logger::ZP_ZEPHYRUS)
+	if (pMessage.pLogger == Zephyrus::Debug::Logger::ZP_ZEPHYRUS)
 	{
 		return;
 	}

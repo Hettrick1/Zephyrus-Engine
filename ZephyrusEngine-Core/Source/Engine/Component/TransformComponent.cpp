@@ -76,7 +76,6 @@ namespace Zephyrus::ActorComponent
         mWorldTransform = Matrix4DRow::CreateScale(mSize);
         mWorldTransform *= Matrix4DRow::CreateFromQuaternion(mRotation);
         mWorldTransform *= Matrix4DRow::CreateTranslation(mPosition);
-        mOwner->UpdateComponentsTransform();
     }
 }
 

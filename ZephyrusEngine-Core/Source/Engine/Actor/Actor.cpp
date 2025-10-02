@@ -356,9 +356,4 @@ namespace Zephyrus::ActorComponent
         }
         return nullptr;
     }
-
-    void Actor::UpdateComponentsTransform()
-    {
-
-    }
 }

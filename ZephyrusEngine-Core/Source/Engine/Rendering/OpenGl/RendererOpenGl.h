@@ -12,6 +12,14 @@ namespace Zephyrus::ActorComponent {
 	class Actor;
 }
 
+using Zephyrus::ActorComponent::ActorState;
+using Zephyrus::ActorComponent::Actor;
+using Zephyrus::ActorComponent::SpriteComponent;
+using Zephyrus::ActorComponent::MeshComponent;
+using Zephyrus::ActorComponent::SkySphereComponent;
+using Zephyrus::ActorComponent::CameraComponent;
+
+
 class Texture;
 
 /**
@@ -25,8 +33,8 @@ private:
 	VertexArray* mFullscreenQuadVAO;
 	VertexArray* mVAO;
 	SDL_GLContext mContext;
-	std::vector<Zephyrus::ActorComponent::SpriteComponent*> mSprites;
-	std::vector<Zephyrus::ActorComponent::MeshComponent*> mMeshes;
+	std::vector<SpriteComponent*> mSprites;
+	std::vector<MeshComponent*> mMeshes;
 	ShaderProgram* mSpriteShaderProgram;
 	Matrix4DRow mSpriteViewProj;
 	Matrix4DRow mView, mProj;
@@ -39,8 +47,8 @@ private:
 	HudManager* mHud;
 	DebugRenderer* mDebugRenderer;
 	bool mWireFrameMode;
-	Zephyrus::ActorComponent::SkySphereComponent* mSkySphereComponent;
-	Zephyrus::ActorComponent::Actor* mSelectedActor = nullptr;
+	SkySphereComponent* mSkySphereComponent;
+	Actor* mSelectedActor = nullptr;
 
 public:
 	RendererOpenGl();
@@ -54,32 +62,32 @@ public:
 	void Draw() override;
 	void EndDraw() override;
 
-	void RenderActiveCamera(Zephyrus::ActorComponent::CameraComponent* cam) override;
+	void RenderActiveCamera(CameraComponent* cam) override;
 
 	void Close() override;
 	void Unload() override;
 
-	void AddSprite(Zephyrus::ActorComponent::SpriteComponent* pSprite) override;
-	void RemoveSprite(Zephyrus::ActorComponent::SpriteComponent* pSprite) override;
+	void AddSprite(SpriteComponent* pSprite) override;
+	void RemoveSprite(SpriteComponent* pSprite) override;
 
-	void AddMesh(Zephyrus::ActorComponent::MeshComponent* pMesh) override;
-	void RemoveMesh(Zephyrus::ActorComponent::MeshComponent* pMesh) override;
+	void AddMesh(MeshComponent* pMesh) override;
+	void RemoveMesh(MeshComponent* pMesh) override;
 
-	void AddSkySphere(Zephyrus::ActorComponent::SkySphereComponent* pSkySphere) override;
+	void AddSkySphere(SkySphereComponent* pSkySphere) override;
 	void RemoveSkySphere() override;
 
-	void SetSelectedActor(Zephyrus::ActorComponent::Actor* pSelectedActor) override;
+	void SetSelectedActor(Actor* pSelectedActor) override;
 
 	// Adds a debug line to the debug renderer
-	void AddDebugLine(DebugLine* pLine) override;
-	void RemoveDebugLine(DebugLine* pLine) override;
+	void AddDebugLine(Zephyrus::Debug::DebugLine* pLine) override;
+	void RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine) override;
 
 	// Sets the view matrix for rendering
 	void SetViewMatrix(const Matrix4DRow& pViewMatrix) override;
 	void SetProjMatrix(const Matrix4DRow& pProjMatrix) override;
 
 	// Draws a sprite for the given actor with the specified parameters
-	void DrawSprite(Zephyrus::ActorComponent::Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
+	void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
 	// Draws a debug box using min/max points and a world transform
 	void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) override;
 	// Draws a debug line between two points with hit information

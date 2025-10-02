@@ -115,7 +115,7 @@ namespace Zephyrus::ActorComponent
 		else
 		{
 			float lerpRelativeSpeed = 15;
-			Vector3D lerpRelative = Vector3D::Lerp(mGun->GetRelativePosition(), Vector3D(0.0f, 2.0f, -0.2f), Timer::deltaTime * lerpRelativeSpeed);
+			Vector3D lerpRelative = Vector3D::Lerp(mGun->GetRelativePosition(), Vector3D(0.0f, 2.0f, -0.5f), Timer::deltaTime * lerpRelativeSpeed);
 			mGun->SetRelativePosition(lerpRelative);
 			bobingTime = 0;
 		}
@@ -171,7 +171,7 @@ namespace Zephyrus::ActorComponent
 			Vector3D end = start + cam->GetWorldTransform().GetYAxis() * range;
 			HitResult hit;
 			SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
-			DebugLine* line = new DebugLine(start, end, hit);
+			Zephyrus::Debug::DebugLine* line = new Zephyrus::Debug::DebugLine(start, end, hit);
 			mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 			UseAmo(pAmoQuantity);
 
@@ -209,7 +209,7 @@ namespace Zephyrus::ActorComponent
 				Vector3D end = start + dir * range;
 				HitResult hit;
 				SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
-				DebugLine* line = new DebugLine(start, end, hit);
+				Zephyrus::Debug::DebugLine* line = new Zephyrus::Debug::DebugLine(start, end, hit);
 				mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 				if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
 				{

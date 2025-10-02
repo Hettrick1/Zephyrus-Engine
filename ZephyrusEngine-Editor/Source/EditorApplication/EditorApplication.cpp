@@ -25,7 +25,7 @@
 EditorApplication::EditorApplication(const std::string& pTitle, const std::string& pStartupScene)
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
 {
-    Zephyrus::Log::Init();
+    Zephyrus::Debug::Log::Init();
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         ZP_EDITOR_ERROR(std::string("SDL init failed: ") + SDL_GetError());
@@ -120,7 +120,7 @@ void EditorApplication::InitializePanels()
     mAllPanels[utilsPanelName] = std::move(utilsPanel);
     mAllPanels[menuPanelName] = std::move(menuPanel);
 
-    Zephyrus::Log::AddListener(consolePanelRaw);
+    Zephyrus::Debug::Log::AddListener(consolePanelRaw);
 }
 
 void EditorApplication::Loop()
@@ -377,7 +377,7 @@ void EditorApplication::Close()
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 
-    Zephyrus::Log::Shutdown();
+    Zephyrus::Debug::Log::Shutdown();
     mAllPanels.clear();
     mEditorController->Destroy();
     delete mEditorController;

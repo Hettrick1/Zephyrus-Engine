@@ -5,16 +5,19 @@
 #include <string>
 #include <functional>
 
+using Zephyrus::ActorComponent::Actor;
+using Zephyrus::ActorComponent::Component;
+
 class ComponentFactory
 {
 public:
-	using Creator = std::function<Zephyrus::ActorComponent::Component* (Zephyrus::ActorComponent::Actor*)>;
+	using Creator = std::function<Component* (Actor*)>;
 
 	static ComponentFactory& Instance();
 
     bool Register(const std::string& pName, Creator pCreateFn);
 
-    Zephyrus::ActorComponent::Component* Create(const std::string& pName, Zephyrus::ActorComponent::Actor* pOwner);
+    Component* Create(const std::string& pName, Actor* pOwner);
 
     inline std::vector<std::string> GetComponentNames() const { return mComponentNames; }
 

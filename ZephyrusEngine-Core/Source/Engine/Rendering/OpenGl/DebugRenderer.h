@@ -5,6 +5,7 @@
 #include "ShaderProgram.h"
 #include "Window.h"
 #include "Matrix4DRow.h"
+#include "DebugLine.h"
 
 /**
  * @brief Renders debug visualizations such as colliders and lines for debugging purposes.
@@ -17,7 +18,7 @@ private:
 	ShaderProgram mDebugShaderProgram;
 	Matrix4DRow mView, mProj;
 	Window* mWindow;
-	std::vector<DebugLine*> mLines;
+	std::vector<Zephyrus::Debug::DebugLine*> mLines;
 	GLuint mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
 	bool mDrawDebug = false, mDrawLines = false, mDrawBoxes = false, mDrawSelected = false;
 
@@ -32,8 +33,8 @@ public:
 
 	void Draw(IRenderer& pRenderer);
 
-	void AddDebugLine(DebugLine* pLine);
-	void RemoveDebugLine(DebugLine* pLine);
+	void AddDebugLine(Zephyrus::Debug::DebugLine* pLine);
+	void RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine);
 
 	/// Draws a debug box using the given min/max points and world transform.
 	void DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, const Matrix4DRow& pWorldTransform);

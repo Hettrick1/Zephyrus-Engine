@@ -4,10 +4,10 @@
 #include "ILogListener.h"
 #include <deque>
 
-class ConsolePanel : public Panel, public Zephyrus::ILogListener
+class ConsolePanel : public Panel, public Zephyrus::Debug::ILogListener
 {
 private:
-	std::deque<Zephyrus::ZPMessage> mLogMessages;
+	std::deque<Zephyrus::Debug::ZPMessage> mLogMessages;
 	size_t mMessageQuantity = 0;
 	size_t mMaxMessageInConsole = 150;
 	bool mNewMessage = false;
@@ -22,5 +22,5 @@ public:
 	~ConsolePanel();
 	void Update() override;
 	void Draw() override;
-	void OnLogMessage(const Zephyrus::ZPMessage& pMessage) override;
+	void OnLogMessage(const Zephyrus::Debug::ZPMessage& pMessage) override;
 };

@@ -18,6 +18,9 @@ namespace Zephyrus::ActorComponent
  * Also manages the addition and removal of actors.
  */
 
+using Zephyrus::ActorComponent::Actor;
+using Zephyrus::ActorComponent::ActorState;
+
 class Scene
 {
 protected:
@@ -25,12 +28,12 @@ protected:
 	std::string mFilePath;
 	std::string mPlayerPrefabName;
 	IRenderer* mRenderer;
-	std::unordered_map<std::string, Zephyrus::ActorComponent::Actor*> mActors;
-	std::vector<Zephyrus::ActorComponent::Actor*> mAllActors;
-	std::vector<Zephyrus::ActorComponent::Actor*> mPendingActors;
+	std::unordered_map<std::string, Actor*> mActors;
+	std::vector<Actor*> mAllActors;
+	std::vector<Actor*> mPendingActors;
 	bool mIsUpdatingActor;
-	Zephyrus::ActorComponent::Actor* mPlayerRef = nullptr;
-	Zephyrus::ActorComponent::Actor* mPlayerStart = nullptr;
+	Actor* mPlayerRef = nullptr;
+	Actor* mPlayerStart = nullptr;
 	bool mSaved = true;
 	PhysicWorld* mPhysicWorld = nullptr;
 	PhysicsDebugRenderer* mDebugRenderer = nullptr;
@@ -48,22 +51,22 @@ public:
 	virtual void Unload(); // Unloads scene resources
 	virtual void Close(); // Cleans up the scene
 	void SaveTo(const std::string& pFilePath);
-	void SetPlayerStart(Zephyrus::ActorComponent::Actor* pPlayerStart);
+	void SetPlayerStart(Actor* pPlayerStart);
 	void SetFilePath(const std::string& pFilePath);
 	void SaveScene();
 
 public:
-	virtual void AddActor(Zephyrus::ActorComponent::Actor* pActor); // Adds an actor to the scene
+	virtual void AddActor(Actor* pActor); // Adds an actor to the scene
 	virtual void UpdateAllActors(); // Updates all actors in the scene
-	virtual void RemoveActor(Zephyrus::ActorComponent::Actor* pActor); // Removes an actor from the scene
+	virtual void RemoveActor(Actor* pActor); // Removes an actor from the scene
 	virtual void RemoveActorWithID(const std::string& pId);
 
-	Zephyrus::ActorComponent::Actor* GetActorWithID(const std::string& pID);
+	Actor* GetActorWithID(const std::string& pID);
 
 
-	inline Zephyrus::ActorComponent::Actor* GetPlayerRef() const { return mPlayerRef; }
+	inline Actor* GetPlayerRef() const { return mPlayerRef; }
 
-	inline std::vector<Zephyrus::ActorComponent::Actor*> GetAllActors() const { return mAllActors; }
+	inline std::vector<Actor*> GetAllActors() const { return mAllActors; }
 	inline std::string GetTitle() const { return mTitle; }
 	inline void SetIsSaved(const bool& pSaved) { mSaved = pSaved; }
 	inline bool GetIsSaved() const { return mSaved; }
