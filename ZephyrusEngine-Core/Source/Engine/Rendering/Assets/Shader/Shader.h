@@ -3,38 +3,41 @@
 #include <string>
 #include <fstream>
 
-enum class ShaderType {
-	VERTEX,
-	FRAGMENT,
-	TESSELLATION_CONTROL,
-	TESSELLATION_EVALUATION,
-	GEOMETRY
-};
 
-/**
- * @class Shader
- * @brief Classe représentant un shader OpenGL.
- *
- * Permet de charger le code source d'un shader, de stocker son identifiant et son type.
- */
-class Shader
-{
-protected:
-	std::string mCode;
-	unsigned int mId;
-	ShaderType mType;
-public:
-	Shader();
-	Shader(int pId, const std::string& pCode, ShaderType pShaderType);
-	~Shader();
+namespace Zephyrus::Render {
+	enum class ShaderType {
+		VERTEX,
+		FRAGMENT,
+		TESSELLATION_CONTROL,
+		TESSELLATION_EVALUATION,
+		GEOMETRY
+	};
 
-	void Load(const std::string& pFileName, ShaderType pShaderType);
+	/**
+	 * @class Shader
+	 * @brief Classe représentant un shader OpenGL.
+	 *
+	 * Permet de charger le code source d'un shader, de stocker son identifiant et son type.
+	 */
+	class Shader
+	{
+	protected:
+		std::string mCode;
+		unsigned int mId;
+		ShaderType mType;
+	public:
+		Shader();
+		Shader(int pId, const std::string& pCode, ShaderType pShaderType);
+		~Shader();
 
-	void Unload();
+		void Load(const std::string& pFileName, ShaderType pShaderType);
 
-	int GetID() const { return mId; }
+		void Unload();
 
-	std::string& GetCode();
+		int GetID() const { return mId; }
 
-	inline ShaderType GetType() const { return mType; }   
-};
+		std::string& GetCode();
+
+		inline ShaderType GetType() const { return mType; }
+	};
+}

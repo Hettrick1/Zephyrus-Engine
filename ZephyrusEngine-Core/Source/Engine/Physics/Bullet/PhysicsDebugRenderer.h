@@ -8,6 +8,8 @@
 #include "CameraComponent.h"
 
 using Zephyrus::Render::ShaderProgram;
+using Zephyrus::Render::Shader;
+using Zephyrus::Render::ShaderType;
 
 namespace Zephyrus::Physics
 {

@@ -9,6 +9,8 @@
 #include "PrefabFactory.h"
 
 using Zephyrus::Assets::AssetsManager;
+using Zephyrus::Render::Shader;
+using Zephyrus::Render::ShaderType;
 
 SplashScreen::SplashScreen(const std::string& pNextScene)
 	: Scene("SplashScreen"), mZephyrusText(nullptr), mStudioText(nullptr), mTime(0), mNextScene(pNextScene)

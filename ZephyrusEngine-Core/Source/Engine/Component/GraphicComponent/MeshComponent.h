@@ -6,6 +6,8 @@
 using Zephyrus::Assets::Mesh;
 using Zephyrus::Assets::Texture;
 using Zephyrus::Render::ShaderProgram;
+using Zephyrus::Render::Shader;
+using Zephyrus::Render::ShaderType;
 
 namespace Zephyrus::ActorComponent
 {

@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-namespace ShaderProgramType {
+namespace Zephyrus::ShaderProgramType {
 	enum Type {
 		VERTEX					= 1 << 0,
 		FRAGMENT				= 1 << 1,

@@ -9,6 +9,8 @@ using Zephyrus::Assets::CubeTextureMap;
 using Zephyrus::Assets::Mesh;
 using Zephyrus::Assets::VertexArray;
 using Zephyrus::Render::ShaderProgram;
+using Zephyrus::Render::Shader;
+using Zephyrus::Render::ShaderType;
 /**
  * @brief Component that manages and renders a sky sphere or skybox in the scene.
  * It handles the mesh, textures, shaders, and rendering logic for the sky.
