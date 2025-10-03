@@ -11,7 +11,7 @@ namespace Zephyrus::ActorComponent
 		Amo
 	};
 
-	class PickUpComponent : public Component, public ICollisionListener
+	class PickUpComponent : public Component, public Zephyrus::Physics::ICollisionListener
 	{
 	private:
 		PickUpType mType;

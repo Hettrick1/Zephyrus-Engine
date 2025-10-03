@@ -6,16 +6,19 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <unordered_map>
 
-namespace Zephyrus::ActorComponent {
-    class ICollisionListener;
+namespace Zephyrus::Physics 
+{ 
+    class ICollisionListener; 
+}
 
+namespace Zephyrus::ActorComponent {
     class BulletColliderComponent : public Component
     {
     protected:
         btCollisionShape* mShape = nullptr;
         btGhostObject* mGhost = nullptr;
         std::unordered_map<const btCollisionObject*, HitResult> mPreviousOverlaps;
-        std::vector<ICollisionListener*> mListeners;
+        std::vector<Zephyrus::Physics::ICollisionListener*> mListeners;
         bool mIsQuery = false;
         bool mIgnoreSelf = true;
     public:
@@ -47,9 +50,9 @@ namespace Zephyrus::ActorComponent {
 
     public:
         // Adds a collision event listener.
-        void AddListener(ICollisionListener* pListener);
+        void AddListener(Zephyrus::Physics::ICollisionListener* pListener);
         // Removes a collision event listener.
-        void RemoveListener(ICollisionListener* pListener);
+        void RemoveListener(Zephyrus::Physics::ICollisionListener* pListener);
 
     public:
         // Notifies listeners that a collision has started.

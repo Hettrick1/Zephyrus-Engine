@@ -2,9 +2,9 @@
 
 #include "Vector3D.h"
 
-class BulletColliderComponent;
 namespace Zephyrus::ActorComponent
 {
+    class BulletColliderComponent;
     class Actor;
 }
 
@@ -13,7 +13,7 @@ struct HitResult {
     Vector3D HitPoint = Vector3D::zero;  
     Vector3D Normal = Vector3D::zero;
     Zephyrus::ActorComponent::Actor* HitActor = nullptr;
-    BulletColliderComponent* HitCollider = nullptr;
+    Zephyrus::ActorComponent::BulletColliderComponent* HitCollider = nullptr;
     float Distance = 0;
 
     inline void Reset() {

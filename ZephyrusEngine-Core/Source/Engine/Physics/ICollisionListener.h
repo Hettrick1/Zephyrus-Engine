@@ -2,7 +2,9 @@
 #include "Bullet/BulletColliderComponent.h"
 #include "HitResult.h"
 
-namespace Zephyrus::ActorComponent {
+using Zephyrus::ActorComponent::BulletColliderComponent;
+
+namespace Zephyrus::Physics {
 	class ICollisionListener {
 	public:
 		virtual ~ICollisionListener() = default;

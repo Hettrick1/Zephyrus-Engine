@@ -29,12 +29,21 @@ public:
 
 	inline CameraComponent* GetCurrentCameraComponent() const
 	{
+		if (!mActiveComponent)
+		{
+			return nullptr;
+		}
 		CameraComponent* cameraComp = dynamic_cast<CameraComponent*>(mActiveComponent);
 		if (cameraComp)
 		{
 			return cameraComp;
 		}
 		return nullptr;
+	}
+
+	inline void ResetActiveComponent() 
+	{
+		mActiveComponent = nullptr;
 	}
 
 public:

@@ -346,12 +346,12 @@ namespace Zephyrus::ActorComponent {
         }
     }
 
-    void BulletColliderComponent::AddListener(ICollisionListener* pListener)
+    void BulletColliderComponent::AddListener(Zephyrus::Physics::ICollisionListener* pListener)
     {
         mListeners.push_back(pListener);
     }
 
-    void BulletColliderComponent::RemoveListener(ICollisionListener* pListener)
+    void BulletColliderComponent::RemoveListener(Zephyrus::Physics::ICollisionListener* pListener)
     {
         mListeners.erase(std::remove(mListeners.begin(), mListeners.end(), pListener), mListeners.end());
     }
@@ -359,7 +359,7 @@ namespace Zephyrus::ActorComponent {
     void BulletColliderComponent::NotifyListenersStarted(HitResult* pInfos)
     {
         if (mListeners.size() > 0) {
-            for (ICollisionListener* listener : mListeners) {
+            for (auto& listener : mListeners) {
                 if (listener != nullptr)
                 {
                     listener->OnTriggerEnter(this, pInfos);
@@ -371,7 +371,7 @@ namespace Zephyrus::ActorComponent {
     void BulletColliderComponent::NotifyListenersStay(HitResult* pInfos)
     {
         if (mListeners.size() > 0) {
-            for (ICollisionListener* listener : mListeners) {
+            for (auto& listener : mListeners) {
                 if (listener != nullptr)
                 {
                     listener->OnTriggerStay(this, pInfos);
@@ -383,7 +383,7 @@ namespace Zephyrus::ActorComponent {
     void BulletColliderComponent::NotifyListenersEnded(HitResult* pInfos)
     {
         if (mListeners.size() > 0) {
-            for (ICollisionListener* listener : mListeners) {
+            for (auto& listener : mListeners) {
                 if (listener != nullptr)
                 {
                     listener->OnTriggerExit(this, pInfos);

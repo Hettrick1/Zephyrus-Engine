@@ -369,6 +369,14 @@ void EditorApplication::SetEditorStyle()
 void EditorApplication::ResetEditorController()
 {
     mEditorController->Start();
+    auto it = mAllPanels.find(inspectorPanelName);
+    if (it != mAllPanels.end())
+    {
+        if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(it->second.get()))
+        {
+            inspectorPanel->ResetActiveComponent();
+        }
+    }
 }
 
 void EditorApplication::Close()

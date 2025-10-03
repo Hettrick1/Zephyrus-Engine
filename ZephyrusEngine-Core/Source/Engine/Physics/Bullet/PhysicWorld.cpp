@@ -65,7 +65,7 @@ void PhysicWorld::RemoveGhostObject(btGhostObject* ghost)
     mWorld->removeCollisionObject(ghost);
 }
 
-void PhysicWorld::AddRigidbody(Zephyrus::ActorComponent::BulletRigidbodyComponent* pRigidbody)
+void PhysicWorld::AddRigidbody(BulletRigidbodyComponent* pRigidbody)
 {
     if (!pRigidbody) return;
 
@@ -79,7 +79,7 @@ void PhysicWorld::AddRigidbody(Zephyrus::ActorComponent::BulletRigidbodyComponen
     }
 }
 
-void PhysicWorld::RemoveRigidbody(Zephyrus::ActorComponent::BulletRigidbodyComponent* pRigidbody)
+void PhysicWorld::RemoveRigidbody(BulletRigidbodyComponent* pRigidbody)
 {
     if (!pRigidbody) return;
 
@@ -91,19 +91,19 @@ void PhysicWorld::RemoveRigidbody(Zephyrus::ActorComponent::BulletRigidbodyCompo
     std::erase(mRigidbodies, pRigidbody);
 }
 
-void PhysicWorld::AddCollider(Zephyrus::ActorComponent::BulletColliderComponent* pCollider)
+void PhysicWorld::AddCollider(BulletColliderComponent* pCollider)
 {
     if (std::find(mColliders.begin(), mColliders.end(), pCollider) == mColliders.end())
     {
         mColliders.push_back(pCollider);
     }
 }
-void PhysicWorld::RemoveCollider(Zephyrus::ActorComponent::BulletColliderComponent* pCollider)
+void PhysicWorld::RemoveCollider(BulletColliderComponent* pCollider)
 {
     std::erase(mColliders, pCollider);
 }
 
-bool PhysicWorld::LineTrace(const Vector3D& pStart, const Vector3D& pEnd, HitResult& pOutHit, Zephyrus::ActorComponent::Actor* pIgnoreActor)
+bool PhysicWorld::LineTrace(const Vector3D& pStart, const Vector3D& pEnd, HitResult& pOutHit, Actor* pIgnoreActor)
 {
     pOutHit.Reset();
 
@@ -120,7 +120,7 @@ bool PhysicWorld::LineTrace(const Vector3D& pStart, const Vector3D& pEnd, HitRes
 
         const btCollisionObject* hitObj = rayCallback.m_collisionObject;
         if (hitObj && hitObj->getUserPointer()) {
-            pOutHit.HitActor = static_cast<Zephyrus::ActorComponent::Actor*>(hitObj->getUserPointer());
+            pOutHit.HitActor = static_cast<Actor*>(hitObj->getUserPointer());
             pOutHit.HitCollider = nullptr;
         }
 
