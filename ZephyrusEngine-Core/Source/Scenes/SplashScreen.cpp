@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "PrefabFactory.h"
 
+using Zephyrus::Assets::AssetsManager;
 
 SplashScreen::SplashScreen(const std::string& pNextScene)
 	: Scene("SplashScreen"), mZephyrusText(nullptr), mStudioText(nullptr), mTime(0), mNextScene(pNextScene)

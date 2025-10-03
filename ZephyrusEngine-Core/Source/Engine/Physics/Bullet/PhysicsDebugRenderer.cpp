@@ -1,6 +1,9 @@
 #include "PhysicsDebugRenderer.h"
 #include "Assets.h"
 #include "SceneManager.h"
+
+using Zephyrus::Assets::AssetsManager;
+
 namespace Zephyrus::Physics
 {
     PhysicsDebugRenderer::PhysicsDebugRenderer()

@@ -5,6 +5,8 @@
 #include "Scene.h"
 #include "DoomEnemyComponent.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 namespace Zephyrus::ActorComponent
 {
 	float bobingTime = 0;

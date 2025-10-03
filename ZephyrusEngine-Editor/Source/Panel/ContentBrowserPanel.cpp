@@ -15,6 +15,8 @@ std::filesystem::path ContentBrowserPanel::currentDirectory = rootDirectory;
 bool isSelected;
 std::filesystem::path selectedEntry;
 
+using Zephyrus::Assets::AssetsManager;
+
 ContentBrowserPanel::ContentBrowserPanel(const std::string& pName)
     : Panel(pName)
 {

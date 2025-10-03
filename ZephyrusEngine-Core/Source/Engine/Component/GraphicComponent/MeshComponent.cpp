@@ -7,6 +7,8 @@
 #include "DebugRenderer.h"
 #include "JSONUtils.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 namespace Zephyrus::ActorComponent
 {
 	MeshComponent::MeshComponent(Actor* pOwner)

@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 
+using Zephyrus::Assets::AssetsManager;
+
 TextRenderer& TextRenderer::Instance()
 {
     static TextRenderer instance;
@@ -40,7 +42,7 @@ bool TextRenderer::Init(Window& pWindow)
     return true;
 }
 
-void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Font pFont ,TextAlignment pAlignment, ShaderProgram* pShaderProgram)
+void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Zephyrus::Assets::Font pFont ,TextAlignment pAlignment, ShaderProgram* pShaderProgram)
 {
     float textWidth = ComputeTextWidth(pText, pScale, pFont);
 
@@ -105,7 +107,7 @@ void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pSc
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-float TextRenderer::ComputeTextWidth(const std::string& pText, float pScale, Font pFont)
+float TextRenderer::ComputeTextWidth(const std::string& pText, float pScale, Zephyrus::Assets::Font pFont)
 {
     float width = 0.0f;
     for (char c : pText)

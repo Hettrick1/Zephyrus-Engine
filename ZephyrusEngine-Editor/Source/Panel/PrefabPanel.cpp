@@ -5,6 +5,8 @@
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 PrefabPanel::PrefabPanel(const std::string& pName)
 	: Panel(pName)
 {

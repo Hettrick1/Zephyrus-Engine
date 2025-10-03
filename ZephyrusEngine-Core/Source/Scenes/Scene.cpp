@@ -9,6 +9,7 @@
 #include "ActorState.h"
 #include "PlayerStartComponent.h"
 
+using Zephyrus::Assets::AssetsManager;
 using Zephyrus::Inputs::InputManager;
 
 Scene::Scene(std::string pTitle) 

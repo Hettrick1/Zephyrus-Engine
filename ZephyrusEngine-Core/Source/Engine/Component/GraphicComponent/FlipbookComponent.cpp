@@ -3,6 +3,8 @@
 #include "Timer.h"
 #include "Assets.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 namespace Zephyrus::ActorComponent
 {
 	FlipbookComponent::FlipbookComponent(Actor* pOwner, int pDrawOrder)

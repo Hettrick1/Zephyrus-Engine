@@ -11,6 +11,8 @@
 #include "CubeTextureMap.h"
 #include "../EditorUI/Property.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 InspectorPanel::InspectorPanel(const std::string& pName)
 	: Panel(pName)
 {
@@ -770,8 +772,8 @@ void InspectorPanel::SetPropertyFont(const PropertyDescriptor& pProperty, const 
 
 void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
-	auto prop = MakeUndoableProperty<Mesh*>(pProperty, mActiveComponent);
-	Mesh* mesh = static_cast<Mesh*>(prop.getter());
+	auto prop = MakeUndoableProperty<Zephyrus::Assets::Mesh*>(pProperty, mActiveComponent);
+	Zephyrus::Assets::Mesh* mesh = static_cast<Zephyrus::Assets::Mesh*>(prop.getter());
 	if (!mesh)
 	{
 		return;
@@ -787,7 +789,7 @@ void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const 
 	ImGui::SetNextItemWidth(pInputWidth);
 	if (ImGui::InputText(("##Mesh" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		Mesh* newMesh = AssetsManager::LoadMesh(buffer, buffer);
+		Zephyrus::Assets::Mesh* newMesh = AssetsManager::LoadMesh(buffer, buffer);
 		if (newMesh)
 		{
 			prop.setter(newMesh);
@@ -802,7 +804,7 @@ void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const 
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MESH"))
 		{
 			std::string meshID((const char*)payload->Data, payload->DataSize);
-			Mesh* droppedMesh = AssetsManager::LoadMesh(meshID, meshID);
+			Zephyrus::Assets::Mesh* droppedMesh = AssetsManager::LoadMesh(meshID, meshID);
 			if (droppedMesh)
 			{
 				prop.setter(droppedMesh);

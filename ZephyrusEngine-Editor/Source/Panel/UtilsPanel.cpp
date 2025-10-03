@@ -6,6 +6,8 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 UtilsPanel::UtilsPanel(const std::string& pName, float pPanelSizeY)
 	: Panel(pName), mPaneSizeY(pPanelSizeY)
 {

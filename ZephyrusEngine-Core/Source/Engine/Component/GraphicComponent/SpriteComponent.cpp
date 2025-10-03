@@ -5,6 +5,8 @@
 #include "JSONUtils.h"
 #include "DebugRenderer.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 namespace Zephyrus::ActorComponent
 {
 	SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)

@@ -21,6 +21,7 @@ using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
 
 using Zephyrus::Assets::VertexArray;
+using Zephyrus::Assets::Texture;
 
 /**
  * @brief OpenGL renderer implementation for rendering sprites, meshes, sky spheres, HUD, and debug elements.

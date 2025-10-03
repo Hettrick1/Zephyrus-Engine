@@ -1,6 +1,8 @@
 #include "HudText.h"
 #include "Assets.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 HudText::HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment, Zephyrus::Assets::Font* pFont)
     : HudElement(), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
 {

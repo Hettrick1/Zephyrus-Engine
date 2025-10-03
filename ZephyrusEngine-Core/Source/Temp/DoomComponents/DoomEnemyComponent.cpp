@@ -8,6 +8,8 @@
 #include "SceneManager.h"
 #include "ZPCommons.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 namespace Zephyrus::ActorComponent
 {
 	const float damages = 20;

@@ -11,7 +11,7 @@
 #include "CameraComponent.h"
 #include <algorithm>
 
-using Zephyrus::Assets::Texture;
+using Zephyrus::Assets::AssetsManager;
 
 RendererOpenGl::RendererOpenGl()
 	: mVAO(nullptr), mWindow(nullptr), mSpriteShaderProgram(nullptr), mHud(nullptr), mDebugRenderer(nullptr), mWireFrameMode(false), mSkySphereComponent(nullptr), mFullscreenQuadVAO(nullptr)

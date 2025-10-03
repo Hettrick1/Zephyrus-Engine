@@ -1,6 +1,8 @@
 #include "DebugRenderer.h"
 #include "Assets.h"
 
+using Zephyrus::Assets::AssetsManager;
+
 DebugRenderer::DebugRenderer()
 	: mDebugBoxVbo(0), mDebugBoxVao(0), mDebugLineVbo(0), mDebugLineVao(0)
 	, mDrawDebug(false), mDrawLines(true), mDrawBoxes(true)
