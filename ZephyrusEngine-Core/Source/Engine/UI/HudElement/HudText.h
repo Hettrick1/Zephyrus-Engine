@@ -8,8 +8,10 @@
  * @brief HudText is a HUD element that displays text on the screen.
  * It allows customization of text content, position, scale, color, alignment, font, and shader program.
  */
-class HudText :
-    public HudElement
+
+using Zephyrus::Render::ShaderProgram;
+
+class HudText : public HudElement
 {
 private:
     std::string mText;
@@ -23,7 +25,7 @@ public:
     ~HudText();
 
     // Draws the text on the HUD using the specified renderer.
-    void Draw(RendererOpenGl& pRenderer) override;
+    void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override;
 
     // Sets the text to display.
     void SetText(std::string pText);

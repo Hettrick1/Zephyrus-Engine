@@ -9,7 +9,7 @@ Scene* SceneManager::ActiveScene = nullptr;
 void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 {
 	mIsSceneLoaded = false;
-	IRenderer* renderer = nullptr;
+	Zephyrus::Render::IRenderer* renderer = nullptr;
 	if (ActiveScene != nullptr)
 	{
 		ActiveScene->Close();
@@ -29,7 +29,7 @@ void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 	}
 }
 
-void SceneManager::LoadSplashScreen(Scene* pScene, IRenderer* pRenderer)
+void SceneManager::LoadSplashScreen(Scene* pScene, Zephyrus::Render::IRenderer* pRenderer)
 {
 	mIsSceneLoaded = false;
 	ActiveScene = pScene;
@@ -38,11 +38,11 @@ void SceneManager::LoadSplashScreen(Scene* pScene, IRenderer* pRenderer)
 	mIsSceneLoaded = true;
 }
 
-void SceneManager::LoadSceneWithFile(const std::string& pFilePath, IRenderer* pRenderer, bool pCallPostStart)
+void SceneManager::LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer, bool pCallPostStart)
 {
 	std::string filepath = pFilePath;
 	mIsSceneLoaded = false;
-	IRenderer* renderer = pRenderer;
+	Zephyrus::Render::IRenderer* renderer = pRenderer;
 	if (ActiveScene != nullptr)
 	{
 		ActiveScene->Close();

@@ -47,8 +47,8 @@ EditorApplication::~EditorApplication()
 void EditorApplication::Initialize()
 {
     mGameWindow = new Window(1920, 1030, true);
-    mRenderer = new RendererOpenGl();
-    if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) 
+    mRenderer = new Zephyrus::Render::RendererOpenGl();
+    if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow))
     {
         SDL_MaximizeWindow(mGameWindow->GetSdlWindow());
 

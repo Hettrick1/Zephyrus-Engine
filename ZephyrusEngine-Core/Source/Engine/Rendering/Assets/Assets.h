@@ -14,6 +14,8 @@
  * Provides static methods to access and clear loaded assets.
  */
 
+using Zephyrus::Render::ShaderProgram;
+
 namespace Zephyrus::Assets {
 
 	enum class AssetType
@@ -32,7 +34,7 @@ namespace Zephyrus::Assets {
 		AssetsManager() = default;
 
 		// Loads a texture from file (internal use)
-		static Zephyrus::Assets::Texture LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath);
+		static Zephyrus::Assets::Texture LoadTextureFromFile(Zephyrus::Render::IRenderer& pRenderer, const std::string& pFilePath);
 		// Loads a mesh from file (internal use)
 		static Mesh* LoadMeshFromFile(const std::string& pFilePath);
 		// Loads a font from file (internal use)

@@ -20,7 +20,7 @@ namespace Zephyrus::Application {
 		SDL_Event mSdlEvent;
 		std::string mTitle;
 		Window* mGameWindow = nullptr;
-		IRenderer* mRenderer = nullptr;
+		Zephyrus::Render::IRenderer* mRenderer = nullptr;
 		std::string mStartUpScene;
 		InputManager& mInputManager;
 		bool mIsRunning = true;

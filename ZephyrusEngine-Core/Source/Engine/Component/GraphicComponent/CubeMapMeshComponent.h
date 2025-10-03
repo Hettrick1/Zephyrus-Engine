@@ -6,6 +6,7 @@
 #include "Maths.h"
 
 using Zephyrus::Assets::CubeTextureMap;
+using Zephyrus::Render::ShaderProgram;
 
 namespace Zephyrus::ActorComponent
 {

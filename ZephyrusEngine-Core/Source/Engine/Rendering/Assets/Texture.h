@@ -7,9 +7,9 @@
 #include "IRenderer.h"
 #include <glew.h>
 
-class RendererSdl;
-class RendererOpenGl;
-
+namespace Zephyrus::Render {
+	class RendererOpenGl;
+}
 /**
  * @brief Manages a texture resource, including loading, unloading, and providing access to texture data.
  * Supports both SDL and OpenGL renderers.
@@ -23,14 +23,14 @@ namespace Zephyrus::Assets {
 		int mWidth, mHeight;
 		GLuint mTextureId = 0;
 		// Loads a texture using OpenGL renderer
-		bool LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
+		bool LoadGl(Zephyrus::Render::RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface);
 
 	public:
 		Texture();
 		~Texture();
 
 		// Loads a texture from file using the specified renderer
-		bool Load(IRenderer& pRenderer, const std::string& pFilename);
+		bool Load(Zephyrus::Render::IRenderer& pRenderer, const std::string& pFilename);
 		// Unloads the texture and frees associated resources
 		void Unload();
 		void SetActive() const;

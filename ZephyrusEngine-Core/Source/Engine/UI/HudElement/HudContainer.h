@@ -18,5 +18,5 @@ public:
     // Adds a HUD element to the container
     void AddElement(HudElement* pElement);
 
-    void Draw(RendererOpenGl& pRenderer) override;
+    void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override;
 };

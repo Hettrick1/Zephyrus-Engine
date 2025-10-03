@@ -138,7 +138,7 @@ namespace Zephyrus::Assets {
 		mShaderPrograms.clear();
 	}
 
-	Texture AssetsManager::LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath)
+	Texture AssetsManager::LoadTextureFromFile(Zephyrus::Render::IRenderer& pRenderer, const std::string& pFilePath)
 	{
 		Texture texture;
 		texture.Load(pRenderer, pFilePath);

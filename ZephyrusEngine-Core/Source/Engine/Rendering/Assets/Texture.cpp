@@ -13,7 +13,7 @@ namespace Zephyrus::Assets {
 	{
 	}
 
-	bool Texture::Load(IRenderer& pRenderer, const std::string& pFilename)
+	bool Texture::Load(Zephyrus::Render::IRenderer& pRenderer, const std::string& pFilename)
 	{
 		mFilePath = pFilename;
 		SDL_Surface* surface = IMG_Load(mFilePath.c_str());
@@ -25,7 +25,7 @@ namespace Zephyrus::Assets {
 		mWidth = surface->w;
 		mHeight = surface->h;
 
-		return LoadGl(static_cast<RendererOpenGl*>(&pRenderer), pFilename, surface);
+		return LoadGl(static_cast<Zephyrus::Render::RendererOpenGl*>(&pRenderer), pFilename, surface);
 	}
 
 	void Texture::Unload()
@@ -57,7 +57,7 @@ namespace Zephyrus::Assets {
 		mHeight = height;
 	}
 
-	bool Texture::LoadGl(RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface)
+	bool Texture::LoadGl(Zephyrus::Render::RendererOpenGl* pRenderer, const std::string& pFilePath, SDL_Surface* pSurface)
 	{
 		SDL_Surface* converted = SDL_ConvertSurfaceFormat(pSurface, SDL_PIXELFORMAT_ABGR8888, 0);
 		SDL_FreeSurface(pSurface);

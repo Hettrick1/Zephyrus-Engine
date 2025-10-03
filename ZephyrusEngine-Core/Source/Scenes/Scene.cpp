@@ -100,7 +100,7 @@ void Scene::Render()
 	mRenderer->RenderActiveCamera(mCameraManager->GetActiveCamera());
 }
 
-void Scene::SetRenderer(IRenderer* pRenderer)
+void Scene::SetRenderer(Zephyrus::Render::IRenderer* pRenderer)
 {
 	mRenderer = pRenderer;
 }

@@ -7,7 +7,7 @@ HudImage::HudImage(Zephyrus::Assets::Texture& pTexture, const Vector2D& pPositio
     SetPosition(pPosition);
 }
 
-void HudImage::Draw(RendererOpenGl& pRenderer)
+void HudImage::Draw(Zephyrus::Render::RendererOpenGl& pRenderer)
 {
     Rectangle rect;
     rect.dimensions = { mWidth, mHeight };

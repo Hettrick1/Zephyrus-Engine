@@ -10,7 +10,7 @@ using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::ActorComponent
 {
 	SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
-		: Component(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)
+		: Component(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(Zephyrus::Render::IRenderer::Flip::None)
 	{
 		mOwner->GetScene().GetRenderer()->AddSprite(this);
 		mTexture = *AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
@@ -85,12 +85,12 @@ namespace Zephyrus::ActorComponent
 		aspectRatioInv = 1 / aspectRatio;
 	}
 
-	void SpriteComponent::SetFlipMethode(IRenderer::Flip pFlipMethode)
+	void SpriteComponent::SetFlipMethode(Zephyrus::Render::IRenderer::Flip pFlipMethode)
 	{
 		mFlipMethode = pFlipMethode;
 	}
 
-	void SpriteComponent::Draw(const IRenderer& pRenderer)
+	void SpriteComponent::Draw(const Zephyrus::Render::IRenderer& pRenderer)
 	{
 		if (mOwner->GetState() == ActorState::Active)
 		{

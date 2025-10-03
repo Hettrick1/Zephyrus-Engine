@@ -6,6 +6,9 @@
 #include "Shader.h"
 #include "ShaderProgram.h"
 #include "CameraComponent.h"
+
+using Zephyrus::Render::ShaderProgram;
+
 namespace Zephyrus::Physics
 {
     class PhysicsDebugRenderer : public btIDebugDraw

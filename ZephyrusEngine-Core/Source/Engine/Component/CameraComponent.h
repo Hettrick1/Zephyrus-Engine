@@ -55,6 +55,6 @@ namespace Zephyrus::ActorComponent
 
         CameraUsage usage;
 
-        RenderTarget* renderTarget = nullptr;
+        Zephyrus::Render::RenderTarget* renderTarget = nullptr;
     };
 }

@@ -6,7 +6,7 @@ void HudManager::AddElement(HudElement* pElement)
     mHudElements.push_back(pElement);
 }
 
-void HudManager::Draw(RendererOpenGl& pRenderer)
+void HudManager::Draw(Zephyrus::Render::RendererOpenGl& pRenderer)
 {
     std::sort(mHudElements.begin(), mHudElements.end(), [](const auto& a, const auto& b) 
         {

@@ -19,7 +19,7 @@ private:
 public:
     HudImage(Zephyrus::Assets::Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize = 1, const Vector2D& pOrigin = 0);
         
-    void Draw(RendererOpenGl& pRenderer) override; // Draws the image on the HUD using the given renderer.
+    void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override; // Draws the image on the HUD using the given renderer.
 
     void SetTexture(const Zephyrus::Assets::Texture& pTexture); // Sets the texture to display.
 

@@ -16,9 +16,9 @@ HudText::~HudText()
 {
 }
 
-void HudText::Draw(RendererOpenGl& pRenderer)
+void HudText::Draw(Zephyrus::Render::RendererOpenGl& pRenderer)
 {
-    TextRenderer::Instance().RenderText(mText, mPosition, mScale, mColor, *mFont, mAlignment, mShaderProgram);
+    Zephyrus::Render::TextRenderer::Instance().RenderText(mText, mPosition, mScale, mColor, *mFont, mAlignment, mShaderProgram);
 }
 
 void HudText::SetText(std::string pText)

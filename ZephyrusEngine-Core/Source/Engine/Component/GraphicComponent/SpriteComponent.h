@@ -17,7 +17,7 @@ namespace Zephyrus::ActorComponent
 		int mTexHeight = 0;
 		int mTexWidthOverride = 0;
 		int mTexHeightOverride = 0;
-		IRenderer::Flip mFlipMethode = IRenderer::Flip::None;
+		Zephyrus::Render::IRenderer::Flip mFlipMethode = Zephyrus::Render::IRenderer::Flip::None;
 		bool mCullOff = false;
 		float aspectRatio = 0.0, aspectRatioInv = 0.0;
 	public:
@@ -37,8 +37,8 @@ namespace Zephyrus::ActorComponent
 		// Sets the texture used by the sprite
 		virtual void SetTexture(const Zephyrus::Assets::Texture& pTexture);
 		// Sets the flip method for rendering the sprite
-		void SetFlipMethode(IRenderer::Flip pFlipMethode);
-		virtual void Draw(const IRenderer& pRenderer);
+		void SetFlipMethode(Zephyrus::Render::IRenderer::Flip pFlipMethode);
+		virtual void Draw(const Zephyrus::Render::IRenderer& pRenderer);
 
 		// Enables or disables culling for the sprite
 		void SetCullOff(bool cull);

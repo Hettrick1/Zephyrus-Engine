@@ -8,7 +8,7 @@ namespace Zephyrus::ActorComponent
     CameraComponent::CameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)
         : Component(pOwner, "CameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
     {
-        renderTarget = new RenderTarget(pWidth, pHeight);
+        renderTarget = new Zephyrus::Render::RenderTarget(pWidth, pHeight);
         mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
         if (pUsage == CameraUsage::Game)
         {
@@ -162,6 +162,6 @@ namespace Zephyrus::ActorComponent
         world->GetWorld()->debugDrawWorld();
         auto debugRenderer = SceneManager::ActiveScene->GetPhysicDebugRenderer();
         debugRenderer->FlushDraw(this);
-        RenderTarget::Unbind();
+        Zephyrus::Render::RenderTarget::Unbind();
     }
 }

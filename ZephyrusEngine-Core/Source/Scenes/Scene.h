@@ -29,7 +29,7 @@ protected:
 	std::string mTitle;
 	std::string mFilePath;
 	std::string mPlayerPrefabName;
-	IRenderer* mRenderer;
+	Zephyrus::Render::IRenderer* mRenderer;
 	std::unordered_map<std::string, Actor*> mActors;
 	std::vector<Actor*> mAllActors;
 	std::vector<Actor*> mPendingActors;
@@ -46,7 +46,7 @@ public:
 	virtual void PostStart();
 	virtual void Update(float pDetltaTime); // Updates the scene and its actors
 	virtual void Render();
-	void SetRenderer(IRenderer* pRenderer);
+	void SetRenderer(Zephyrus::Render::IRenderer* pRenderer);
 	void BeginRender();
 	void RenderCurrentSceneOnly();
 	void EndRender();
@@ -76,5 +76,5 @@ public:
 	inline PhysicsDebugRenderer* GetPhysicDebugRenderer() const { return mDebugRenderer; }
 	inline CameraManager* GetCameraManager() const { return mCameraManager; }
 public : 
-	inline IRenderer* GetRenderer() const { return mRenderer; }
+	inline Zephyrus::Render::IRenderer* GetRenderer() const { return mRenderer; }
 };
