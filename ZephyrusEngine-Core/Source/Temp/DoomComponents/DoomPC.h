@@ -3,6 +3,21 @@
 #include "IActionListener.h"
 #include "Component.h"
 
+using Zephyrus::Inputs::IActionListener;
+using Zephyrus::Inputs::InputActions;
+using Zephyrus::Inputs::ActionType;
+
+namespace Zephyrus::Inputs
+{
+	class BooleanActions;
+	class InputManager;
+	class Axis2DAction;
+}
+
+using Zephyrus::Inputs::InputManager;
+using Zephyrus::Inputs::BooleanActions;
+using Zephyrus::Inputs::Axis2DAction;
+
 namespace Zephyrus::ActorComponent
 {
 	class DoomPC : public IActionListener, public Component

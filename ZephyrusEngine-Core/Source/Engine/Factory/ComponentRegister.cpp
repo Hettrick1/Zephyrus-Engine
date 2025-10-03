@@ -32,21 +32,24 @@ using Zephyrus::ActorComponent::SphereColliderComponent;
 using Zephyrus::ActorComponent::CapsuleColliderComponent;
 using Zephyrus::ActorComponent::CameraComponent;
 
-void ComponentRegister::RegisterAllComponents()
-{
-	ComponentFactory::Instance().Register("SkySphereComponent", SkySphereComponent::Create);
-	ComponentFactory::Instance().Register("DoomMenuPC", DoomMenuPC::Create);
-	ComponentFactory::Instance().Register("MeshComponent", MeshComponent::Create);
-	ComponentFactory::Instance().Register("SpriteComponent", SpriteComponent::Create);
-	ComponentFactory::Instance().Register("PickUpComponent", PickUpComponent::Create);
-	ComponentFactory::Instance().Register("DoomPC", DoomPC::Create);
-	ComponentFactory::Instance().Register("DoomPlayerComponent", DoomPlayerComponent::Create);
-	ComponentFactory::Instance().Register("FlipbookComponent", FlipbookComponent::Create);
-	ComponentFactory::Instance().Register("DoomEnemyComponent", DoomEnemyComponent::Create);
-	ComponentFactory::Instance().Register("PlayerStartComponent", PlayerStartComponent::Create);
-	ComponentFactory::Instance().Register("RigidbodyComponent", BulletRigidbodyComponent::Create);
-	ComponentFactory::Instance().Register("CubeColliderComponent", CubeColliderComponent::Create);
-	ComponentFactory::Instance().Register("SphereColliderComponent", SphereColliderComponent::Create);
-	ComponentFactory::Instance().Register("CapsuleColliderComponent", CapsuleColliderComponent::Create);
-	ComponentFactory::Instance().Register("CameraComponent", CameraComponent::Create);
+
+namespace Zephyrus::Factory {
+	void ComponentRegister::RegisterAllComponents()
+	{
+		ComponentFactory::Instance().Register("SkySphereComponent", SkySphereComponent::Create);
+		ComponentFactory::Instance().Register("DoomMenuPC", DoomMenuPC::Create);
+		ComponentFactory::Instance().Register("MeshComponent", MeshComponent::Create);
+		ComponentFactory::Instance().Register("SpriteComponent", SpriteComponent::Create);
+		ComponentFactory::Instance().Register("PickUpComponent", PickUpComponent::Create);
+		ComponentFactory::Instance().Register("DoomPC", DoomPC::Create);
+		ComponentFactory::Instance().Register("DoomPlayerComponent", DoomPlayerComponent::Create);
+		ComponentFactory::Instance().Register("FlipbookComponent", FlipbookComponent::Create);
+		ComponentFactory::Instance().Register("DoomEnemyComponent", DoomEnemyComponent::Create);
+		ComponentFactory::Instance().Register("PlayerStartComponent", PlayerStartComponent::Create);
+		ComponentFactory::Instance().Register("RigidbodyComponent", BulletRigidbodyComponent::Create);
+		ComponentFactory::Instance().Register("CubeColliderComponent", CubeColliderComponent::Create);
+		ComponentFactory::Instance().Register("SphereColliderComponent", SphereColliderComponent::Create);
+		ComponentFactory::Instance().Register("CapsuleColliderComponent", CapsuleColliderComponent::Create);
+		ComponentFactory::Instance().Register("CameraComponent", CameraComponent::Create);
+	}
 }

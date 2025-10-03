@@ -9,6 +9,8 @@
 #include "ActorState.h"
 #include "PlayerStartComponent.h"
 
+using Zephyrus::Inputs::InputManager;
+
 Scene::Scene(std::string pTitle) 
 	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld()), mDebugRenderer(new PhysicsDebugRenderer()),
 	mCameraManager(new CameraManager())
@@ -50,7 +52,7 @@ void Scene::PostStart()
 
 	if (doc.HasMember("player") && doc["player"].IsString())
 	{
-		mPlayerRef = PrefabFactory::SpawnActorFromPrefab(doc["player"].GetString());
+		mPlayerRef = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab(doc["player"].GetString());
 		if (mPlayerRef)
 		{
 			if (mPlayerStart)
@@ -76,7 +78,7 @@ void Scene::PostStart()
 	}
 	else
 	{
-		mPlayerRef = PrefabFactory::SpawnActorFromPrefab("CameraActor");
+		mPlayerRef = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab("CameraActor");
 		mPlayerRef->SetPosition(Vector3D(0));
 		mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
 		mPlayerRef->SetSize(Vector3D(1));

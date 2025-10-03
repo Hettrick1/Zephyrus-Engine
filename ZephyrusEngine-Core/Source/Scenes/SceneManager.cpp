@@ -58,7 +58,7 @@ void SceneManager::LoadSceneWithFile(const std::string& pFilePath, IRenderer* pR
 	{
 		ActiveScene->SetRenderer(renderer);
 		ActiveScene->SetFilePath(filepath);
-		SceneFactory::PopulateSceneFromFile(filepath);
+		Zephyrus::Factory::SceneFactory::PopulateSceneFromFile(filepath);
 		ActiveScene->Start();
 		if (pCallPostStart)
 		{

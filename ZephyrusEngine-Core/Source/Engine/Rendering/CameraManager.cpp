@@ -85,7 +85,7 @@ void CameraManager::Unload()
      }
      else
      {
-         auto cameraActor = PrefabFactory::SpawnActorFromPrefab("CameraActor");
+         auto cameraActor = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab("CameraActor");
          mActiveCamera = cameraActor->GetComponentOfType<CameraComponent>();
          mActiveCamera->UpdateMatrices();
          mActiveCamera->RenderScene();

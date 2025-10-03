@@ -6,23 +6,25 @@
 /**
  * @brief Manages an SDL window and its dimensions for the editor.
  */
-class Window
-{
-public :
-	Window(int pWidth = 800, int pHseight = 700, bool pIsResizable = false); // Constructs a window with the given width and height.
-	Window(const Window&) = delete;
-	void operator = (const Window&) = delete;
+namespace Zephyrus::Application {
+	class Window
+	{
+	public:
+		Window(int pWidth = 800, int pHseight = 700, bool pIsResizable = false); // Constructs a window with the given width and height.
+		Window(const Window&) = delete;
+		void operator = (const Window&) = delete;
 
-	Vector2D GetDimensions() const; // Returns the current window dimensions.
-	void SetDimensions(const Vector2D& pDimensions);
+		Vector2D GetDimensions() const; // Returns the current window dimensions.
+		void SetDimensions(const Vector2D& pDimensions);
 
-	SDL_Window* GetSdlWindow() const; // Returns the underlying SDL_Window pointer.
+		SDL_Window* GetSdlWindow() const; // Returns the underlying SDL_Window pointer.
 
-	bool Open(const std::string& pTitle); // Opens the SDL window.
-	void Close(); // Closes and destroys the SDL window.
+		bool Open(const std::string& pTitle); // Opens the SDL window.
+		void Close(); // Closes and destroys the SDL window.
 
-private:
-	SDL_Window* mSdlWindow = nullptr;
-	Vector2D mDimensions;
-	bool mResizable = false;
-};
+	private:
+		SDL_Window* mSdlWindow = nullptr;
+		Vector2D mDimensions;
+		bool mResizable = false;
+	};
+}

@@ -1,6 +1,9 @@
 #pragma once
 
-namespace ComponentRegister
-{
-	void RegisterAllComponents();
+
+namespace Zephyrus::Factory {
+	namespace ComponentRegister
+	{
+		void RegisterAllComponents();
+	}
 }

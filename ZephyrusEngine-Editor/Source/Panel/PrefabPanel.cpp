@@ -38,7 +38,7 @@ void PrefabPanel::Draw()
 
 	ImGui::SetCursorScreenPos(pos);
 
-	auto prefabList = PrefabFactory::GetPrefabFiles("../Content/Prefabs");
+	auto prefabList = Zephyrus::Factory::PrefabFactory::GetPrefabFiles("../Content/Prefabs");
 
 	for (int i = 0; i < prefabList.size(); i++)
 	{

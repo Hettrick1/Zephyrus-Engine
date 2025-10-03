@@ -13,6 +13,8 @@
  * @brief Singleton class responsible for rendering text using OpenGL.
  * It manages text drawing, alignment, and font handling.
  */
+using Zephyrus::Application::Window;
+
 class TextRenderer
 {
 private:

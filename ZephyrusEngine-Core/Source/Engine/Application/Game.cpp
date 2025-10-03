@@ -11,114 +11,115 @@
 #include <btBulletCollisionCommon.h>
 
 #include <iostream>
-
-Game::Game(const std::string& pTitle, const std::string& pStartupScene)
-    : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
-{
-    Zephyrus::Debug::Log::Init();
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+namespace Zephyrus::Application {
+    Game::Game(const std::string& pTitle, const std::string& pStartupScene)
+        : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
     {
-        std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
+        Zephyrus::Debug::Log::Init();
+        if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+        {
+            std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
+        }
+        else
+        {
+            ZP_CORE_INFO("SDL initialization succeeded!");
+        }
+
+        std::string fullPath = "../Config/Game.config";
+
+        std::ifstream file(fullPath);
+
+        if (!file.is_open())
+        {
+            ZP_CORE_ERROR("Impossible to open the game.config : " + fullPath);
+        }
+
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string jsonContent = buffer.str();
+
+        rapidjson::Document doc;
+        doc.Parse(jsonContent.c_str());
+
+        if (doc.HasParseError()) {
+            ZP_CORE_ERROR("Parsing JSON failed !");
+            return;
+        }
+
+        if (doc.HasMember("gameName") && doc["gameName"].IsString())
+        {
+            mTitle = doc["gameName"].GetString();
+        }
+
+        Initialize();
     }
-    else
+
+    Game::~Game()
     {
-        ZP_CORE_INFO("SDL initialization succeeded!");
+        delete mRenderer;
+        delete mGameWindow;
     }
 
-    std::string fullPath = "../Config/Game.config";
-
-    std::ifstream file(fullPath);
-
-    if (!file.is_open())
+    void Game::Initialize()
     {
-        ZP_CORE_ERROR("Impossible to open the game.config : " + fullPath);
-    }
-
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    std::string jsonContent = buffer.str();
-
-    rapidjson::Document doc;
-    doc.Parse(jsonContent.c_str());
-
-    if (doc.HasParseError()) {
-        ZP_CORE_ERROR("Parsing JSON failed !");
-        return;
-    }
-
-    if (doc.HasMember("gameName") && doc["gameName"].IsString())
-    {
-        mTitle = doc["gameName"].GetString();
-    }
-
-    Initialize();
-}
-
-Game::~Game()
-{
-    delete mRenderer;
-    delete mGameWindow;
-}
-
-void Game::Initialize()
-{
-    mGameWindow = new Window(1920, 1080, false);
-    mRenderer = new RendererOpenGl();
-    if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) {
-        #ifdef _DEBUG
+        mGameWindow = new Window(1920, 1080, false);
+        mRenderer = new RendererOpenGl();
+        if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && TextRenderer::Instance().Init(*mGameWindow)) {
+#ifdef _DEBUG
             SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer);
-        #else
+#else
             SceneManager::LoadSplashScreen(new SplashScreen(mStartUpScene), mRenderer);
-        #endif
-        Loop();
-    }
-}
-
-void Game::Loop()
-{
-    while (mIsRunning) {
-        Timer::ComputeDeltaTime();
-        Input();
-        Update(); 
-        Render();
-        Timer::DelayTime();
+#endif
+            Loop();
+        }
     }
 
-    Close();
-}
+    void Game::Loop()
+    {
+        while (mIsRunning) {
+            Timer::ComputeDeltaTime();
+            Input();
+            Update();
+            Render();
+            Timer::DelayTime();
+        }
 
-void Game::Update()
-{
-    SceneManager::Update(Timer::deltaTime);
-}
+        Close();
+    }
 
-void Game::Render()
-{
-    SceneManager::RenderAll();
-}
+    void Game::Update()
+    {
+        SceneManager::Update(Timer::deltaTime);
+    }
 
-void Game::Input()
-{
-    if (mIsRunning) {  
-        while (SDL_PollEvent(&mSdlEvent)) { 
-            switch (mSdlEvent.type) {
-            case SDL_QUIT:
-                mIsRunning = false;
-                break;
-            case SDL_KEYDOWN:
-                if (mSdlEvent.key.keysym.sym == SDLK_ESCAPE) {
+    void Game::Render()
+    {
+        SceneManager::RenderAll();
+    }
+
+    void Game::Input()
+    {
+        if (mIsRunning) {
+            while (SDL_PollEvent(&mSdlEvent)) {
+                switch (mSdlEvent.type) {
+                case SDL_QUIT:
                     mIsRunning = false;
                     break;
+                case SDL_KEYDOWN:
+                    if (mSdlEvent.key.keysym.sym == SDLK_ESCAPE) {
+                        mIsRunning = false;
+                        break;
+                    }
                 }
             }
+            mInputManager.Update();
         }
-        mInputManager.Update();
     }
-}
 
-void Game::Close()
-{
-    SceneManager::Unload();
-    mGameWindow->Close();
-    Zephyrus::Debug::Log::Shutdown();
+    void Game::Close()
+    {
+        SceneManager::Unload();
+        mGameWindow->Close();
+        Zephyrus::Debug::Log::Shutdown();
+    }
 }

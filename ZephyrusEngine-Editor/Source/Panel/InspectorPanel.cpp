@@ -85,7 +85,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 
 	if (ImGui::BeginPopup("AddCompMenu", ImGuiWindowFlags_NoMove))
 	{
-		for (auto componentType : ComponentFactory::Instance().GetComponentNames())
+		for (auto componentType : Zephyrus::Factory::ComponentFactory::Instance().GetComponentNames())
 		{
 			if (componentType == "SkySphereComponent") 
 			{
@@ -93,7 +93,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 			}
 			if (ImGui::Button(componentType.c_str()))
 			{
-				Component* c = ComponentFactory::Instance().Create(componentType, pActor);
+				Component* c = Zephyrus::Factory::ComponentFactory::Instance().Create(componentType, pActor);
 
 				if (!c) {
 					ZP_EDITOR_ERROR("Component " + componentType + " is invalid !");

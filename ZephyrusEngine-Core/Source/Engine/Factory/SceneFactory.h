@@ -1,8 +1,10 @@
 #pragma once
 #include "Scene.h"
 
-class SceneFactory
-{
-public:
-	static bool PopulateSceneFromFile(const std::string& pFilePath);
-};
+namespace Zephyrus::Factory {
+	class SceneFactory
+	{
+	public:
+		static bool PopulateSceneFromFile(const std::string& pFilePath);
+	};
+}

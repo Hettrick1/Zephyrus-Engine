@@ -17,6 +17,13 @@ namespace Zephyrus::ActorComponent
 	class EditorControllerActor;
 }
 
+namespace Zephyrus::Inputs
+{
+	class Axis2DAction;
+}
+
+using Zephyrus::Inputs::InputManager;
+
 class EditorApplication
 {
 private:

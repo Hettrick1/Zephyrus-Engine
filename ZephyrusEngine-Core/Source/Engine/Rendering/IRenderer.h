@@ -29,6 +29,7 @@ using Zephyrus::ActorComponent::SpriteComponent;
 using Zephyrus::ActorComponent::MeshComponent;
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
+using Zephyrus::Application::Window;
 
 class IRenderer 
 {

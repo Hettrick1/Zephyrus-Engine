@@ -7,95 +7,98 @@
 #include <filesystem>
 #include "SceneManager.h"
 
-bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
-{
-    if (SceneManager::ActiveScene == nullptr)
+
+namespace Zephyrus::Factory {
+    bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
     {
-        ZP_CORE_ERROR("SceneManager no active scene created by the manager!");
-        return false;
-    }
-
-    std::ifstream file(pFilePath);
-
-    if (!file.is_open())
-    {
-        ZP_CORE_ERROR("Impossible to open the Scene : " + pFilePath);
-        return false;
-    }
-
-    SceneManager::ActiveScene->SetFilePath(pFilePath);
-
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    std::string jsonContent = buffer.str();
-
-    rapidjson::Document doc;
-    doc.Parse(jsonContent.c_str());
-
-    if (doc.HasParseError()) {
-        ZP_CORE_ERROR(pFilePath + " Parsing JSON failed !");
-        return false;
-    }
-
-    if (auto actorArray = Serialization::Json::ReadArrayObject(doc, "actors"))
-    {
-        for (auto& actor : *actorArray)
+        if (SceneManager::ActiveScene == nullptr)
         {
-            if (auto prefabName = Serialization::Json::ReadString(*actor, "prefabName"))
+            ZP_CORE_ERROR("SceneManager no active scene created by the manager!");
+            return false;
+        }
+
+        std::ifstream file(pFilePath);
+
+        if (!file.is_open())
+        {
+            ZP_CORE_ERROR("Impossible to open the Scene : " + pFilePath);
+            return false;
+        }
+
+        SceneManager::ActiveScene->SetFilePath(pFilePath);
+
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string jsonContent = buffer.str();
+
+        rapidjson::Document doc;
+        doc.Parse(jsonContent.c_str());
+
+        if (doc.HasParseError()) {
+            ZP_CORE_ERROR(pFilePath + " Parsing JSON failed !");
+            return false;
+        }
+
+        if (auto actorArray = Serialization::Json::ReadArrayObject(doc, "actors"))
+        {
+            for (auto& actor : *actorArray)
             {
-                auto actorPrefab = PrefabFactory::InitPrefab(*prefabName);
-
-                actorPrefab->Deserialize(*actor);
-                if (auto actorComponents = Serialization::Json::ReadArrayObject(*actor, "components"))
+                if (auto prefabName = Serialization::Json::ReadString(*actor, "prefabName"))
                 {
-                    auto ids = actorPrefab->GetComponentsIds();
-                    for (auto component : *actorComponents)
+                    auto actorPrefab = PrefabFactory::InitPrefab(*prefabName);
+
+                    actorPrefab->Deserialize(*actor);
+                    if (auto actorComponents = Serialization::Json::ReadArrayObject(*actor, "components"))
                     {
-                        std::string id;
-                        if (auto componentId = Serialization::Json::ReadString(*component, "componentId"))
+                        auto ids = actorPrefab->GetComponentsIds();
+                        for (auto component : *actorComponents)
                         {
-                            id = *componentId;
-                        }
-                        if (auto componentProperties = Serialization::Json::ReadObject(*component, "properties"))
-                        {
-                            auto c = actorPrefab->GetComponentWithId(id);
-                            // if found = component is still there
-                            if (c)
+                            std::string id;
+                            if (auto componentId = Serialization::Json::ReadString(*component, "componentId"))
                             {
-                                c->Deserialize(*componentProperties);
-                                ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
+                                id = *componentId;
                             }
-                            // if the id is not found (component has been added)
-                            else 
+                            if (auto componentProperties = Serialization::Json::ReadObject(*component, "properties"))
                             {
-                                PrefabFactory::CreateAndAttachComponent(*component, actorPrefab);
+                                auto c = actorPrefab->GetComponentWithId(id);
+                                // if found = component is still there
+                                if (c)
+                                {
+                                    c->Deserialize(*componentProperties);
+                                    ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
+                                }
+                                // if the id is not found (component has been added)
+                                else
+                                {
+                                    PrefabFactory::CreateAndAttachComponent(*component, actorPrefab);
+                                }
+                            }
+                        }
+                        // if there is still an id in the prefab but not in the scene (component has been deleted)
+                        if (!ids.empty())
+                        {
+                            for (auto id : ids)
+                            {
+                                auto c = actorPrefab->GetComponentWithId(id);
+                                if (c)
+                                {
+                                    c->OnEnd();
+                                    actorPrefab->RemoveComponent(c);
+                                    delete c;
+                                }
                             }
                         }
                     }
-                    // if there is still an id in the prefab but not in the scene (component has been deleted)
-                    if (!ids.empty())
-                    {
-                        for (auto id : ids)
-                        {
-                            auto c = actorPrefab->GetComponentWithId(id);
-                            if (c)
-                            {
-                                c->OnEnd();
-                                actorPrefab->RemoveComponent(c);
-                                delete c;
-                            }
-                        }
-                    }
-                }
 
-                if (prefabName == "PlayerStart")
-                {
-                    SceneManager::ActiveScene->SetPlayerStart(actorPrefab);
+                    if (prefabName == "PlayerStart")
+                    {
+                        SceneManager::ActiveScene->SetPlayerStart(actorPrefab);
+                    }
+                    SceneManager::ActiveScene->AddActor(actorPrefab);
                 }
-                SceneManager::ActiveScene->AddActor(actorPrefab);
             }
         }
-    }
 
-    return true;
+        return true;
+    }
 }

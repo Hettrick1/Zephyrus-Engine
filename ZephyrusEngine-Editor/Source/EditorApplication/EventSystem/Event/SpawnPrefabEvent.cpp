@@ -13,7 +13,7 @@ SpawnPrefabEvent::~SpawnPrefabEvent()
 
 void SpawnPrefabEvent::Execute()
 {
-	auto actor = PrefabFactory::SpawnActorFromPrefab(mPrefabToSpawn);
+	auto actor = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab(mPrefabToSpawn);
 	actor->Start();
 }
 

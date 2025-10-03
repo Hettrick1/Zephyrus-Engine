@@ -11,31 +11,34 @@
 /**
  * @brief Main class responsible for managing the game loop, window, rendering, input, and scene.
  */
+using Zephyrus::Inputs::InputManager;
 
-class Game
-{
-private:
-	SDL_Event mSdlEvent;
-	std::string mTitle;
-	Window* mGameWindow = nullptr;
-	IRenderer* mRenderer = nullptr;
-	std::string mStartUpScene;
-	InputManager& mInputManager;
-	bool mIsRunning = true;
-public:
-	Game(const std::string& pTitle, const std::string& pStartupScene);
-	~Game();
+namespace Zephyrus::Application {
+	class Game
+	{
+	private:
+		SDL_Event mSdlEvent;
+		std::string mTitle;
+		Window* mGameWindow = nullptr;
+		IRenderer* mRenderer = nullptr;
+		std::string mStartUpScene;
+		InputManager& mInputManager;
+		bool mIsRunning = true;
+	public:
+		Game(const std::string& pTitle, const std::string& pStartupScene);
+		~Game();
 
-	// Initializes the game systems and window
-	void Initialize();
+		// Initializes the game systems and window
+		void Initialize();
 
-	// Main game loop
-	void Loop();
+		// Main game loop
+		void Loop();
 
-	void Update();
-	void Render();
-	void Input();
+		void Update();
+		void Render();
+		void Input();
 
-	// Closes and cleans up the game
-	void Close();
-};
+		// Closes and cleans up the game
+		void Close();
+	};
+}

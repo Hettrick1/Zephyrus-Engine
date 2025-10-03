@@ -8,20 +8,22 @@
 using Zephyrus::ActorComponent::Actor;
 using Zephyrus::ActorComponent::Component;
 
-class ComponentFactory
-{
-public:
-	using Creator = std::function<Component* (Actor*)>;
+namespace Zephyrus::Factory {
+    class ComponentFactory
+    {
+    public:
+        using Creator = std::function<Component* (Actor*)>;
 
-	static ComponentFactory& Instance();
+        static ComponentFactory& Instance();
 
-    bool Register(const std::string& pName, Creator pCreateFn);
+        bool Register(const std::string& pName, Creator pCreateFn);
 
-    Component* Create(const std::string& pName, Actor* pOwner);
+        Component* Create(const std::string& pName, Actor* pOwner);
 
-    inline std::vector<std::string> GetComponentNames() const { return mComponentNames; }
+        inline std::vector<std::string> GetComponentNames() const { return mComponentNames; }
 
-private:
-    std::unordered_map<std::string, Creator> mCreators;
-    std::vector<std::string> mComponentNames;
-};
+    private:
+        std::unordered_map<std::string, Creator> mCreators;
+        std::vector<std::string> mComponentNames;
+    };
+}
