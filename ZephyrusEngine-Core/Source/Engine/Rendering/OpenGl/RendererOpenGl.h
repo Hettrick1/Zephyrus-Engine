@@ -4,6 +4,7 @@
 #include "VertexArray.h"
 #include "ShaderProgram.h"
 #include "DebugLine.h"
+#include "Texture.h"
 #include <vector>
 #include "DebugRenderer.h"
 #include "SkySphereComponent.h"
@@ -19,8 +20,7 @@ using Zephyrus::ActorComponent::MeshComponent;
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
 
-
-class Texture;
+using Zephyrus::Assets::VertexArray;
 
 /**
  * @brief OpenGL renderer implementation for rendering sprites, meshes, sky spheres, HUD, and debug elements.

@@ -33,8 +33,8 @@ public:
     // Initializes the text renderer with the given window
     bool Init(Window& pWindow);
 
-    void RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Font pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram = nullptr);
+    void RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Zephyrus::Assets::Font pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram = nullptr);
 
     // Computes the width of the given text string at the specified scale and font
-    float ComputeTextWidth(const std::string& pText, float pScale, Font pFont);
+    float ComputeTextWidth(const std::string& pText, float pScale, Zephyrus::Assets::Font pFont);
 };

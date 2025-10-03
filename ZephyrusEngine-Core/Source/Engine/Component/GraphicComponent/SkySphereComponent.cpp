@@ -54,21 +54,21 @@ namespace Zephyrus::ActorComponent
 		if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && pData["isSphere"].GetBool())
 		{
 			mIsSphere = true;
-			mVertexShader = *Assets::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
-			mFragmentShader = *Assets::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
-			mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "skySphereSP");
+			mVertexShader = *AssetsManager::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
+			mFragmentShader = *AssetsManager::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
+			mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "skySphereSP");
 
-			Texture* tex = nullptr;
+			Zephyrus::Assets::Texture* tex = nullptr;
 			if (pData.HasMember("textures") && pData["textures"].IsArray())
 			{
 				const auto& arr = pData["textures"].GetArray();
 				if (!arr.Empty() && arr[0].IsString())
 				{
-					tex = Assets::LoadTexture(arr[0].GetString(), arr[0].GetString());
+					tex = AssetsManager::LoadTexture(arr[0].GetString(), arr[0].GetString());
 					mTexturesPaths.push_back(arr[0].GetString());
 					mSphereTexture = tex;
 					mTextureIndex = tex->GetId();
-					mMesh = Assets::LoadMesh("sphere.obj", "sphere");
+					mMesh = AssetsManager::LoadMesh("sphere.obj", "sphere");
 					mVao = mMesh->GetVao();
 					mTextureType = GL_TEXTURE_2D;
 				}
@@ -81,14 +81,14 @@ namespace Zephyrus::ActorComponent
 		else if (pData.HasMember("isSphere") && pData["isSphere"].IsBool() && !pData["isSphere"].GetBool())
 		{
 			mIsSphere = false;
-			mVertexShader = *Assets::LoadShader("VertFrag/SkyBox.vert", ShaderType::VERTEX, "SkyBoxVert");
-			mFragmentShader = *Assets::LoadShader("VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "SkyBoxFrag");
-			mTescShader = *Assets::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
-			mTeseShader = *Assets::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
+			mVertexShader = *AssetsManager::LoadShader("VertFrag/SkyBox.vert", ShaderType::VERTEX, "SkyBoxVert");
+			mFragmentShader = *AssetsManager::LoadShader("VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "SkyBoxFrag");
+			mTescShader = *AssetsManager::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
+			mTeseShader = *AssetsManager::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
 
-			mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader }, "skyboxSP");
+			mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader }, "skyboxSP");
 
-			mMesh = Assets::LoadMesh("cube.obj", "cube");
+			mMesh = AssetsManager::LoadMesh("cube.obj", "cube");
 			mVao = mMesh->GetVao();
 
 			std::vector<std::string> faces;

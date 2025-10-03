@@ -6,6 +6,12 @@
 #include "HudImage.h"
 #include "Temp/DoomComponents/Weapons.h"
 
+namespace Zephyrus::Assets
+{
+	class Texture;
+}
+Zephyrus::Assets::Texture;
+
 namespace Zephyrus::ActorComponent
 {
 	class DoomPlayerComponent : public Component

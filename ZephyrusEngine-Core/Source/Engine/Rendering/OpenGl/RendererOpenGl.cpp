@@ -4,13 +4,14 @@
 #include "TransformComponent.h"
 #include "Maths.h"
 #include "Actor.h"
-#include "Texture.h"
 #include "glew.h"
 #include "HudManager.h"
 #include "TextRenderer.h"
 #include "Assets.h"
 #include "CameraComponent.h"
 #include <algorithm>
+
+using Zephyrus::Assets::Texture;
 
 RendererOpenGl::RendererOpenGl()
 	: mVAO(nullptr), mWindow(nullptr), mSpriteShaderProgram(nullptr), mHud(nullptr), mDebugRenderer(nullptr), mWireFrameMode(false), mSkySphereComponent(nullptr), mFullscreenQuadVAO(nullptr)
@@ -59,17 +60,17 @@ bool RendererOpenGl::Initialize(Window& pWindow)
 	{
 		ZP_CORE_ERROR("Failed to initialize SDL_Image");
 	}
-	mSpriteVertexShader = *Assets::LoadShader("Simple.vert", ShaderType::VERTEX, "SimpleVert");
-	mSpriteFragmentShader = *Assets::LoadShader("Simple.frag", ShaderType::FRAGMENT, "SimpleFrag");
-	mSpriteShaderProgramTemp = *Assets::LoadShaderProgram({ &mSpriteVertexShader, &mSpriteFragmentShader }, "simpleSpriteSP");
+	mSpriteVertexShader = *AssetsManager::LoadShader("Simple.vert", ShaderType::VERTEX, "SimpleVert");
+	mSpriteFragmentShader = *AssetsManager::LoadShader("Simple.frag", ShaderType::FRAGMENT, "SimpleFrag");
+	mSpriteShaderProgramTemp = *AssetsManager::LoadShaderProgram({ &mSpriteVertexShader, &mSpriteFragmentShader }, "simpleSpriteSP");
 	SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 
-	mVAO = new VertexArray(spriteVertices, 4);
-	mFullscreenQuadVAO = new VertexArray(fullscreenQuadVertices, 4);
+	mVAO = new VertexArray(Zephyrus::Assets::spriteVertices, 4);
+	mFullscreenQuadVAO = new VertexArray(Zephyrus::Assets::fullscreenQuadVertices, 4);
 
-	mFullscreenVertexShader = *Assets::LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuadvert");
-	mFullscreenFragmentShader = *Assets::LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuadfrag");
-	mFullscreenShaderProgram = Assets::LoadShaderProgram({ &mFullscreenVertexShader, &mFullscreenFragmentShader }, "FullscreenQuadSP");
+	mFullscreenVertexShader = *AssetsManager::LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuadvert");
+	mFullscreenFragmentShader = *AssetsManager::LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuadfrag");
+	mFullscreenShaderProgram = AssetsManager::LoadShaderProgram({ &mFullscreenVertexShader, &mFullscreenFragmentShader }, "FullscreenQuadSP");
 
 	mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.1f, 100000);
 	mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);

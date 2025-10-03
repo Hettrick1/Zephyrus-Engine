@@ -345,34 +345,34 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
 
 ImTextureID ContentBrowserPanel::GetImageFromExtension(const std::string& extension, std::string filepath)
 {
-    Texture* tex;
+    Zephyrus::Assets::Texture* tex;
     if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
     {
-        tex = Assets::LoadTexture(filepath, filepath);
+        tex = AssetsManager::LoadTexture(filepath, filepath);
     }
     else if (extension == ".otf" || extension == ".ttf")
     {
-        tex = Assets::LoadTexture("../Content/Sprites/Icons/font80.png", "../Content/Sprites/Icons/font80.png");
+        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/font80.png", "../Content/Sprites/Icons/font80.png");
     }
     else if (extension == ".zpmap")
     {
-        tex = Assets::LoadTexture("../Content/Sprites/Icons/scene80.png", "../Content/Sprites/Icons/scene80.png");
+        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/scene80.png", "../Content/Sprites/Icons/scene80.png");
     }
     else if (extension == ".obj" || extension == ".fbx")
     {
-        tex = Assets::LoadTexture("../Content/Sprites/Icons/mesh80.png", "../Content/Sprites/Icons/mesh80.png");
+        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/mesh80.png", "../Content/Sprites/Icons/mesh80.png");
     }
     else if (extension == ".prefab")
     {
-        tex = Assets::LoadTexture("../Content/Sprites/Icons/prefab80.png", "../Content/Sprites/Icons/prefab80.png");
+        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/prefab80.png", "../Content/Sprites/Icons/prefab80.png");
     }
     else if (extension == ".vert" || extension == ".frag" || extension == ".tesc" || extension == ".tese" || extension == ".geom")
     {
-        tex = Assets::LoadTexture("../Content/Sprites/Icons/shader80.png", "../Content/Sprites/Icons/shader80.png");
+        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/shader80.png", "../Content/Sprites/Icons/shader80.png");
     }
     else
     {
-        tex = Assets::LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png");
+        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png");
     }
     ImTextureID myIcon = (ImTextureID)(intptr_t)tex->GetId();
 

@@ -7,6 +7,7 @@
  * It manages a sequence of textures and plays them as an animation,
  * supporting looping, play control, and frame rate adjustment.
  */
+
 namespace Zephyrus::ActorComponent
 {
 	class FlipbookComponent : public SpriteComponent

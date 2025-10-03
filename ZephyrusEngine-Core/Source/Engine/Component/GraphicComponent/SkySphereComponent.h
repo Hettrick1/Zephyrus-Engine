@@ -5,6 +5,10 @@
 #include "Maths.h"
 #include "CubeTextureMap.h"
 
+using Zephyrus::Assets::CubeTextureMap;
+using Zephyrus::Assets::Mesh;
+using Zephyrus::Assets::VertexArray;
+
 /**
  * @brief Component that manages and renders a sky sphere or skybox in the scene.
  * It handles the mesh, textures, shaders, and rendering logic for the sky.
@@ -20,7 +24,7 @@ namespace Zephyrus::ActorComponent
 		CubeTextureMap mCubeMap;
 		Vector2D mTiling;
 		unsigned int mTextureIndex = 0;
-		Texture* mSphereTexture = nullptr;
+		Zephyrus::Assets::Texture* mSphereTexture = nullptr;
 		bool mIsSphere = false;
 		VertexArray* mVao = nullptr;
 		GLenum mTextureType;
@@ -57,7 +61,7 @@ namespace Zephyrus::ActorComponent
 		inline VertexArray* GetVao() const { return mVao; }
 		inline GLenum& GetTextureType() { return mTextureType; }
 		inline bool GetIsSphere() const { return mIsSphere; }
-		inline Texture* GetSphereTexture() const { return mSphereTexture; }
+		inline Zephyrus::Assets::Texture* GetSphereTexture() const { return mSphereTexture; }
 
 		static int index;
 	};

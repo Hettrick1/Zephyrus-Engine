@@ -40,7 +40,7 @@ CameraManager* Zephyrus::Commons::GetCameraManager()
     return nullptr;
 }
 
-PhysicWorld* Zephyrus::Commons::GetPhysicWorld()
+Zephyrus::Physics::PhysicWorld* Zephyrus::Commons::GetPhysicWorld()
 {
     auto physicWorld = SceneManager::ActiveScene->GetPhysicWorld();
     if (physicWorld)

@@ -13,5 +13,5 @@ namespace Zephyrus::Commons
 	extern Zephyrus::ActorComponent::Actor* GetPlayerRef();
 	extern Zephyrus::ActorComponent::CameraComponent* GetCurrentCamera();
 	extern CameraManager* GetCameraManager();
-	extern PhysicWorld* GetPhysicWorld();
+	extern Zephyrus::Physics::PhysicWorld* GetPhysicWorld();
 }

@@ -11,7 +11,7 @@ namespace Zephyrus::ActorComponent
 	class SpriteComponent : public Component
 	{
 	protected:
-		Texture mTexture;
+		Zephyrus::Assets::Texture mTexture;
 		int mDrawOrder = 0;
 		int mTexWidth = 0;
 		int mTexHeight = 0;
@@ -35,7 +35,7 @@ namespace Zephyrus::ActorComponent
 		static Component* Create(Actor* pOwner) { return new SpriteComponent(pOwner, "SpriteComponent"); }
 
 		// Sets the texture used by the sprite
-		virtual void SetTexture(const Texture& pTexture);
+		virtual void SetTexture(const Zephyrus::Assets::Texture& pTexture);
 		// Sets the flip method for rendering the sprite
 		void SetFlipMethode(IRenderer::Flip pFlipMethode);
 		virtual void Draw(const IRenderer& pRenderer);
@@ -47,7 +47,7 @@ namespace Zephyrus::ActorComponent
 
 		void SetDrawOrder(const int pOrder);
 
-		inline Texture& GetTexture() { return mTexture; }
+		inline Zephyrus::Assets::Texture& GetTexture() { return mTexture; }
 		inline int GetDrawOrder() const { return mDrawOrder; }
 		inline int GetTexWidth() const { return mTexWidth; }
 		inline int GetTexHeight() const { return mTexHeight; }

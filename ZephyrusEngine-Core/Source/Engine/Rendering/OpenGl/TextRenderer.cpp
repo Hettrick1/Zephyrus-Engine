@@ -18,9 +18,9 @@ TextRenderer& TextRenderer::Instance()
 bool TextRenderer::Init(Window& pWindow)
 {
     mWindow = &pWindow;
-    mVertexShader = *Assets::LoadShader("TextRenderer.vert", ShaderType::VERTEX, "TextRendererVert");
-    mFragmentShader = *Assets::LoadShader("TextRenderer.frag", ShaderType::FRAGMENT, "TextRendererFrag");
-    mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "textRendererSP");
+    mVertexShader = *AssetsManager::LoadShader("TextRenderer.vert", ShaderType::VERTEX, "TextRendererVert");
+    mFragmentShader = *AssetsManager::LoadShader("TextRenderer.frag", ShaderType::FRAGMENT, "TextRendererFrag");
+    mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "textRendererSP");
     mProjection = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.000001f, 100000);
     mShaderProgram.Use();
     mShaderProgram.setMatrix4Row("projection", mProjection);
@@ -72,7 +72,7 @@ void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pSc
     std::string::const_iterator c;
     for (c = pText.begin(); c != pText.end(); c++)
     {
-        Character ch = pFont.GetCharacters()[*c];
+        Zephyrus::Assets::Character ch = pFont.GetCharacters()[*c];
 
         float xpos = position.x + ch.Bearing.x * pScale;
         float ypos = position.y - (ch.Size.y - ch.Bearing.y) * pScale;

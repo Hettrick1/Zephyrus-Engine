@@ -3,6 +3,9 @@
 #include "Mesh.h"
 #include "Maths.h"
 
+using Zephyrus::Assets::Mesh;
+using Zephyrus::Assets::Texture;
+
 namespace Zephyrus::ActorComponent
 {
 	class MeshComponent : public Component

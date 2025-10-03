@@ -11,7 +11,7 @@ namespace Zephyrus::ActorComponent
 		: Component(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(IRenderer::Flip::None)
 	{
 		mOwner->GetScene().GetRenderer()->AddSprite(this);
-		mTexture = *Assets::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
+		mTexture = *AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
 		mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
 		mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
@@ -46,7 +46,7 @@ namespace Zephyrus::ActorComponent
 		Component::Deserialize(pData);
 		if (pData.HasMember("texture") && pData["texture"].IsString())
 		{
-			mTexture = *Assets::LoadTexture(pData["texture"].GetString(), pData["texture"].GetString());
+			mTexture = *AssetsManager::LoadTexture(pData["texture"].GetString(), pData["texture"].GetString());
 		}
 		mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
 		mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
@@ -66,7 +66,7 @@ namespace Zephyrus::ActorComponent
 		Component::EndSerialize(pWriter);
 	}
 
-	void SpriteComponent::SetTexture(const Texture& pTexture)
+	void SpriteComponent::SetTexture(const Zephyrus::Assets::Texture& pTexture)
 	{
 		mTexture = pTexture;
 		if (mTexHeightOverride == 0 || mTexWidthOverride == 0)

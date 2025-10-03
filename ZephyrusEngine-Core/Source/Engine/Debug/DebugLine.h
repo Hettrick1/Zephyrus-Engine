@@ -3,6 +3,8 @@
 #include "Vector3D.h"
 #include "Physics/HitResult.h"
 
+using Zephyrus::Physics::HitResult;
+
 namespace Zephyrus::Debug
 {
 	struct DebugLine

@@ -14,16 +14,16 @@ namespace Zephyrus::ActorComponent
 	{
 		mOwner->GetScene().GetRenderer()->AddMesh(this);
 
-		mVertexShader = *Assets::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
-		mFragmentShader = *Assets::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
-		mShaderProgram = *Assets::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
+		mVertexShader = *AssetsManager::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
+		mFragmentShader = *AssetsManager::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
+		mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
 
-		mOutlineVertexShader = *Assets::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
-		mOutlineFragmentShader = *Assets::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
-		mOutlineShaderProgram = *Assets::LoadShaderProgram({ &mOutlineVertexShader, &mOutlineFragmentShader }, "OutlineSP");
+		mOutlineVertexShader = *AssetsManager::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
+		mOutlineFragmentShader = *AssetsManager::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
+		mOutlineShaderProgram = *AssetsManager::LoadShaderProgram({ &mOutlineVertexShader, &mOutlineFragmentShader }, "OutlineSP");
 
-		mMesh = Assets::LoadMesh("cube.obj", "cube.obj");
-		auto texture = Assets::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
+		mMesh = AssetsManager::LoadMesh("cube.obj", "cube.obj");
+		auto texture = AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
 		AddTexture(texture);
 		SetTextureIndex(0);
 	}
@@ -37,7 +37,7 @@ namespace Zephyrus::ActorComponent
 		Component::Deserialize(pData);
 		if (auto mesh = Serialization::Json::ReadString(pData, "mesh"))
 		{
-			mMesh = Assets::LoadMesh(*mesh, *mesh);
+			mMesh = AssetsManager::LoadMesh(*mesh, *mesh);
 			if (!mMesh)
 			{
 				ZP_CORE_ERROR("Mesh creation failed !");
@@ -51,7 +51,7 @@ namespace Zephyrus::ActorComponent
 				{
 					for (auto& element : arr)
 					{
-						Texture* texture = Assets::LoadTexture(element, element);
+						Texture* texture = AssetsManager::LoadTexture(element, element);
 						AddTexture(texture);
 					}
 				}
@@ -72,7 +72,7 @@ namespace Zephyrus::ActorComponent
 		}
 		else
 		{
-			mMesh = Assets::LoadMesh("cube.obj", "cube.obj");
+			mMesh = AssetsManager::LoadMesh("cube.obj", "cube.obj");
 			SetTextureIndex(0);
 			ZP_CORE_WARN("No mesh referenced in the prefab actor !");
 		}

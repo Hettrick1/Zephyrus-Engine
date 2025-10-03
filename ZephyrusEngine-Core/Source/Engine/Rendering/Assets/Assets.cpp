@@ -7,18 +7,20 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-std::map<std::string, Texture> Assets::mTextures = {};
-std::map<std::string, Font> Assets::mFonts = {};
-std::map<std::string, Mesh*> Assets::mMeshes = {};
-std::map<std::string, Shader> Assets::mShaders = {};
-std::map<std::string, ShaderProgram> Assets::mShaderPrograms = {};
+using Zephyrus::Assets::Texture;
 
-const std::string Assets::IMPORT_PATH = "../Content/";
-const std::string Assets::MESH_PATH = "../Content/Meshes/";
-const std::string Assets::FONT_PATH = "../Content/Fonts/";
-const std::string Assets::SHADER_PATH = "../Content/Shaders/";
+std::map<std::string, Texture> AssetsManager::mTextures = {};
+std::map<std::string, Font> AssetsManager::mFonts = {};
+std::map<std::string, Mesh*> AssetsManager::mMeshes = {};
+std::map<std::string, Shader> AssetsManager::mShaders = {};
+std::map<std::string, ShaderProgram> AssetsManager::mShaderPrograms = {};
 
-Texture* Assets::LoadTexture(const std::string& pFilePath, const std::string& pName)
+const std::string AssetsManager::IMPORT_PATH = "../Content/";
+const std::string AssetsManager::MESH_PATH = "../Content/Meshes/";
+const std::string AssetsManager::FONT_PATH = "../Content/Fonts/";
+const std::string AssetsManager::SHADER_PATH = "../Content/Shaders/";
+
+Texture* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
 {
 	if (mTextures.find(pName) == mTextures.end()) {
 		mTextures[pName] = LoadTextureFromFile(*SceneManager::ActiveScene->GetRenderer(), GetFullPath(pFilePath, AssetType::Texture));
@@ -27,7 +29,7 @@ Texture* Assets::LoadTexture(const std::string& pFilePath, const std::string& pN
 	return &mTextures[pName];
 }
 
-Texture& Assets::GetTexture(const std::string& pName)
+Texture& AssetsManager::GetTexture(const std::string& pName)
 {
 	if(mTextures.find(pName) == mTextures.end()) {
 		std::ostringstream loadError;
@@ -37,7 +39,7 @@ Texture& Assets::GetTexture(const std::string& pName)
 	return mTextures[pName];
 }
 
-Mesh* Assets::LoadMesh(const std::string& pFilePath, const std::string& pName)
+Mesh* AssetsManager::LoadMesh(const std::string& pFilePath, const std::string& pName)
 {
 	if (mMeshes.find(pName) == mMeshes.end()) {
 		mMeshes[pName] = LoadMeshFromFile(GetFullPath(pFilePath, AssetType::Mesh));
@@ -46,7 +48,7 @@ Mesh* Assets::LoadMesh(const std::string& pFilePath, const std::string& pName)
 	return mMeshes[pName];
 }
 
-Mesh* Assets::GetMesh(const std::string& pName)
+Mesh* AssetsManager::GetMesh(const std::string& pName)
 {
 	if (mMeshes.find(pName) == mMeshes.end()) {
 		std::ostringstream loadError;
@@ -56,7 +58,7 @@ Mesh* Assets::GetMesh(const std::string& pName)
 	return mMeshes[pName];
 }
 
-Font* Assets::LoadFont(const std::string& pFilePath, const std::string& pName)
+Font* AssetsManager::LoadFont(const std::string& pFilePath, const std::string& pName)
 {
 	if (mFonts.find(pName) == mFonts.end()) {
 		mFonts[pName] = LoadFontFromFile(GetFullPath(pFilePath, AssetType::Font));
@@ -65,7 +67,7 @@ Font* Assets::LoadFont(const std::string& pFilePath, const std::string& pName)
 	return &mFonts[pName];
 }
 
-Font& Assets::GetFont(const std::string& pName)
+Font& AssetsManager::GetFont(const std::string& pName)
 {
 	if (mFonts.find(pName) == mFonts.end()) {
 		std::ostringstream loadError;
@@ -75,7 +77,7 @@ Font& Assets::GetFont(const std::string& pName)
 	return mFonts[pName];
 }
 
-Shader* Assets::LoadShader(const std::string& pFilePath, ShaderType pType, const std::string& pName)
+Shader* AssetsManager::LoadShader(const std::string& pFilePath, ShaderType pType, const std::string& pName)
 {
 	if (mShaders.find(pName) == mShaders.end()) {
 		mShaders[pName] = LoadShaderFromFile(GetFullPath(pFilePath, AssetType::Shader), pType);
@@ -84,7 +86,7 @@ Shader* Assets::LoadShader(const std::string& pFilePath, ShaderType pType, const
 	return &mShaders[pName];
 }
 
-Shader& Assets::GetShader(const std::string& pName)
+Shader& AssetsManager::GetShader(const std::string& pName)
 {
 	if (mShaders.find(pName) == mShaders.end()) {
 		std::ostringstream loadError;
@@ -94,7 +96,7 @@ Shader& Assets::GetShader(const std::string& pName)
 	return mShaders[pName];
 }
 
-ShaderProgram* Assets::LoadShaderProgram(std::vector<Shader*> pShaders, const std::string& pName)
+ShaderProgram* AssetsManager::LoadShaderProgram(std::vector<Shader*> pShaders, const std::string& pName)
 {
 	if (mShaderPrograms.find(pName) == mShaderPrograms.end()) {
 		ShaderProgram program = ShaderProgram();
@@ -105,7 +107,7 @@ ShaderProgram* Assets::LoadShaderProgram(std::vector<Shader*> pShaders, const st
 	return &mShaderPrograms[pName];
 }
 
-void Assets::Clear()
+void AssetsManager::Clear()
 {
 	for (auto& iter : mTextures)
 	{
@@ -135,7 +137,7 @@ void Assets::Clear()
 	mShaderPrograms.clear();
 }
 
-Texture Assets::LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath)
+Texture AssetsManager::LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFilePath)
 {
 	Texture texture;
 	texture.Load(pRenderer, pFilePath);
@@ -143,7 +145,7 @@ Texture Assets::LoadTextureFromFile(IRenderer& pRenderer, const std::string& pFi
 	return texture;
 }
 
-Mesh* Assets::LoadMeshFromFile(const std::string& pFilePath)
+Mesh* AssetsManager::LoadMeshFromFile(const std::string& pFilePath)
 {
 	Mesh loaded; 
 	tinyobj::attrib_t attributes; 
@@ -191,7 +193,7 @@ Mesh* Assets::LoadMeshFromFile(const std::string& pFilePath)
 	return new Mesh(vertices, pFilePath);
 }
 
-Font Assets::LoadFontFromFile(const std::string& pFilePath)
+Font AssetsManager::LoadFontFromFile(const std::string& pFilePath)
 {
 	Font font;
 	font.Load(pFilePath);
@@ -199,7 +201,7 @@ Font Assets::LoadFontFromFile(const std::string& pFilePath)
 	return font;
 }
 
-Shader Assets::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)
+Shader AssetsManager::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)
 {
 	Shader shader;
 	shader.Load(pFilePath, pType);
@@ -207,7 +209,7 @@ Shader Assets::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType
 	return shader;
 }
 
-std::string Assets::GetFullPath(const std::string& pPath, AssetType pType)
+std::string AssetsManager::GetFullPath(const std::string& pPath, AssetType pType)
 {
 	std::string newPath;
 	switch (pType)

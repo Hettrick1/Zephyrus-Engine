@@ -20,6 +20,8 @@ namespace Zephyrus::ActorComponent
 
 using Zephyrus::ActorComponent::Actor;
 using Zephyrus::ActorComponent::ActorState;
+using Zephyrus::Physics::PhysicsDebugRenderer;
+using Zephyrus::Physics::PhysicWorld;
 
 class Scene
 {

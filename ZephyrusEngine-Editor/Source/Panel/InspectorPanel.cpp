@@ -719,7 +719,7 @@ void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, con
 	{
 		prop = MakeUndoableProperty<Texture>(pProperty, mActiveComponent);
 	}
-	Texture* tex = static_cast<Texture*>(prop.getter());
+	Zephyrus::Assets::Texture* tex = static_cast<Zephyrus::Assets::Texture*>(prop.getter());
 	if (!tex)
 	{
 		return;
@@ -735,7 +735,7 @@ void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, con
 	ImGui::SetNextItemWidth(pInputWidth);
 	if (ImGui::InputText(("##Texture" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		Texture* newTex = Assets::LoadTexture(buffer, buffer);
+		Zephyrus::Assets::Texture* newTex = AssetsManager::LoadTexture(buffer, buffer);
 		if (newTex)
 		{
 			prop.setter(newTex);
@@ -750,7 +750,7 @@ void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, con
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 		{
 			std::string textureID((const char*)payload->Data, payload->DataSize);
-			Texture* droppedTex = Assets::LoadTexture(textureID, textureID);
+			Zephyrus::Assets::Texture* droppedTex = AssetsManager::LoadTexture(textureID, textureID);
 			if (droppedTex)
 			{
 				prop.setter(droppedTex);
@@ -787,7 +787,7 @@ void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const 
 	ImGui::SetNextItemWidth(pInputWidth);
 	if (ImGui::InputText(("##Mesh" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		Mesh* newMesh = Assets::LoadMesh(buffer, buffer);
+		Mesh* newMesh = AssetsManager::LoadMesh(buffer, buffer);
 		if (newMesh)
 		{
 			prop.setter(newMesh);
@@ -802,7 +802,7 @@ void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const 
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MESH"))
 		{
 			std::string meshID((const char*)payload->Data, payload->DataSize);
-			Mesh* droppedMesh = Assets::LoadMesh(meshID, meshID);
+			Mesh* droppedMesh = AssetsManager::LoadMesh(meshID, meshID);
 			if (droppedMesh)
 			{
 				prop.setter(droppedMesh);
@@ -818,8 +818,8 @@ void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const 
 
 void InspectorPanel::SetPropertyCubemap(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
-	auto prop = MakeUndoableProperty<CubeTextureMap>(pProperty, mActiveComponent);
-	CubeTextureMap* cubemap = static_cast<CubeTextureMap*>(prop.getter());
+	auto prop = MakeUndoableProperty<Zephyrus::Assets::CubeTextureMap>(pProperty, mActiveComponent);
+	Zephyrus::Assets::CubeTextureMap* cubemap = static_cast<Zephyrus::Assets::CubeTextureMap*>(prop.getter());
 
 	if (!cubemap)
 	{
@@ -864,7 +864,7 @@ void InspectorPanel::SetPropertyCubemap(const PropertyDescriptor& pProperty, con
 	}
 	if (ImGui::Button("Create Texture Map"))
 	{
-		CubeTextureMap newCubemap;
+		Zephyrus::Assets::CubeTextureMap newCubemap;
 		if (newCubemap.CreateCubeTextureMap(newFaces))
 		{
 			// reset temp files for old cubetexturemap
@@ -943,8 +943,8 @@ void InspectorPanel::SetPropertyComponent(const PropertyDescriptor& pProperty, c
 
 void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
-	auto prop = MakeUndoableProperty<std::vector<Texture*>>(pProperty, mActiveComponent);
-	auto* textures = static_cast<std::vector<Texture*>*>(prop.getter());
+	auto prop = MakeUndoableProperty<std::vector<Zephyrus::Assets::Texture*>>(pProperty, mActiveComponent);
+	auto* textures = static_cast<std::vector<Zephyrus::Assets::Texture*>*>(prop.getter());
 	if (!textures)
 	{
 		return;
@@ -953,7 +953,7 @@ void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pPropert
 	{
 		for (size_t i = 0; i < textures->size(); i++)
 		{
-			Texture* tex = (*textures)[i];
+			Zephyrus::Assets::Texture* tex = (*textures)[i];
 			std::string label = "Texture " + std::to_string(i);
 
 			char buffer[128];
@@ -969,7 +969,7 @@ void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pPropert
 			ImGui::PushID((int)i);
 			if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 			{
-				Texture* newTex = Assets::LoadTexture(buffer, buffer);
+				Zephyrus::Assets::Texture* newTex = AssetsManager::LoadTexture(buffer, buffer);
 				if (newTex)
 				{
 					auto newVec = *textures;
@@ -982,7 +982,7 @@ void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pPropert
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 				{
 					std::string textureID((const char*)payload->Data, payload->DataSize);
-					Texture* droppedTex = Assets::LoadTexture(textureID, textureID);
+					Zephyrus::Assets::Texture* droppedTex = AssetsManager::LoadTexture(textureID, textureID);
 					if (droppedTex)
 					{
 						auto newVec = *textures;

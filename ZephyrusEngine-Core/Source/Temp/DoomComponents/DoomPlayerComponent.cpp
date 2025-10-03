@@ -44,30 +44,30 @@ namespace Zephyrus::ActorComponent
 		mGun = mOwner->GetComponentOfType<FlipbookComponent>();
 		ZP_ASSERT(mGun, "FlipbookComponent not found !");
 
-		Texture* doomHud = Assets::LoadTexture("Sprites/Doom/DoomHud.png", "doomHud");
-		gunIcon = *Assets::LoadTexture("Sprites/Doom/DoomHudGunIcon.png", "gunIcon");
-		shotgunIcon = *Assets::LoadTexture("Sprites/Doom/DoomHudShotGunIcon.png", "shotgunIcon");
+		Texture* doomHud = AssetsManager::LoadTexture("Sprites/Doom/DoomHud.png", "doomHud");
+		gunIcon = *AssetsManager::LoadTexture("Sprites/Doom/DoomHudGunIcon.png", "gunIcon");
+		shotgunIcon = *AssetsManager::LoadTexture("Sprites/Doom/DoomHudShotGunIcon.png", "shotgunIcon");
 
 		mGunAnim = {
-			Assets::LoadTexture("Sprites/Doom/gun1.png", "gun1"),
-			Assets::LoadTexture("Sprites/Doom/gun2.png", "gun2"),
-			Assets::LoadTexture("Sprites/Doom/gun3.png", "gun3"),
-			Assets::LoadTexture("Sprites/Doom/gun4.png", "gun4")
+			AssetsManager::LoadTexture("Sprites/Doom/gun1.png", "gun1"),
+			AssetsManager::LoadTexture("Sprites/Doom/gun2.png", "gun2"),
+			AssetsManager::LoadTexture("Sprites/Doom/gun3.png", "gun3"),
+			AssetsManager::LoadTexture("Sprites/Doom/gun4.png", "gun4")
 		};
 		mShotgunAnim = {
-			Assets::LoadTexture("Sprites/Doom/shotgun1.png", "shotgun1"),
-			Assets::LoadTexture("Sprites/Doom/shotgun2.png", "shotgun2"),
-			Assets::LoadTexture("Sprites/Doom/shotgun3.png", "shotgun3"),
-			Assets::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun4"),
-			Assets::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun5"),
-			Assets::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun6"),
-			Assets::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun7"),
-			Assets::LoadTexture("Sprites/Doom/shotgun6.png", "shotgun8"),
-			Assets::LoadTexture("Sprites/Doom/shotgun6.png", "shotgun9"),
-			Assets::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun10"),
-			Assets::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun11"),
-			Assets::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun12"),
-			Assets::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun13"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun1.png", "shotgun1"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun2.png", "shotgun2"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun3.png", "shotgun3"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun4"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun5"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun6"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun7"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun6.png", "shotgun8"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun6.png", "shotgun9"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun10"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun5.png", "shotgun11"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun12"),
+			AssetsManager::LoadTexture("Sprites/Doom/shotgun4.png", "shotgun13"),
 		};
 		mGun->SetAnimationTextures(mGunAnim);
 		mGun->SetAnimationFps(8);
@@ -87,7 +87,7 @@ namespace Zephyrus::ActorComponent
 		mArmorText = new HudText(std::to_string(mArmor), Vector2D(840.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
 		mArmorText->SetDrawOrder(101.0f);
 
-		Texture* damageIndicator = Assets::LoadTexture("Sprites/Doom/DamageIndicator.png", "DamageIndicator");
+		Texture* damageIndicator = AssetsManager::LoadTexture("Sprites/Doom/DamageIndicator.png", "DamageIndicator");
 		mDamageIndicatorImage = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
 		mDamageIndicatorImage->SetDrawOrder(0.0f);
 		mDamageIndicatorImage->SetTint(Vector4D(1.0, 1.0, 1.0, 0.0));

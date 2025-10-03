@@ -5,6 +5,8 @@
 #include "Mesh.h"
 #include "Maths.h"
 
+using Zephyrus::Assets::CubeTextureMap;
+
 namespace Zephyrus::ActorComponent
 {
 	class CubeMapMeshComponent : public MeshComponent

@@ -1,6 +1,6 @@
 #include "HudImage.h"
 
-HudImage::HudImage(Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize, const Vector2D& pOrigin)
+HudImage::HudImage(Zephyrus::Assets::Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize, const Vector2D& pOrigin)
     : HudElement(), mTexture(pTexture), mWidth(pTexture.GetTextureSize().x * pSize.x), mHeight(pTexture.GetTextureSize().y * pSize.y), 
     mOrigin(pOrigin), mTint(Vector4D(1.0f, 1.0f, 1.0f, 1.0f))
 {
@@ -16,7 +16,7 @@ void HudImage::Draw(RendererOpenGl& pRenderer)
     pRenderer.DrawHudImage(mTexture, rect, mOrigin, mTint);
 }
 
-void HudImage::SetTexture(const Texture& pTexture)
+void HudImage::SetTexture(const Zephyrus::Assets::Texture& pTexture)
 {
     mTexture = pTexture;
 }

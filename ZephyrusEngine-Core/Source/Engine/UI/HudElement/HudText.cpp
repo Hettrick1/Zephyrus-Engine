@@ -1,11 +1,11 @@
 #include "HudText.h"
 #include "Assets.h"
 
-HudText::HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment, Font* pFont)
+HudText::HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment, Zephyrus::Assets::Font* pFont)
     : HudElement(), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
 {
     if (pFont == nullptr) {
-        mFont = Assets::LoadFont("RoadPixel.ttf", "RoadPixel");
+        mFont = AssetsManager::LoadFont("RoadPixel.ttf", "RoadPixel");
     }
     SetPosition(pPos);
 }

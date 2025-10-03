@@ -14,7 +14,11 @@ namespace Zephyrus::ActorComponent
 	class CameraComponent;
 }
 
-class Texture;
+namespace Zephyrus::Assets
+{
+	class Texture;
+}
+
 class HudManager;
 struct HitResult;
 
@@ -30,6 +34,7 @@ using Zephyrus::ActorComponent::MeshComponent;
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
 using Zephyrus::Application::Window;
+using Zephyrus::Assets::Texture;
 
 class IRenderer 
 {

@@ -122,7 +122,7 @@ void UtilsPanel::DrawDropDownButton(const ImVec2& pWindowSize)
     popupPos.x = pWindowSize.x * 0.5 - 30;
     popupPos.y = pWindowSize.y + 54.5;
 
-    Texture* arrowTex = Assets::LoadTexture("Sprites/Icons/arrowDown.png", "Sprites/Icons/arrowDown.png");
+    Zephyrus::Assets::Texture* arrowTex = AssetsManager::LoadTexture("Sprites/Icons/arrowDown.png", "Sprites/Icons/arrowDown.png");
     mMyIcon = (ImTextureID)(intptr_t)arrowTex->GetId();
     ImVec2 iconSize(24, 24);
 
@@ -174,7 +174,7 @@ void UtilsPanel::DrawDropMenuOptions()
 void UtilsPanel::DrawSaveButton(const ImVec2& pWindowSize, const ImVec2& pButtonSize)
 {
     ImGui::SetCursorPos(ImVec2(390.0f, (pWindowSize.y - pButtonSize.y) * 0.5f + (15 * 0.5f)));
-    Texture* arrowTex = Assets::LoadTexture("Sprites/Icons/save24.png", "Sprites/Icons/save24.png");
+    Zephyrus::Assets::Texture* arrowTex = AssetsManager::LoadTexture("Sprites/Icons/save24.png", "Sprites/Icons/save24.png");
     ImTextureID myIcon = (ImTextureID)(intptr_t)arrowTex->GetId();
 
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.81176f, 0.0f, 1.0f));

@@ -28,7 +28,7 @@ namespace Zephyrus::ActorComponent
 		Component::OnStart();
 		if (mAnimationTextures.empty())
 		{
-			Texture* fallbackTexture = Assets::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
+			Texture* fallbackTexture = AssetsManager::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
 			SetTexture(*fallbackTexture);
 			mAnimationTextures.push_back(fallbackTexture);
 		}
@@ -66,7 +66,7 @@ namespace Zephyrus::ActorComponent
 				{
 					if (element.IsString())
 					{
-						Texture* texture = Assets::LoadTexture(element.GetString(), element.GetString());
+						Texture* texture = AssetsManager::LoadTexture(element.GetString(), element.GetString());
 						AddAnimationTexture(texture);
 					}
 				}

@@ -16,10 +16,10 @@ private:
     float mScale = 0;
     Vector4D mColor;
     TextAlignment mAlignment;
-    Font* mFont = nullptr;
+    Zephyrus::Assets::Font* mFont = nullptr;
     ShaderProgram* mShaderProgram = nullptr;
 public:
-    HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Font* pFont = nullptr);
+    HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Zephyrus::Assets::Font* pFont = nullptr);
     ~HudText();
 
     // Draws the text on the HUD using the specified renderer.

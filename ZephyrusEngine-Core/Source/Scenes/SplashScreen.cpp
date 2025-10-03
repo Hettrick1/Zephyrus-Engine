@@ -26,13 +26,13 @@ void SplashScreen::Start()
 
 	mTime = 0;
 
-	Shader vert = *Assets::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
-	Shader frag = *Assets::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
+	Shader vert = *AssetsManager::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
+	Shader frag = *AssetsManager::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
 
-	mZephyrusText = new HudText("Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), TextAlignment::CENTER, Assets::LoadFont("Chopsic.otf", "Chopsic"));
-	mZephyrusText->SetShaderProgram(Assets::LoadShaderProgram({ &vert, &frag }, "splashScreenSP"));
+	mZephyrusText = new HudText("Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
+	mZephyrusText->SetShaderProgram(AssetsManager::LoadShaderProgram({ &vert, &frag }, "splashScreenSP"));
 
-	mStudioText = new HudText("Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), TextAlignment::CENTER, Assets::LoadFont("Chopsic.otf", "Chopsic"));
+	mStudioText = new HudText("Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 

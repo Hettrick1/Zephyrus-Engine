@@ -134,7 +134,7 @@ void Scene::Unload()
 	mActors.clear();
 	InputManager::Instance().Unload();
 	mRenderer->Unload();
-	Assets::Clear();
+	AssetsManager::Clear();
 	mCameraManager->Unload();
 	delete mCameraManager;
 	mCameraManager = nullptr;

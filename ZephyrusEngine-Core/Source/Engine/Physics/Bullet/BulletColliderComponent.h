@@ -9,7 +9,10 @@
 namespace Zephyrus::Physics 
 { 
     class ICollisionListener; 
+    struct HitResult;
 }
+
+using Zephyrus::Physics::HitResult;
 
 namespace Zephyrus::ActorComponent {
     class BulletColliderComponent : public Component

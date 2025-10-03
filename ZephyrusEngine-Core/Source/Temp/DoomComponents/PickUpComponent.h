@@ -2,6 +2,13 @@
 #include "Component.h"
 #include "Physics/ICollisionListener.h"
 
+namespace Zephyrus::Physics
+{
+	struct HitResult;
+}
+
+using Zephyrus::Physics::HitResult;
+
 namespace Zephyrus::ActorComponent
 {
 	enum class PickUpType
