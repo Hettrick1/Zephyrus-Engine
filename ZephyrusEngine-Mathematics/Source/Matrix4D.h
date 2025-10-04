@@ -241,8 +241,8 @@ public:
 		array<float, 16> temp =
 		{
 			1.0f, 0.0f, 0.0f , 0.0f,
-			0.0f, Maths::Cos(theta), -Maths::Sin(theta), 0.0f,
-			0.0f, Maths::Sin(theta), Maths::Cos(theta), 0.0f,
+			0.0f, zpMaths::Cos(theta), -zpMaths::Sin(theta), 0.0f,
+			0.0f, zpMaths::Sin(theta), zpMaths::Cos(theta), 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f,
 		};
 		return Matrix4D(temp);
@@ -252,9 +252,9 @@ public:
 	{
 		array<float, 16> temp =
 		{
-			Maths::Cos(theta), 0.0f, Maths::Sin(theta), 0.0f,
+			zpMaths::Cos(theta), 0.0f, zpMaths::Sin(theta), 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
-			-Maths::Sin(theta), 0.0f, Maths::Cos(theta), 0.0f,
+			-zpMaths::Sin(theta), 0.0f, zpMaths::Cos(theta), 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f,
 		};
 		return Matrix4D(temp);
@@ -264,8 +264,8 @@ public:
 	{
 		array<float, 16> temp =
 		{
-			Maths::Cos(theta), -Maths::Sin(theta), 0.0f, 0.0f,
-			Maths::Sin(theta), Maths::Cos(theta), 0.0f, 0.0f,
+			zpMaths::Cos(theta), -zpMaths::Sin(theta), 0.0f, 0.0f,
+			zpMaths::Sin(theta), zpMaths::Cos(theta), 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f,
 		};
@@ -355,7 +355,7 @@ public:
 
 	static Matrix4D CreatePerspectiveFOV(float fovY, float width, float height, float near, float far)
 	{
-		float yScale = Maths::Cot(fovY / 2.0f);
+		float yScale = zpMaths::Cot(fovY / 2.0f);
 		float xScale = yScale * height / width;
 		array<float, 16> temp =
 		{

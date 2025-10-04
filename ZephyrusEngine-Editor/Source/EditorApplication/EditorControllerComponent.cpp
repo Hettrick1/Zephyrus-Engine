@@ -77,8 +77,8 @@ namespace Zephyrus::ActorComponent {
 			if (mPitch > 89.0f)  mPitch = 89.0f;
 			if (mPitch < -89.0f) mPitch = -89.0f;
 
-			float yawRad = Maths::ToRad(mYaw);
-			float pitchRad = Maths::ToRad(mPitch);
+			float yawRad = zpMaths::ToRad(mYaw);
+			float pitchRad = zpMaths::ToRad(mPitch);
 
 			Quaternion qYaw(Vector3D::unitZ, yawRad);
 			Quaternion qPitch(Vector3D::unitX, pitchRad);

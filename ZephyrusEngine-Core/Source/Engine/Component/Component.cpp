@@ -119,7 +119,7 @@ namespace Zephyrus::ActorComponent
 
     void Component::RelativeRotateX(float pAngle)
     {
-        float piAngle = Maths::ToRad(pAngle);
+        float piAngle = zpMaths::ToRad(pAngle);
         Quaternion newX(Vector3D::unitX, piAngle);
         mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
         ComputeRelativeTransform();
@@ -127,7 +127,7 @@ namespace Zephyrus::ActorComponent
 
     void Component::RelativeRotateY(float pAngle)
     {
-        float piAngle = Maths::ToRad(pAngle);
+        float piAngle = zpMaths::ToRad(pAngle);
         Quaternion newX(Vector3D::unitY, piAngle);
         mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
         ComputeRelativeTransform();
@@ -135,7 +135,7 @@ namespace Zephyrus::ActorComponent
 
     void Component::RelativeRotateZ(float pAngle)
     {
-        float piAngle = Maths::ToRad(pAngle);
+        float piAngle = zpMaths::ToRad(pAngle);
         Quaternion newX(Vector3D::unitZ, piAngle);
         mRelativeRotation = Quaternion::Concatenate(newX, mRelativeRotation);
         ComputeRelativeTransform();

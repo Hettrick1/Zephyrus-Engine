@@ -14,21 +14,21 @@ Quaternion::Quaternion(float xP, float yP, float zP, float wP)
 
 Quaternion::Quaternion(const Vector3D& axis, float angle)
 {
-	float scalar = Maths::Sin(angle / 2.0f);
+	float scalar = zpMaths::Sin(angle / 2.0f);
 	x = axis.x * scalar;
 	y = axis.y * scalar;
 	z = axis.z * scalar;
-	w = Maths::Cos(angle / 2.0f);
+	w = zpMaths::Cos(angle / 2.0f);
 }
 
 Quaternion::Quaternion(const Vector3D& axis)
 {
-	float cy = cos(Maths::ToRad(axis.z) * 0.5f);
-	float sy = sin(Maths::ToRad(axis.z) * 0.5f);
-	float cp = cos(Maths::ToRad(axis.y) * 0.5f);
-	float sp = sin(Maths::ToRad(axis.y) * 0.5f);
-	float cr = cos(Maths::ToRad(axis.x) * 0.5f);
-	float sr = sin(Maths::ToRad(axis.x) * 0.5f);
+	float cy = cos(zpMaths::ToRad(axis.z) * 0.5f);
+	float sy = sin(zpMaths::ToRad(axis.z) * 0.5f);
+	float cp = cos(zpMaths::ToRad(axis.y) * 0.5f);
+	float sp = sin(zpMaths::ToRad(axis.y) * 0.5f);
+	float cr = cos(zpMaths::ToRad(axis.x) * 0.5f);
+	float sr = sin(zpMaths::ToRad(axis.x) * 0.5f);
 
 	w = cr * cp * cy + sr * sp * sy;
 	x = sr * cp * cy - cr * sp * sy;
@@ -63,19 +63,19 @@ Vector3D Quaternion::ToEuler() const
 	// --- Pitch (X axis) ---
 	float sinp = 2.0f * (w * x + y * z);
 	float cosp = 1.0f - 2.0f * (x * x + y * y);
-	euler.x = Maths::ToDeg(std::atan2(sinp, cosp));
+	euler.x = zpMaths::ToDeg(std::atan2(sinp, cosp));
 
 	// --- Roll (Y axis) ---
 	float sinr = 2.0f * (w * y - z * x);
 	if (std::fabs(sinr) >= 1.0f)
-		euler.y = Maths::ToDeg(std::copysign(Maths::PI / 2.0f, sinr)); // clamp à 90°
+		euler.y = zpMaths::ToDeg(std::copysign(zpMaths::PI / 2.0f, sinr)); // clamp à 90°
 	else
-		euler.y = Maths::ToDeg(std::asin(sinr));
+		euler.y = zpMaths::ToDeg(std::asin(sinr));
 
 	// --- Yaw (Z axis) ---
 	float siny = 2.0f * (w * z + x * y);
 	float cosy = 1.0f - 2.0f * (y * y + z * z);
-	euler.z = Maths::ToDeg(std::atan2(siny, cosy));
+	euler.z = zpMaths::ToDeg(std::atan2(siny, cosy));
 
 	return euler;
 }

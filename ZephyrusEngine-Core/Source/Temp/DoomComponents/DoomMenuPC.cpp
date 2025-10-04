@@ -68,6 +68,6 @@ namespace Zephyrus::ActorComponent
 	{
 		Component::Update();
 		mTimer += Timer::deltaTime;
-		mPressEnter->SetColor(Vector4D(mPressEnter->GetColor().xyz, (Maths::Sin(mTimer * 2) + 1) * 0.5f));
+		mPressEnter->SetColor(Vector4D(mPressEnter->GetColor().xyz, (zpMaths::Sin(mTimer * 2) + 1) * 0.5f));
 	}
 }

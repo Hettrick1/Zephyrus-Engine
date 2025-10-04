@@ -70,7 +70,7 @@ public:
 
 	float Length() const
 	{
-		return Maths::Sqrt(LengthSqr());
+		return zpMaths::Sqrt(LengthSqr());
 	}
 
 	Vector3D ToEuler() const;
@@ -87,10 +87,10 @@ public:
 	static Quaternion Lerp(const Quaternion& a, const Quaternion& b, float f)
 	{
 		Quaternion retVal;
-		retVal.x = Maths::Lerp(a.x, b.x, f);
-		retVal.y = Maths::Lerp(a.y, b.y, f);
-		retVal.z = Maths::Lerp(a.z, b.z, f);
-		retVal.w = Maths::Lerp(a.w, b.w, f);
+		retVal.x = zpMaths::Lerp(a.x, b.x, f);
+		retVal.y = zpMaths::Lerp(a.y, b.y, f);
+		retVal.z = zpMaths::Lerp(a.z, b.z, f);
+		retVal.w = zpMaths::Lerp(a.w, b.w, f);
 		retVal.Normalize();
 		return retVal;
 	}
@@ -115,10 +115,10 @@ public:
 
 		if (cosom < 0.9999f)
 		{
-			const float omega = Maths::ACos(cosom);
-			const float invSin = 1.f / Maths::Sin(omega);
-			scale0 = Maths::Sin((1.f - f) * omega) * invSin;
-			scale1 = Maths::Sin(f * omega) * invSin;
+			const float omega = zpMaths::ACos(cosom);
+			const float invSin = 1.f / zpMaths::Sin(omega);
+			scale0 = zpMaths::Sin((1.f - f) * omega) * invSin;
+			scale1 = zpMaths::Sin(f * omega) * invSin;
 		}
 		else
 		{

@@ -8,7 +8,7 @@ float Vector4D::LengthSqr() const
 
 float Vector4D::Length() const
 {
-    return (Maths::Sqrt(LengthSqr()));
+    return (zpMaths::Sqrt(LengthSqr()));
 }
 
 void Vector4D::Normalize()

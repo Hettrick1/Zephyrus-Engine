@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 
-namespace Maths
+namespace zpMaths
 {
     const float PI = 3.1415926535f;
     const float TWO_PI = PI * 2.0f;

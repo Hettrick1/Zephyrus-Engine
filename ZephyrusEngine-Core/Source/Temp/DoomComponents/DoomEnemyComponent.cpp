@@ -162,8 +162,8 @@ namespace Zephyrus::ActorComponent
 		Vector3D camPos = Zephyrus::Commons::GetCurrentCamera()->GetWorldTransform().GetTranslation();
 		Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
-		float angleZ = Maths::ATan2(direction.y, direction.x);
-		angleZ -= Maths::ToRad(90);
+		float angleZ = zpMaths::ATan2(direction.y, direction.x);
+		angleZ -= zpMaths::ToRad(90);
 		Quaternion targetRotation = Quaternion(Vector3D::unitZ, angleZ);
 		mOwner->SetRotation(targetRotation);
 
@@ -198,8 +198,8 @@ namespace Zephyrus::ActorComponent
 				const float spreadAngle = weaponSpreadAngle;
 				const float range = weaponRange;
 				float randomAngle = 0;
-				randomAngle = Maths::RandomRange(-spreadAngle, spreadAngle);
-				float randomRadians = Maths::ToRad(randomAngle);
+				randomAngle = zpMaths::RandomRange(-spreadAngle, spreadAngle);
+				float randomRadians = zpMaths::ToRad(randomAngle);
 
 				Matrix4DRow rotation = Matrix4DRow::CreateRotationZ(randomRadians);
 				Vector3D dir = rotation.TransformVector(baseDirection);

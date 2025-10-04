@@ -45,8 +45,8 @@ namespace Zephyrus::ActorComponent
 		Vector3D camPos = Zephyrus::Scenes::SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
 		Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
-		float angleZ = Maths::ATan2(direction.y, direction.x);
-		angleZ -= Maths::ToRad(90);
+		float angleZ = zpMaths::ATan2(direction.y, direction.x);
+		angleZ -= zpMaths::ToRad(90);
 		Quaternion targetRotation = Quaternion(Vector3D::unitZ, angleZ);
 		mOwner->SetRotation(targetRotation);
 	}

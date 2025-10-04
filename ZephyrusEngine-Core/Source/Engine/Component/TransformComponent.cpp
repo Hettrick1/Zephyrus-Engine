@@ -46,7 +46,7 @@ namespace Zephyrus::ActorComponent
 
     void TransformComponent::RotateX(float pAngle)
     {
-        float piAngle = Maths::ToRad(pAngle);
+        float piAngle = zpMaths::ToRad(pAngle);
         mPitch += pAngle;
         Quaternion newX(Vector3D::unitX, piAngle);
         mRotation = Quaternion::Concatenate(newX, mRotation);
@@ -55,7 +55,7 @@ namespace Zephyrus::ActorComponent
 
     void TransformComponent::RotateY(float pAngle)
     {
-        float piAngle = Maths::ToRad(pAngle);
+        float piAngle = zpMaths::ToRad(pAngle);
         mRoll += pAngle;
         Quaternion newY(Vector3D::unitY, piAngle);
         mRotation = Quaternion::Concatenate(newY, mRotation);
@@ -64,7 +64,7 @@ namespace Zephyrus::ActorComponent
 
     void TransformComponent::RotateZ(float pAngle)
     {
-        float piAngle = Maths::ToRad(pAngle);
+        float piAngle = zpMaths::ToRad(pAngle);
         mYaw += pAngle;
         Quaternion newZ(Vector3D::unitZ, piAngle);
         mRotation = Quaternion::Concatenate(newZ, mRotation);

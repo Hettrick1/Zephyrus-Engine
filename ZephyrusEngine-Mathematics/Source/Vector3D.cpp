@@ -9,8 +9,8 @@ const Vector3D Vector3D::unitZ(0.0f, 0.0f, 1.0f);
 const Vector3D Vector3D::negUnitX(-1.0f, 0.0f, 0.0f);
 const Vector3D Vector3D::negUnitY(0.0f, -1.0f, 0.0f);
 const Vector3D Vector3D::negUnitZ(0.0f, 0.0f, -1.0f);
-const Vector3D Vector3D::infinity(Maths::INFINITY_POS, Maths::INFINITY_POS, Maths::INFINITY_POS);
-const Vector3D Vector3D::negInfinity(Maths::INFINITY_NEG, Maths::INFINITY_NEG, Maths::INFINITY_NEG); 
+const Vector3D Vector3D::infinity(zpMaths::INFINITY_POS, zpMaths::INFINITY_POS, zpMaths::INFINITY_POS);
+const Vector3D Vector3D::negInfinity(zpMaths::INFINITY_NEG, zpMaths::INFINITY_NEG, zpMaths::INFINITY_NEG); 
 
 void Vector3D::Set(float xP, float yP, float zP)
 {
@@ -26,7 +26,7 @@ float Vector3D::LengthSq() const
 
 float Vector3D::Length() const
 {
-	return (Maths::Sqrt(LengthSq()));
+	return (zpMaths::Sqrt(LengthSq()));
 }
 
 void Vector3D::Normalize()
@@ -63,7 +63,7 @@ Vector3D Vector3D::TransformWithPerspDiv(Vector3D& vec, Matrix4D& mat, float w)
 		vec.z * mat(2, 2) + w * mat(3, 2);
 	float transformedW = vec.x * mat(0, 3) + vec.y * mat(1, 3) +
 		vec.z * mat(2, 3) + w * mat(3, 3);
-	if (!Maths::NearZero(Maths::Abs(transformedW)))
+	if (!zpMaths::NearZero(zpMaths::Abs(transformedW)))
 	{
 		transformedW = 1.0f / transformedW;
 		retVal *= transformedW;

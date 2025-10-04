@@ -252,8 +252,8 @@ public:
 		float temp[4][4] =
 		{
 			{ 1.0f, 0.0f, 0.0f , 0.0f },
-			{ 0.0f, Maths::Cos(theta), -Maths::Sin(theta), 0.0f },
-			{ 0.0f, Maths::Sin(theta), Maths::Cos(theta), 0.0f },
+			{ 0.0f, zpMaths::Cos(theta), -zpMaths::Sin(theta), 0.0f },
+			{ 0.0f, zpMaths::Sin(theta), zpMaths::Cos(theta), 0.0f },
 			{ 0.0f, 0.0f, 0.0f, 1.0f },
 		};
 		return Matrix4DRow(temp);
@@ -263,9 +263,9 @@ public:
 	{
 		float temp[4][4] =
 		{
-			{ Maths::Cos(theta), 0.0f, Maths::Sin(theta), 0.0f },
+			{ zpMaths::Cos(theta), 0.0f, zpMaths::Sin(theta), 0.0f },
 			{ 0.0f, 1.0f, 0.0f, 0.0f },
-			{ -Maths::Sin(theta), 0.0f, Maths::Cos(theta), 0.0f },
+			{ -zpMaths::Sin(theta), 0.0f, zpMaths::Cos(theta), 0.0f },
 			{ 0.0f, 0.0f, 0.0f, 1.0f },
 		};
 		return Matrix4DRow(temp);
@@ -275,8 +275,8 @@ public:
 	{
 		float temp[4][4] =
 		{
-			{ Maths::Cos(theta), -Maths::Sin(theta), 0.0f, 0.0f },
-			{ Maths::Sin(theta), Maths::Cos(theta), 0.0f, 0.0f },
+			{ zpMaths::Cos(theta), -zpMaths::Sin(theta), 0.0f, 0.0f },
+			{ zpMaths::Sin(theta), zpMaths::Cos(theta), 0.0f, 0.0f },
 			{ 0.0f, 0.0f, 1.0f, 0.0f },
 			{ 0.0f, 0.0f, 0.0f, 1.0f },
 		};
@@ -369,7 +369,7 @@ public:
 	static Matrix4DRow CreatePerspectiveFOV(float fovY, float width, float height, float near, float far)
 	{
 		float aspect = width / height;
-		float yScale = Maths::Cot(Maths::ToRad(fovY) / 2.0f);
+		float yScale = zpMaths::Cot(zpMaths::ToRad(fovY) / 2.0f);
 		float xScale = yScale / aspect;
 
 		float temp[4][4] =
@@ -386,7 +386,7 @@ public:
 	{
 		float aspect = width / height;
 
-		float FovXRad = Maths::ToRad(fovX);
+		float FovXRad = zpMaths::ToRad(fovX);
 
 		float fovY = 2.0f * atan(tan(FovXRad * 0.5f) / aspect);
 

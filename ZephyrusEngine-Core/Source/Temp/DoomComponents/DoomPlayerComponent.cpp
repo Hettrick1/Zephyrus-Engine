@@ -108,9 +108,9 @@ namespace Zephyrus::ActorComponent
 
 			bobingTime += Timer::deltaTime * 10.0f;
 
-			bobbing.z -= Maths::Sin(bobingTime) * 0.005f;
+			bobbing.z -= zpMaths::Sin(bobingTime) * 0.005f;
 
-			bobbing.x += Maths::Sin(bobingTime * 0.5f) * 0.005f;
+			bobbing.x += zpMaths::Sin(bobingTime * 0.5f) * 0.005f;
 
 			mGun->SetRelativePosition(bobbing);
 		}
@@ -200,8 +200,8 @@ namespace Zephyrus::ActorComponent
 
 			for (int i = 0; i < 4; ++i)
 			{
-				randomAngle = Maths::RandomRange(-spreadAngle, spreadAngle);
-				float randomRadians = Maths::ToRad(randomAngle);
+				randomAngle = zpMaths::RandomRange(-spreadAngle, spreadAngle);
+				float randomRadians = zpMaths::ToRad(randomAngle);
 
 				// Création d'une matrice de rotation autour de l'axe Z (vertical)
 				Matrix4DRow rotation = Matrix4DRow::CreateRotationZ(randomRadians);
