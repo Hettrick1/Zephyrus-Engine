@@ -39,6 +39,8 @@ project "ZephyrusEngine-Editor"
       "../Vendor/imgui-1.92.2b/backends",
       "../Vendor/bullet3-3.25/src",
 
+      "../ZephyrusEngine-Mathematics/Source",
+
 	  -- Include Core
 	  "../ZephyrusEngine-Core/Source",
 
@@ -75,6 +77,7 @@ project "ZephyrusEngine-Editor"
    links
    {
       "ZephyrusEngine-Core",
+      "ZephyrusEngine-Mathematics"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

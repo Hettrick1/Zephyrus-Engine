@@ -24,6 +24,8 @@ project "ZephyrusEngine-Core"
       "../Vendor/stduuid-1.2.3/include",
       "../Vendor/bullet3-3.25/src",
 
+      "../ZephyrusEngine-Mathematics/Source",
+
       "Source/Engine",
       "Source/Scenes",
       "Source/Utils",
@@ -66,6 +68,7 @@ project "ZephyrusEngine-Core"
 
    links
    {
+      "ZephyrusEngine-Mathematics",
       "glu32", 
       "glew32",
       "opengl32",

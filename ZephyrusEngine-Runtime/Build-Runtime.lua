@@ -23,6 +23,8 @@ project "ZephyrusEngine-Runtime"
       "../Vendor/reactphysics3d-v0.10.2-0/include",
       "../Vendor/bullet3-3.25/src",
 
+      "../ZephyrusEngine-Mathematics/Source",
+
 	  -- Include Core
 	  "../ZephyrusEngine-Core/Source",
 
@@ -59,6 +61,7 @@ project "ZephyrusEngine-Runtime"
    links
    {
       "ZephyrusEngine-Core",
+      "ZephyrusEngine-Mathematics"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
