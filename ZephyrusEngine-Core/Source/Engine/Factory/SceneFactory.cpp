@@ -7,6 +7,7 @@
 #include <filesystem>
 #include "SceneManager.h"
 
+using Zephyrus::Scenes::SceneManager;
 
 namespace Zephyrus::Factory {
     bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)

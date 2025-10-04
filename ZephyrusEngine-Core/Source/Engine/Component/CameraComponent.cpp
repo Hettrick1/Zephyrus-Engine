@@ -3,6 +3,8 @@
 #include "Log.h"
 #include <glew.h>
 
+using Zephyrus::Scenes::SceneManager;
+
 namespace Zephyrus::ActorComponent
 {
     CameraComponent::CameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)

@@ -7,11 +7,16 @@
 #include <string_view>
 #include "JSONUtils.h"
 
-class Scene;
+namespace Zephyrus::Scenes
+{
+	class Scene;
+}
 namespace Zephyrus::ActorComponent
 {
 	class Component;
 }
+
+using Zephyrus::Scenes::Scene;
 
 namespace Zephyrus::ActorComponent
 {

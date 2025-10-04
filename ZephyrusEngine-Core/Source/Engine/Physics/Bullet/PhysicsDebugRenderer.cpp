@@ -56,7 +56,7 @@ namespace Zephyrus::Physics
         Matrix4DRow mView;
         if (cam == nullptr)
         {
-            auto camera = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera();
+            auto camera = Zephyrus::Scenes::SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera();
             mView = camera->GetViewMatrix();
             mProj = camera->GetProjMatrix();
         }

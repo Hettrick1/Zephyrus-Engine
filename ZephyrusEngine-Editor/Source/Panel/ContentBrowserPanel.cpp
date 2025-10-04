@@ -237,9 +237,9 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
             {
                 std::filesystem::path fsPath = path.lexically_normal();
                 std::string normalizedPath = fsPath.generic_string();
-                SceneManager::LoadSceneWithFile(normalizedPath, nullptr, false);
-                SceneManager::mIsSceneLoaded = true;
-                SceneManager::ActiveScene->GetRenderer()->GetHud()->Unload();
+                Zephyrus::Scenes::SceneManager::LoadSceneWithFile(normalizedPath, nullptr, false);
+                Zephyrus::Scenes::SceneManager::mIsSceneLoaded = true;
+                Zephyrus::Scenes::SceneManager::ActiveScene->GetRenderer()->GetHud()->Unload();
                 mHierarchy->ResetSelectedActor();
                 EventSystem::ClearAllEvents();
                 resetfunc();
@@ -407,7 +407,7 @@ void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)
         {
             std::string actorID((const char*)payload->Data, payload->DataSize);
 
-            auto actor = SceneManager::ActiveScene->GetActorWithID(actorID);    
+            auto actor = Zephyrus::Scenes::SceneManager::ActiveScene->GetActorWithID(actorID);
 
             if (!actor)
             {

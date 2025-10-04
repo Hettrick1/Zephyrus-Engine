@@ -172,7 +172,7 @@ namespace Zephyrus::ActorComponent
 			start.z -= 0.0f;
 			Vector3D end = start + cam->GetWorldTransform().GetYAxis() * range;
 			HitResult hit;
-			SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
+			Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
 			Zephyrus::Debug::DebugLine* line = new Zephyrus::Debug::DebugLine(start, end, hit);
 			mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 			UseAmo(pAmoQuantity);
@@ -210,7 +210,7 @@ namespace Zephyrus::ActorComponent
 
 				Vector3D end = start + dir * range;
 				HitResult hit;
-				SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
+				Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
 				Zephyrus::Debug::DebugLine* line = new Zephyrus::Debug::DebugLine(start, end, hit);
 				mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 				if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
@@ -272,7 +272,7 @@ namespace Zephyrus::ActorComponent
 			mHealth -= pQuantity;
 			if (mHealth <= 0)
 			{
-				SceneManager::LoadSceneWithFile("../Content/Maps/DoomMainMenu.zpmap", nullptr, true);
+				Zephyrus::Scenes::SceneManager::LoadSceneWithFile("../Content/Maps/DoomMainMenu.zpmap", nullptr, true);
 				return;
 			}
 		}

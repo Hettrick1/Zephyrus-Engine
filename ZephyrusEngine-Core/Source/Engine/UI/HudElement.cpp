@@ -5,7 +5,7 @@
 namespace Zephyrus::UI {
 	HudElement::HudElement()
 	{
-		SceneManager::ActiveScene->GetRenderer()->GetHud()->AddElement(this);
+		Zephyrus::Scenes::SceneManager::ActiveScene->GetRenderer()->GetHud()->AddElement(this);
 	}
 
 	void HudElement::SetPosition(const Vector2D& pPosition)

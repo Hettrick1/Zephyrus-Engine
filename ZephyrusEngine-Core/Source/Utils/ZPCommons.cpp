@@ -2,7 +2,7 @@
 
 Scene* Zephyrus::Commons::GetCurrentScene()
 {
-    auto activeScene = SceneManager::ActiveScene;
+    auto activeScene = Zephyrus::Scenes::SceneManager::ActiveScene;
     if (activeScene)
     {
         return activeScene;
@@ -12,7 +12,7 @@ Scene* Zephyrus::Commons::GetCurrentScene()
 
 Zephyrus::ActorComponent::Actor* Zephyrus::Commons::GetPlayerRef()
 {
-    auto playerRef = SceneManager::ActiveScene->GetPlayerRef();
+    auto playerRef = Zephyrus::Scenes::SceneManager::ActiveScene->GetPlayerRef();
     if (playerRef)
     {
         return playerRef;
@@ -22,7 +22,7 @@ Zephyrus::ActorComponent::Actor* Zephyrus::Commons::GetPlayerRef()
 
 Zephyrus::ActorComponent::CameraComponent* Zephyrus::Commons::GetCurrentCamera()
 {
-    auto currentCamera = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera();
+    auto currentCamera = Zephyrus::Scenes::SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera();
     if (currentCamera)
     {
         return currentCamera;
@@ -32,7 +32,7 @@ Zephyrus::ActorComponent::CameraComponent* Zephyrus::Commons::GetCurrentCamera()
 
 CameraManager* Zephyrus::Commons::GetCameraManager()
 {
-    auto cameraManager = SceneManager::ActiveScene->GetCameraManager();
+    auto cameraManager = Zephyrus::Scenes::SceneManager::ActiveScene->GetCameraManager();
     if (cameraManager)
     {
         return cameraManager;
@@ -42,7 +42,7 @@ CameraManager* Zephyrus::Commons::GetCameraManager()
 
 Zephyrus::Physics::PhysicWorld* Zephyrus::Commons::GetPhysicWorld()
 {
-    auto physicWorld = SceneManager::ActiveScene->GetPhysicWorld();
+    auto physicWorld = Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld();
     if (physicWorld)
     {
         return physicWorld;

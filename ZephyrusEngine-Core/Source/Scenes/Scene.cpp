@@ -12,200 +12,165 @@
 using Zephyrus::Assets::AssetsManager;
 using Zephyrus::Inputs::InputManager;
 
-Scene::Scene(std::string pTitle) 
-	: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld()), mDebugRenderer(new PhysicsDebugRenderer()),
-	mCameraManager(new CameraManager())
-{
-	mDebugRenderer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
-	mPhysicWorld->GetWorld()->setDebugDrawer(mDebugRenderer);
-}
-
-void Scene::Start()
-{
-	for (auto& actor : mAllActors)
+namespace Zephyrus::Scenes {
+	Scene::Scene(std::string pTitle)
+		: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld()), mDebugRenderer(new PhysicsDebugRenderer()),
+		mCameraManager(new CameraManager())
 	{
-		actor->Start();
-	}
-}
-
-void Scene::PostStart()
-{
-	std::string fullPath = mFilePath;
-
-	std::ifstream file(fullPath);
-
-	if (!file.is_open())
-	{
-		ZP_CORE_ERROR("Impossible to open the game map file : " + fullPath);
+		mDebugRenderer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+		mPhysicWorld->GetWorld()->setDebugDrawer(mDebugRenderer);
 	}
 
-	std::stringstream buffer;
-	buffer << file.rdbuf();
-	std::string jsonContent = buffer.str();
-
-	rapidjson::Document doc;
-	doc.Parse(jsonContent.c_str());
-
-	if (doc.HasParseError()) {
-		ZP_CORE_ERROR("Parsing JSON failed !");
-		return;
-	}
-
-	if (doc.HasMember("player") && doc["player"].IsString())
+	void Scene::Start()
 	{
-		mPlayerRef = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab(doc["player"].GetString());
-		if (mPlayerRef)
+		for (auto& actor : mAllActors)
 		{
-			if (mPlayerStart)
-			{
-				mPlayerRef->SetPosition(mPlayerStart->GetTransformComponent().GetPosition());
-				mPlayerRef->SetRotation(mPlayerStart->GetTransformComponent().GetRotation());
-				mPlayerRef->SetSize(mPlayerStart->GetTransformComponent().GetSize());
-				mPlayerStart->SetActive(ActorState::Paused);
-			}
-			else
-			{
-				mPlayerRef->SetPosition(Vector3D(0));
-				mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
-				mPlayerRef->SetSize(Vector3D(1));
-			}
-			mPlayerRef->AddTag("Player");
-			auto rb = mPlayerRef->GetRigidBody();
-			if (rb)
-			{
-				rb->ForceSyncFromActor();
-			}
+			actor->Start();
 		}
 	}
-	else
+
+	void Scene::PostStart()
 	{
-		mPlayerRef = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab("CameraActor");
-		mPlayerRef->SetPosition(Vector3D(0));
-		mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
-		mPlayerRef->SetSize(Vector3D(1));
+		std::string fullPath = mFilePath;
+
+		std::ifstream file(fullPath);
+
+		if (!file.is_open())
+		{
+			ZP_CORE_ERROR("Impossible to open the game map file : " + fullPath);
+		}
+
+		std::stringstream buffer;
+		buffer << file.rdbuf();
+		std::string jsonContent = buffer.str();
+
+		rapidjson::Document doc;
+		doc.Parse(jsonContent.c_str());
+
+		if (doc.HasParseError()) {
+			ZP_CORE_ERROR("Parsing JSON failed !");
+			return;
+		}
+
+		if (doc.HasMember("player") && doc["player"].IsString())
+		{
+			mPlayerRef = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab(doc["player"].GetString());
+			if (mPlayerRef)
+			{
+				if (mPlayerStart)
+				{
+					mPlayerRef->SetPosition(mPlayerStart->GetTransformComponent().GetPosition());
+					mPlayerRef->SetRotation(mPlayerStart->GetTransformComponent().GetRotation());
+					mPlayerRef->SetSize(mPlayerStart->GetTransformComponent().GetSize());
+					mPlayerStart->SetActive(ActorState::Paused);
+				}
+				else
+				{
+					mPlayerRef->SetPosition(Vector3D(0));
+					mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
+					mPlayerRef->SetSize(Vector3D(1));
+				}
+				mPlayerRef->AddTag("Player");
+				auto rb = mPlayerRef->GetRigidBody();
+				if (rb)
+				{
+					rb->ForceSyncFromActor();
+				}
+			}
+		}
+		else
+		{
+			mPlayerRef = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab("CameraActor");
+			mPlayerRef->SetPosition(Vector3D(0));
+			mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
+			mPlayerRef->SetSize(Vector3D(1));
+		}
+		mPlayerRef->Start();
+		mCameraManager->OnPlay();
 	}
-	mPlayerRef->Start();
-	mCameraManager->OnPlay();
-}
 
-void Scene::Update(float pDetltaTime)
-{
-	mPhysicWorld->Update(pDetltaTime);
-	UpdateAllActors();
-}
-
-void Scene::Render()
-{
-	mCameraManager->RenderActiveCamera();
-	mRenderer->RenderActiveCamera(mCameraManager->GetActiveCamera());
-}
-
-void Scene::SetRenderer(Zephyrus::Render::IRenderer* pRenderer)
-{
-	mRenderer = pRenderer;
-}
-
-void Scene::BeginRender()
-{
-	mRenderer->BeginDraw();
-}
-
-void Scene::RenderCurrentSceneOnly()
-{
-	mRenderer->Draw();
-}
-
-void Scene::EndRender()
-{
-	mRenderer->EndDraw();
-}
-
-void Scene::Unload()
-{
-	while (!mAllActors.empty()) {
-		mAllActors.back()->Destroy();
-		delete mAllActors.back();
-		mAllActors.pop_back();
-	}
-	while (!mPendingActors.empty()) {
-		mPendingActors.back()->Destroy();
-		delete mPendingActors.back();
-		mAllActors.pop_back();
-	}
-	mActors.clear();
-	InputManager::Instance().Unload();
-	mRenderer->Unload();
-	AssetsManager::Clear();
-	mCameraManager->Unload();
-	delete mCameraManager;
-	mCameraManager = nullptr;
-	delete mDebugRenderer;
-	mDebugRenderer = nullptr;
-	delete mPhysicWorld;
-	mPhysicWorld = nullptr;
-}
-
-void Scene::Close()
-{
-	while (!mAllActors.empty()) {
-		mAllActors.back()->Destroy();
-		delete mAllActors.back();
-		mAllActors.pop_back();
-	}
-	while (!mPendingActors.empty()) {
-		mPendingActors.back()->Destroy();
-		delete mPendingActors.back();
-		mAllActors.pop_back();
-	}
-	mActors.clear();
-	InputManager::Instance().Unload();
-	mRenderer->Unload();
-	mCameraManager->Unload();
-	delete mCameraManager;
-	mCameraManager = nullptr;
-	delete mDebugRenderer;
-	mDebugRenderer = nullptr;
-	delete mPhysicWorld;
-	mPhysicWorld = nullptr;
-}
-
-void Scene::SaveTo(const std::string& pFilePath)
-{
-	auto writer = Serialization::Json::JsonWriter();
-
-	std::string playerPrefab = "CameraActor";
-
-	if (mPlayerStart)
+	void Scene::Update(float pDetltaTime)
 	{
-		playerPrefab = mPlayerStart->GetComponentOfType<Zephyrus::ActorComponent::PlayerStartComponent>()->GetPlayerPrefabName();
+		mPhysicWorld->Update(pDetltaTime);
+		UpdateAllActors();
 	}
 
-	writer.WriteString("player", playerPrefab);
-
-	writer.BeginArray("actors");
-	for (auto& actor : mAllActors)
+	void Scene::Render()
 	{
-		actor->Serialize(writer);
+		mCameraManager->RenderActiveCamera();
+		mRenderer->RenderActiveCamera(mCameraManager->GetActiveCamera());
 	}
-	writer.EndArray();
 
-	writer.SaveDocument(pFilePath);
-	mSaved = true;
-}
+	void Scene::SetRenderer(Zephyrus::Render::IRenderer* pRenderer)
+	{
+		mRenderer = pRenderer;
+	}
 
-void Scene::SetPlayerStart(Actor* pPlayerStart)
-{
-	mPlayerStart = pPlayerStart;
-}
+	void Scene::BeginRender()
+	{
+		mRenderer->BeginDraw();
+	}
 
-void Scene::SetFilePath(const std::string& pFilePath)
-{
-	mFilePath = pFilePath;
-}
+	void Scene::RenderCurrentSceneOnly()
+	{
+		mRenderer->Draw();
+	}
 
-void Scene::SaveScene()
-{
-	if (!mFilePath.empty())
+	void Scene::EndRender()
+	{
+		mRenderer->EndDraw();
+	}
+
+	void Scene::Unload()
+	{
+		while (!mAllActors.empty()) {
+			mAllActors.back()->Destroy();
+			delete mAllActors.back();
+			mAllActors.pop_back();
+		}
+		while (!mPendingActors.empty()) {
+			mPendingActors.back()->Destroy();
+			delete mPendingActors.back();
+			mAllActors.pop_back();
+		}
+		mActors.clear();
+		InputManager::Instance().Unload();
+		mRenderer->Unload();
+		AssetsManager::Clear();
+		mCameraManager->Unload();
+		delete mCameraManager;
+		mCameraManager = nullptr;
+		delete mDebugRenderer;
+		mDebugRenderer = nullptr;
+		delete mPhysicWorld;
+		mPhysicWorld = nullptr;
+	}
+
+	void Scene::Close()
+	{
+		while (!mAllActors.empty()) {
+			mAllActors.back()->Destroy();
+			delete mAllActors.back();
+			mAllActors.pop_back();
+		}
+		while (!mPendingActors.empty()) {
+			mPendingActors.back()->Destroy();
+			delete mPendingActors.back();
+			mAllActors.pop_back();
+		}
+		mActors.clear();
+		InputManager::Instance().Unload();
+		mRenderer->Unload();
+		mCameraManager->Unload();
+		delete mCameraManager;
+		mCameraManager = nullptr;
+		delete mDebugRenderer;
+		mDebugRenderer = nullptr;
+		delete mPhysicWorld;
+		mPhysicWorld = nullptr;
+	}
+
+	void Scene::SaveTo(const std::string& pFilePath)
 	{
 		auto writer = Serialization::Json::JsonWriter();
 
@@ -225,98 +190,135 @@ void Scene::SaveScene()
 		}
 		writer.EndArray();
 
-		writer.SaveDocument(mFilePath);
+		writer.SaveDocument(pFilePath);
 		mSaved = true;
 	}
-}
 
-void Scene::AddActor(Actor* pActor)
-{
-	pActor->AttachScene(*this);
-	if (mIsUpdatingActor) 
-	{ 
-		mPendingActors.emplace_back(pActor); 
-	}
-	else
+	void Scene::SetPlayerStart(Actor* pPlayerStart)
 	{
-		mAllActors.emplace_back(pActor);
-		if (mActors.find(pActor->GetUUID()) == mActors.end() && pActor->GetUUID() != "")
+		mPlayerStart = pPlayerStart;
+	}
+
+	void Scene::SetFilePath(const std::string& pFilePath)
+	{
+		mFilePath = pFilePath;
+	}
+
+	void Scene::SaveScene()
+	{
+		if (!mFilePath.empty())
 		{
-			mActors[pActor->GetUUID()] = pActor;
+			auto writer = Serialization::Json::JsonWriter();
+
+			std::string playerPrefab = "CameraActor";
+
+			if (mPlayerStart)
+			{
+				playerPrefab = mPlayerStart->GetComponentOfType<Zephyrus::ActorComponent::PlayerStartComponent>()->GetPlayerPrefabName();
+			}
+
+			writer.WriteString("player", playerPrefab);
+
+			writer.BeginArray("actors");
+			for (auto& actor : mAllActors)
+			{
+				actor->Serialize(writer);
+			}
+			writer.EndArray();
+
+			writer.SaveDocument(mFilePath);
+			mSaved = true;
 		}
 	}
-}
 
-void Scene::UpdateAllActors()
-{
-	if (!SceneManager::mIsSceneLoaded)
+	void Scene::AddActor(Actor* pActor)
 	{
-		return;
+		pActor->AttachScene(*this);
+		if (mIsUpdatingActor)
+		{
+			mPendingActors.emplace_back(pActor);
+		}
+		else
+		{
+			mAllActors.emplace_back(pActor);
+			if (mActors.find(pActor->GetUUID()) == mActors.end() && pActor->GetUUID() != "")
+			{
+				mActors[pActor->GetUUID()] = pActor;
+			}
+		}
 	}
-	mIsUpdatingActor = true;
-	for (auto& actor : mAllActors)
+
+	void Scene::UpdateAllActors()
 	{
 		if (!SceneManager::mIsSceneLoaded)
 		{
 			return;
 		}
-		actor->Update();
-	}
-	mIsUpdatingActor = false;
-	for (Actor* actor : mPendingActors)
-	{
-		if (!SceneManager::mIsSceneLoaded)
-		{
-			return;
-		}
-		AddActor(actor);
-	}
-	mPendingActors.clear();
-	for (auto& actor : mAllActors)
-	{
-		if (actor->GetState() == ActorState::Dead)
+		mIsUpdatingActor = true;
+		for (auto& actor : mAllActors)
 		{
 			if (!SceneManager::mIsSceneLoaded)
 			{
 				return;
 			}
-			RemoveActor(actor);
+			actor->Update();
+		}
+		mIsUpdatingActor = false;
+		for (Actor* actor : mPendingActors)
+		{
+			if (!SceneManager::mIsSceneLoaded)
+			{
+				return;
+			}
+			AddActor(actor);
+		}
+		mPendingActors.clear();
+		for (auto& actor : mAllActors)
+		{
+			if (actor->GetState() == ActorState::Dead)
+			{
+				if (!SceneManager::mIsSceneLoaded)
+				{
+					return;
+				}
+				RemoveActor(actor);
+			}
 		}
 	}
-}
 
-void Scene::RemoveActor(Actor* pActor)
-{
-	RemoveActorWithID(pActor->GetUUID());
-	std::vector<Actor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), pActor);
-	if (it != mPendingActors.end())
+	void Scene::RemoveActor(Actor* pActor)
 	{
-		iter_swap(it, mPendingActors.end() - 1);
-		mPendingActors.pop_back();
+		RemoveActorWithID(pActor->GetUUID());
+		std::vector<Actor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), pActor);
+		if (it != mPendingActors.end())
+		{
+			iter_swap(it, mPendingActors.end() - 1);
+			mPendingActors.pop_back();
+		}
+		it = find(mAllActors.begin(), mAllActors.end(), pActor);
+		if (it != mAllActors.end())
+		{
+			iter_swap(it, mAllActors.end() - 1);
+			mAllActors.pop_back();
+		}
 	}
-	it = find(mAllActors.begin(), mAllActors.end(), pActor);
-	if (it != mAllActors.end())
-	{
-		iter_swap(it, mAllActors.end() - 1);
-		mAllActors.pop_back(); 
-	}
-}
 
-void Scene::RemoveActorWithID(const std::string& pId)
-{
-	auto it = mActors.find(pId);
-	if (it != mActors.end())
+	void Scene::RemoveActorWithID(const std::string& pId)
 	{
-		mActors.erase(it);
+		auto it = mActors.find(pId);
+		if (it != mActors.end())
+		{
+			mActors.erase(it);
+		}
 	}
-}
 
-Actor* Scene::GetActorWithID(const std::string& pID)
-{
-	auto it = mActors.find(pID);
-	if (it != mActors.end())
+	Actor* Scene::GetActorWithID(const std::string& pID)
 	{
-		return it->second;
+		auto it = mActors.find(pID);
+		if (it != mActors.end())
+		{
+			return it->second;
+		}
+		return nullptr;
 	}
-	return nullptr;
 }

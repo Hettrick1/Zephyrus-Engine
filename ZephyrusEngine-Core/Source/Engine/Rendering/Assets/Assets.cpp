@@ -24,7 +24,7 @@ namespace Zephyrus::Assets {
 	Texture* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
 	{
 		if (mTextures.find(pName) == mTextures.end()) {
-			mTextures[pName] = LoadTextureFromFile(*SceneManager::ActiveScene->GetRenderer(), GetFullPath(pFilePath, AssetType::Texture));
+			mTextures[pName] = LoadTextureFromFile(*Zephyrus::Scenes::SceneManager::ActiveScene->GetRenderer(), GetFullPath(pFilePath, AssetType::Texture));
 			return &mTextures[pName];
 		}
 		return &mTextures[pName];

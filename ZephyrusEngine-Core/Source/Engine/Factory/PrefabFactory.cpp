@@ -64,7 +64,7 @@ namespace Zephyrus::Factory {
         actor->SetRotation(Quaternion(pInitialRot));
         actor->SetSize(pInitialSize);
 
-        SceneManager::ActiveScene->AddActor(actor);
+        Zephyrus::Scenes::SceneManager::ActiveScene->AddActor(actor);
         return actor;
     }
 

@@ -51,7 +51,7 @@ namespace Zephyrus::ActorComponent
 			BooleanActions* Triggeredaction = static_cast<BooleanActions*>(action);
 			if (Triggeredaction && Triggeredaction->GetName() == "Play")
 			{
-				SceneManager::LoadSceneWithFile("../Content/Maps/LevelDoom.zpmap");
+				Zephyrus::Scenes::SceneManager::LoadSceneWithFile("../Content/Maps/LevelDoom.zpmap");
 			}
 		}
 	}

@@ -10,7 +10,7 @@
 namespace Zephyrus::ActorComponent
 {
     Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation, std::string pName) :
-        mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
+        mName(pName), mState(ActorState::Active), mScene(*Zephyrus::Scenes::SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
     {
         mTransformComponent.SetPosition(pPosition);
         mTransformComponent.SetSize(pSize);
@@ -19,7 +19,7 @@ namespace Zephyrus::ActorComponent
     }
 
     Actor::Actor(const std::string& pName, const std::string& pPrefab)
-        : mName(pName), mState(ActorState::Active), mScene(*SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false), mPrefab(pPrefab)
+        : mName(pName), mState(ActorState::Active), mScene(*Zephyrus::Scenes::SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false), mPrefab(pPrefab)
     {
         mTransformComponent.SetPosition(0);
         mTransformComponent.SetSize(1);

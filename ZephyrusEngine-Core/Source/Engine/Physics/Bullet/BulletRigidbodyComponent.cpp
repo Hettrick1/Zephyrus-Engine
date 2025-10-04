@@ -139,7 +139,7 @@ namespace Zephyrus::ActorComponent {
         local.setRotation(collider->GetRelativeTransform().GetRotation().ToBulletQuat());
         local.setOrigin(collider->GetRelativeTransform().GetTranslation().ToBulletVec3());
 
-        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld();
         world->RemoveRigidbody(this);
 
         mCompound->addChildShape(local, collider->GetShape());
@@ -154,7 +154,7 @@ namespace Zephyrus::ActorComponent {
     {
         if (!collider || !mCompound) return;
 
-        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld();
 
         world->RemoveRigidbody(this);
 
@@ -179,7 +179,7 @@ namespace Zephyrus::ActorComponent {
     {
         if (mRigidBody)
         {
-            SceneManager::ActiveScene->GetPhysicWorld()->RemoveRigidbody(this);
+            Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->RemoveRigidbody(this);
             delete mRigidBody->getMotionState();
             delete mRigidBody;
             mRigidBody = nullptr;
@@ -354,7 +354,7 @@ namespace Zephyrus::ActorComponent {
         mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
         mRigidBody->setUserPointer(mOwner);
 
-        SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
+        Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
     }
 
     void BulletRigidbodyComponent::UpdateColliderShape(BulletColliderComponent* collider, btCollisionShape* oldShape)
@@ -431,7 +431,7 @@ namespace Zephyrus::ActorComponent {
         }
         if (mRigidBody)
         {
-            if (SceneManager::ActiveScene && SceneManager::ActiveScene->GetPhysicWorld())
+            if (Zephyrus::Scenes::SceneManager::ActiveScene && Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld())
             {
                 Rebuild();
             }

@@ -66,9 +66,9 @@ namespace Zephyrus::Application {
         mRenderer = new Zephyrus::Render::RendererOpenGl();
         if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow)) {
 #ifdef _DEBUG
-            SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer);
+            Zephyrus::Scenes::SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer);
 #else
-            SceneManager::LoadSplashScreen(new SplashScreen(mStartUpScene), mRenderer);
+            Zephyrus::Scenes::SceneManager::LoadSplashScreen(new SplashScreen(mStartUpScene), mRenderer);
 #endif
             Loop();
         }
@@ -89,12 +89,12 @@ namespace Zephyrus::Application {
 
     void Game::Update()
     {
-        SceneManager::Update(Timer::deltaTime);
+        Zephyrus::Scenes::SceneManager::Update(Timer::deltaTime);
     }
 
     void Game::Render()
     {
-        SceneManager::RenderAll();
+        Zephyrus::Scenes::SceneManager::RenderAll();
     }
 
     void Game::Input()
@@ -118,7 +118,7 @@ namespace Zephyrus::Application {
 
     void Game::Close()
     {
-        SceneManager::Unload();
+        Zephyrus::Scenes::SceneManager::Unload();
         mGameWindow->Close();
         Zephyrus::Debug::Log::Shutdown();
     }

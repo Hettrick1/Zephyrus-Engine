@@ -2,6 +2,8 @@
 #include "SceneManager.h"
 #include "ICollisionListener.h"
 
+using Zephyrus::Scenes::SceneManager;
+
 namespace Zephyrus::ActorComponent {
     BulletColliderComponent::BulletColliderComponent(Actor* pOwner, const std::string& pName)
         : Component(pOwner, pName)

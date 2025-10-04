@@ -85,7 +85,7 @@ namespace Zephyrus::Inputs {
         }
         for (auto it = mActionKeyBindings.begin(); it != mActionKeyBindings.end(); ++it)
         {
-            if (!SceneManager::mIsSceneLoaded)
+            if (!Zephyrus::Scenes::SceneManager::mIsSceneLoaded)
             {
                 return;
             }
@@ -94,7 +94,7 @@ namespace Zephyrus::Inputs {
             for (auto* action : actions)
             {
                 action->Update();
-                if (!SceneManager::mIsSceneLoaded)
+                if (!Zephyrus::Scenes::SceneManager::mIsSceneLoaded)
                 {
                     return;
                 }
@@ -103,7 +103,7 @@ namespace Zephyrus::Inputs {
         for (InputActions* action : mActionMouseBindings)
         {
             action->Update();
-            if (!SceneManager::mIsSceneLoaded)
+            if (!Zephyrus::Scenes::SceneManager::mIsSceneLoaded)
             {
                 return;
             }

@@ -125,12 +125,12 @@ void EditorApplication::InitializePanels()
 
 void EditorApplication::Loop()
 {
-    SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer, false);
-    SceneManager::mIsSceneLoaded = true;
+    Zephyrus::Scenes::SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer, false);
+    Zephyrus::Scenes::SceneManager::mIsSceneLoaded = true;
 
     mRenderer->GetHud()->Unload();
 
-    SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);
+    Zephyrus::Scenes::SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);
 
     while (mIsRunning) {
         Timer::ComputeDeltaTime();
@@ -178,7 +178,7 @@ void EditorApplication::Update()
             mEditorController->GetComponentOfType<Zephyrus::ActorComponent::EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
         }
     }
-    auto world = SceneManager::ActiveScene->GetPhysicWorld();
+    auto world = Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld();
     world->Update(0);
 }
 
@@ -197,7 +197,7 @@ void EditorApplication::Render()
         }
     }
     mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->RenderScene();
-    SceneManager::ActiveScene->EndRender();
+    Zephyrus::Scenes::SceneManager::ActiveScene->EndRender();
 
     RenderImgui();
 }
@@ -389,7 +389,7 @@ void EditorApplication::Close()
     mAllPanels.clear();
     mEditorController->Destroy();
     delete mEditorController;
-    SceneManager::Unload();
+    Zephyrus::Scenes::SceneManager::Unload();
     mGameWindow->Close();
     EventSystem::ClearAllEvents();
 }

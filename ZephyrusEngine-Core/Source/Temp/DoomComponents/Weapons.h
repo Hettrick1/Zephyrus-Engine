@@ -1,7 +1,10 @@
 #pragma once
 
-enum class Weapons
+namespace Zephyrus::ActorComponent
 {
-	Gun,
-	Shotgun
-};
+	enum class Weapons
+	{
+		Gun,
+		Shotgun
+	};
+}

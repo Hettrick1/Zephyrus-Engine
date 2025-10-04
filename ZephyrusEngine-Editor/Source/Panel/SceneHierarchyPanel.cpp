@@ -24,7 +24,7 @@ void SceneHierarchyPanel::Draw()
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
 
-	auto actors = SceneManager::ActiveScene->GetAllActors();
+	auto actors = Zephyrus::Scenes::SceneManager::ActiveScene->GetAllActors();
 
 	for (int i = 0; i < actors.size(); i++)
 	{
@@ -57,9 +57,9 @@ void SceneHierarchyPanel::Draw()
 		if (ImGui::IsKeyPressed(ImGuiKey_Delete))
 		{
 			mSelectedActor->Destroy();
-			SceneManager::ActiveScene->RemoveActor(mSelectedActor);
+			Zephyrus::Scenes::SceneManager::ActiveScene->RemoveActor(mSelectedActor);
 			delete mSelectedActor;
-			actors = SceneManager::ActiveScene->GetAllActors();
+			actors = Zephyrus::Scenes::SceneManager::ActiveScene->GetAllActors();
 			if (selected >= actors.size())
 			{
 				selected = actors.size() - 1;
@@ -75,7 +75,7 @@ void SceneHierarchyPanel::Draw()
 
 void SceneHierarchyPanel::ResetSelectedActor()
 {
-	auto actors = SceneManager::ActiveScene->GetAllActors();
+	auto actors = Zephyrus::Scenes::SceneManager::ActiveScene->GetAllActors();
 	if(actors.size() > 0)
 	{
 		mSelectedActor = actors[0];
