@@ -2,7 +2,6 @@
 #include <cmath>
 #include <string>
 #include "Vector2D.h"
-#include "btBulletDynamicsCommon.h"
 
 struct Vector3D
 {
@@ -10,7 +9,7 @@ struct Vector3D
 	Vector3D() :x(0.0), y(0.0), z(0.0){}
 	Vector3D(float pX, float pY, float pZ) : x(pX), y(pY), z(pZ){}
 	Vector3D(float size) : x(size), y(size), z(size){}
-	Vector3D(const btVector3& vec) : x(vec.x()), y(vec.y()), z(vec.z()) {}
+	//Vector3D(const btVector3& vec) : x(vec.x()), y(vec.y()), z(vec.z()) {}
 
 	void Set(float xP, float yP, float zP);
 	float LengthSq() const;
@@ -22,10 +21,10 @@ struct Vector3D
 		return reinterpret_cast<const float*>(&x);
 	}
 
-	btVector3 ToBulletVec3() const
+	/*btVector3 ToBulletVec3() const
 	{
 		return btVector3(x, y, z);
-	}
+	}*/
 
 	// Vector addition (a + b)
 	friend Vector3D operator+(const Vector3D& a, const Vector3D& b)

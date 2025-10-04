@@ -136,8 +136,8 @@ namespace Zephyrus::ActorComponent {
         }
 
         btTransform local;
-        local.setRotation(collider->GetRelativeTransform().GetRotation().ToBulletQuat());
-        local.setOrigin(collider->GetRelativeTransform().GetTranslation().ToBulletVec3());
+        local.setRotation(Zephyrus::Physics::ToBtQuat(collider->GetRelativeTransform().GetRotation()));
+        local.setOrigin(Zephyrus::Physics::ToBtVec3(collider->GetRelativeTransform().GetTranslation()));
 
         auto world = Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld();
         world->RemoveRigidbody(this);
@@ -207,7 +207,7 @@ namespace Zephyrus::ActorComponent {
         }
         if (mRigidBody)
         {
-            mRigidBody->applyCentralForce(force.ToBulletVec3());
+            mRigidBody->applyCentralForce(Zephyrus::Physics::ToBtVec3(force));
         }
     }
 
@@ -219,7 +219,7 @@ namespace Zephyrus::ActorComponent {
         }
         if (mRigidBody)
         {
-            mRigidBody->applyCentralImpulse(impulse.ToBulletVec3());
+            mRigidBody->applyCentralImpulse(Zephyrus::Physics::ToBtVec3(impulse));
         }
     }
 
@@ -231,7 +231,7 @@ namespace Zephyrus::ActorComponent {
         }
         if (mRigidBody)
         {
-            mRigidBody->applyTorque(torque.ToBulletVec3());
+            mRigidBody->applyTorque(Zephyrus::Physics::ToBtVec3(torque));
         }
     }
 
@@ -243,7 +243,7 @@ namespace Zephyrus::ActorComponent {
         }
         if (mRigidBody)
         {
-            mRigidBody->applyTorqueImpulse(impulse.ToBulletVec3());
+            mRigidBody->applyTorqueImpulse(Zephyrus::Physics::ToBtVec3(impulse));
         }
     }
 
@@ -256,8 +256,8 @@ namespace Zephyrus::ActorComponent {
         btVector3 pos = trans.getOrigin();
         btQuaternion rot = trans.getRotation();
 
-        mOwner->SetPosition(Vector3D(pos));
-        mOwner->SetRotation(Quaternion(rot.x(), rot.y(), rot.z(), rot.w()));
+        mOwner->SetPosition(Zephyrus::Physics::FromBtVec3(pos));
+        mOwner->SetRotation(Zephyrus::Physics::FromBtQuat(rot));
     }
 
     void BulletRigidbodyComponent::SyncTransformFromWorld()
@@ -266,8 +266,8 @@ namespace Zephyrus::ActorComponent {
         if (mType == BodyType::Kinematic || mType == BodyType::Static)
         {
             btTransform trans;
-            trans.setOrigin(mOwner->GetPosition().ToBulletVec3());
-            trans.setRotation(mOwner->GetTransformComponent().GetRotation().ToBulletQuat());
+            trans.setOrigin(Zephyrus::Physics::ToBtVec3(mOwner->GetPosition()));
+            trans.setRotation(Zephyrus::Physics::ToBtQuat(mOwner->GetTransformComponent().GetRotation()));
 
             mRigidBody->setWorldTransform(trans);
 
@@ -283,8 +283,8 @@ namespace Zephyrus::ActorComponent {
         if (!mRigidBody) return;
 
         btTransform trans;
-        trans.setOrigin(mOwner->GetPosition().ToBulletVec3());
-        trans.setRotation(mOwner->GetTransformComponent().GetRotation().ToBulletQuat());
+        trans.setOrigin(Zephyrus::Physics::ToBtVec3(mOwner->GetPosition()));
+        trans.setRotation(Zephyrus::Physics::ToBtQuat(mOwner->GetTransformComponent().GetRotation()));
 
         mRigidBody->setWorldTransform(trans);
 
@@ -313,8 +313,8 @@ namespace Zephyrus::ActorComponent {
         if (childIndex < 0) return;
 
         btTransform local;
-        local.setRotation(collider->GetRelativeTransform().GetRotation().ToBulletQuat());
-        local.setOrigin(collider->GetRelativeTransform().GetTranslation().ToBulletVec3());
+        local.setRotation(Zephyrus::Physics::ToBtQuat(collider->GetRelativeTransform().GetRotation()));
+        local.setOrigin(Zephyrus::Physics::ToBtVec3(collider->GetRelativeTransform().GetTranslation()));
 
         mCompound->updateChildTransform(childIndex, local, true);
     }
@@ -350,8 +350,8 @@ namespace Zephyrus::ActorComponent {
 
         mRigidBody->setRestitution(mRestitution);
         mRigidBody->setFriction(mFriction);
-        mRigidBody->setLinearFactor(mLockAxes.ToBulletVec3());
-        mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
+        mRigidBody->setLinearFactor(Zephyrus::Physics::ToBtVec3(mLockAxes));
+        mRigidBody->setAngularFactor(Zephyrus::Physics::ToBtVec3(mLockAngles));
         mRigidBody->setUserPointer(mOwner);
 
         Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
@@ -369,8 +369,8 @@ namespace Zephyrus::ActorComponent {
         if (collider->GetShape() && !collider->GetIsQuery())
         {
             btTransform local;
-            local.setRotation(collider->GetRelativeTransform().GetRotation().ToBulletQuat());
-            local.setOrigin(collider->GetRelativeTransform().GetTranslation().ToBulletVec3());
+            local.setRotation(Zephyrus::Physics::ToBtQuat(collider->GetRelativeTransform().GetRotation()));
+            local.setOrigin(Zephyrus::Physics::ToBtVec3(collider->GetRelativeTransform().GetTranslation()));
             mCompound->addChildShape(local, collider->GetShape());
         }
 
@@ -446,8 +446,8 @@ namespace Zephyrus::ActorComponent {
                 btCollisionShape* shape = col->GetShape();
                 if (!shape) continue;
                 btTransform local;
-                local.setRotation(col->GetRelativeTransform().GetRotation().ToBulletQuat());
-                local.setOrigin(col->GetRelativeTransform().GetTranslation().ToBulletVec3());
+                local.setRotation(Zephyrus::Physics::ToBtQuat(col->GetRelativeTransform().GetRotation()));
+                local.setOrigin(Zephyrus::Physics::ToBtVec3(col->GetRelativeTransform().GetTranslation()));
                 mCompound->addChildShape(local, shape);
             }
         }

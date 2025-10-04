@@ -3,6 +3,8 @@
 #include <btBulletDynamicsCommon.h>
 #include "BulletColliderComponent.h"
 
+#include "bulletConversion.h"
+
 #include <string>
 namespace Zephyrus::ActorComponent {
     enum class BodyType
@@ -69,7 +71,7 @@ namespace Zephyrus::ActorComponent {
             if (mLockAxes != pLockAxes)
             {
                 mLockAxes = pLockAxes;
-                mRigidBody->setLinearFactor(mLockAxes.ToBulletVec3());
+                mRigidBody->setLinearFactor(Zephyrus::Physics::ToBtVec3(mLockAxes));
             }
         }
         inline void LockAngle(const Vector3D& pLockAngle)
@@ -77,7 +79,7 @@ namespace Zephyrus::ActorComponent {
             if (mLockAngles != pLockAngle)
             {
                 mLockAngles = pLockAngle;
-                mRigidBody->setAngularFactor(mLockAngles.ToBulletVec3());
+                mRigidBody->setAngularFactor(Zephyrus::Physics::ToBtVec3(mLockAngles));
             }
         }
 
@@ -111,7 +113,7 @@ namespace Zephyrus::ActorComponent {
         {
             if (mRigidBody)
             {
-                mRigidBody->setAngularVelocity(pAngularVelocity.ToBulletVec3());
+                mRigidBody->setAngularVelocity(Zephyrus::Physics::ToBtVec3(pAngularVelocity));
             }
         }
 
@@ -129,7 +131,7 @@ namespace Zephyrus::ActorComponent {
         {
             if (mRigidBody)
             {
-                mRigidBody->setLinearVelocity(pVelocity.ToBulletVec3());
+                mRigidBody->setLinearVelocity(Zephyrus::Physics::ToBtVec3(pVelocity));
             }
         }
 
@@ -138,8 +140,8 @@ namespace Zephyrus::ActorComponent {
             if (mRigidBody)
             {
                 btTransform transform;
-                transform.setOrigin(pPosition.ToBulletVec3());
-                transform.setRotation(pRotation.ToBulletQuat());
+                transform.setOrigin(Zephyrus::Physics::ToBtVec3(pPosition));
+                transform.setRotation(Zephyrus::Physics::ToBtQuat(pRotation));
 
                 mRigidBody->setWorldTransform(transform);
             }

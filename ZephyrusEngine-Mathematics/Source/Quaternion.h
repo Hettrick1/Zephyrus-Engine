@@ -2,7 +2,6 @@
 
 #include "Maths.h"
 #include "Vector3D.h"
-#include "btBulletDynamicsCommon.h"
 
 class Quaternion
 {
@@ -27,10 +26,10 @@ public:
 	explicit Quaternion(const Vector3D& axis, float angle);
 	explicit Quaternion(const Vector3D& axis);
 
-	btQuaternion ToBulletQuat() const
+	/*btQuaternion ToBulletQuat() const
 	{
 		return btQuaternion(x, y, z, w);
-	}
+	}*/
 
 	friend Vector3D operator*(const Quaternion& q, const Vector3D& v)
 	{

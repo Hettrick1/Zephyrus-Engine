@@ -1,5 +1,6 @@
 #include "Matrix4D.h"
 
+
 static array<float,16> m4Ident =
 {
 	1.0f, 0.0f, 0.0f, 0.0f,

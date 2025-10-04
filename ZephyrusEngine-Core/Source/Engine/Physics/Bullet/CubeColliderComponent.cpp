@@ -8,7 +8,7 @@ namespace Zephyrus::ActorComponent {
     CubeColliderComponent::CubeColliderComponent(Actor* pOwner)
         : BulletColliderComponent(pOwner, "CubeColliderComponent")
     {
-        mShape = new btBoxShape(mHalfExtents.ToBulletVec3());
+        mShape = new btBoxShape(Zephyrus::Physics::ToBtVec3(mHalfExtents));
         mAppliedHalfExtents = mHalfExtents;
         if (!mIsActive)
         {
@@ -75,7 +75,7 @@ namespace Zephyrus::ActorComponent {
             if (mGhost)
             {
                 delete mShape;
-                mShape = new btBoxShape(mHalfExtents.ToBulletVec3());
+                mShape = new btBoxShape(Zephyrus::Physics::ToBtVec3(mHalfExtents));
                 RebuildCollider();
                 return;
             }
@@ -83,7 +83,7 @@ namespace Zephyrus::ActorComponent {
             {
                 btCollisionShape* oldShape = mShape;
 
-                mShape = new btBoxShape(mHalfExtents.ToBulletVec3());
+                mShape = new btBoxShape(Zephyrus::Physics::ToBtVec3(mHalfExtents));
 
                 if (auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>())
                 {

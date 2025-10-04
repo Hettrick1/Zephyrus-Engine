@@ -82,9 +82,9 @@ namespace Zephyrus::ActorComponent {
         mGhost->setCollisionShape(mShape);
 
         btTransform t;
-        t.setOrigin((mOwner->GetPosition() + mRelativePosition).ToBulletVec3());
+        t.setOrigin(Zephyrus::Physics::ToBtVec3(mOwner->GetPosition() + mRelativePosition));
         auto worldRot = mOwner->GetTransformComponent().GetRotation() * mRelativeRotation;
-        t.setRotation(worldRot.ToBulletQuat());
+        t.setRotation(Zephyrus::Physics::ToBtQuat(worldRot));
         mGhost->setWorldTransform(t);
 
         world->AddGhostObject(mGhost);
@@ -131,7 +131,7 @@ namespace Zephyrus::ActorComponent {
             btTransform t;
             auto actorRot = mOwner->GetTransformComponent().GetRotation();
             t.setRotation(btQuaternion(actorRot.x, actorRot.y, actorRot.z, actorRot.w));
-            t.setOrigin(mOwner->GetPosition().ToBulletVec3());
+            t.setOrigin(Zephyrus::Physics::ToBtVec3(mOwner->GetPosition()));
             mGhost->setWorldTransform(t);
 
             world->AddGhostObject(mGhost);
@@ -215,7 +215,7 @@ namespace Zephyrus::ActorComponent {
         if (mGhost)
         {
             btTransform t;
-            t.setOrigin((mOwner->GetPosition() + mRelativePosition).ToBulletVec3());
+            t.setOrigin(Zephyrus::Physics::ToBtVec3((mOwner->GetPosition() + mRelativePosition)));
             auto worldRot = mOwner->GetTransformComponent().GetRotation() * mRelativeRotation;
             t.setRotation(btQuaternion(worldRot.x, worldRot.y, worldRot.z, worldRot.w));
             mGhost->setWorldTransform(t);
@@ -256,7 +256,7 @@ namespace Zephyrus::ActorComponent {
             btTransform t;
             auto actorRot = mOwner->GetTransformComponent().GetRotation();
             t.setRotation(btQuaternion(actorRot.x, actorRot.y, actorRot.z, actorRot.w));
-            t.setOrigin(mOwner->GetPosition().ToBulletVec3());
+            t.setOrigin(Zephyrus::Physics::ToBtVec3(mOwner->GetPosition()));
             mGhost->setWorldTransform(t);
 
             world->AddGhostObject(mGhost);
@@ -313,7 +313,7 @@ namespace Zephyrus::ActorComponent {
                     btTransform t;
                     auto actorRot = mOwner->GetTransformComponent().GetRotation();
                     t.setRotation(btQuaternion(actorRot.x, actorRot.y, actorRot.z, actorRot.w));
-                    t.setOrigin(mOwner->GetPosition().ToBulletVec3());
+                    t.setOrigin(Zephyrus::Physics::ToBtVec3(mOwner->GetPosition()));
                     mGhost->setWorldTransform(t);
 
                     world->AddGhostObject(mGhost);

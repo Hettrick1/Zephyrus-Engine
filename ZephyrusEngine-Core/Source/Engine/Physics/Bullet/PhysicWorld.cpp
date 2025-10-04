@@ -117,8 +117,8 @@ namespace Zephyrus::Physics
 
         if (rayCallback.hasHit()) {
             pOutHit.HasHit = true;
-            pOutHit.HitPoint = Vector3D(rayCallback.m_hitPointWorld);
-            pOutHit.Normal = Vector3D(rayCallback.m_hitNormalWorld);
+            pOutHit.HitPoint = Zephyrus::Physics::FromBtVec3(rayCallback.m_hitPointWorld);
+            pOutHit.Normal = Zephyrus::Physics::FromBtVec3(rayCallback.m_hitNormalWorld);
 
             const btCollisionObject* hitObj = rayCallback.m_collisionObject;
             if (hitObj && hitObj->getUserPointer()) {
