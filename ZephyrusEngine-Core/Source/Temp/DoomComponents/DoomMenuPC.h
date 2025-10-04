@@ -25,8 +25,8 @@ namespace Zephyrus::ActorComponent
 	class DoomMenuPC : public IActionListener, public Component
 	{
 	private:
-		HudImage* mDoomMenu = nullptr;
-		HudText* mPressEnter = nullptr;
+		Zephyrus::UI::HudImage* mDoomMenu = nullptr;
+		Zephyrus::UI::HudText* mPressEnter = nullptr;
 		float mTimer = 0;
 	public:
 		DoomMenuPC(Actor* pOwner, int pUpdateOrder = 100);

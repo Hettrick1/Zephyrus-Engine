@@ -8,20 +8,22 @@
  * @brief Represents a HUD element that displays an image with optional tint and origin.
  * Allows setting the texture, position, size, origin, and tint color for rendering on the HUD.
  */
-class HudImage :
-    public HudElement
-{
-private:
-    Zephyrus::Assets::Texture mTexture;
-    float mWidth, mHeight;
-    Vector2D mOrigin;
-    Vector4D mTint;
-public:
-    HudImage(Zephyrus::Assets::Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize = 1, const Vector2D& pOrigin = 0);
-        
-    void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override; // Draws the image on the HUD using the given renderer.
+namespace Zephyrus::UI {
+    class HudImage :
+        public HudElement
+    {
+    private:
+        Zephyrus::Assets::Texture mTexture;
+        float mWidth, mHeight;
+        Vector2D mOrigin;
+        Vector4D mTint;
+    public:
+        HudImage(Zephyrus::Assets::Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize = 1, const Vector2D& pOrigin = 0);
 
-    void SetTexture(const Zephyrus::Assets::Texture& pTexture); // Sets the texture to display.
+        void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override; // Draws the image on the HUD using the given renderer.
 
-    void SetTint(const Vector4D& pColor); // Sets the tint color to apply to the image.
-};
+        void SetTexture(const Zephyrus::Assets::Texture& pTexture); // Sets the texture to display.
+
+        void SetTint(const Vector4D& pColor); // Sets the tint color to apply to the image.
+    };
+}

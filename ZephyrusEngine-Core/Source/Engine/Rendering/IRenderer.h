@@ -18,8 +18,10 @@ namespace Zephyrus::Assets
 {
 	class Texture;
 }
+namespace Zephyrus::UI {
+	class HudManager;
+}
 
-class HudManager;
 
 namespace Zephyrus::Physics
 {
@@ -37,6 +39,7 @@ using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
 using Zephyrus::Application::Window;
 using Zephyrus::Assets::Texture;
+using Zephyrus::UI::HudManager;
 
 namespace Zephyrus::Render {
 

@@ -36,10 +36,10 @@ namespace Zephyrus::ActorComponent
 	{
 		Component::OnStart();
 		Texture* damageIndicator = Zephyrus::Assets::AssetsManager::LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
-		mDoomMenu = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
+		mDoomMenu = new Zephyrus::UI::HudImage(*damageIndicator, Vector2D(0, 0), 2);
 		mDoomMenu->SetTint(Vector4D(1.0, 1.0, 1.0, 1.0));
 
-		mPressEnter = new HudText("Press Enter To Begin", Vector2D(0.0f, -800.0f), 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), TextAlignment::CENTER);
+		mPressEnter = new Zephyrus::UI::HudText("Press Enter To Begin", Vector2D(0.0f, -800.0f), 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), Zephyrus::UI::TextAlignment::CENTER);
 
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 	}

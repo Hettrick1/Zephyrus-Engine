@@ -10,31 +10,32 @@
  */
 
 using Zephyrus::Render::ShaderProgram;
+namespace Zephyrus::UI {
+    class HudText : public HudElement
+    {
+    private:
+        std::string mText;
+        float mScale = 0;
+        Vector4D mColor;
+        TextAlignment mAlignment;
+        Zephyrus::Assets::Font* mFont = nullptr;
+        ShaderProgram* mShaderProgram = nullptr;
+    public:
+        HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Zephyrus::Assets::Font* pFont = nullptr);
+        ~HudText();
 
-class HudText : public HudElement
-{
-private:
-    std::string mText;
-    float mScale = 0;
-    Vector4D mColor;
-    TextAlignment mAlignment;
-    Zephyrus::Assets::Font* mFont = nullptr;
-    ShaderProgram* mShaderProgram = nullptr;
-public:
-    HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Zephyrus::Assets::Font* pFont = nullptr);
-    ~HudText();
+        // Draws the text on the HUD using the specified renderer.
+        void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override;
 
-    // Draws the text on the HUD using the specified renderer.
-    void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override;
+        // Sets the text to display.
+        void SetText(std::string pText);
 
-    // Sets the text to display.
-    void SetText(std::string pText);
+        // Sets the color of the text.
+        void SetColor(Vector4D pColor);
 
-    // Sets the color of the text.
-    void SetColor(Vector4D pColor);
+        inline Vector4D GetColor() const { return mColor; }
 
-    inline Vector4D GetColor() const { return mColor; }
-
-    // Sets the shader program used for rendering the text.
-    void SetShaderProgram(ShaderProgram* pShaderProgram);
-};
+        // Sets the shader program used for rendering the text.
+        void SetShaderProgram(ShaderProgram* pShaderProgram);
+    };
+}

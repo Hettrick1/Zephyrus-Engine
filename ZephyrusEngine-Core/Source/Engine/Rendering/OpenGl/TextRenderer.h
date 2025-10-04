@@ -14,6 +14,7 @@
  * It manages text drawing, alignment, and font handling.
  */
 using Zephyrus::Application::Window;
+using Zephyrus::UI::TextAlignment;
 
 namespace Zephyrus::Render {
     class TextRenderer

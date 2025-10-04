@@ -10,7 +10,11 @@ namespace Zephyrus::Assets
 {
 	class Texture;
 }
-Zephyrus::Assets::Texture;
+using Zephyrus::Assets::Texture;
+
+using Zephyrus::UI::HudText;
+using Zephyrus::UI::HudImage;
+using Zephyrus::UI::TextAlignment;
 
 namespace Zephyrus::ActorComponent
 {

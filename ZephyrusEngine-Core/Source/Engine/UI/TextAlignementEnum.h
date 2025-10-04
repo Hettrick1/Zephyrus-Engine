@@ -1,8 +1,10 @@
 #pragma once
 
-enum class TextAlignment
-{
-    LEFT,
-    CENTER,
-    RIGHT
-};
+namespace Zephyrus::UI {
+    enum class TextAlignment
+    {
+        LEFT,
+        CENTER,
+        RIGHT
+    };
+}

@@ -7,8 +7,8 @@
 class SplashScreen : public Scene
 {
 private:
-	HudText* mZephyrusText;
-	HudText* mStudioText;
+	Zephyrus::UI::HudText* mZephyrusText;
+	Zephyrus::UI::HudText* mStudioText;
 	std::string mNextScene;
 	float mTime;
 public:
