@@ -1,10 +1,19 @@
 #pragma once
 #include "Scene.h"
 
+namespace Zephyrus::Scenes {
+	class Scene;
+}
+
+using Zephyrus::Scenes::Scene;
+
 namespace Zephyrus::Factory {
 	class SceneFactory
 	{
+	private:
 	public:
-		static bool PopulateSceneFromFile(const std::string& pFilePath);
+		SceneFactory() = default;
+		~SceneFactory() = default;
+		bool PopulateSceneFromFile(Scene* pSceneRef, const std::string& pFilePath);
 	};
 }

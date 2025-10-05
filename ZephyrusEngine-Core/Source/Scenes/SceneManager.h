@@ -2,6 +2,17 @@
 #include <vector>
 #include "Scene.h"
 
+namespace Zephyrus::Factory
+{
+	class ComponentFactory;
+	class PrefabFactory;
+	class SceneFactory;
+}
+
+using Zephyrus::Factory::ComponentFactory;
+using Zephyrus::Factory::PrefabFactory;
+using Zephyrus::Factory::SceneFactory;
+
 /**
  * @brief Manages the current scene, including loading, starting, updating, rendering, and unloading scenes.
  * Provides static methods to control the active scene in the editor or engine.
@@ -10,6 +21,11 @@ namespace Zephyrus::Scenes {
 	class SceneManager
 	{
 	public:
+
+		static ComponentFactory* mComponentFactory;
+		static PrefabFactory* mPrefabFactory;
+		static SceneFactory* mSceneFactory;
+
 		static Scene* ActiveScene;
 		static bool mIsSceneLoaded;
 		SceneManager() = default;

@@ -1,11 +1,17 @@
 #include "SceneManager.h"
 #include "SceneFactory.h"
+#include "ComponentFactory.h"
+#include "PrefabFactory.h"
 #include <filesystem>
 #include "CameraComponent.h"
 
 namespace Zephyrus::Scenes {
 	bool SceneManager::mIsSceneLoaded = false;
 	Scene* SceneManager::ActiveScene = nullptr;
+
+	ComponentFactory* SceneManager::mComponentFactory = new ComponentFactory();
+	PrefabFactory* SceneManager::mPrefabFactory = new PrefabFactory(mComponentFactory);;
+	SceneFactory* SceneManager::mSceneFactory = new SceneFactory();;
 
 	void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 	{
@@ -59,7 +65,7 @@ namespace Zephyrus::Scenes {
 		{
 			ActiveScene->SetRenderer(renderer);
 			ActiveScene->SetFilePath(filepath);
-			Zephyrus::Factory::SceneFactory::PopulateSceneFromFile(filepath);
+			mSceneFactory->PopulateSceneFromFile(ActiveScene, filepath);
 			ActiveScene->Start();
 			if (pCallPostStart)
 			{

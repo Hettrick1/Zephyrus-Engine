@@ -4,8 +4,8 @@
 #include "EditorControllerComponent.h"
 
 namespace Zephyrus::ActorComponent {
-	EditorControllerActor::EditorControllerActor(const Vector3D& pPos, const Vector3D& pSize, const Quaternion& pRotation)
-		: Actor(pPos, pSize, pRotation)
+	EditorControllerActor::EditorControllerActor(Scene& pScene, const Vector3D& pPos, const Vector3D& pSize, const Quaternion& pRotation)
+		: Actor(pScene, pPos, pSize, pRotation)
 	{
 		auto camera = new CameraComponent(this, 1920, 1080, CameraUsage::Editor);
 		AddComponent(camera);

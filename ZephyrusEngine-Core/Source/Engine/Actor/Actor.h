@@ -43,8 +43,8 @@ namespace Zephyrus::ActorComponent
 		bool mIsSelected = false;
 		bool mIsUpdatingComponents = false;
 	public:
-		Actor(Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
-		Actor(const std::string& pName, const std::string& pPrefab);
+		Actor(Scene& pScene, Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
+		//Actor(const std::string& pName, const std::string& pPrefab);
 		~Actor();
 
 		virtual void Start();

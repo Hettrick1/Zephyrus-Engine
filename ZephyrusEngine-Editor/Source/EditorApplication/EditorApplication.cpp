@@ -56,7 +56,7 @@ void EditorApplication::Initialize()
         SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
         SDL_FreeSurface(icon);
 
-        auto editorController = new Zephyrus::ActorComponent::EditorControllerActor();
+        auto editorController = new Zephyrus::ActorComponent::EditorControllerActor(*Zephyrus::Scenes::SceneManager::ActiveScene);
         mEditorController = editorController;
         mEditorController->Start();
 

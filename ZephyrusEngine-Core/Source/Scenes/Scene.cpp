@@ -54,7 +54,7 @@ namespace Zephyrus::Scenes {
 
 		if (doc.HasMember("player") && doc["player"].IsString())
 		{
-			mPlayerRef = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab(doc["player"].GetString());
+			mPlayerRef = Zephyrus::Scenes::SceneManager::mPrefabFactory->SpawnActorFromPrefab(Zephyrus::Scenes::SceneManager::ActiveScene, doc["player"].GetString());
 			if (mPlayerRef)
 			{
 				if (mPlayerStart)
@@ -80,7 +80,7 @@ namespace Zephyrus::Scenes {
 		}
 		else
 		{
-			mPlayerRef = Zephyrus::Factory::PrefabFactory::SpawnActorFromPrefab("CameraActor");
+			mPlayerRef = Zephyrus::Scenes::SceneManager::mPrefabFactory->SpawnActorFromPrefab(Zephyrus::Scenes::SceneManager::ActiveScene,"CameraActor");
 			mPlayerRef->SetPosition(Vector3D(0));
 			mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
 			mPlayerRef->SetSize(Vector3D(1));

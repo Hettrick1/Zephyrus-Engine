@@ -1,6 +1,7 @@
 #include "PrefabPanel.h"
 #include "EditorUI/ImGuiUtils.h"
 #include "Assets.h"
+#include "SceneManager.h"
 #include "PrefabFactory.h"
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
@@ -40,7 +41,7 @@ void PrefabPanel::Draw()
 
 	ImGui::SetCursorScreenPos(pos);
 
-	auto prefabList = Zephyrus::Factory::PrefabFactory::GetPrefabFiles("../Content/Prefabs");
+	auto prefabList = Zephyrus::Scenes::SceneManager::mPrefabFactory->GetPrefabFiles("../Content/Prefabs");
 
 	for (int i = 0; i < prefabList.size(); i++)
 	{

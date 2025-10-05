@@ -12,11 +12,14 @@ namespace Zephyrus::Factory {
     class ComponentFactory
     {
     public:
+
+        explicit ComponentFactory();
+        ~ComponentFactory() = default;
+
         using Creator = std::function<Component* (Actor*)>;
 
-        static ComponentFactory& Instance();
-
         bool Register(const std::string& pName, Creator pCreateFn);
+        void RegisterAllComponents();
 
         Component* Create(const std::string& pName, Actor* pOwner);
 

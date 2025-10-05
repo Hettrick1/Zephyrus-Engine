@@ -1,7 +1,6 @@
 #include "Actor.h"
 #include "Component.h"
 #include "Scene.h"
-#include "SceneManager.h"
 #include <algorithm>
 
 #define UUID_SYSTEM_GENERATOR
@@ -9,8 +8,8 @@
 
 namespace Zephyrus::ActorComponent
 {
-    Actor::Actor(Vector3D pPosition, Vector3D pSize, Quaternion pRotation, std::string pName) :
-        mName(pName), mState(ActorState::Active), mScene(*Zephyrus::Scenes::SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
+    Actor::Actor(Scene& pScene, Vector3D pPosition, Vector3D pSize, Quaternion pRotation, std::string pName) :
+        mName(pName), mState(ActorState::Active), mScene(pScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false)
     {
         mTransformComponent.SetPosition(pPosition);
         mTransformComponent.SetSize(pSize);
@@ -18,14 +17,14 @@ namespace Zephyrus::ActorComponent
         mTransformComponent.SetOwner(this);
     }
 
-    Actor::Actor(const std::string& pName, const std::string& pPrefab)
-        : mName(pName), mState(ActorState::Active), mScene(*Zephyrus::Scenes::SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false), mPrefab(pPrefab)
-    {
-        mTransformComponent.SetPosition(0);
-        mTransformComponent.SetSize(1);
-        mTransformComponent.SetRotation(Quaternion(0, 0));
-        mTransformComponent.SetOwner(this);
-    }
+    //Actor::Actor(const std::string& pName, const std::string& pPrefab)
+    //    : mName(pName), mState(ActorState::Active), mScene(*Zephyrus::Scenes::SceneManager::ActiveScene), mRigidbody(nullptr), mLod(16), mIsUpdatingComponents(false), mPrefab(pPrefab)
+    //{
+    //    mTransformComponent.SetPosition(0);
+    //    mTransformComponent.SetSize(1);
+    //    mTransformComponent.SetRotation(Quaternion(0, 0));
+    //    mTransformComponent.SetOwner(this);
+    //}
 
     Actor::~Actor()
     {

@@ -1,9 +1,7 @@
 #include "PrefabFactory.h"
 #include "rapidjson/document.h"
 #include "Log.h"
-#include "ComponentFactory.h"
 #include "JSONUtils.h"
-#include "SceneManager.h"
 #include "Scene.h"
 #include <fstream>
 #include <sstream>
@@ -11,7 +9,11 @@
 
 
 namespace Zephyrus::Factory {
-    Actor* PrefabFactory::SpawnActorFromPrefab(const std::string& pPrefabName, const Vector3D& pInitialPos, const Vector3D& pInitialRot, const Vector3D& pInitialSize)
+    PrefabFactory::PrefabFactory(ComponentFactory* pComponentFactory)
+        : mComponentFactory{pComponentFactory}
+    {
+    }
+    Actor* PrefabFactory::SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabName, const Vector3D& pInitialPos, const Vector3D& pInitialRot, const Vector3D& pInitialSize)
     {
         std::string fullPath;
         // TODO -> only work with full path, no longer spawn prefab with name
@@ -44,7 +46,7 @@ namespace Zephyrus::Factory {
             return nullptr;
         }
 
-        auto actor = new Actor();
+        auto actor = new Actor(*pScene);
         actor->SetPrefab(pPrefabName);
 
         actor->Deserialize(doc);
@@ -64,11 +66,11 @@ namespace Zephyrus::Factory {
         actor->SetRotation(Quaternion(pInitialRot));
         actor->SetSize(pInitialSize);
 
-        Zephyrus::Scenes::SceneManager::ActiveScene->AddActor(actor);
+        pScene->AddActor(actor);
         return actor;
     }
 
-    Actor* PrefabFactory::InitPrefab(const std::string& pPrefabName)
+    Actor* PrefabFactory::InitPrefab(Scene* pScene, const std::string& pPrefabName)
     {
         std::string fullPath;
 
@@ -102,7 +104,7 @@ namespace Zephyrus::Factory {
             return nullptr;
         }
 
-        auto actor = new Actor();
+        auto actor = new Actor(*pScene);
         actor->SetPrefab(pPrefabName);
 
         actor->Deserialize(doc);
@@ -140,7 +142,7 @@ namespace Zephyrus::Factory {
     Component* PrefabFactory::CreateAndAttachComponent(const rapidjson::Value& componentJson, Actor* actor, bool doDeserialize)
     {
         std::string type = *Serialization::Json::ReadString(componentJson, "type");
-        Component* c = ComponentFactory::Instance().Create(type, actor);
+        Component* c = mComponentFactory->Create(type, actor);
 
         if (!c) {
             ZP_EDITOR_ERROR("Component " + type + " is invalid !");

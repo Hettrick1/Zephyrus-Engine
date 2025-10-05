@@ -1,18 +1,15 @@
 #include "SceneFactory.h"
 #include "PrefabFactory.h"
-#include "ComponentFactory.h"
 #include "JSONUtils.h"
 #include <fstream>
 #include <sstream>
 #include <filesystem>
 #include "SceneManager.h"
 
-using Zephyrus::Scenes::SceneManager;
-
 namespace Zephyrus::Factory {
-    bool SceneFactory::PopulateSceneFromFile(const std::string& pFilePath)
+    bool SceneFactory::PopulateSceneFromFile(Scene* pSceneRef, const std::string& pFilePath)
     {
-        if (SceneManager::ActiveScene == nullptr)
+        if (pSceneRef == nullptr)
         {
             ZP_CORE_ERROR("SceneManager no active scene created by the manager!");
             return false;
@@ -26,7 +23,7 @@ namespace Zephyrus::Factory {
             return false;
         }
 
-        SceneManager::ActiveScene->SetFilePath(pFilePath);
+        pSceneRef->SetFilePath(pFilePath);
 
         std::stringstream buffer;
         buffer << file.rdbuf();
@@ -46,7 +43,7 @@ namespace Zephyrus::Factory {
             {
                 if (auto prefabName = Serialization::Json::ReadString(*actor, "prefabName"))
                 {
-                    auto actorPrefab = PrefabFactory::InitPrefab(*prefabName);
+                    auto actorPrefab = Zephyrus::Scenes::SceneManager::mPrefabFactory->InitPrefab(Zephyrus::Scenes::SceneManager::ActiveScene, *prefabName);
 
                     actorPrefab->Deserialize(*actor);
                     if (auto actorComponents = Serialization::Json::ReadArrayObject(*actor, "components"))
@@ -71,7 +68,7 @@ namespace Zephyrus::Factory {
                                 // if the id is not found (component has been added)
                                 else
                                 {
-                                    PrefabFactory::CreateAndAttachComponent(*component, actorPrefab);
+                                    Zephyrus::Scenes::SceneManager::mPrefabFactory->CreateAndAttachComponent(*component, actorPrefab);
                                 }
                             }
                         }
@@ -93,9 +90,9 @@ namespace Zephyrus::Factory {
 
                     if (prefabName == "PlayerStart")
                     {
-                        SceneManager::ActiveScene->SetPlayerStart(actorPrefab);
+                        pSceneRef->SetPlayerStart(actorPrefab);
                     }
-                    SceneManager::ActiveScene->AddActor(actorPrefab);
+                    pSceneRef->AddActor(actorPrefab);
                 }
             }
         }
