@@ -12,7 +12,7 @@ namespace Zephyrus::ActorComponent {
         {
             return;
         }
-        SceneManager::ActiveScene->GetPhysicWorld()->AddCollider(this);
+        mOwner->GetScene().GetPhysicWorld()->AddCollider(this);
     }
 
     BulletColliderComponent::~BulletColliderComponent()
@@ -28,11 +28,11 @@ namespace Zephyrus::ActorComponent {
         }
         if (mGhost)
         {
-            SceneManager::ActiveScene->GetPhysicWorld()->RemoveGhostObject(mGhost);
+            mOwner->GetScene().GetPhysicWorld()->RemoveGhostObject(mGhost);
             delete mGhost;
             mGhost = nullptr;
         }
-        SceneManager::ActiveScene->GetPhysicWorld()->RemoveCollider(this);
+        mOwner->GetScene().GetPhysicWorld()->RemoveCollider(this);
     }
 
     void BulletColliderComponent::Deserialize(const rapidjson::Value& pData)
@@ -70,7 +70,7 @@ namespace Zephyrus::ActorComponent {
         {
             return;
         }
-        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = mOwner->GetScene().GetPhysicWorld();
         if (mGhost)
         {
             world->RemoveGhostObject(mGhost);
@@ -92,7 +92,7 @@ namespace Zephyrus::ActorComponent {
 
     void BulletColliderComponent::ClearGhostObject()
     {
-        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = mOwner->GetScene().GetPhysicWorld();
         if (mGhost)
         {
             world->RemoveGhostObject(mGhost);
@@ -107,7 +107,7 @@ namespace Zephyrus::ActorComponent {
 
         mIsQuery = pIsQuery;
 
-        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = mOwner->GetScene().GetPhysicWorld();
         auto rb = mOwner->GetRigidBody();
 
         if (mIsQuery)
@@ -232,7 +232,7 @@ namespace Zephyrus::ActorComponent {
         {
             return;
         }
-        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = mOwner->GetScene().GetPhysicWorld();
         auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>();
 
         if (mIsQuery)
@@ -296,7 +296,7 @@ namespace Zephyrus::ActorComponent {
     {
         Component::SetActive(pActive);
 
-        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = mOwner->GetScene().GetPhysicWorld();
         auto rb = mOwner->GetComponentOfType<BulletRigidbodyComponent>();
 
         if (mIsActive)

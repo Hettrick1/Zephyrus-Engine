@@ -6,12 +6,14 @@
 #include "CameraComponent.h"
 
 namespace Zephyrus::Scenes {
-	bool SceneManager::mIsSceneLoaded = false;
-	Scene* SceneManager::ActiveScene = nullptr;
-
-	ComponentFactory* SceneManager::mComponentFactory = new ComponentFactory();
-	PrefabFactory* SceneManager::mPrefabFactory = new PrefabFactory(mComponentFactory);;
-	SceneFactory* SceneManager::mSceneFactory = new SceneFactory();;
+	SceneManager::SceneManager()
+	{
+		mComponentFactory = new ComponentFactory();
+		mPrefabFactory = new PrefabFactory(this, mComponentFactory);;
+		mSceneFactory = new SceneFactory(this);
+		mIsSceneLoaded = false;
+		ActiveScene = nullptr;
+	}
 
 	void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 	{
@@ -38,17 +40,17 @@ namespace Zephyrus::Scenes {
 
 	void SceneManager::LoadSplashScreen(Scene* pScene, Zephyrus::Render::IRenderer* pRenderer)
 	{
-		mIsSceneLoaded = false;
 		ActiveScene = pScene;
+		SetSceneLoaded(false);
 		ActiveScene->SetRenderer(pRenderer);
 		ActiveScene->Start();
-		mIsSceneLoaded = true;
+		SetSceneLoaded(true);
 	}
 
 	void SceneManager::LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer, bool pCallPostStart)
 	{
 		std::string filepath = pFilePath;
-		mIsSceneLoaded = false;
+		SetSceneLoaded(false);
 		Zephyrus::Render::IRenderer* renderer = pRenderer;
 		if (ActiveScene != nullptr)
 		{
@@ -60,7 +62,7 @@ namespace Zephyrus::Scenes {
 		std::filesystem::path fsPath(filepath);
 		std::string filename = fsPath.filename().string();
 
-		ActiveScene = new Scene(filename);
+		ActiveScene = new Scene(this, filename);
 		if (renderer != nullptr)
 		{
 			ActiveScene->SetRenderer(renderer);
@@ -90,7 +92,7 @@ namespace Zephyrus::Scenes {
 
 	void SceneManager::Update(float pDetltaTime)
 	{
-		mIsSceneLoaded = true;
+		SetSceneLoaded(true);
 		ActiveScene->Update(pDetltaTime);
 	}
 
@@ -179,5 +181,13 @@ namespace Zephyrus::Scenes {
 			return ActiveScene;
 		}
 		return nullptr;
+	}
+	void SceneManager::SetSceneLoaded(bool pSceneLoaded)
+	{
+		mIsSceneLoaded = pSceneLoaded;
+		if (ActiveScene)
+		{
+			ActiveScene->SetSceneLoaded(pSceneLoaded);
+		}
 	}
 }

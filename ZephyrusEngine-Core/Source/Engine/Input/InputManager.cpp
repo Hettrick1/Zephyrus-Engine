@@ -1,7 +1,8 @@
 #include "InputManager.h"
 #include "BooleanActions.h"
 #include "Axis2DAction.h"
-#include "SceneManager.h"
+#include "Scene.h"
+#include "ISceneContext.h"
 
 namespace Zephyrus::Inputs {
     InputManager& InputManager::Instance()
@@ -85,7 +86,7 @@ namespace Zephyrus::Inputs {
         }
         for (auto it = mActionKeyBindings.begin(); it != mActionKeyBindings.end(); ++it)
         {
-            if (!Zephyrus::Scenes::SceneManager::mIsSceneLoaded)
+            if (!mContext->GetActiveScene()->GetSceneLoaded())
             {
                 return;
             }
@@ -94,7 +95,7 @@ namespace Zephyrus::Inputs {
             for (auto* action : actions)
             {
                 action->Update();
-                if (!Zephyrus::Scenes::SceneManager::mIsSceneLoaded)
+                if (!mContext->GetActiveScene()->GetSceneLoaded())
                 {
                     return;
                 }
@@ -103,7 +104,7 @@ namespace Zephyrus::Inputs {
         for (InputActions* action : mActionMouseBindings)
         {
             action->Update();
-            if (!Zephyrus::Scenes::SceneManager::mIsSceneLoaded)
+            if (!mContext->GetActiveScene()->GetSceneLoaded())
             {
                 return;
             }
@@ -127,5 +128,10 @@ namespace Zephyrus::Inputs {
             action->ClearListeners();
         }
         mActionMouseBindings.clear();
+    }
+
+    void InputManager::SetContext(ISceneContext* pContext)
+    {
+        mContext = pContext;
     }
 }

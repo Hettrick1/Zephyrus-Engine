@@ -3,11 +3,15 @@
 #include "IActionListener.h"
 #include <unordered_map>
 
+class ISceneContext;
+
 // Manages input bindings and dispatches input events to registered listeners.
 namespace Zephyrus::Inputs {
     class InputManager
     {
     private:
+        ISceneContext* mContext;
+
         // Binds an action to a set of keyboard keys.
         void BindActionToKeys(InputActions* pAction, const std::vector<SDL_Keycode>& pKeys);
 
@@ -16,6 +20,7 @@ namespace Zephyrus::Inputs {
 
         std::unordered_map<SDL_Keycode, std::vector<InputActions*>> mActionKeyBindings;
         std::vector<InputActions*> mActionMouseBindings;
+
     public:
         static InputManager& Instance();
         ~InputManager();
@@ -31,5 +36,7 @@ namespace Zephyrus::Inputs {
 
         void Update();
         void Unload();
+
+        void SetContext(ISceneContext* pContext);
     };
 }

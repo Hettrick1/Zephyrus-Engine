@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace Zephyrus::Factory
 {
     class ComponentFactory;
@@ -32,4 +34,6 @@ public:
     virtual Zephyrus::Factory::PrefabFactory* GetPrefabFactory() = 0;
     virtual Zephyrus::Factory::SceneFactory* GetSceneFactory() = 0;
     virtual Zephyrus::Scenes::Scene* GetActiveScene() = 0;
+    virtual void LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer = nullptr, bool pCallPostStart = true) = 0;
+    virtual void SetSceneLoaded(bool pSceneLoaded) = 0;
 };

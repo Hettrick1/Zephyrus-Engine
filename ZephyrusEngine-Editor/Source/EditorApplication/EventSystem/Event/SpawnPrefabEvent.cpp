@@ -1,9 +1,9 @@
 #include "SpawnPrefabEvent.h"
+#include "ISceneContext.h"
 #include "PrefabFactory.h"
-#include "SceneManager.h"
 
-SpawnPrefabEvent::SpawnPrefabEvent(const std::string& pPrefabToSpawn)
-	: Event("Spawn Prefab Actor"), mPrefabToSpawn(pPrefabToSpawn)
+SpawnPrefabEvent::SpawnPrefabEvent(ISceneContext* pContext, const std::string& pPrefabToSpawn)
+	: Event("Spawn Prefab Actor"), mContext(pContext), mPrefabToSpawn(pPrefabToSpawn)
 {
 }
 
@@ -13,7 +13,7 @@ SpawnPrefabEvent::~SpawnPrefabEvent()
 
 void SpawnPrefabEvent::Execute()
 {
-	auto actor = Zephyrus::Scenes::SceneManager::mPrefabFactory->SpawnActorFromPrefab(Zephyrus::Scenes::SceneManager::ActiveScene, mPrefabToSpawn);
+	auto actor = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(), mPrefabToSpawn);
 	actor->Start();
 }
 

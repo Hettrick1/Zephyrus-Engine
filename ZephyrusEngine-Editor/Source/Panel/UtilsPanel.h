@@ -14,7 +14,7 @@ private:
 	LaunchGameMode mSelectedOption = LaunchGameMode::Standalone;
 	ImTextureID mMyIcon = 0;
 public:
-	UtilsPanel(const std::string& pName, float pPanelSizeY);
+	UtilsPanel(ISceneContext* pSceneContext, const std::string& pName, float pPanelSizeY);
 	~UtilsPanel();
 	void Draw() override;
 

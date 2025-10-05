@@ -6,6 +6,7 @@
 #include "tiny_obj_loader.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "ISceneContext.h"
 
 namespace Zephyrus::Assets {
 	using Zephyrus::Assets::Texture;
@@ -16,6 +17,8 @@ namespace Zephyrus::Assets {
 	std::map<std::string, Shader> AssetsManager::mShaders = {};
 	std::map<std::string, ShaderProgram> AssetsManager::mShaderPrograms = {};
 
+	ISceneContext* AssetsManager::mContext{nullptr};
+
 	const std::string AssetsManager::IMPORT_PATH = "../Content/";
 	const std::string AssetsManager::MESH_PATH = "../Content/Meshes/";
 	const std::string AssetsManager::FONT_PATH = "../Content/Fonts/";
@@ -24,7 +27,7 @@ namespace Zephyrus::Assets {
 	Texture* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
 	{
 		if (mTextures.find(pName) == mTextures.end()) {
-			mTextures[pName] = LoadTextureFromFile(*Zephyrus::Scenes::SceneManager::ActiveScene->GetRenderer(), GetFullPath(pFilePath, AssetType::Texture));
+			mTextures[pName] = LoadTextureFromFile(*mContext->GetRenderer(), GetFullPath(pFilePath, AssetType::Texture));
 			return &mTextures[pName];
 		}
 		return &mTextures[pName];
@@ -38,6 +41,11 @@ namespace Zephyrus::Assets {
 			ZP_CORE_ERROR(loadError.str());
 		}
 		return mTextures[pName];
+	}
+
+	void AssetsManager::SetContext(ISceneContext* pContext)
+	{
+		mContext = pContext;
 	}
 
 	Mesh* AssetsManager::LoadMesh(const std::string& pFilePath, const std::string& pName)

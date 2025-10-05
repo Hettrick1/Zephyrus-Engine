@@ -17,37 +17,37 @@ namespace Zephyrus::Scenes
 	{
 	public:
 
-		static ComponentFactory* mComponentFactory;
-		static PrefabFactory* mPrefabFactory;
-		static SceneFactory* mSceneFactory;
+		ComponentFactory* mComponentFactory;
+		PrefabFactory* mPrefabFactory;
+		SceneFactory* mSceneFactory;
 
-		static Scene* ActiveScene;
-		static bool mIsSceneLoaded;
-		SceneManager() = default;
+		Scene* ActiveScene;
+		bool mIsSceneLoaded;
+		SceneManager();
 		SceneManager(const SceneManager&) = delete;
 		SceneManager& operator=(const SceneManager&) = delete;
 
 		// Loads the given scene and sets it as the active scene
-		static void LoadScene(Scene* pScene, bool pCallPostStart = true);
-		static void LoadSplashScreen(Scene* pScene, Zephyrus::Render::IRenderer* pRenderer);
-		static void LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer = nullptr, bool pCallPostStart = true);
+		void LoadScene(Scene* pScene, bool pCallPostStart = true);
+		void LoadSplashScreen(Scene* pScene, Zephyrus::Render::IRenderer* pRenderer);
+		void LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer = nullptr, bool pCallPostStart = true) override;
 
 		// Starts the active scene with the provided renderer
-		static void StartScene();
-		static void PostStartScene();
+		void StartScene();
+		void PostStartScene();
 
-		static void Update(float pDetltaTime);
-		static void RenderAll();
+		void Update(float pDetltaTime);
+		void RenderAll();
 
-		static void BeginRender();
-		static void RenderScene();
-		static void EndRender();
+		void BeginRender();
+		void RenderScene();
+		void EndRender();
 
 		// Returns true if a scene is currently loaded
-		static bool SceneLoaded();
+		bool SceneLoaded();
 
 		// Unloads the current active scene
-		static void Unload();
+		void Unload();
 
 		Zephyrus::Physics::PhysicWorld* GetPhysicsWorld() override;
 		Zephyrus::Render::IRenderer* GetRenderer() override;
@@ -56,5 +56,6 @@ namespace Zephyrus::Scenes
 		Zephyrus::Factory::PrefabFactory* GetPrefabFactory() override;
 		Zephyrus::Factory::SceneFactory* GetSceneFactory() override;
 		Zephyrus::Scenes::Scene* GetActiveScene() override;
+		void SetSceneLoaded(bool pSceneLoaded) override;
 	};
 }

@@ -7,15 +7,17 @@
 #include "PrefabFactory.h"
 #include "Utils/JSONUtils.h"
 #include "ActorState.h"
+#include "ISceneContext.h"
 #include "PlayerStartComponent.h"
 
 using Zephyrus::Assets::AssetsManager;
 using Zephyrus::Inputs::InputManager;
 
 namespace Zephyrus::Scenes {
-	Scene::Scene(std::string pTitle)
-		: mTitle(pTitle), mIsUpdatingActor(false), mRenderer(nullptr), mPhysicWorld(new PhysicWorld()), mDebugRenderer(new PhysicsDebugRenderer()),
-		mCameraManager(new CameraManager())
+	Scene::Scene(ISceneContext* pContext, std::string pTitle)
+		: mContext{ pContext }, mTitle{ pTitle }, mIsUpdatingActor{ false }, 
+		mRenderer{ nullptr }, mPhysicWorld{ new PhysicWorld() }, mDebugRenderer{ new PhysicsDebugRenderer(pContext) },
+		mCameraManager{ new CameraManager(pContext) }
 	{
 		mDebugRenderer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 		mPhysicWorld->GetWorld()->setDebugDrawer(mDebugRenderer);
@@ -54,7 +56,7 @@ namespace Zephyrus::Scenes {
 
 		if (doc.HasMember("player") && doc["player"].IsString())
 		{
-			mPlayerRef = Zephyrus::Scenes::SceneManager::mPrefabFactory->SpawnActorFromPrefab(Zephyrus::Scenes::SceneManager::ActiveScene, doc["player"].GetString());
+			mPlayerRef = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(), doc["player"].GetString());
 			if (mPlayerRef)
 			{
 				if (mPlayerStart)
@@ -80,7 +82,7 @@ namespace Zephyrus::Scenes {
 		}
 		else
 		{
-			mPlayerRef = Zephyrus::Scenes::SceneManager::mPrefabFactory->SpawnActorFromPrefab(Zephyrus::Scenes::SceneManager::ActiveScene,"CameraActor");
+			mPlayerRef = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(),"CameraActor");
 			mPlayerRef->SetPosition(Vector3D(0));
 			mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
 			mPlayerRef->SetSize(Vector3D(1));
@@ -99,6 +101,11 @@ namespace Zephyrus::Scenes {
 	{
 		mCameraManager->RenderActiveCamera();
 		mRenderer->RenderActiveCamera(mCameraManager->GetActiveCamera());
+	}
+
+	void Scene::SetSceneLoaded(bool pSceneLoaded)
+	{
+		mIsSceneLoaded = pSceneLoaded;
 	}
 
 	void Scene::SetRenderer(Zephyrus::Render::IRenderer* pRenderer)
@@ -250,14 +257,14 @@ namespace Zephyrus::Scenes {
 
 	void Scene::UpdateAllActors()
 	{
-		if (!SceneManager::mIsSceneLoaded)
+		if (!mIsSceneLoaded)
 		{
 			return;
 		}
 		mIsUpdatingActor = true;
 		for (auto& actor : mAllActors)
 		{
-			if (!SceneManager::mIsSceneLoaded)
+			if (!mIsSceneLoaded)
 			{
 				return;
 			}
@@ -266,7 +273,7 @@ namespace Zephyrus::Scenes {
 		mIsUpdatingActor = false;
 		for (Actor* actor : mPendingActors)
 		{
-			if (!SceneManager::mIsSceneLoaded)
+			if (!mIsSceneLoaded)
 			{
 				return;
 			}
@@ -277,7 +284,7 @@ namespace Zephyrus::Scenes {
 		{
 			if (actor->GetState() == ActorState::Dead)
 			{
-				if (!SceneManager::mIsSceneLoaded)
+				if (!mIsSceneLoaded)
 				{
 					return;
 				}

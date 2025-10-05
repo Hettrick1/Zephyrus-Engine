@@ -56,6 +56,7 @@ namespace Zephyrus::Application {
 
     Game::~Game()
     {
+        delete mSceneManager;
         delete mRenderer;
         delete mGameWindow;
     }
@@ -64,11 +65,17 @@ namespace Zephyrus::Application {
     {
         mGameWindow = new Window(1920, 1080, false);
         mRenderer = new Zephyrus::Render::RendererOpenGl();
+
+        mSceneManager = new Zephyrus::Scenes::SceneManager;
+        Assets::AssetsManager::SetContext(mSceneManager);
+        // For now
+        InputManager::Instance().SetContext(mSceneManager);
+
         if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow)) {
 #ifdef _DEBUG
-            Zephyrus::Scenes::SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer);
+            mSceneManager->LoadSceneWithFile(mStartUpScene, mRenderer);
 #else
-            Zephyrus::Scenes::SceneManager::LoadSplashScreen(new SplashScreen(mStartUpScene), mRenderer);
+            mSceneManager->LoadSplashScreen(new SplashScreen(mStartUpScene), mRenderer);
 #endif
             Loop();
         }
@@ -89,12 +96,12 @@ namespace Zephyrus::Application {
 
     void Game::Update()
     {
-        Zephyrus::Scenes::SceneManager::Update(Timer::deltaTime);
+        mSceneManager->Update(Timer::deltaTime);
     }
 
     void Game::Render()
     {
-        Zephyrus::Scenes::SceneManager::RenderAll();
+        mSceneManager->RenderAll();
     }
 
     void Game::Input()
@@ -118,7 +125,7 @@ namespace Zephyrus::Application {
 
     void Game::Close()
     {
-        Zephyrus::Scenes::SceneManager::Unload();
+        mSceneManager->Unload();
         mGameWindow->Close();
         Zephyrus::Debug::Log::Shutdown();
     }

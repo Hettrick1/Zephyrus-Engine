@@ -18,7 +18,7 @@ private:
 	bool mShowErrors = true;
 
 public:
-	ConsolePanel(const std::string& pName);
+	ConsolePanel(ISceneContext* pSceneContext, const std::string& pName);
 	~ConsolePanel();
 	void Update() override;
 	void Draw() override;

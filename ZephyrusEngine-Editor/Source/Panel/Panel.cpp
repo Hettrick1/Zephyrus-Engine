@@ -1,7 +1,7 @@
 #include "Panel.h"
 
-Panel::Panel(const std::string& pName)
-	: mName(pName)
+Panel::Panel(ISceneContext* pSceneContext, const std::string& pName)
+	: mContext{ pSceneContext }, mName{ pName }
 {
 }
 

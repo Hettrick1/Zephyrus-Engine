@@ -12,7 +12,7 @@ private:
 	SceneHierarchyPanel* mHierarchy = nullptr;
 	using ResetEditorController = std::function<void()>;
 public:
-	ContentBrowserPanel(const std::string& pName);
+	ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName);
 	~ContentBrowserPanel();
 	void Draw() override;
 	void DrawDirectory(const std::string& folderPath);

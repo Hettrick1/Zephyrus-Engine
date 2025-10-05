@@ -2,16 +2,18 @@
 #include "imgui.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
+#include "ISceneContext.h"
 
 #include <string>
 
 class Panel
 {
 protected:
-	std::string mName;
-	bool mDrawPanel = true;
+	std::string mName{ "" };
+	bool mDrawPanel{ true };
+	ISceneContext* mContext{ nullptr };
 public:
-	Panel(const std::string& pName);
+	Panel(ISceneContext* pSceneContext, const std::string& pName);
 	virtual ~Panel();
 
 	virtual void Update();

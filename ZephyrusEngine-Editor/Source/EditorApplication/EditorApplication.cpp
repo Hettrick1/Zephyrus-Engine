@@ -41,13 +41,20 @@ EditorApplication::EditorApplication(const std::string& pTitle, const std::strin
 EditorApplication::~EditorApplication()
 {
     delete mRenderer;
+    delete mEditorController;
     delete mGameWindow;
+    delete mSceneManager;
 }
 
 void EditorApplication::Initialize()
 {
     mGameWindow = new Window(1920, 1030, true);
     mRenderer = new Zephyrus::Render::RendererOpenGl();
+    mSceneManager = new Zephyrus::Scenes::SceneManager();
+    Zephyrus::Assets::AssetsManager::SetContext(mSceneManager);
+    // For now
+    InputManager::Instance().SetContext(mSceneManager);
+
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow))
     {
         SDL_MaximizeWindow(mGameWindow->GetSdlWindow());
@@ -56,7 +63,7 @@ void EditorApplication::Initialize()
         SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
         SDL_FreeSurface(icon);
 
-        auto editorController = new Zephyrus::ActorComponent::EditorControllerActor(*Zephyrus::Scenes::SceneManager::ActiveScene);
+        auto editorController = new Zephyrus::ActorComponent::EditorControllerActor(mSceneManager, *mSceneManager->GetActiveScene());
         mEditorController = editorController;
         mEditorController->Start();
 
@@ -95,14 +102,14 @@ void EditorApplication::InitializeImGui()
 
 void EditorApplication::InitializePanels()
 {
-    std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(prefabPanelName);
-    std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(consolePanelName);
-    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(scenePanelName, mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->renderTarget->GetColorTexture());
-    std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(inspectorPanelName);
-    std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(sceneHierarchyName);
-    std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(contentBrowserName);
-    std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(menuPanelName, this);
-    std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(utilsPanelName, topBarHeight);
+    std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(mSceneManager, prefabPanelName);
+    std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(mSceneManager, consolePanelName);
+    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(mSceneManager, scenePanelName, mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->renderTarget->GetColorTexture());
+    std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(mSceneManager, inspectorPanelName);
+    std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(mSceneManager, sceneHierarchyName);
+    std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(mSceneManager, contentBrowserName);
+    std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(mSceneManager, menuPanelName, this);
+    std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(mSceneManager, utilsPanelName, topBarHeight);
 
     ConsolePanel* consolePanelRaw = consolePanel.get();
     SceneHierarchyPanel* hierarchyPanelRaw = sceneHierarchyPanel.get();
@@ -125,12 +132,12 @@ void EditorApplication::InitializePanels()
 
 void EditorApplication::Loop()
 {
-    Zephyrus::Scenes::SceneManager::LoadSceneWithFile(mStartUpScene, mRenderer, false);
-    Zephyrus::Scenes::SceneManager::mIsSceneLoaded = true;
+    mSceneManager->LoadSceneWithFile(mStartUpScene, mRenderer, false);
+    mSceneManager->SetSceneLoaded(true);
 
     mRenderer->GetHud()->Unload();
 
-    Zephyrus::Scenes::SceneManager::ActiveScene->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);
+    mSceneManager->GetActiveScene()->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);
 
     while (mIsRunning) {
         Timer::ComputeDeltaTime();
@@ -178,7 +185,7 @@ void EditorApplication::Update()
             mEditorController->GetComponentOfType<Zephyrus::ActorComponent::EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
         }
     }
-    auto world = Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld();
+    auto world = mSceneManager->GetPhysicsWorld();
     world->Update(0);
 }
 
@@ -197,7 +204,7 @@ void EditorApplication::Render()
         }
     }
     mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->RenderScene();
-    Zephyrus::Scenes::SceneManager::ActiveScene->EndRender();
+    mSceneManager->GetActiveScene()->EndRender();
 
     RenderImgui();
 }
@@ -388,8 +395,7 @@ void EditorApplication::Close()
     Zephyrus::Debug::Log::Shutdown();
     mAllPanels.clear();
     mEditorController->Destroy();
-    delete mEditorController;
-    Zephyrus::Scenes::SceneManager::Unload();
+    mSceneManager->Unload();
     mGameWindow->Close();
     EventSystem::ClearAllEvents();
 }

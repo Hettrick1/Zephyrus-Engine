@@ -139,7 +139,7 @@ namespace Zephyrus::ActorComponent {
         local.setRotation(Zephyrus::Physics::ToBtQuat(collider->GetRelativeTransform().GetRotation()));
         local.setOrigin(Zephyrus::Physics::ToBtVec3(collider->GetRelativeTransform().GetTranslation()));
 
-        auto world = Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = mOwner->GetScene().GetPhysicWorld();
         world->RemoveRigidbody(this);
 
         mCompound->addChildShape(local, collider->GetShape());
@@ -154,7 +154,7 @@ namespace Zephyrus::ActorComponent {
     {
         if (!collider || !mCompound) return;
 
-        auto world = Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld();
+        auto world = mOwner->GetScene().GetPhysicWorld();
 
         world->RemoveRigidbody(this);
 
@@ -179,7 +179,7 @@ namespace Zephyrus::ActorComponent {
     {
         if (mRigidBody)
         {
-            Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->RemoveRigidbody(this);
+            mOwner->GetScene().GetPhysicWorld()->RemoveRigidbody(this);
             delete mRigidBody->getMotionState();
             delete mRigidBody;
             mRigidBody = nullptr;
@@ -354,7 +354,7 @@ namespace Zephyrus::ActorComponent {
         mRigidBody->setAngularFactor(Zephyrus::Physics::ToBtVec3(mLockAngles));
         mRigidBody->setUserPointer(mOwner);
 
-        Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->AddRigidbody(this);
+        mOwner->GetScene().GetPhysicWorld()->AddRigidbody(this);
     }
 
     void BulletRigidbodyComponent::UpdateColliderShape(BulletColliderComponent* collider, btCollisionShape* oldShape)
@@ -431,7 +431,7 @@ namespace Zephyrus::ActorComponent {
         }
         if (mRigidBody)
         {
-            if (Zephyrus::Scenes::SceneManager::ActiveScene && Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld())
+            if (mOwner->GetSceneContext()->GetActiveScene() && mOwner->GetScene().GetPhysicWorld())
             {
                 Rebuild();
             }

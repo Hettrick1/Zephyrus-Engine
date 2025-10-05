@@ -1,8 +1,8 @@
 #include "HudContainer.h"
 
 namespace Zephyrus::UI {
-    HudContainer::HudContainer()
-        : HudElement()
+    HudContainer::HudContainer(ISceneContext* pContext)
+        : HudElement(pContext)
     {
     }
 

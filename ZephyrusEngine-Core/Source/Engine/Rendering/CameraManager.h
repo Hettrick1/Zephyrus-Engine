@@ -2,6 +2,8 @@
 
 #include "CameraComponent.h"
 
+class ISceneContext;
+
 using Zephyrus::ActorComponent::CameraComponent;
 using Zephyrus::ActorComponent::CameraUsage;
 
@@ -9,9 +11,10 @@ class CameraManager
 {
 private:
     std::vector<CameraComponent*> mCameras;
-    CameraComponent* mActiveCamera = nullptr;
+    ISceneContext* mContext{ nullptr };
+    CameraComponent* mActiveCamera{ nullptr };
 public:
-    CameraManager() = default;
+    explicit CameraManager(ISceneContext* pContext);
     ~CameraManager() = default;
 
     void AddCamera(CameraComponent* pCam);

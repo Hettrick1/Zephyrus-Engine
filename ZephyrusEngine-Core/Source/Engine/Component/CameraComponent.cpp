@@ -14,7 +14,7 @@ namespace Zephyrus::ActorComponent
         mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
         if (pUsage == CameraUsage::Game)
         {
-            SceneManager::ActiveScene->GetCameraManager()->AddCamera(this);
+            mOwner->GetSceneContext()->GetCameraManager()->AddCamera(this);
         }
     }
 
@@ -155,14 +155,14 @@ namespace Zephyrus::ActorComponent
         renderTarget->Bind();
         glViewport(0, 0, renderTarget->GetDimensions().x, renderTarget->GetDimensions().y);
 
-        SceneManager::ActiveScene->GetRenderer()->SetProjMatrix(mProjMatrix);
-        SceneManager::ActiveScene->GetRenderer()->SetViewMatrix(mViewMatrix);
+        mOwner->GetSceneContext()->GetRenderer()->SetProjMatrix(mProjMatrix);
+        mOwner->GetSceneContext()->GetRenderer()->SetViewMatrix(mViewMatrix);
 
-        SceneManager::ActiveScene->BeginRender();
-        SceneManager::ActiveScene->RenderCurrentSceneOnly();
-        auto world = SceneManager::ActiveScene->GetPhysicWorld();
+        mOwner->GetSceneContext()->GetActiveScene()->BeginRender();
+        mOwner->GetSceneContext()->GetActiveScene()->RenderCurrentSceneOnly();
+        auto world = mOwner->GetSceneContext()->GetPhysicsWorld();
         world->GetWorld()->debugDrawWorld();
-        auto debugRenderer = SceneManager::ActiveScene->GetPhysicDebugRenderer();
+        auto debugRenderer = mOwner->GetSceneContext()->GetActiveScene()->GetPhysicDebugRenderer();
         debugRenderer->FlushDraw(this);
         Zephyrus::Render::RenderTarget::Unbind();
     }

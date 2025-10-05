@@ -12,6 +12,8 @@ namespace Zephyrus::ActorComponent
 	class Actor;
 }
 
+class ISceneContext;
+
 /**
  * @brief Represents a scene containing actors and manages their lifecycle.
  * Handles initialization, loading, updating, rendering, unloading, and closing of the scene.
@@ -27,6 +29,7 @@ namespace Zephyrus::Scenes {
 	class Scene
 	{
 	protected:
+		ISceneContext* mContext{ nullptr };
 		std::string mTitle;
 		std::string mFilePath;
 		std::string mPlayerPrefabName;
@@ -35,18 +38,20 @@ namespace Zephyrus::Scenes {
 		std::vector<Actor*> mAllActors;
 		std::vector<Actor*> mPendingActors;
 		bool mIsUpdatingActor;
-		Actor* mPlayerRef = nullptr;
-		Actor* mPlayerStart = nullptr;
-		bool mSaved = true;
-		PhysicWorld* mPhysicWorld = nullptr;
-		PhysicsDebugRenderer* mDebugRenderer = nullptr;
-		CameraManager* mCameraManager = nullptr;
+		bool mIsSceneLoaded{ false };
+		Actor* mPlayerRef{ nullptr };
+		Actor* mPlayerStart{ nullptr };
+		bool mSaved{ true };
+		PhysicWorld* mPhysicWorld{ nullptr };
+		PhysicsDebugRenderer* mDebugRenderer{ nullptr };
+		CameraManager* mCameraManager{ nullptr };
 	public:
-		Scene(std::string pTitle = "Scene");
+		Scene(ISceneContext* pContext, std::string pTitle = "Scene");
 		virtual void Start(); // Initializes the scene with the given renderer
 		virtual void PostStart();
 		virtual void Update(float pDetltaTime); // Updates the scene and its actors
 		virtual void Render();
+		void SetSceneLoaded(bool pSceneLoaded);
 		void SetRenderer(Zephyrus::Render::IRenderer* pRenderer);
 		void BeginRender();
 		void RenderCurrentSceneOnly();
@@ -76,6 +81,7 @@ namespace Zephyrus::Scenes {
 		inline PhysicWorld* GetPhysicWorld() const { return mPhysicWorld; }
 		inline PhysicsDebugRenderer* GetPhysicDebugRenderer() const { return mDebugRenderer; }
 		inline CameraManager* GetCameraManager() const { return mCameraManager; }
+		inline bool GetSceneLoaded() const { return mIsSceneLoaded; }
 	public:
 		inline Zephyrus::Render::IRenderer* GetRenderer() const { return mRenderer; }
 	};

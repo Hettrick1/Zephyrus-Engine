@@ -21,7 +21,7 @@ namespace Zephyrus::UI {
         Zephyrus::Assets::Font* mFont = nullptr;
         ShaderProgram* mShaderProgram = nullptr;
     public:
-        HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Zephyrus::Assets::Font* pFont = nullptr);
+        HudText(ISceneContext* pContext, const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Zephyrus::Assets::Font* pFont = nullptr);
         ~HudText();
 
         // Draws the text on the HUD using the specified renderer.

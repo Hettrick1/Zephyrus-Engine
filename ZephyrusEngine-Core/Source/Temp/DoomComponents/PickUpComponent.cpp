@@ -42,7 +42,7 @@ namespace Zephyrus::ActorComponent
 	{
 		Component::Update();
 		//Vector3D camPos = CameraManager::Instance().GetCurrentCamera()->GetWorldTransform().GetTranslation();
-		Vector3D camPos = Zephyrus::Scenes::SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
+		Vector3D camPos = mOwner->GetScene().GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
 		Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
 		float angleZ = zpMaths::ATan2(direction.y, direction.x);

@@ -5,7 +5,7 @@ class PrefabPanel : public Panel
 {
 private:
 public:
-	PrefabPanel(const std::string& pName);
+	PrefabPanel(ISceneContext* pSceneContext, const std::string& pName);
 	~PrefabPanel();
 	void Draw() override;
 };

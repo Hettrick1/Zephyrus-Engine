@@ -1,8 +1,8 @@
 #include "HudImage.h"
 
 namespace Zephyrus::UI {
-    HudImage::HudImage(Zephyrus::Assets::Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize, const Vector2D& pOrigin)
-        : HudElement(), mTexture(pTexture), mWidth(pTexture.GetTextureSize().x* pSize.x), mHeight(pTexture.GetTextureSize().y* pSize.y),
+    HudImage::HudImage(ISceneContext* pContext, Zephyrus::Assets::Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize, const Vector2D& pOrigin)
+        : HudElement(pContext), mTexture(pTexture), mWidth(pTexture.GetTextureSize().x* pSize.x), mHeight(pTexture.GetTextureSize().y* pSize.y),
         mOrigin(pOrigin), mTint(Vector4D(1.0f, 1.0f, 1.0f, 1.0f))
     {
         SetPosition(pPosition);

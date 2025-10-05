@@ -10,7 +10,7 @@ private:
 	bool mIsHover = false;
 	Vector2D mDimensions;
 public:
-	ScenePanel(const std::string& pName, GLuint pSceneRenderTexture);
+	ScenePanel(ISceneContext* pSceneContext, const std::string& pName, GLuint pSceneRenderTexture);
 	~ScenePanel();
 	void Draw() override;
 	inline Vector2D GetDimensions() const { return mDimensions; }

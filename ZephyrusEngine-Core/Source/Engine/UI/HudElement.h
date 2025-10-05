@@ -4,6 +4,8 @@
 #include "Vector4D.h"
 #include "RendererOpenGl.h"
 
+class ISceneContext;
+
 /**
  * @brief Base class for all HUD elements.
  * Provides position management and an interface for drawing HUD elements.
@@ -13,9 +15,10 @@ namespace Zephyrus::UI {
     {
     protected:
         Vector2D mPosition;
-        float mDrawOrder = 0;
+        float mDrawOrder{ 0 };
+        ISceneContext* mContext{ nullptr };
     public:
-        HudElement();
+        HudElement(ISceneContext* pContext);
         virtual ~HudElement() = default;
         virtual void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) = 0;
 

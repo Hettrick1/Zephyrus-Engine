@@ -7,6 +7,10 @@
 #include "SceneManager.h"
 
 namespace Zephyrus::Factory {
+    SceneFactory::SceneFactory(ISceneContext* pSceneContext)
+        : mSceneContext{pSceneContext}
+    {
+    }
     bool SceneFactory::PopulateSceneFromFile(Scene* pSceneRef, const std::string& pFilePath)
     {
         if (pSceneRef == nullptr)
@@ -43,7 +47,7 @@ namespace Zephyrus::Factory {
             {
                 if (auto prefabName = Serialization::Json::ReadString(*actor, "prefabName"))
                 {
-                    auto actorPrefab = Zephyrus::Scenes::SceneManager::mPrefabFactory->InitPrefab(Zephyrus::Scenes::SceneManager::ActiveScene, *prefabName);
+                    auto actorPrefab = mSceneContext->GetPrefabFactory()->InitPrefab(mSceneContext->GetActiveScene(), *prefabName);
 
                     actorPrefab->Deserialize(*actor);
                     if (auto actorComponents = Serialization::Json::ReadArrayObject(*actor, "components"))
@@ -68,7 +72,7 @@ namespace Zephyrus::Factory {
                                 // if the id is not found (component has been added)
                                 else
                                 {
-                                    Zephyrus::Scenes::SceneManager::mPrefabFactory->CreateAndAttachComponent(*component, actorPrefab);
+                                    mSceneContext->GetPrefabFactory()->CreateAndAttachComponent(*component, actorPrefab);
                                 }
                             }
                         }

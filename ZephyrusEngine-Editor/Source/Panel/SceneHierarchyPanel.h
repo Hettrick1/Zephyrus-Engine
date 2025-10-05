@@ -12,7 +12,7 @@ class SceneHierarchyPanel : public Panel
 private:
 	Zephyrus::ActorComponent::Actor* mSelectedActor = nullptr;
 public:
-	SceneHierarchyPanel(const std::string& pName);
+	SceneHierarchyPanel(ISceneContext* pSceneContext, const std::string& pName);
 	~SceneHierarchyPanel();
 	void Draw() override;
 	void ResetSelectedActor();

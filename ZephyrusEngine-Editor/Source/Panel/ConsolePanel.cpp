@@ -1,7 +1,7 @@
 #include "ConsolePanel.h"
 
-ConsolePanel::ConsolePanel(const std::string& pName)
-	: Panel(pName)
+ConsolePanel::ConsolePanel(ISceneContext* pSceneContext, const std::string& pName)
+	: Panel(pSceneContext, pName)
 {
 }
 

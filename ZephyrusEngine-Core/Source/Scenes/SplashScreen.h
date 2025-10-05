@@ -13,7 +13,7 @@ namespace Zephyrus::Scenes {
 		std::string mNextScene;
 		float mTime;
 	public:
-		SplashScreen(const std::string& pNextScene);
+		SplashScreen(ISceneContext* pContext, const std::string& pNextScene);
 		~SplashScreen();
 		void Start() override;
 		void Update(float pDetltaTime) override;

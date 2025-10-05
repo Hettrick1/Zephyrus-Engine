@@ -1,13 +1,14 @@
 #include "PhysicsDebugRenderer.h"
 #include "Assets.h"
 #include "SceneManager.h"
+#include "ISceneContext.h"
 
 using Zephyrus::Assets::AssetsManager;
 
 namespace Zephyrus::Physics
 {
-    PhysicsDebugRenderer::PhysicsDebugRenderer()
-        : m_debugMode(DBG_DrawWireframe)
+    PhysicsDebugRenderer::PhysicsDebugRenderer(ISceneContext* pContext)
+        : mDebugMode{ DBG_DrawWireframe }, mContext(pContext)
     {
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
@@ -56,7 +57,7 @@ namespace Zephyrus::Physics
         Matrix4DRow mView;
         if (cam == nullptr)
         {
-            auto camera = Zephyrus::Scenes::SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera();
+            auto camera = mContext->GetCameraManager()->GetActiveCamera();
             mView = camera->GetViewMatrix();
             mProj = camera->GetProjMatrix();
         }

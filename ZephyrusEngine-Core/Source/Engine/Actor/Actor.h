@@ -2,6 +2,7 @@
 #include "ActorState.h"
 #include "TransformComponent.h"
 #include "Bullet/BulletRigidbodyComponent.h"
+#include "ISceneContext.h"
 #include <vector>
 #include <algorithm>
 #include <string_view>
@@ -28,23 +29,23 @@ namespace Zephyrus::ActorComponent
 	class Actor 
 	{
 	protected:
+		ISceneContext* mContext{ nullptr };
 		Scene& mScene;
 		TransformComponent mTransformComponent;
-		BulletRigidbodyComponent* mRigidbody;
+		BulletRigidbodyComponent* mRigidbody{ nullptr };
 		std::vector<Component*> mComponents;
 		std::vector<Component*> mPendingComponents;
-		std::string mName = "";
-		std::string mPrefab = "";
-		std::string mUUID = "";
+		std::string mName{ "" };
+		std::string mPrefab{ "" };
+		std::string mUUID{ "" };
 		std::vector<std::string> mTags;
 		std::vector<std::string> mComponentsIds;
-		float mLod = 0;
+		float mLod{ 0 };
 		ActorState mState;
-		bool mIsSelected = false;
-		bool mIsUpdatingComponents = false;
+		bool mIsSelected{ false };
+		bool mIsUpdatingComponents{ false };
 	public:
-		Actor(Scene& pScene, Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
-		//Actor(const std::string& pName, const std::string& pPrefab);
+		Actor(ISceneContext* pSceneContext, Scene& pScene, Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
 		~Actor();
 
 		virtual void Start();
@@ -100,6 +101,7 @@ namespace Zephyrus::ActorComponent
 		inline Vector3D GetRotationEuler() const { return mTransformComponent.GetRotation().ToEuler(); }
 		inline void SetSelected(bool pSelected) { mIsSelected = pSelected; }
 		inline bool GetIsSelected() const { return mIsSelected; }
+		inline ISceneContext* GetSceneContext() const { return mContext; }
 
 		Component* GetComponentWithId(const std::string pId);
 

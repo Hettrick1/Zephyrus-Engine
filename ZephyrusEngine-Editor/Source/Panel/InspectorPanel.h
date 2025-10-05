@@ -17,7 +17,7 @@ private:
 	SceneHierarchyPanel* mHierarchy = nullptr;
 	Component* mActiveComponent = nullptr;
 public:
-	InspectorPanel(const std::string& pName);
+	InspectorPanel(ISceneContext* pSceneContext, const std::string& pName);
 	~InspectorPanel();
 	void Draw() override;
 	void DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor);

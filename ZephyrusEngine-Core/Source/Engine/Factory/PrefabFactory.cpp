@@ -9,8 +9,8 @@
 
 
 namespace Zephyrus::Factory {
-    PrefabFactory::PrefabFactory(ComponentFactory* pComponentFactory)
-        : mComponentFactory{pComponentFactory}
+    PrefabFactory::PrefabFactory(ISceneContext* pSceneContext, ComponentFactory* pComponentFactory)
+        : mSceneContext{pSceneContext}, mComponentFactory{ pComponentFactory }
     {
     }
     Actor* PrefabFactory::SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabName, const Vector3D& pInitialPos, const Vector3D& pInitialRot, const Vector3D& pInitialSize)
@@ -46,7 +46,7 @@ namespace Zephyrus::Factory {
             return nullptr;
         }
 
-        auto actor = new Actor(*pScene);
+        auto actor = new Actor(mSceneContext, *pScene);
         actor->SetPrefab(pPrefabName);
 
         actor->Deserialize(doc);
@@ -104,7 +104,7 @@ namespace Zephyrus::Factory {
             return nullptr;
         }
 
-        auto actor = new Actor(*pScene);
+        auto actor = new Actor(mSceneContext, *pScene);
         actor->SetPrefab(pPrefabName);
 
         actor->Deserialize(doc);

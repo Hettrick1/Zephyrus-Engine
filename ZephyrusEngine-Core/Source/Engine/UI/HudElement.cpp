@@ -1,11 +1,13 @@
 #include "HudElement.h"
 #include "SceneManager.h"
 #include "HudManager.h"
+#include "ISceneContext.h"
 
 namespace Zephyrus::UI {
-	HudElement::HudElement()
+	HudElement::HudElement(ISceneContext* pContext)
+		:mContext{ pContext }
 	{
-		Zephyrus::Scenes::SceneManager::ActiveScene->GetRenderer()->GetHud()->AddElement(this);
+		mContext->GetRenderer()->GetHud()->AddElement(this);
 	}
 
 	void HudElement::SetPosition(const Vector2D& pPosition)

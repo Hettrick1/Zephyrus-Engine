@@ -8,8 +8,8 @@
 
 using Zephyrus::Assets::AssetsManager;
 
-UtilsPanel::UtilsPanel(const std::string& pName, float pPanelSizeY)
-	: Panel(pName), mPaneSizeY(pPanelSizeY)
+UtilsPanel::UtilsPanel(ISceneContext* pSceneContext, const std::string& pName, float pPanelSizeY)
+	: Panel(pSceneContext, pName), mPaneSizeY(pPanelSizeY)
 {
 }
 
@@ -30,13 +30,13 @@ void UtilsPanel::Draw()
     
     ImGui::SetCursorPosY(buttonSize.y - 10);
     std::string sceneName;
-    if (Zephyrus::Scenes::SceneManager::ActiveScene->GetIsSaved())
+    if (mContext->GetActiveScene()->GetIsSaved())
     {
-        sceneName = Zephyrus::Scenes::SceneManager::ActiveScene->GetTitle();
+        sceneName = mContext->GetActiveScene()->GetTitle();
     }
     else
     {
-        sceneName = Zephyrus::Scenes::SceneManager::ActiveScene->GetTitle() + "*";
+        sceneName = mContext->GetActiveScene()->GetTitle() + "*";
     }
     ImGui::Text(sceneName.c_str());
 
@@ -187,7 +187,7 @@ void UtilsPanel::DrawSaveButton(const ImVec2& pWindowSize, const ImVec2& pButton
 
     if (ImGui::ImageButton("SaveBtn", myIcon, ImVec2(24, 24)))
     {
-        Zephyrus::Scenes::SceneManager::ActiveScene->SaveScene();
+        mContext->GetActiveScene()->SaveScene();
     }
 
     ImGui::PopStyleVar(2);
@@ -202,7 +202,7 @@ void UtilsPanel::LaunchGame()
     {
     case LaunchGameMode::Standalone:
     {
-        Zephyrus::Scenes::SceneManager::ActiveScene->SaveScene();
+        mContext->GetActiveScene()->SaveScene();
 
         char path[MAX_PATH];
         GetModuleFileNameA(nullptr, path, MAX_PATH);

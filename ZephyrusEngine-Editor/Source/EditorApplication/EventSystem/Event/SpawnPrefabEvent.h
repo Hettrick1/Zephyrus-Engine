@@ -2,12 +2,15 @@
 #include "Event.h"
 #include <string>
 
+class ISceneContext;
+
 class SpawnPrefabEvent : public Event
 {
 private:
+	ISceneContext* mContext{ nullptr };
 	std::string mPrefabToSpawn;
 public:
-	SpawnPrefabEvent(const std::string& pPrefabToSpawn);
+	SpawnPrefabEvent(ISceneContext* pContext, const std::string& pPrefabToSpawn);
 	~SpawnPrefabEvent();
 
 	void Execute() override;

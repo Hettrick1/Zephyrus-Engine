@@ -7,7 +7,7 @@ namespace Zephyrus::ActorComponent {
 	private:
 
 	public:
-		EditorControllerActor(Scene& pScene, const Vector3D& pPos = 0, const Vector3D& pSize = 1, const Quaternion& pRotation = Quaternion(0, 0));
+		EditorControllerActor(ISceneContext* pContext, Scene& pScene, const Vector3D& pPos = 0, const Vector3D& pSize = 1, const Quaternion& pRotation = Quaternion(0, 0));
 		~EditorControllerActor();
 		void Start() override;
 		void Update() override;

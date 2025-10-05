@@ -14,8 +14,8 @@
 
 using Zephyrus::Assets::AssetsManager;
 
-InspectorPanel::InspectorPanel(const std::string& pName)
-	: Panel(pName)
+InspectorPanel::InspectorPanel(ISceneContext* pSceneContext, const std::string& pName)
+	: Panel(pSceneContext, pName)
 {
 }
 
@@ -88,7 +88,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 
 	if (ImGui::BeginPopup("AddCompMenu", ImGuiWindowFlags_NoMove))
 	{
-		for (auto componentType : Zephyrus::Scenes::SceneManager::mComponentFactory->GetComponentNames())
+		for (auto componentType : mContext->GetComponentFactory()->GetComponentNames())
 		{
 			if (componentType == "SkySphereComponent") 
 			{
@@ -96,7 +96,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 			}
 			if (ImGui::Button(componentType.c_str()))
 			{
-				Component* c = Zephyrus::Scenes::SceneManager::mComponentFactory->Create(componentType, pActor);
+				Component* c = mContext->GetComponentFactory()->Create(componentType, pActor);
 
 				if (!c) {
 					ZP_EDITOR_ERROR("Component " + componentType + " is invalid !");

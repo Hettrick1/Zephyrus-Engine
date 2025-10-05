@@ -76,21 +76,21 @@ namespace Zephyrus::ActorComponent
 		mGun->SetCullOff(true);
 		mGun->SetDrawOrder(100000000);
 
-		mWeaponIconImage = new HudImage(gunIcon, Vector2D(400, -980), Vector2D(10, 10));
+		mWeaponIconImage = new HudImage(mOwner->GetSceneContext(), gunIcon, Vector2D(400, -980), Vector2D(10, 10));
 		mWeaponIconImage->SetDrawOrder(100.0f);
-		HudImage* doomHudImage = new HudImage(*doomHud, Vector2D(0, -920), Vector2D(10, 10));
+		HudImage* doomHudImage = new HudImage(mOwner->GetSceneContext(), *doomHud, Vector2D(0, -920), Vector2D(10, 10));
 		doomHudImage->SetDrawOrder(10.0f);
-		mFpsText = new HudText("AAAAAAAAA", Vector2D(-1900.0f, 1000.0f), 0.5f, Vector4D(1, 0, 1, 1));
+		mFpsText = new HudText(mOwner->GetSceneContext(), "AAAAAAAAA", Vector2D(-1900.0f, 1000.0f), 0.5f, Vector4D(1, 0, 1, 1));
 		mFpsText->SetDrawOrder(101.0f);
-		mGunAmoText = new HudText(std::to_string(mGunAmo), Vector2D(-825.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
+		mGunAmoText = new HudText(mOwner->GetSceneContext(), std::to_string(mGunAmo), Vector2D(-825.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
 		mGunAmoText->SetDrawOrder(101.0f);
-		mHealthText = new HudText(std::to_string(mHealth), Vector2D(-325.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
+		mHealthText = new HudText(mOwner->GetSceneContext(), std::to_string(mHealth), Vector2D(-325.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
 		mHealthText->SetDrawOrder(101.0f);
-		mArmorText = new HudText(std::to_string(mArmor), Vector2D(840.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
+		mArmorText = new HudText(mOwner->GetSceneContext(), std::to_string(mArmor), Vector2D(840.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
 		mArmorText->SetDrawOrder(101.0f);
 
 		Texture* damageIndicator = AssetsManager::LoadTexture("Sprites/Doom/DamageIndicator.png", "DamageIndicator");
-		mDamageIndicatorImage = new HudImage(*damageIndicator, Vector2D(0, 0), 2);
+		mDamageIndicatorImage = new HudImage(mOwner->GetSceneContext(), *damageIndicator, Vector2D(0, 0), 2);
 		mDamageIndicatorImage->SetDrawOrder(0.0f);
 		mDamageIndicatorImage->SetTint(Vector4D(1.0, 1.0, 1.0, 0.0));
 		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
@@ -172,7 +172,7 @@ namespace Zephyrus::ActorComponent
 			start.z -= 0.0f;
 			Vector3D end = start + cam->GetWorldTransform().GetYAxis() * range;
 			HitResult hit;
-			Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
+			mOwner->GetScene().GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
 			Zephyrus::Debug::DebugLine* line = new Zephyrus::Debug::DebugLine(start, end, hit);
 			mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 			UseAmo(pAmoQuantity);
@@ -210,7 +210,7 @@ namespace Zephyrus::ActorComponent
 
 				Vector3D end = start + dir * range;
 				HitResult hit;
-				Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
+				mOwner->GetScene().GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
 				Zephyrus::Debug::DebugLine* line = new Zephyrus::Debug::DebugLine(start, end, hit);
 				mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 				if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))
@@ -272,7 +272,7 @@ namespace Zephyrus::ActorComponent
 			mHealth -= pQuantity;
 			if (mHealth <= 0)
 			{
-				Zephyrus::Scenes::SceneManager::LoadSceneWithFile("../Content/Maps/DoomMainMenu.zpmap", nullptr, true);
+				mOwner->GetSceneContext()->LoadSceneWithFile("../Content/Maps/DoomMainMenu.zpmap", nullptr, true);
 				return;
 			}
 		}

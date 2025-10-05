@@ -21,8 +21,9 @@ namespace Zephyrus::Factory {
 	{
 	private:
 		ComponentFactory* mComponentFactory{nullptr};
+		ISceneContext* mSceneContext{ nullptr };
 	public:
-		explicit PrefabFactory(ComponentFactory* pComponentFactory);
+		explicit PrefabFactory(ISceneContext* pSceneContext, ComponentFactory* pComponentFactory);
 		~PrefabFactory() = default;
 
 		Actor* SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabName, const Vector3D& pInitialPos = 0, const Vector3D& pInitialRot = 0, const Vector3D& pInitialSize = 1);

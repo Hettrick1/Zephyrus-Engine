@@ -2,8 +2,8 @@
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
 
-ScenePanel::ScenePanel(const std::string& pName, GLuint pSceneRenderTexture)
-	: Panel(pName), mSceneRenderTexture(pSceneRenderTexture)
+ScenePanel::ScenePanel(ISceneContext* pSceneContext, const std::string& pName, GLuint pSceneRenderTexture)
+	: Panel(pSceneContext, pName), mSceneRenderTexture(pSceneRenderTexture)
 {
 }
 
@@ -38,7 +38,7 @@ void ScenePanel::Draw()
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB"))
 		{
 			std::string prefabSource((const char*)payload->Data, payload->DataSize);
-			SpawnPrefabEvent* event = new SpawnPrefabEvent(prefabSource);
+			SpawnPrefabEvent* event = new SpawnPrefabEvent(mContext, prefabSource);
 			EventSystem::DoEvent(event);
 		}
 		ImGui::EndDragDropTarget();

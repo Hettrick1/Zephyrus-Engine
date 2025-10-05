@@ -2,8 +2,8 @@
 #include "EditorApplication/EditorApplication.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
 
-MenuPanel::MenuPanel(const std::string& pName, EditorApplication* pApplication)
-	: Panel(pName), mApplication(pApplication)
+MenuPanel::MenuPanel(ISceneContext* pSceneContext, const std::string& pName, EditorApplication* pApplication)
+	: Panel(pSceneContext, pName), mApplication(pApplication)
 {
 }
 

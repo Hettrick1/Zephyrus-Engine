@@ -5,8 +5,8 @@
 
 int selected = 0;
 
-SceneHierarchyPanel::SceneHierarchyPanel(const std::string& pName)
-	: Panel(pName)
+SceneHierarchyPanel::SceneHierarchyPanel(ISceneContext* pSceneContext, const std::string& pName)
+	: Panel(pSceneContext, pName)
 {
 }
 
@@ -24,7 +24,7 @@ void SceneHierarchyPanel::Draw()
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
 
-	auto actors = Zephyrus::Scenes::SceneManager::ActiveScene->GetAllActors();
+	auto actors = mContext->GetActiveScene()->GetAllActors();
 
 	for (int i = 0; i < actors.size(); i++)
 	{
@@ -57,9 +57,9 @@ void SceneHierarchyPanel::Draw()
 		if (ImGui::IsKeyPressed(ImGuiKey_Delete))
 		{
 			mSelectedActor->Destroy();
-			Zephyrus::Scenes::SceneManager::ActiveScene->RemoveActor(mSelectedActor);
+			mContext->GetActiveScene()->RemoveActor(mSelectedActor);
 			delete mSelectedActor;
-			actors = Zephyrus::Scenes::SceneManager::ActiveScene->GetAllActors();
+			actors = mContext->GetActiveScene()->GetAllActors();
 			if (selected >= actors.size())
 			{
 				selected = actors.size() - 1;
@@ -75,7 +75,7 @@ void SceneHierarchyPanel::Draw()
 
 void SceneHierarchyPanel::ResetSelectedActor()
 {
-	auto actors = Zephyrus::Scenes::SceneManager::ActiveScene->GetAllActors();
+	auto actors = mContext->GetActiveScene()->GetAllActors();
 	if(actors.size() > 0)
 	{
 		mSelectedActor = actors[0];

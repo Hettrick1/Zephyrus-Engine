@@ -14,6 +14,8 @@
  * Provides static methods to access and clear loaded assets.
  */
 
+class ISceneContext;
+
 using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::Shader;
 using Zephyrus::Render::ShaderType;
@@ -49,6 +51,7 @@ namespace Zephyrus::Assets {
 		static std::map<std::string, Font> mFonts;
 		static std::map<std::string, Shader> mShaders;
 		static std::map<std::string, ShaderProgram> mShaderPrograms;
+		static ISceneContext* mContext;
 
 		static const std::string IMPORT_PATH;
 		static const std::string MESH_PATH;
@@ -58,6 +61,8 @@ namespace Zephyrus::Assets {
 		// Loads a texture from file and stores it with the given name
 		static Zephyrus::Assets::Texture* LoadTexture(const std::string& pFilePath, const std::string& pName);
 		static Zephyrus::Assets::Texture& GetTexture(const std::string& pName);
+
+		static void SetContext(ISceneContext* pContext);
 
 		// Loads a mesh from file and stores it with the given name
 		static Mesh* LoadMesh(const std::string& pFilePath, const std::string& pName);

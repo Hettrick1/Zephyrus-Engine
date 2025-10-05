@@ -29,11 +29,12 @@ class EditorApplication
 private:
 	SDL_Event mSdlEvent;
 	std::string mTitle;
-	Window* mGameWindow = nullptr;
-	Zephyrus::Render::IRenderer* mRenderer = nullptr;
+	Window* mGameWindow{ nullptr };
+	Zephyrus::Scenes::SceneManager* mSceneManager{ nullptr };
+	Zephyrus::Render::IRenderer* mRenderer{ nullptr };
 	std::string mStartUpScene;
 	InputManager& mInputManager;
-	bool mIsRunning = true;
+	bool mIsRunning{true};
 	std::unordered_map<std::string, std::unique_ptr<Panel>> mAllPanels;
 
 	GLuint mFrameBuffer = 0;

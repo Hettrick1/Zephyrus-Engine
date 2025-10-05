@@ -1,7 +1,13 @@
 #include "CameraManager.h"
 #include "PrefabFactory.h"
-#include "ZPCommons.h"
+#include "ISceneContext.h"
+#include "Scene.h"
 #include "Log.h"
+
+CameraManager::CameraManager(ISceneContext* pContext)
+    : mContext{pContext}
+{
+}
 
 void CameraManager::AddCamera(CameraComponent* pCam)
 {
@@ -85,12 +91,11 @@ void CameraManager::Unload()
      }
      else
      {
-         auto cameraActor = Zephyrus::Scenes::SceneManager::mPrefabFactory->SpawnActorFromPrefab(Zephyrus::Scenes::SceneManager::ActiveScene,"CameraActor");
+         auto cameraActor = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(), "CameraActor");
          mActiveCamera = cameraActor->GetComponentOfType<CameraComponent>();
          mActiveCamera->UpdateMatrices();
          mActiveCamera->RenderScene();
      }
-     Zephyrus::Commons::GetCurrentScene()->EndRender();
 
      /*for (auto* cam : mCameraInRenderTargets)
      {
@@ -100,4 +105,5 @@ void CameraManager::Unload()
             cam->RenderScene();
          }
      }*/
+     mContext->GetActiveScene()->EndRender();
  }

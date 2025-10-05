@@ -18,7 +18,7 @@ namespace Zephyrus::UI {
         Vector2D mOrigin;
         Vector4D mTint;
     public:
-        HudImage(Zephyrus::Assets::Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize = 1, const Vector2D& pOrigin = 0);
+        HudImage(ISceneContext* pContext, Zephyrus::Assets::Texture& pTexture, const Vector2D& pPosition, const Vector2D& pSize = 1, const Vector2D& pOrigin = 0);
 
         void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override; // Draws the image on the HUD using the given renderer.
 

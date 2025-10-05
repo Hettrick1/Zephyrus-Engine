@@ -4,8 +4,8 @@
 using Zephyrus::Assets::AssetsManager;
 
 namespace Zephyrus::UI {
-    HudText::HudText(const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment, Zephyrus::Assets::Font* pFont)
-        : HudElement(), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
+    HudText::HudText(ISceneContext* pContext, const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment, Zephyrus::Assets::Font* pFont)
+        : HudElement(pContext), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
     {
         if (pFont == nullptr) {
             mFont = AssetsManager::LoadFont("RoadPixel.ttf", "RoadPixel");

@@ -15,7 +15,7 @@ namespace Zephyrus::UI {
     private:
         std::vector<HudElement*> mElements;
     public:
-        HudContainer();
+        HudContainer(ISceneContext* pContext);
         // Adds a HUD element to the container
         void AddElement(HudElement* pElement);
 

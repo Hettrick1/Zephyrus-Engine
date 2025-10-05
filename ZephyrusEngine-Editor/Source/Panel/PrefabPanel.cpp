@@ -8,8 +8,8 @@
 
 using Zephyrus::Assets::AssetsManager;
 
-PrefabPanel::PrefabPanel(const std::string& pName)
-	: Panel(pName)
+PrefabPanel::PrefabPanel(ISceneContext* pSceneContext, const std::string& pName)
+	: Panel(pSceneContext, pName)
 {
 }
 
@@ -41,13 +41,13 @@ void PrefabPanel::Draw()
 
 	ImGui::SetCursorScreenPos(pos);
 
-	auto prefabList = Zephyrus::Scenes::SceneManager::mPrefabFactory->GetPrefabFiles("../Content/Prefabs");
+	auto prefabList = mContext->GetPrefabFactory()->GetPrefabFiles("../Content/Prefabs");
 
 	for (int i = 0; i < prefabList.size(); i++)
 	{
 		if (ZP::UI::ImageTextButton(myIcon, buttonSize, iconSize, pos, prefabList[i].c_str(), ZP::UI::gFonts.medium))
 		{
-			SpawnPrefabEvent* event = new SpawnPrefabEvent(prefabList[i].c_str());
+			SpawnPrefabEvent* event = new SpawnPrefabEvent(mContext, prefabList[i].c_str());
 			EventSystem::DoEvent(event);
 		}
 		pos.y += buttonSize.y + 10;

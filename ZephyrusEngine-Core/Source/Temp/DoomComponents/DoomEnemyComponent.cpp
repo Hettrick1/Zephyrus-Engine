@@ -6,7 +6,6 @@
 #include "DebugLine.h"
 #include "DoomPlayerComponent.h"
 #include "SceneManager.h"
-#include "ZPCommons.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -159,7 +158,7 @@ namespace Zephyrus::ActorComponent
 
 		// bilboard
 		//Vector3D camPos = SceneManager::ActiveScene->GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
-		Vector3D camPos = Zephyrus::Commons::GetCurrentCamera()->GetWorldTransform().GetTranslation();
+		Vector3D camPos = mOwner->GetSceneContext()->GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
 		Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
 		float angleZ = zpMaths::ATan2(direction.y, direction.x);
@@ -207,7 +206,7 @@ namespace Zephyrus::ActorComponent
 
 				Vector3D end = start + dir * range;
 				HitResult hit;
-				Zephyrus::Scenes::SceneManager::ActiveScene->GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
+				mOwner->GetScene().GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
 				Zephyrus::Debug::DebugLine* line = new Zephyrus::Debug::DebugLine(start, end, hit);
 				mOwner->GetScene().GetRenderer()->AddDebugLine(line);
 				if (hit.HitActor != nullptr && hit.HitActor->HasTag("Player"))
