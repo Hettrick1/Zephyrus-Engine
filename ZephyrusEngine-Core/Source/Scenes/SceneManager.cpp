@@ -124,4 +124,60 @@ namespace Zephyrus::Scenes {
 		ActiveScene->Unload();
 		delete ActiveScene;
 	}
+	Zephyrus::Physics::PhysicWorld* SceneManager::GetPhysicsWorld()
+	{
+		if (ActiveScene)
+		{
+			return ActiveScene->GetPhysicWorld();
+		}
+		return nullptr;
+	}
+	Zephyrus::Render::IRenderer* SceneManager::GetRenderer()
+	{
+		if (ActiveScene)
+		{
+			return ActiveScene->GetRenderer();
+		}
+		return nullptr;
+	}
+	CameraManager* SceneManager::GetCameraManager()
+	{
+		if (ActiveScene)
+		{
+			return ActiveScene->GetCameraManager();
+		}
+		return nullptr;
+	}
+	Zephyrus::Factory::ComponentFactory* SceneManager::GetComponentFactory()
+	{
+		if (mComponentFactory)
+		{
+			return mComponentFactory;
+		}
+		return nullptr;
+	}
+	Zephyrus::Factory::PrefabFactory* SceneManager::GetPrefabFactory()
+	{
+		if (mPrefabFactory)
+		{
+			return mPrefabFactory;
+		}
+		return nullptr;
+	}
+	Zephyrus::Factory::SceneFactory* SceneManager::GetSceneFactory()
+	{
+		if (mSceneFactory)
+		{
+			return mSceneFactory;
+		}
+		return nullptr;
+	}
+	Zephyrus::Scenes::Scene* SceneManager::GetActiveScene()
+	{
+		if (ActiveScene)
+		{
+			return ActiveScene;
+		}
+		return nullptr;
+	}
 }

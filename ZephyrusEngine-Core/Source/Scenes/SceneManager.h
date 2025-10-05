@@ -1,13 +1,7 @@
 #pragma once
 #include <vector>
 #include "Scene.h"
-
-namespace Zephyrus::Factory
-{
-	class ComponentFactory;
-	class PrefabFactory;
-	class SceneFactory;
-}
+#include "ISceneContext.h"
 
 using Zephyrus::Factory::ComponentFactory;
 using Zephyrus::Factory::PrefabFactory;
@@ -17,8 +11,9 @@ using Zephyrus::Factory::SceneFactory;
  * @brief Manages the current scene, including loading, starting, updating, rendering, and unloading scenes.
  * Provides static methods to control the active scene in the editor or engine.
  */
-namespace Zephyrus::Scenes {
-	class SceneManager
+namespace Zephyrus::Scenes 
+{
+	class SceneManager : public ISceneContext
 	{
 	public:
 
@@ -53,5 +48,13 @@ namespace Zephyrus::Scenes {
 
 		// Unloads the current active scene
 		static void Unload();
+
+		Zephyrus::Physics::PhysicWorld* GetPhysicsWorld() override;
+		Zephyrus::Render::IRenderer* GetRenderer() override;
+		CameraManager* GetCameraManager() override;
+		Zephyrus::Factory::ComponentFactory* GetComponentFactory() override;
+		Zephyrus::Factory::PrefabFactory* GetPrefabFactory() override;
+		Zephyrus::Factory::SceneFactory* GetSceneFactory() override;
+		Zephyrus::Scenes::Scene* GetActiveScene() override;
 	};
 }
