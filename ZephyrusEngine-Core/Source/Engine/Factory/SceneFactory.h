@@ -1,13 +1,4 @@
 #pragma once
-//#include "Scene.h"
-//
-//namespace Zephyrus::Scenes {
-//	class Scene;
-//}
-//
-//class ISceneContext;
-//
-//using Zephyrus::Scenes::Scene;
 
 #include "ISceneFactory.h"
 

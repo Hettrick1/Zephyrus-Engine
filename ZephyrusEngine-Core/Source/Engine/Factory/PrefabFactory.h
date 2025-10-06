@@ -1,21 +1,5 @@
 #pragma once
 #include "IPrefabFactory.h"
-/*#include "Actor.h"
-#include "ComponentFactory.h"
-#include <string>
-
-namespace Zephyrus::Debug
-{
-	class Log;
-}
-namespace Zephyrus::Scenes
-{
-	class Scene;
-}
-
-using Zephyrus::ActorComponent::Actor;
-using Zephyrus::ActorComponent::Component;
-using Zephyrus::Debug::Log;*/
 
 namespace Zephyrus::Factory {
 	class PrefabFactory : public IPrefabFactory
