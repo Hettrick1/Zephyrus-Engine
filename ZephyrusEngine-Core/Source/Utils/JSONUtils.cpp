@@ -4,7 +4,7 @@
 
 namespace Serialization::Json {
 
-    std::optional<Vector3D> ReadVector3D(const rapidjson::Value& pObj, const char* pKey)
+ /*   std::optional<Vector3D> ReadVector3D(const rapidjson::Value& pObj, const char* pKey)
     {
         if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray())
         {
@@ -143,6 +143,207 @@ namespace Serialization::Json {
             }
         }
         return result;
+    }*/
+
+
+
+    const rapidjson::Value* JsonReader::GetMember(const rapidjson::Value* parent, const char* key)
+    {
+        if (!parent || !parent->IsObject()) return nullptr;
+        auto it = parent->FindMember(key);
+        if (it == parent->MemberEnd()) return nullptr;
+        return &it->value;
+    }
+
+    bool JsonReader::LoadDocument(const std::string& pFilepath)
+    {
+
+        std::ifstream file(pFilepath);
+
+        if (!file.is_open())
+        {
+            ZP_CORE_ERROR("Impossible to open the prefab : " + pFilepath);
+            return false;
+        }
+
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string jsonContent = buffer.str();
+
+        mDocument.Parse(jsonContent.c_str());
+        if (mDocument.HasParseError()) {
+            ZP_CORE_ERROR(pFilepath + " Parsing JSON failed !");
+            return false;
+        }
+        mCurrentValue = &mDocument;
+        return true;
+    }
+    bool JsonReader::BeginObject(const char* pKey)
+    {
+        const rapidjson::Value* obj = (pKey) ? GetMember(mCurrentValue, pKey) : mCurrentValue;
+        if (!obj || !obj->IsObject()) return false;
+
+        mContextStack.push(mCurrentValue);
+        mCurrentValue = obj;
+        return true;
+    }
+    void JsonReader::EndObject()
+    {
+        if (!mContextStack.empty())
+        {
+            mCurrentValue = mContextStack.top();
+            mContextStack.pop();
+        }
+    }
+    std::optional<std::string> JsonReader::ReadString(const char* pKey)
+    {
+        const auto* v = GetMember(mCurrentValue, pKey);
+        if (!v || !v->IsString()) 
+        {
+            return std::nullopt;
+        }
+        return v->GetString();
+    }
+    std::optional<float> JsonReader::ReadFloat(const char* pKey)
+    {
+        const auto* v = GetMember(mCurrentValue, pKey);
+        if (!v || !v->IsFloat())
+        {
+            return std::nullopt;
+        }
+        return v->GetFloat();
+    }
+    std::optional<int> JsonReader::ReadInt(const char* pKey)
+    {
+        const auto* v = GetMember(mCurrentValue, pKey);
+        if (!v || !v->IsInt())
+        {
+            return std::nullopt;
+        }
+        return v->GetInt();
+    }
+    std::optional<bool> JsonReader::ReadBool(const char* pKey)
+    {
+        const auto* v = GetMember(mCurrentValue, pKey);
+        if (!v || !v->IsBool())
+        {
+            return std::nullopt;
+        }
+        return v->GetBool();
+    }
+    std::optional<Vector3D> JsonReader::ReadVector3D(const char* pKey)
+    {
+        const auto* v = GetMember(mCurrentValue, pKey);
+        if (!v || !v->IsArray() || v->Size() != 3) 
+        {
+            return std::nullopt;
+        }
+        return Vector3D((*v)[0].GetFloat(), (*v)[1].GetFloat(), (*v)[2].GetFloat());
+    }
+    std::optional<Vector2D> JsonReader::ReadVector2D(const char* pKey)
+    {
+        const auto* v = GetMember(mCurrentValue, pKey);
+        if (!v || !v->IsArray() || v->Size() != 2) 
+        {
+            return std::nullopt;
+        }
+        return Vector2D((*v)[0].GetFloat(), (*v)[1].GetFloat());
+    }
+
+    std::optional<std::vector<std::string>> JsonReader::ReadArrayString(const char* pKey)
+    {
+        return ReadArray<std::string>(pKey);
+    }
+    std::optional<std::vector<float>> JsonReader::ReadArrayFloat(const char* pKey)
+    {
+        return ReadArray<float>(pKey);
+    }
+    std::optional<std::vector<int>> JsonReader::ReadArrayInt(const char* pKey)
+    {
+        return ReadArray<int>(pKey);
+    }
+    std::optional<std::vector<bool>> JsonReader::ReadArrayBool(const char* pKey)
+    {
+        return ReadArray<bool>(pKey);
+    }
+    std::optional<std::vector<Vector3D>> JsonReader::ReadArrayVector3D(const char* pKey)
+    {
+        const auto* arr = GetMember(mCurrentValue, pKey);
+        if (!arr || !arr->IsArray()) 
+        {
+            return std::nullopt;
+        }
+
+        std::vector<Vector3D> result;
+        for (auto& val : arr->GetArray())
+        {
+            if (val.IsArray() && val.Size() == 3)
+            {
+                result.emplace_back(val[0].GetFloat(), val[1].GetFloat(), val[2].GetFloat());
+            }
+        }
+        return result;
+    }
+    std::optional<std::vector<Vector2D>> JsonReader::ReadArrayVector2D(const char* pKey)
+    {
+        const auto* arr = GetMember(mCurrentValue, pKey);
+        if (!arr || !arr->IsArray()) 
+        {
+            return std::nullopt;
+        }
+
+        std::vector<Vector2D> result;
+        for (auto& val : arr->GetArray())
+        {
+            if (val.IsArray() && val.Size() == 2)
+            {
+                result.emplace_back(val[0].GetFloat(), val[1].GetFloat());
+            }
+        }
+        return result;
+    }
+    bool JsonReader::BeginObjectArray(const char* pKey)
+    {
+        const rapidjson::Value* arr = GetMember(mCurrentValue, pKey);
+        if (!arr || !arr->IsArray())
+        {
+            return false;
+        }
+
+        mArrayStack.push({ arr, arr->Begin(), arr->End() });
+        return true;
+    }
+    bool JsonReader::NextObjectElement()
+    {
+        if (mArrayStack.empty())
+            return false;
+
+        auto& ctx = mArrayStack.top();
+        if (ctx.it == ctx.end)
+            return false;
+
+        if (!ctx.it->IsObject())
+        {
+            ++ctx.it;
+            return false;
+        }
+
+        mContextStack.push(mCurrentValue);
+        mCurrentValue = &(*ctx.it++);
+        return true;
+    }
+    void JsonReader::EndObjectArray()
+    {
+        if (mArrayStack.empty())
+            return;
+
+        if (!mContextStack.empty())
+        {
+            mCurrentValue = mContextStack.top();
+            mContextStack.pop();
+        }
+
+        mArrayStack.pop();
     }
 
     JsonWriter::JsonWriter()

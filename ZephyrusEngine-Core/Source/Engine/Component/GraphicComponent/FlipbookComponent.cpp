@@ -54,23 +54,20 @@ namespace Zephyrus::ActorComponent
 		};
 	}
 
-	void FlipbookComponent::Deserialize(const rapidjson::Value& pData)
+	void FlipbookComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		SpriteComponent::Deserialize(pData);
+		SpriteComponent::Deserialize(pReader);
 
-		if (pData.HasMember("textures") && pData["textures"].IsArray())
+		if (auto fbTextures = pReader.ReadArrayString("textures"))
 		{
-			const auto& arr = pData["textures"].GetArray();
+			const auto& arr = *fbTextures;
 
-			if (!arr.Empty())
+			if (!arr.empty())
 			{
 				for (auto& element : arr)
 				{
-					if (element.IsString())
-					{
-						Texture* texture = AssetsManager::LoadTexture(element.GetString(), element.GetString());
-						AddAnimationTexture(texture);
-					}
+					Texture* texture = AssetsManager::LoadTexture(element, element);
+					AddAnimationTexture(texture);
 				}
 				if (mAnimationTextures.size() > 0)
 				{
@@ -81,17 +78,17 @@ namespace Zephyrus::ActorComponent
 				}
 			}
 		}
-		if (pData.HasMember("animFps") && pData["animFps"].IsFloat())
+		if (auto animFps = pReader.ReadFloat("animFps"))
 		{
-			SetAnimationFps(pData["animFps"].GetFloat());
+			SetAnimationFps(*animFps);
 		}
-		if (auto looping = Serialization::Json::ReadBool(pData, "isLooping"))
+		if (auto looping = pReader.ReadBool("isLooping"))
 		{
 			mIsLooping = *looping;
 		}
 	}
 
-	void FlipbookComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+	void FlipbookComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
 		pWriter.WriteBool("cullOff", mCullOff);

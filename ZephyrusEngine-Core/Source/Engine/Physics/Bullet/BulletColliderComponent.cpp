@@ -35,31 +35,31 @@ namespace Zephyrus::ActorComponent {
         mOwner->GetScene().GetPhysicWorld()->RemoveCollider(this);
     }
 
-    void BulletColliderComponent::Deserialize(const rapidjson::Value& pData)
+    void BulletColliderComponent::Deserialize(Serialization::IDeserializer& pReader)
     {
-        Component::Deserialize(pData);
-        if (auto query = Serialization::Json::ReadBool(pData, "isQuery"))
+        Component::Deserialize(pReader);
+        if (auto query = pReader.ReadBool("isQuery"))
         {
             SetIsQuery(*query);
         }
-        if (auto ignoreSelf = Serialization::Json::ReadBool(pData, "ignoreSelf"))
+        if (auto ignoreSelf = pReader.ReadBool("ignoreSelf"))
         {
             mIgnoreSelf = *ignoreSelf;
         }
     }
 
-    void BulletColliderComponent::BeginSerialize(Serialization::Json::JsonWriter& pWriter)
+    void BulletColliderComponent::BeginSerialize(Serialization::ISerializer& pWriter)
     {
         Component::BeginSerialize(pWriter);
     }
 
-    void BulletColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+    void BulletColliderComponent::Serialize(Serialization::ISerializer& pWriter)
     {
         pWriter.WriteBool("isQuery", mIsQuery);
         pWriter.WriteBool("ignoreSelf", mIgnoreSelf);
     }
 
-    void BulletColliderComponent::EndSerialize(Serialization::Json::JsonWriter& pWriter)
+    void BulletColliderComponent::EndSerialize(Serialization::ISerializer& pWriter)
     {
         Component::EndSerialize(pWriter);
     }

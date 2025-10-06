@@ -17,8 +17,8 @@ namespace Zephyrus::ActorComponent
 		PlayerStartComponent(Actor* pOwner, int updateOder = 0);
 		~PlayerStartComponent();
 
-		void Deserialize(const rapidjson::Value& pData) override;
-		void Serialize(Serialization::Json::JsonWriter& pWriter) override;
+		void Deserialize(Serialization::IDeserializer& pReader) override;
+		void Serialize(Serialization::ISerializer& pWriter) override;
 
 		void OnEnd() override;
 

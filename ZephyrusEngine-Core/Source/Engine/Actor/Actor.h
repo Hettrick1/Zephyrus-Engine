@@ -52,8 +52,8 @@ namespace Zephyrus::ActorComponent
 		virtual void Update();
 		virtual void Destroy();
 
-		virtual void Deserialize(const rapidjson::Value& pData);
-		virtual void Serialize(Serialization::Json::JsonWriter& pWriter);
+		virtual void Deserialize(Serialization::IDeserializer& pReader);
+		virtual void Serialize(Serialization::ISerializer& pWriter);
 		virtual void SerializePrefab(const std::string& pFilePath);
 
 		void AttachScene(const Scene& pScene);

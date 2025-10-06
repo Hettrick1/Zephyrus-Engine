@@ -22,16 +22,16 @@ namespace Zephyrus::ActorComponent {
         }
     }
 
-    void SphereColliderComponent::Deserialize(const rapidjson::Value& pData)
+    void SphereColliderComponent::Deserialize(Serialization::IDeserializer& pReader)
     {
-        BulletColliderComponent::Deserialize(pData);
-        if (auto radius = Serialization::Json::ReadFloat(pData, "radius"))
+        BulletColliderComponent::Deserialize(pReader);
+        if (auto radius = pReader.ReadFloat("radius"))
         {
             SetRadius(*radius);
         }
     }
 
-    void SphereColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+    void SphereColliderComponent::Serialize(Serialization::ISerializer& pWriter)
     {
         BulletColliderComponent::BeginSerialize(pWriter);
         BulletColliderComponent::Serialize(pWriter);

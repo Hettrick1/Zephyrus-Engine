@@ -19,21 +19,21 @@ namespace Zephyrus::ActorComponent {
         }
     }
 
-    void CapsuleColliderComponent::Deserialize(const rapidjson::Value& pData)
+    void CapsuleColliderComponent::Deserialize(Serialization::IDeserializer& pReader)
     {
-        BulletColliderComponent::Deserialize(pData);
-        if (auto radius = Serialization::Json::ReadFloat(pData, "radius"))
+        BulletColliderComponent::Deserialize(pReader);
+        if (auto radius = pReader.ReadFloat("radius"))
         {
             mRadius = *radius;
         }
-        if (auto height = Serialization::Json::ReadFloat(pData, "height"))
+        if (auto height = pReader.ReadFloat("height"))
         {
             mHeight = *height;
         }
         SetRadiusAndHeight(mRadius, mHeight);
     }
 
-    void CapsuleColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+    void CapsuleColliderComponent::Serialize(Serialization::ISerializer& pWriter)
     {
         BulletColliderComponent::BeginSerialize(pWriter);
         BulletColliderComponent::Serialize(pWriter);

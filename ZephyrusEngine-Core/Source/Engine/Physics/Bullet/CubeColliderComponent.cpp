@@ -24,16 +24,16 @@ namespace Zephyrus::ActorComponent {
         }
     }
 
-    void CubeColliderComponent::Deserialize(const rapidjson::Value& pData)
+    void CubeColliderComponent::Deserialize(Serialization::IDeserializer& pReader)
     {
-        BulletColliderComponent::Deserialize(pData);
-        if (auto halfExtents = Serialization::Json::ReadVector3D(pData, "halfExtents"))
+        BulletColliderComponent::Deserialize(pReader);
+        if (auto halfExtents = pReader.ReadVector3D("halfExtents"))
         {
             SetHalfExtents(*halfExtents);
         }
     }
 
-    void CubeColliderComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+    void CubeColliderComponent::Serialize(Serialization::ISerializer& pWriter)
     {
         BulletColliderComponent::BeginSerialize(pWriter);
         BulletColliderComponent::Serialize(pWriter);

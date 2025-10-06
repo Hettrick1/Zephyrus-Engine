@@ -34,17 +34,17 @@ namespace Zephyrus::ActorComponent
 	{
 	}
 
-	void MeshComponent::Deserialize(const rapidjson::Value& pData)
+	void MeshComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pData);
-		if (auto mesh = Serialization::Json::ReadString(pData, "mesh"))
+		Component::Deserialize(pReader);
+		if (auto mesh = pReader.ReadString("mesh"))
 		{
 			mMesh = AssetsManager::LoadMesh(*mesh, *mesh);
 			if (!mMesh)
 			{
 				ZP_CORE_ERROR("Mesh creation failed !");
 			}
-			if (auto textures = Serialization::Json::ReadArrayString(pData, "textures"))
+			if (auto textures = pReader.ReadArrayString("textures"))
 			{
 				mTextures.clear();
 				const auto& arr = *textures;
@@ -58,7 +58,7 @@ namespace Zephyrus::ActorComponent
 					}
 				}
 			}
-			if (auto index = Serialization::Json::ReadInt(pData, "textureIndex"))
+			if (auto index = pReader.ReadInt("textureIndex"))
 			{
 				SetTextureIndex(*index);
 				ZP_INFO(mOwner->GetName() + std::to_string(*index));
@@ -67,7 +67,7 @@ namespace Zephyrus::ActorComponent
 			{
 				SetTextureIndex(0);
 			}
-			if (auto tiling = Serialization::Json::ReadVector2D(pData, "textureTiling"))
+			if (auto tiling = pReader.ReadVector2D("textureTiling"))
 			{
 				SetTiling(*tiling);
 			}
@@ -80,7 +80,7 @@ namespace Zephyrus::ActorComponent
 		}
 	}
 
-	void MeshComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+	void MeshComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
 		pWriter.WriteString("mesh", mMesh->GetMeshFilePath());

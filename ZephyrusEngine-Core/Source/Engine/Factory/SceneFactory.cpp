@@ -19,85 +19,74 @@ namespace Zephyrus::Factory {
             return false;
         }
 
-        std::ifstream file(pFilePath);
-
-        if (!file.is_open())
+        Serialization::Json::JsonReader reader;
+        if (!reader.LoadDocument(pFilePath))
         {
-            ZP_CORE_ERROR("Impossible to open the Scene : " + pFilePath);
+            ZP_CORE_ERROR("Impossible to open or parse the Scene : " + pFilePath);
             return false;
         }
 
         pSceneRef->SetFilePath(pFilePath);
 
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        std::string jsonContent = buffer.str();
-
-        rapidjson::Document doc;
-        doc.Parse(jsonContent.c_str());
-
-        if (doc.HasParseError()) {
-            ZP_CORE_ERROR(pFilePath + " Parsing JSON failed !");
-            return false;
-        }
-
-        if (auto actorArray = Serialization::Json::ReadArrayObject(doc, "actors"))
+        if (reader.BeginObjectArray("actors"))
         {
-            for (auto& actor : *actorArray)
+            while (reader.NextObjectElement())
             {
-                if (auto prefabName = Serialization::Json::ReadString(*actor, "prefabName"))
+                auto prefabName = reader.ReadString("prefabName");
+                if (!prefabName) continue;
+
+                auto actorPrefab = mSceneContext->GetPrefabFactory()->InitPrefab(mSceneContext->GetActiveScene(), *prefabName);
+                actorPrefab->Deserialize(reader);
+
+                if (reader.BeginObjectArray("components"))
                 {
-                    auto actorPrefab = mSceneContext->GetPrefabFactory()->InitPrefab(mSceneContext->GetActiveScene(), *prefabName);
-
-                    actorPrefab->Deserialize(*actor);
-                    if (auto actorComponents = Serialization::Json::ReadArrayObject(*actor, "components"))
+                    auto ids = actorPrefab->GetComponentsIds();
+                    while (reader.NextObjectElement())
                     {
-                        auto ids = actorPrefab->GetComponentsIds();
-                        for (auto component : *actorComponents)
+                        std::string id;
+                        if (auto componentId = reader.ReadString("componentId"))
                         {
-                            std::string id;
-                            if (auto componentId = Serialization::Json::ReadString(*component, "componentId"))
+                            id = *componentId;
+                        }
+                        if (reader.BeginObject("properties"))
+                        {
+                            auto c = actorPrefab->GetComponentWithId(id);
+                            if (c)
                             {
-                                id = *componentId;
-                            }
-                            if (auto componentProperties = Serialization::Json::ReadObject(*component, "properties"))
-                            {
-                                auto c = actorPrefab->GetComponentWithId(id);
                                 // if found = component is still there
-                                if (c)
-                                {
-                                    c->Deserialize(*componentProperties);
-                                    ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
-                                }
-                                // if the id is not found (component has been added)
-                                else
-                                {
-                                    mSceneContext->GetPrefabFactory()->CreateAndAttachComponent(*component, actorPrefab);
-                                }
+                                c->Deserialize(reader);
+                                ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
                             }
-                        }
-                        // if there is still an id in the prefab but not in the scene (component has been deleted)
-                        if (!ids.empty())
-                        {
-                            for (auto id : ids)
+                            else
                             {
-                                auto c = actorPrefab->GetComponentWithId(id);
-                                if (c)
-                                {
-                                    c->OnEnd();
-                                    actorPrefab->RemoveComponent(c);
-                                    delete c;
-                                }
+                                // if the id is not found (component has been added)
+                                mSceneContext->GetPrefabFactory()->CreateAndAttachComponent(reader, actorPrefab);
                             }
+                            reader.EndObject();
                         }
                     }
 
-                    if (prefabName == "PlayerStart")
+                    reader.EndObjectArray();
+
+                    // if there is still an id in the prefab but not in the scene (component has been deleted)
+                    if (!ids.empty())
                     {
-                        pSceneRef->SetPlayerStart(actorPrefab);
+                        for (auto leftoverId : ids)
+                        {
+                            if (auto c = actorPrefab->GetComponentWithId(leftoverId))
+                            {
+                                c->OnEnd();
+                                actorPrefab->RemoveComponent(c);
+                                delete c;
+                            }
+                        }
                     }
-                    pSceneRef->AddActor(actorPrefab);
                 }
+                if (prefabName == "PlayerStart")
+                {
+                    pSceneRef->SetPlayerStart(actorPrefab);
+                }
+                //pSceneRef->AddActor(actorPrefab);
             }
         }
 

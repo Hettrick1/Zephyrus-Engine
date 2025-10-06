@@ -28,10 +28,10 @@ namespace Zephyrus::ActorComponent {
         BulletColliderComponent(Actor* pOwner, const std::string& pName = "");
         virtual ~BulletColliderComponent();
 
-        virtual void Deserialize(const rapidjson::Value& pData) override;
-        void BeginSerialize(Serialization::Json::JsonWriter& pWriter) override;
-        virtual void Serialize(Serialization::Json::JsonWriter& pWriter) override;
-        void EndSerialize(Serialization::Json::JsonWriter& pWriter) override;
+        virtual void Deserialize(Serialization::IDeserializer& pReader) override;
+        void BeginSerialize(Serialization::ISerializer& pWriter) override;
+        virtual void Serialize(Serialization::ISerializer& pWriter) override;
+        void EndSerialize(Serialization::ISerializer& pWriter) override;
 
         void OnStart() override;
         void OnEnd() override;

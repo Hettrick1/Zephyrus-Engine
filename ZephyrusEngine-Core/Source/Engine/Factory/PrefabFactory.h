@@ -29,6 +29,6 @@ namespace Zephyrus::Factory {
 		Actor* SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabName, const Vector3D& pInitialPos = 0, const Vector3D& pInitialRot = 0, const Vector3D& pInitialSize = 1);
 		Actor* InitPrefab(Scene* pScene, const std::string& pPrefabName);
 		std::vector<std::string> GetPrefabFiles(const std::string& folderPath);
-		Component* CreateAndAttachComponent(const rapidjson::Value& componentJson, Actor* actor, bool doDeserialize = true);
+		Component* CreateAndAttachComponent(Serialization::IDeserializer& reader, Actor* actor, bool doDeserialize = true);
 	};
 }

@@ -37,8 +37,8 @@ namespace Zephyrus::ActorComponent
 		SkySphereComponent(Actor* pOwner);
 		virtual ~SkySphereComponent();
 
-		void Deserialize(const rapidjson::Value& pData) override;
-		void Serialize(Serialization::Json::JsonWriter& pWriter) override;
+		void Deserialize(Serialization::IDeserializer& pReader) override;
+		void Serialize(Serialization::ISerializer& pWriter) override;
 		static Component* Create(Actor* pOwner) { return new SkySphereComponent(pOwner); }
 
 		void OnEnd() override;

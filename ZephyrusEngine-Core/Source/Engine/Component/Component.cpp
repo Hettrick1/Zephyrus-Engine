@@ -41,24 +41,24 @@ namespace Zephyrus::ActorComponent
         return std::vector<PropertyDescriptor>();
     }
 
-    void Component::Deserialize(const rapidjson::Value& pData)
+    void Component::Deserialize(Serialization::IDeserializer& pReader)
     {
-        if (auto pos = Serialization::Json::ReadVector3D(pData, "relativePosition"))
+        if (auto pos = pReader.ReadVector3D("relativePosition"))
         {
             SetRelativePosition(*pos);
         }
 
-        if (auto size = Serialization::Json::ReadVector3D(pData, "relativeSize"))
+        if (auto size = pReader.ReadVector3D("relativeSize"))
         {
             SetRelativeSize(*size);
         }
 
-        if (auto rot = Serialization::Json::ReadVector3D(pData, "relativeRotation"))
+        if (auto rot = pReader.ReadVector3D("relativeRotation"))
         {
             SetRelativeRotation(Quaternion(*rot));
         }
 
-        if (auto arr = Serialization::Json::ReadArrayString(pData, "tags"))
+        if (auto arr = pReader.ReadArrayString("tags"))
         {
             for (auto& element : *arr)
             {
@@ -67,7 +67,7 @@ namespace Zephyrus::ActorComponent
         }
     }
 
-    void Component::BeginSerialize(Serialization::Json::JsonWriter& pWriter)
+    void Component::BeginSerialize(Serialization::ISerializer& pWriter)
     {
         pWriter.BeginObject();
         pWriter.WriteString("type", mComponentName);
@@ -87,13 +87,13 @@ namespace Zephyrus::ActorComponent
         }
     }
 
-    void Component::Serialize(Serialization::Json::JsonWriter& pWriter)
+    void Component::Serialize(Serialization::ISerializer& pWriter)
     {
         BeginSerialize(pWriter);
         EndSerialize(pWriter);
     }
 
-    void Component::EndSerialize(Serialization::Json::JsonWriter& pWriter)
+    void Component::EndSerialize(Serialization::ISerializer& pWriter)
     {
         pWriter.EndObject();
         pWriter.EndObject();

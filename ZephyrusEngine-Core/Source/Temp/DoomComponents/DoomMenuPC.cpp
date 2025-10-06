@@ -22,12 +22,12 @@ namespace Zephyrus::ActorComponent
 	{
 	}
 
-	void DoomMenuPC::Deserialize(const rapidjson::Value& pData)
+	void DoomMenuPC::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pData);
+		Component::Deserialize(pReader);
 	}
 
-	void DoomMenuPC::Serialize(Serialization::Json::JsonWriter& pWriter)
+	void DoomMenuPC::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::Serialize(pWriter);
 	}

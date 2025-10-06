@@ -43,24 +43,24 @@ namespace Zephyrus::ActorComponent
 		};
 	}
 
-	void SpriteComponent::Deserialize(const rapidjson::Value& pData)
+	void SpriteComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pData);
-		if (pData.HasMember("texture") && pData["texture"].IsString())
+		Component::Deserialize(pReader);
+		if (auto texturePath = pReader.ReadString("texture"))
 		{
-			mTexture = *AssetsManager::LoadTexture(pData["texture"].GetString(), pData["texture"].GetString());
+			mTexture = *AssetsManager::LoadTexture(*texturePath, *texturePath);
 		}
 		mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
 		mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
-		if (pData.HasMember("cullOff") && pData["cullOff"].IsBool())
+		if (auto texturePath = pReader.ReadBool("cullOff"))
 		{
-			SetCullOff(pData["cullOff"].GetBool());
+			SetCullOff(*texturePath);
 		}
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
 	}
 
-	void SpriteComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+	void SpriteComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
 		pWriter.WriteString("texture", mTexture.GetTextureFilePath());

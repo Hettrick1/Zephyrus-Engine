@@ -15,17 +15,16 @@ namespace Zephyrus::ActorComponent
 	{
 	}
 
-	void PickUpComponent::Deserialize(const rapidjson::Value& pData)
+	void PickUpComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pData);
-		if (pData.HasMember("type") && pData["type"].IsString())
+		Component::Deserialize(pReader);
+		if (auto type = pReader.ReadString("type"))
 		{
-			std::string typeStr = pData["type"].GetString();
-			SetPickUpType(StringToPickUpType(typeStr));
+			SetPickUpType(StringToPickUpType(*type));
 		}
 	}
 
-	void PickUpComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+	void PickUpComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
 		pWriter.WriteString("type", PickUpTypeToString(mType));

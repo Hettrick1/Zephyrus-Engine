@@ -57,37 +57,37 @@ namespace Zephyrus::ActorComponent {
         }
     }
 
-    void BulletRigidbodyComponent::Deserialize(const rapidjson::Value& pData)
+    void BulletRigidbodyComponent::Deserialize(Serialization::IDeserializer& pReader)
     {
-        Component::Deserialize(pData);
+        Component::Deserialize(pReader);
 
-        if (auto type = Serialization::Json::ReadString(pData, "bodyType"))
+        if (auto type = pReader.ReadString("bodyType"))
         {
             mType = StringToBodyType(*type);
         }
-        if (auto mass = Serialization::Json::ReadFloat(pData, "mass"))
+        if (auto mass = pReader.ReadFloat("mass"))
         {
             mMass = *mass;
         }
-        if (auto friction = Serialization::Json::ReadFloat(pData, "friction"))
+        if (auto friction = pReader.ReadFloat("friction"))
         {
             mFriction = *friction;
         }
-        if (auto restitution = Serialization::Json::ReadFloat(pData, "restitution"))
+        if (auto restitution = pReader.ReadFloat("restitution"))
         {
             mRestitution = *restitution;
         }
-        if (auto lockAngles = Serialization::Json::ReadVector3D(pData, "lockAngles"))
+        if (auto lockAngles = pReader.ReadVector3D("lockAngles"))
         {
             mLockAngles = *lockAngles;
         }
-        if (auto lockAxes = Serialization::Json::ReadVector3D(pData, "lockAxes"))
+        if (auto lockAxes = pReader.ReadVector3D("lockAxes"))
         {
             mLockAxes = *lockAxes;
         }
     }
 
-    void BulletRigidbodyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+    void BulletRigidbodyComponent::Serialize(Serialization::ISerializer& pWriter)
     {
         Component::BeginSerialize(pWriter);
         pWriter.WriteString("bodyType", BodyTypeToString(mType));

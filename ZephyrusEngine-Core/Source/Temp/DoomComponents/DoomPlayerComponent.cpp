@@ -27,12 +27,12 @@ namespace Zephyrus::ActorComponent
 		mShotgunAnim.clear();
 	}
 
-	void DoomPlayerComponent::Deserialize(const rapidjson::Value& pData)
+	void DoomPlayerComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pData);
+		Component::Deserialize(pReader);
 	}
 
-	void DoomPlayerComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+	void DoomPlayerComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::Serialize(pWriter);
 	}

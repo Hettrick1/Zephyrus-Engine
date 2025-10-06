@@ -157,9 +157,9 @@ namespace Zephyrus::ActorComponent
         mPendingComponents.clear();
     }
 
-    void Actor::Deserialize(const rapidjson::Value& pData)
+    void Actor::Deserialize(Serialization::IDeserializer& pReader)
     {
-        if (auto uuid = Serialization::Json::ReadString(pData, "uuid"))
+        if (auto uuid = pReader.ReadString("uuid"))
         {
             SetUUID(*uuid);
         }
@@ -168,7 +168,7 @@ namespace Zephyrus::ActorComponent
             std::string id = uuids::to_string(uuids::uuid_system_generator{}());
             SetUUID(id);
         }
-        if (auto name = Serialization::Json::ReadString(pData, "name"))
+        if (auto name = pReader.ReadString("name"))
         {
             SetName(*name);
         }
@@ -177,31 +177,32 @@ namespace Zephyrus::ActorComponent
             SetName("UnamedActor");
         }
 
-        if (auto state = Serialization::Json::ReadString(pData, "state"))
+        if (auto state = pReader.ReadString("state"))
         {
             std::string stateStr = *state;
             SetActive(StringToActorState(stateStr));
         }
 
-        if (auto transform = Serialization::Json::ReadObject(pData, "transform"))
+        if (pReader.BeginObject("transform"))
         {
-            if (auto pos = Serialization::Json::ReadVector3D(*transform, "position"))
+            if (auto pos = pReader.ReadVector3D("position"))
             {
                 SetPosition(*pos);
             }
 
-            if (auto size = Serialization::Json::ReadVector3D(*transform, "size"))
+            if (auto size = pReader.ReadVector3D("size"))
             {
                 SetSize(*size);
             }
 
-            if (auto rot = Serialization::Json::ReadVector3D(*transform, "rotation"))
+            if (auto rot = pReader.ReadVector3D("rotation"))
             {
                 SetRotation(Quaternion(*rot));
             }
+            pReader.EndObject();
         }
 
-        if (auto arr = Serialization::Json::ReadArrayString(pData, "actorTags"))
+        if (auto arr = pReader.ReadArrayString("actorTags"))
         {
             for (auto& element : *arr)
             {
@@ -210,7 +211,7 @@ namespace Zephyrus::ActorComponent
         }
     }
 
-    void Actor::Serialize(Serialization::Json::JsonWriter& pWriter)
+    void Actor::Serialize(Serialization::ISerializer& pWriter)
     {
         pWriter.BeginObject();
         pWriter.WriteString("prefabName", mPrefab);

@@ -82,12 +82,12 @@ namespace Zephyrus::ActorComponent
 		EnemyDamagesAnim.clear();
 	}
 
-	void DoomEnemyComponent::Deserialize(const rapidjson::Value& pData)
+	void DoomEnemyComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pData);
+		Component::Deserialize(pReader);
 	}
 
-	void DoomEnemyComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+	void DoomEnemyComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::Serialize(pWriter);
 	}

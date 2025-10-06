@@ -10,16 +10,16 @@ namespace Zephyrus::ActorComponent
 	{
 	}
 
-	void PlayerStartComponent::Deserialize(const rapidjson::Value& pData)
+	void PlayerStartComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pData);
-		if (auto playerPrefabName = Serialization::Json::ReadString(pData, "playerPrefab"))
+		Component::Deserialize(pReader);
+		if (auto playerPrefabName = pReader.ReadString("playerPrefab"))
 		{
 			mPlayerPrefabName = *playerPrefabName;
 		}
 	}
 
-	void PlayerStartComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+	void PlayerStartComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
 		pWriter.WriteString("playerPrefab", mPlayerPrefabName);

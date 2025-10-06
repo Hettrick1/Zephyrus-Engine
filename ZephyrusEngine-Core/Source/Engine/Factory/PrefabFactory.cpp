@@ -26,38 +26,25 @@ namespace Zephyrus::Factory {
             fullPath = pPrefabName;
         }
 
-        std::ifstream file(fullPath);
-
-        if (!file.is_open())
+        Serialization::Json::JsonReader reader;
+        if (!reader.LoadDocument(fullPath))
         {
-            ZP_CORE_ERROR("Impossible to open the prefab : " + fullPath);
-            return nullptr;
-        }
-
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        std::string jsonContent = buffer.str();
-
-        rapidjson::Document doc;
-        doc.Parse(jsonContent.c_str());
-
-        if (doc.HasParseError()) {
-            ZP_CORE_ERROR(pPrefabName + " Parsing JSON failed !");
+            ZP_CORE_ERROR("Impossible to open or parse the prefab: " + fullPath);
             return nullptr;
         }
 
         auto actor = new Actor(mSceneContext, *pScene);
         actor->SetPrefab(pPrefabName);
 
-        actor->Deserialize(doc);
+        actor->Deserialize(reader);
 
-        // creates all the components
-        if (auto arr = Serialization::Json::ReadArrayObject(doc, "components"))
+        if (reader.BeginObjectArray("components"))
         {
-            for (auto& component : *arr)
+            while (reader.NextObjectElement())
             {
-                CreateAndAttachComponent(*component, actor);
+                CreateAndAttachComponent(reader, actor);
             }
+            reader.EndObjectArray();
         }
 
         ZP_LOAD("Prefab " + actor->GetName() + " loaded");
@@ -73,7 +60,6 @@ namespace Zephyrus::Factory {
     Actor* PrefabFactory::InitPrefab(Scene* pScene, const std::string& pPrefabName)
     {
         std::string fullPath;
-
         // TODO -> only work with full path, no longer spawn prefab with name
         if (pPrefabName.find(".prefab") == std::string::npos)
         {
@@ -84,41 +70,30 @@ namespace Zephyrus::Factory {
             fullPath = pPrefabName;
         }
 
-        std::ifstream file(fullPath);
-
-        if (!file.is_open())
+        Serialization::Json::JsonReader reader;
+        if (!reader.LoadDocument(fullPath))
         {
-            ZP_CORE_ERROR("Impossible to open the prefab : " + fullPath);
-            return nullptr;
-        }
-
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        std::string jsonContent = buffer.str();
-
-        rapidjson::Document doc;
-        doc.Parse(jsonContent.c_str());
-
-        if (doc.HasParseError()) {
-            ZP_CORE_ERROR(pPrefabName + " Parsing JSON failed !");
+            ZP_CORE_ERROR("Impossible to open or parse the prefab: " + fullPath);
             return nullptr;
         }
 
         auto actor = new Actor(mSceneContext, *pScene);
         actor->SetPrefab(pPrefabName);
 
-        actor->Deserialize(doc);
+        actor->Deserialize(reader);
 
-        // creates all the components
-        if (auto arr = Serialization::Json::ReadArrayObject(doc, "components"))
+        if (reader.BeginObjectArray("components"))
         {
-            for (auto& component : *arr)
+            while (reader.NextObjectElement())
             {
-                CreateAndAttachComponent(*component, actor, false);
+                CreateAndAttachComponent(reader, actor, false);
             }
+            reader.EndObjectArray();
         }
 
         ZP_LOAD("Prefab " + actor->GetName() + " loaded");
+
+        pScene->AddActor(actor);
         return actor;
     }
 
@@ -139,29 +114,37 @@ namespace Zephyrus::Factory {
         return prefabs;
     }
 
-    Component* PrefabFactory::CreateAndAttachComponent(const rapidjson::Value& componentJson, Actor* actor, bool doDeserialize)
+    Component* PrefabFactory::CreateAndAttachComponent(Serialization::IDeserializer& reader,Actor* actor, bool doDeserialize)
     {
-        std::string type = *Serialization::Json::ReadString(componentJson, "type");
-        Component* c = mComponentFactory->Create(type, actor);
+        auto typeOpt = reader.ReadString("type");
+        if (!typeOpt)
+        {
+            ZP_EDITOR_ERROR("Component type is missing !");
+            return nullptr;
+        }
+        std::string type = *typeOpt;
 
-        if (!c) {
+        Component* c = mComponentFactory->Create(type, actor);
+        if (!c)
+        {
             ZP_EDITOR_ERROR("Component " + type + " is invalid !");
             return nullptr;
         }
-        if (auto id = Serialization::Json::ReadString(componentJson, "componentId"))
+
+        if (auto id = reader.ReadString("componentId"))
         {
             c->SetId(*id);
         }
-        if (doDeserialize)
+
+        if (doDeserialize && reader.BeginObject("properties"))
         {
-            if (auto properties = Serialization::Json::ReadObject(componentJson, "properties")) {
-                // sets all the components properties from the prefab file
-                c->Deserialize(*properties);
-            }
+            c->Deserialize(reader);
+            reader.EndObject();
         }
 
         actor->AddComponent(c);
         ZP_CORE_LOAD("Component " + type + " loaded and attached to " + actor->GetName());
+
         return c;
     }
 }

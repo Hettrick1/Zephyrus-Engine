@@ -47,10 +47,10 @@ namespace Zephyrus::ActorComponent
 
 		virtual std::vector<PropertyDescriptor> GetProperties();
 
-		virtual void Deserialize(const rapidjson::Value& pData);
-		virtual void BeginSerialize(Serialization::Json::JsonWriter& pWriter);
-		virtual void Serialize(Serialization::Json::JsonWriter& pWriter);
-		virtual void EndSerialize(Serialization::Json::JsonWriter& pWriter);
+		virtual void Deserialize(Serialization::IDeserializer& pReader);
+		virtual void BeginSerialize(Serialization::ISerializer& pWriter);
+		virtual void Serialize(Serialization::ISerializer& pWriter);
+		virtual void EndSerialize(Serialization::ISerializer& pWriter);
 
 		void SetRelativePosition(const Vector3D& pPosition);
 		void SetRelativeSize(const Vector3D& pSize);

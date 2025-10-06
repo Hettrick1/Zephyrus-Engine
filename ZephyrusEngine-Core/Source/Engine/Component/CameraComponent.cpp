@@ -26,26 +26,26 @@ namespace Zephyrus::ActorComponent
         }
     }
 
-    void CameraComponent::Deserialize(const rapidjson::Value& pData)
+    void CameraComponent::Deserialize(Serialization::IDeserializer& pReader)
     {
-        Component::Deserialize(pData);
-        if (auto fov = Serialization::Json::ReadFloat(pData, "fov"))
+        Component::Deserialize(pReader);
+        if (auto fov = pReader.ReadFloat("fov"))
         {
             mFov = *fov;
         }
-        if (auto width = Serialization::Json::ReadFloat(pData, "width"))
+        if (auto width = pReader.ReadFloat("width"))
         {
             mWidth = *width;
         }
-        if (auto height = Serialization::Json::ReadFloat(pData, "height"))
+        if (auto height = pReader.ReadFloat("height"))
         {
             mHeight = *height;
         }
-        if (auto nearClip = Serialization::Json::ReadFloat(pData, "nearClip"))
+        if (auto nearClip = pReader.ReadFloat("nearClip"))
         {
             mNearClip = *nearClip;
         }
-        if (auto farClip = Serialization::Json::ReadFloat(pData, "farClip"))
+        if (auto farClip = pReader.ReadFloat("farClip"))
         {
             mFarClip = *farClip;
         }
@@ -54,7 +54,7 @@ namespace Zephyrus::ActorComponent
         SetClipping(mNearClip, mFarClip);
     }
 
-    void CameraComponent::Serialize(Serialization::Json::JsonWriter& pWriter)
+    void CameraComponent::Serialize(Serialization::ISerializer& pWriter)
     {
         Component::BeginSerialize(pWriter);
         pWriter.WriteFloat("fov", mFov);
