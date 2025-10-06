@@ -9,8 +9,8 @@ namespace Zephyrus::Scenes {
 	SceneManager::SceneManager()
 	{
 		mComponentFactory = new ComponentFactory();
-		mPrefabFactory = new PrefabFactory(this, mComponentFactory);;
-		mSceneFactory = new SceneFactory(this);
+		mPrefabFactory = new Zephyrus::Factory::PrefabFactory(this, mComponentFactory);;
+		mSceneFactory = new Zephyrus::Factory::SceneFactory(this);
 		mIsSceneLoaded = false;
 		ActiveScene = nullptr;
 	}
@@ -158,7 +158,7 @@ namespace Zephyrus::Scenes {
 		}
 		return nullptr;
 	}
-	Zephyrus::Factory::PrefabFactory* SceneManager::GetPrefabFactory()
+	Zephyrus::Factory::IPrefabFactory* SceneManager::GetPrefabFactory()
 	{
 		if (mPrefabFactory)
 		{
@@ -166,7 +166,7 @@ namespace Zephyrus::Scenes {
 		}
 		return nullptr;
 	}
-	Zephyrus::Factory::SceneFactory* SceneManager::GetSceneFactory()
+	Zephyrus::Factory::ISceneFactory* SceneManager::GetSceneFactory()
 	{
 		if (mSceneFactory)
 		{

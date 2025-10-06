@@ -4,8 +4,8 @@
 #include "ISceneContext.h"
 
 using Zephyrus::Factory::ComponentFactory;
-using Zephyrus::Factory::PrefabFactory;
-using Zephyrus::Factory::SceneFactory;
+using Zephyrus::Factory::IPrefabFactory;
+using Zephyrus::Factory::ISceneFactory;
 
 /**
  * @brief Manages the current scene, including loading, starting, updating, rendering, and unloading scenes.
@@ -18,8 +18,8 @@ namespace Zephyrus::Scenes
 	public:
 
 		ComponentFactory* mComponentFactory;
-		PrefabFactory* mPrefabFactory;
-		SceneFactory* mSceneFactory;
+		IPrefabFactory* mPrefabFactory;
+		ISceneFactory* mSceneFactory;
 
 		Scene* ActiveScene;
 		bool mIsSceneLoaded;
@@ -53,8 +53,8 @@ namespace Zephyrus::Scenes
 		Zephyrus::Render::IRenderer* GetRenderer() override;
 		CameraManager* GetCameraManager() override;
 		Zephyrus::Factory::ComponentFactory* GetComponentFactory() override;
-		Zephyrus::Factory::PrefabFactory* GetPrefabFactory() override;
-		Zephyrus::Factory::SceneFactory* GetSceneFactory() override;
+		Zephyrus::Factory::IPrefabFactory* GetPrefabFactory() override;
+		Zephyrus::Factory::ISceneFactory* GetSceneFactory() override;
 		Zephyrus::Scenes::Scene* GetActiveScene() override;
 		void SetSceneLoaded(bool pSceneLoaded) override;
 	};
