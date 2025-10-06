@@ -3,7 +3,7 @@
 
 namespace Zephyrus::ActorComponent
 {
-	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Mesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram)
+	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Render::IMesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram)
 		:MeshComponent(pOwner), mCubeMapTexture(pCubeMap)
 	{
 		MeshComponent::SetMesh(*pMesh);
@@ -26,15 +26,15 @@ namespace Zephyrus::ActorComponent
 			mShaderProgram.setFloat("uLod", mOwner->GetLod());
 			mShaderProgram.setFloat("uTime", SDL_GetTicks());
 			mCubeMapTexture.SetActive();
-			mMesh->GetVao()->SetActive();
+			mMesh->Bind();
 			if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
 			{
 				//glPatchParameteri(GL_PATCH_VERTICES, 3);
-				glDrawArrays(GL_PATCHES, 0, mMesh->GetVao()->GetVerticeCount());
+				glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
 			}
 			else
 			{
-				glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
+				glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
 			}
 		}
 	}

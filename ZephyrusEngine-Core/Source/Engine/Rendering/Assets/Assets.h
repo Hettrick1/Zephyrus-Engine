@@ -20,7 +20,14 @@ using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::Shader;
 using Zephyrus::Render::ShaderType;
 
+namespace Zephyrus::Render
+{
+	class IMesh;
+}
+
 namespace Zephyrus::Assets {
+
+	struct MeshData;
 
 	enum class AssetType
 	{
@@ -41,13 +48,16 @@ namespace Zephyrus::Assets {
 		static Zephyrus::Assets::Texture LoadTextureFromFile(Zephyrus::Render::IRenderer& pRenderer, const std::string& pFilePath);
 		// Loads a mesh from file (internal use)
 		static Mesh* LoadMeshFromFile(const std::string& pFilePath);
+
+		static MeshData LoadMeshData(const std::string& pFilePath);
+
 		// Loads a font from file (internal use)
 		static Font LoadFontFromFile(const std::string& pFilePath);
 		static Shader LoadShaderFromFile(const std::string& pFilePath, ShaderType pType);
 
 	public:
 		static std::map<std::string, Zephyrus::Assets::Texture> mTextures;
-		static std::map<std::string, Mesh*> mMeshes;
+		static std::map<std::string, Render::IMesh*> mMeshes;
 		static std::map<std::string, Font> mFonts;
 		static std::map<std::string, Shader> mShaders;
 		static std::map<std::string, ShaderProgram> mShaderPrograms;
@@ -65,8 +75,8 @@ namespace Zephyrus::Assets {
 		static void SetContext(ISceneContext* pContext);
 
 		// Loads a mesh from file and stores it with the given name
-		static Mesh* LoadMesh(const std::string& pFilePath, const std::string& pName);
-		static Mesh* GetMesh(const std::string& pName);
+		static Render::IMesh* LoadMesh(const std::string& pFilePath, const std::string& pName);
+		static Render::IMesh* GetMesh(const std::string& pName);
 
 		// Loads a font from file and stores it with the given name
 		static Font* LoadFont(const std::string& pFilePath, const std::string& pName);

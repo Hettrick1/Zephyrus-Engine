@@ -9,6 +9,7 @@
 #include "TextRenderer.h"
 #include "Assets.h"
 #include "CameraComponent.h"
+#include "../MeshOpenGL.h"
 #include <algorithm>
 
 using Zephyrus::Assets::AssetsManager;
@@ -65,8 +66,8 @@ namespace Zephyrus::Render {
 		mSpriteShaderProgramTemp = *AssetsManager::LoadShaderProgram({ &mSpriteVertexShader, &mSpriteFragmentShader }, "simpleSpriteSP");
 		SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 
-		mVAO = new VertexArray(Zephyrus::Assets::spriteVertices, 4);
-		mFullscreenQuadVAO = new VertexArray(Zephyrus::Assets::fullscreenQuadVertices, 4);
+		mVAO = new VertexArrayOpenGL(Zephyrus::Assets::spriteVertices, 32);
+		mFullscreenQuadVAO = new VertexArrayOpenGL(Zephyrus::Assets::fullscreenQuadVertices, 32);
 
 		mFullscreenVertexShader = *AssetsManager::LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuadvert");
 		mFullscreenFragmentShader = *AssetsManager::LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuadfrag");
@@ -143,6 +144,11 @@ namespace Zephyrus::Render {
 		mSkySphereComponent = nullptr;
 	}
 
+	IMesh* RendererOpenGl::LoadMeshFromData(Assets::MeshData& data)
+	{
+		return new MeshOpenGL(data);
+	}
+
 	void RendererOpenGl::AddSprite(SpriteComponent* pSprite)
 	{
 		int spriteDrawOrder = pSprite->GetDrawOrder();
@@ -216,7 +222,7 @@ namespace Zephyrus::Render {
 		mDebugRenderer->SetProjMatrix(pProjMatrix);
 	}
 
-	void RendererOpenGl::DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
+	void RendererOpenGl::DrawSprite(Actor& pActor, Texture& pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
 	{
 		if (mSpriteShaderProgram == nullptr)
 		{
@@ -246,7 +252,7 @@ namespace Zephyrus::Render {
 			mSkySphereComponent->GetShaderProgram().setMatrix4Row("uWorld", Matrix4DRow::Identity);
 			Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView);
 			mSkySphereComponent->GetShaderProgram().setMatrix4Row("uViewProj", skyView * mProj);
-			mSkySphereComponent->GetVao()->SetActive();
+			mSkySphereComponent->GetMesh()->Bind();
 			if (mSkySphereComponent->GetIsSphere())
 			{
 				mSkySphereComponent->GetSphereTexture()->SetActive();
@@ -256,7 +262,7 @@ namespace Zephyrus::Render {
 				mSkySphereComponent->GetCubeMap().SetActive();
 			}
 			GLenum drawMode = mSkySphereComponent->GetTextureType() == GL_TEXTURE_2D ? GL_TRIANGLES : GL_PATCHES;
-			glDrawArrays(drawMode, 0, mSkySphereComponent->GetVao()->GetVerticeCount());
+			glDrawArrays(drawMode, 0, mSkySphereComponent->GetMesh()->GetVertexCount());
 			glDepthMask(GL_TRUE);
 		}
 	}
@@ -316,7 +322,7 @@ namespace Zephyrus::Render {
 		}
 	}
 
-	void RendererOpenGl::DrawHudImage(Texture& pTexture, Rectangle pRect, Vector2D pOrigin, Vector4D pTint)
+	void RendererOpenGl::DrawHudImage(Texture& pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint)
 	{
 		if (mSpriteShaderProgram == nullptr)
 		{

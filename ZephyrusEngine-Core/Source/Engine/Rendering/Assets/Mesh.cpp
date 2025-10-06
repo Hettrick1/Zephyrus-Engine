@@ -14,7 +14,7 @@ namespace Zephyrus::Assets {
 		: mVertices(std::move(pVertices)), mVao(nullptr), mFilePath(pFilePath)
 	{
 
-		mVao = new VertexArray(ToVerticeArray(), mVertices.size());
+		mVao = new VertexArrayOpenGL(ToVerticeArray(), mVertices.size());
 	}
 
 	Mesh::~Mesh()

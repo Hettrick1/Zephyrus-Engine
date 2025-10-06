@@ -10,13 +10,13 @@ using Zephyrus::Render::Vertex;
 
 // Represents a 3D mesh with vertices, textures, and a vertex array object for rendering.
 namespace Zephyrus::Assets {
-	class VertexArray;
+	class VertexArrayOpenGL;
 	class Texture;
 	class Mesh
 	{
 	private:
 		std::vector<Vertex> mVertices;
-		VertexArray* mVao = nullptr;
+		VertexArrayOpenGL* mVao = nullptr;
 		std::string mFilePath;
 	public:
 		Mesh();
@@ -29,7 +29,7 @@ namespace Zephyrus::Assets {
 		// Converts the mesh's vertices to a float array.
 		float* ToVerticeArray();
 
-		inline VertexArray* GetVao() const { return mVao; }
+		inline VertexArrayOpenGL* GetVao() const { return mVao; }
 		inline std::string GetMeshFilePath() const { return mFilePath; }
 	};
 }

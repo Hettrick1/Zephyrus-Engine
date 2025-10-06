@@ -18,7 +18,7 @@ namespace Zephyrus::Assets {
 	};
 
 	// Manages an OpenGL Vertex Array Object (VAO) and its associated Vertex Buffer Object (VBO)
-	class VertexArray
+	class VertexArrayOpenGL
 	{
 	private:
 		unsigned int mVerticeCount;
@@ -27,9 +27,9 @@ namespace Zephyrus::Assets {
 		unsigned int mVertexBufferId;
 	public:
 		// Creates a vertex array with the given vertices and count
-		VertexArray(const float* pVertices, unsigned int pVerticeCount);
+		VertexArrayOpenGL(const float* pVertices, unsigned int pVerticeCount);
 		// Releases the resources used by the vertex array
-		~VertexArray();
+		~VertexArrayOpenGL();
 
 		void SetActive();
 

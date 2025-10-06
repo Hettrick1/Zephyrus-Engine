@@ -1,13 +1,16 @@
 #pragma once
 #include "Component.h"
 #include "Texture.h"
-#include "Mesh.h"
 #include "Maths.h"
 #include "CubeTextureMap.h"
+#include "Shader.h"
+#include "ShaderProgram.h"
+
+namespace Zephyrus::Render {
+	class IMesh;
+}
 
 using Zephyrus::Assets::CubeTextureMap;
-using Zephyrus::Assets::Mesh;
-using Zephyrus::Assets::VertexArray;
 using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::Shader;
 using Zephyrus::Render::ShaderType;
@@ -20,7 +23,7 @@ namespace Zephyrus::ActorComponent
 	class SkySphereComponent : public Component
 	{
 	protected:
-		Mesh* mMesh = nullptr;
+		Render::IMesh* mMesh = nullptr;
 		Shader mVertexShader, mFragmentShader, mTescShader, mTeseShader;
 		ShaderProgram mShaderProgram;
 		CubeTextureMap mCubeMap;
@@ -28,7 +31,6 @@ namespace Zephyrus::ActorComponent
 		unsigned int mTextureIndex = 0;
 		Zephyrus::Assets::Texture* mSphereTexture = nullptr;
 		bool mIsSphere = false;
-		VertexArray* mVao = nullptr;
 		GLenum mTextureType;
 
 		std::vector<std::string> mTexturesPaths;
@@ -40,8 +42,6 @@ namespace Zephyrus::ActorComponent
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;
 		static Component* Create(Actor* pOwner) { return new SkySphereComponent(pOwner); }
-
-		void OnEnd() override;
 
 		std::vector<PropertyDescriptor> GetProperties() override;
 
@@ -56,11 +56,10 @@ namespace Zephyrus::ActorComponent
 
 		void SetTexturePaths(std::vector<std::string>& pTexturesPaths);
 
-		inline Mesh* GetMesh() const { return mMesh; }
+		inline Render::IMesh* GetMesh() const { return mMesh; }
 		inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
 		inline CubeTextureMap& GetCubeMap() { return mCubeMap; }
 		inline unsigned int& GetTextureIndex() { return mTextureIndex; }
-		inline VertexArray* GetVao() const { return mVao; }
 		inline GLenum& GetTextureType() { return mTextureType; }
 		inline bool GetIsSphere() const { return mIsSphere; }
 		inline Zephyrus::Assets::Texture* GetSphereTexture() const { return mSphereTexture; }
