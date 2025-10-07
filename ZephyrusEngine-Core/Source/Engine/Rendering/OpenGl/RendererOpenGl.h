@@ -68,7 +68,7 @@ namespace Zephyrus::Render {
 		void Close() override;
 		void Unload() override;
 
-		IMesh* LoadMeshFromData(Assets::MeshData& data) override;
+		Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) override;
 
 		void AddSprite(SpriteComponent* pSprite) override;
 		void RemoveSprite(SpriteComponent* pSprite) override;

@@ -4,7 +4,7 @@
 #include "Mesh.h"
 #include "Maths.h"
 
-using Zephyrus::Render::IMesh;
+using Zephyrus::Assets::IMesh;
 using Zephyrus::Assets::Texture;
 using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::Shader;

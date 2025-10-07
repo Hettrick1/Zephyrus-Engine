@@ -16,7 +16,7 @@ namespace Zephyrus::Assets {
 
 	std::map<std::string, Texture> AssetsManager::mTextures = {};
 	std::map<std::string, Font> AssetsManager::mFonts = {};
-	std::map<std::string, Render::IMesh*> AssetsManager::mMeshes = {};
+	std::map<std::string, IMesh*> AssetsManager::mMeshes = {};
 	std::map<std::string, Shader> AssetsManager::mShaders = {};
 	std::map<std::string, ShaderProgram> AssetsManager::mShaderPrograms = {};
 
@@ -51,7 +51,7 @@ namespace Zephyrus::Assets {
 		mContext = pContext;
 	}
 
-	Render::IMesh* AssetsManager::LoadMesh(const std::string& pFilePath, const std::string& pName)
+	IMesh* AssetsManager::LoadMesh(const std::string& pFilePath, const std::string& pName)
 	{
 		if (mMeshes.find(pName) == mMeshes.end()) {
 			auto data = LoadMeshData(GetFullPath(pFilePath, AssetType::Mesh));
@@ -62,7 +62,7 @@ namespace Zephyrus::Assets {
 		return mMeshes[pName];
 	}
 
-	Render::IMesh* AssetsManager::GetMesh(const std::string& pName)
+	IMesh* AssetsManager::GetMesh(const std::string& pName)
 	{
 		if (mMeshes.find(pName) == mMeshes.end()) {
 			std::ostringstream loadError;

@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include "ShaderProgram.h"
 
-namespace Zephyrus::Render {
+namespace Zephyrus::Assets {
 	class IMesh;
 }
 
@@ -23,7 +23,7 @@ namespace Zephyrus::ActorComponent
 	class SkySphereComponent : public Component
 	{
 	protected:
-		Render::IMesh* mMesh = nullptr;
+		Assets::IMesh* mMesh = nullptr;
 		Shader mVertexShader, mFragmentShader, mTescShader, mTeseShader;
 		ShaderProgram mShaderProgram;
 		CubeTextureMap mCubeMap;
@@ -56,7 +56,7 @@ namespace Zephyrus::ActorComponent
 
 		void SetTexturePaths(std::vector<std::string>& pTexturesPaths);
 
-		inline Render::IMesh* GetMesh() const { return mMesh; }
+		inline Assets::IMesh* GetMesh() const { return mMesh; }
 		inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
 		inline CubeTextureMap& GetCubeMap() { return mCubeMap; }
 		inline unsigned int& GetTextureIndex() { return mTextureIndex; }

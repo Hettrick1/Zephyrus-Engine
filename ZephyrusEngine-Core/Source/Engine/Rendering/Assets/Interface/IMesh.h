@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdint>
 
-namespace Zephyrus::Render {
+namespace Zephyrus::Assets {
     class IMesh
     {
     public:

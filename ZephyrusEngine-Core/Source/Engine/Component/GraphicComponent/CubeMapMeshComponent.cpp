@@ -3,7 +3,7 @@
 
 namespace Zephyrus::ActorComponent
 {
-	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Render::IMesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram)
+	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Assets::IMesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram)
 		:MeshComponent(pOwner), mCubeMapTexture(pCubeMap)
 	{
 		MeshComponent::SetMesh(*pMesh);

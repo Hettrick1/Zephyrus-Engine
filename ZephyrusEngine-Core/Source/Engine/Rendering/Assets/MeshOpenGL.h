@@ -7,7 +7,7 @@
 
 namespace Zephyrus::Render {
 
-    class MeshOpenGL : public IMesh
+    class MeshOpenGL : public Assets::IMesh
     {
     private:
         std::unique_ptr<Zephyrus::Assets::VertexArrayOpenGL> mVertexArray;

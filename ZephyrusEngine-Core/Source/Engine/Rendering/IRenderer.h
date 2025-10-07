@@ -18,6 +18,7 @@ namespace Zephyrus::Assets
 {
 	class Texture;
 	struct MeshData;
+	class IMesh;
 }
 namespace Zephyrus::UI {
 	class HudManager;
@@ -45,7 +46,6 @@ using Zephyrus::UI::HudManager;
 namespace Zephyrus::Render {
 
 	class DebugRenderer;
-	class IMesh;
 
 	class IRenderer
 	{
@@ -68,7 +68,7 @@ namespace Zephyrus::Render {
 		virtual void Draw() = 0;
 		virtual void EndDraw() = 0;
 
-		virtual IMesh* LoadMeshFromData(Assets::MeshData& data) = 0;
+		virtual Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) = 0;
 
 		virtual void RenderActiveCamera(CameraComponent* cam) {}
 

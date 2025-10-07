@@ -13,7 +13,7 @@ namespace Zephyrus::ActorComponent
 	class CubeMapMeshComponent : public MeshComponent
 	{
 	public:
-		CubeMapMeshComponent(Actor* pOwner, Render::IMesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram = nullptr);
+		CubeMapMeshComponent(Actor* pOwner, Assets::IMesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram = nullptr);
 		virtual ~CubeMapMeshComponent();
 		void Draw(const Matrix4DRow& viewProj) override;
 
