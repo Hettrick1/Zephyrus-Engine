@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "MeshComponent.h"
 #include "CubeTextureMap.h"
-#include "Mesh.h"
+#include "Interface/IMesh.h"
 #include "Maths.h"
 
 using Zephyrus::Assets::CubeTextureMap;
@@ -13,7 +13,7 @@ namespace Zephyrus::ActorComponent
 	class CubeMapMeshComponent : public MeshComponent
 	{
 	public:
-		CubeMapMeshComponent(Actor* pOwner, Mesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram = nullptr);
+		CubeMapMeshComponent(Actor* pOwner, Assets::IMesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram = nullptr);
 		virtual ~CubeMapMeshComponent();
 		void Draw(const Matrix4DRow& viewProj) override;
 

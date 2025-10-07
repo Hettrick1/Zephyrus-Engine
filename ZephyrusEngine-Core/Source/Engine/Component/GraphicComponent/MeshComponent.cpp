@@ -83,7 +83,7 @@ namespace Zephyrus::ActorComponent
 	void MeshComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
-		pWriter.WriteString("mesh", mMesh->GetMeshFilePath());
+		pWriter.WriteString("mesh", mMesh->GetFilePath());
 		pWriter.BeginArray("textures");
 		for (auto& texture : GetAllTextures())
 		{
@@ -137,14 +137,14 @@ namespace Zephyrus::ActorComponent
 		{
 			tex->SetActive();
 		}
-		mMesh->GetVao()->SetActive();
+		mMesh->Bind();
 		if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
 		{
-			glDrawArrays(GL_PATCHES, 0, mMesh->GetVao()->GetVerticeCount());
+			glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
 		}
 		else
 		{
-			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVao()->GetVerticeCount());
+			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
 		}
 	}
 
@@ -153,7 +153,7 @@ namespace Zephyrus::ActorComponent
 
 	}
 
-	void MeshComponent::SetMesh(Mesh& pMesh)
+	void MeshComponent::SetMesh(IMesh& pMesh)
 	{
 		mMesh = &pMesh;
 	}

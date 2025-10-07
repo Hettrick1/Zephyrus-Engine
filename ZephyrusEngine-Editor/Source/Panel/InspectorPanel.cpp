@@ -11,6 +11,7 @@
 #include "CubeTextureMap.h"
 #include "../EditorUI/Property.h"
 #include "SceneManager.h"
+#include "Interface/IMesh.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -773,14 +774,14 @@ void InspectorPanel::SetPropertyFont(const PropertyDescriptor& pProperty, const 
 
 void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
-	auto prop = MakeUndoableProperty<Zephyrus::Assets::Mesh*>(pProperty, mActiveComponent);
-	Zephyrus::Assets::Mesh* mesh = static_cast<Zephyrus::Assets::Mesh*>(prop.getter());
+	auto prop = MakeUndoableProperty<Zephyrus::Assets::IMesh*>(pProperty, mActiveComponent);
+	Zephyrus::Assets::IMesh* mesh = static_cast<Zephyrus::Assets::IMesh*>(prop.getter());
 	if (!mesh)
 	{
 		return;
 	}
 	char buffer[255];
-	strncpy(buffer, mesh->GetMeshFilePath().c_str(), sizeof(buffer));
+	strncpy(buffer, mesh->GetFilePath().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	ImGui::Text("Mesh : ");
@@ -790,7 +791,7 @@ void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const 
 	ImGui::SetNextItemWidth(pInputWidth);
 	if (ImGui::InputText(("##Mesh" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		Zephyrus::Assets::Mesh* newMesh = AssetsManager::LoadMesh(buffer, buffer);
+		Zephyrus::Assets::IMesh* newMesh = AssetsManager::LoadMesh(buffer, buffer);
 		if (newMesh)
 		{
 			prop.setter(newMesh);
@@ -805,7 +806,7 @@ void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const 
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MESH"))
 		{
 			std::string meshID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Assets::Mesh* droppedMesh = AssetsManager::LoadMesh(meshID, meshID);
+			Zephyrus::Assets::IMesh* droppedMesh = AssetsManager::LoadMesh(meshID, meshID);
 			if (droppedMesh)
 			{
 				prop.setter(droppedMesh);

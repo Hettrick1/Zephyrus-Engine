@@ -17,6 +17,9 @@ namespace Zephyrus::ActorComponent
 namespace Zephyrus::Assets
 {
 	class Texture;
+	struct MeshData;
+	class IMesh;
+	class IFont;
 }
 namespace Zephyrus::UI {
 	class HudManager;
@@ -66,6 +69,9 @@ namespace Zephyrus::Render {
 		virtual void Draw() = 0;
 		virtual void EndDraw() = 0;
 
+		virtual Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) = 0;
+		virtual Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) = 0;
+
 		virtual void RenderActiveCamera(CameraComponent* cam) {}
 
 		virtual void Close() = 0;
@@ -90,7 +96,7 @@ namespace Zephyrus::Render {
 		virtual void SetSelectedActor(Actor* pSelectedActor) {};
 
 		virtual RendererType GetType() const = 0;
-		virtual void DrawSprite(Actor& pActor, Texture& pTex, Rectangle pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
+		virtual void DrawSprite(Actor& pActor, Texture& pTex, Rectangle2D pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
 		virtual void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) {}
 		virtual void DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit) {}
 		virtual SDL_Renderer* ToSdlRenderer() { return nullptr; }

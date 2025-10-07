@@ -10,7 +10,7 @@ namespace Zephyrus::UI {
 
     void HudImage::Draw(Zephyrus::Render::RendererOpenGl& pRenderer)
     {
-        Rectangle rect;
+        Rectangle2D rect;
         rect.dimensions = { mWidth, mHeight };
         rect.position = mPosition;
         glDisable(GL_CULL_FACE);

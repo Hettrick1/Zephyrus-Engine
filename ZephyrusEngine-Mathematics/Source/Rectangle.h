@@ -2,12 +2,13 @@
 
 #include "Vector2D.h"
 
-struct Rectangle
+struct Rectangle2D
 {
-    Vector2D position;
-    Vector2D dimensions;
+    Rectangle2D() = default;
+    Vector2D position{0};
+    Vector2D dimensions{0};
 
-    bool operator==(const Rectangle& other) const
+    bool operator==(const Rectangle2D& other) const
     {
         return position.x == other.position.x &&
             position.y == other.position.y &&
@@ -15,10 +16,10 @@ struct Rectangle
             dimensions.y == other.dimensions.y;
     }
 
-    bool operator!=(const Rectangle& other) const
+    bool operator!=(const Rectangle2D& other) const
     {
         return !(*this == other);
     }
 
-    static const Rectangle Null;
+    static const Rectangle2D Null;
 };

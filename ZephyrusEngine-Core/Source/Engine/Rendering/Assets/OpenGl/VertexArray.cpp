@@ -1,7 +1,7 @@
 #include "VertexArray.h"
 #include "glew.h"
 namespace Zephyrus::Assets {
-	VertexArray::VertexArray(const float* pVertices, unsigned int pVerticeCount)
+	VertexArrayOpenGL::VertexArrayOpenGL(const float* pVertices, unsigned int pVerticeCount)
 		: mVerticeCount(pVerticeCount), mVertexArrayId(0), mVertexBufferId(0)
 	{
 		// VAO
@@ -11,7 +11,7 @@ namespace Zephyrus::Assets {
 		// VBO
 		glGenBuffers(1, &mVertexBufferId);
 		glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferId);
-		glBufferData(GL_ARRAY_BUFFER, mVerticeCount * 8 * sizeof(float), pVertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, mVerticeCount * sizeof(float), pVertices, GL_STATIC_DRAW);
 
 		//Position
 		glEnableVertexAttribArray(0);
@@ -25,13 +25,13 @@ namespace Zephyrus::Assets {
 
 	}
 
-	VertexArray::~VertexArray()
+	VertexArrayOpenGL::~VertexArrayOpenGL()
 	{
 		glDeleteBuffers(1, &mVertexBufferId);
 		glDeleteBuffers(1, &mVertexArrayId);
 	}
 
-	void VertexArray::SetActive()
+	void VertexArrayOpenGL::SetActive()
 	{
 		glBindVertexArray(mVertexArrayId);
 	}

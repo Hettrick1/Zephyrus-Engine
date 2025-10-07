@@ -7,13 +7,17 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "ISceneContext.h"
+#include "Data/MeshData.h"
+#include "Interface/IMesh.h"
+#include "Interface/IFont.h"
+#include <filesystem>
 
 namespace Zephyrus::Assets {
 	using Zephyrus::Assets::Texture;
 
 	std::map<std::string, Texture> AssetsManager::mTextures = {};
-	std::map<std::string, Font> AssetsManager::mFonts = {};
-	std::map<std::string, Mesh*> AssetsManager::mMeshes = {};
+	std::map<std::string, IFont*> AssetsManager::mFonts = {};
+	std::map<std::string, IMesh*> AssetsManager::mMeshes = {};
 	std::map<std::string, Shader> AssetsManager::mShaders = {};
 	std::map<std::string, ShaderProgram> AssetsManager::mShaderPrograms = {};
 
@@ -48,16 +52,18 @@ namespace Zephyrus::Assets {
 		mContext = pContext;
 	}
 
-	Mesh* AssetsManager::LoadMesh(const std::string& pFilePath, const std::string& pName)
+	IMesh* AssetsManager::LoadMesh(const std::string& pFilePath, const std::string& pName)
 	{
 		if (mMeshes.find(pName) == mMeshes.end()) {
-			mMeshes[pName] = LoadMeshFromFile(GetFullPath(pFilePath, AssetType::Mesh));
+			auto data = LoadMeshData(GetFullPath(pFilePath, AssetType::Mesh));
+			mMeshes[pName] = mContext->GetRenderer()->LoadMeshFromData(data);
+			//mMeshes[pName] = LoadMeshFromFile(GetFullPath(pFilePath, AssetType::Mesh));
 			return mMeshes[pName];
 		}
 		return mMeshes[pName];
 	}
 
-	Mesh* AssetsManager::GetMesh(const std::string& pName)
+	IMesh* AssetsManager::GetMesh(const std::string& pName)
 	{
 		if (mMeshes.find(pName) == mMeshes.end()) {
 			std::ostringstream loadError;
@@ -67,16 +73,16 @@ namespace Zephyrus::Assets {
 		return mMeshes[pName];
 	}
 
-	Font* AssetsManager::LoadFont(const std::string& pFilePath, const std::string& pName)
+	IFont* AssetsManager::LoadFont(const std::string& pFilePath, const std::string& pName)
 	{
 		if (mFonts.find(pName) == mFonts.end()) {
 			mFonts[pName] = LoadFontFromFile(GetFullPath(pFilePath, AssetType::Font));
-			return &mFonts[pName];
+			return mFonts[pName];
 		}
-		return &mFonts[pName];
+		return mFonts[pName];
 	}
 
-	Font& AssetsManager::GetFont(const std::string& pName)
+	IFont* AssetsManager::GetFont(const std::string& pName)
 	{
 		if (mFonts.find(pName) == mFonts.end()) {
 			std::ostringstream loadError;
@@ -125,13 +131,21 @@ namespace Zephyrus::Assets {
 		mTextures.clear();
 		for (auto& iter : mMeshes)
 		{
-			iter.second->Unload();
-			delete iter.second;
+			if (iter.second)
+			{
+				delete iter.second;
+				iter.second = nullptr;
+			}
 		}
 		mMeshes.clear();
 		for (auto& iter : mFonts)
 		{
-			iter.second.Unload();
+			if (iter.second)
+			{
+				iter.second->Unload();
+				delete iter.second;
+				iter.second = nullptr;
+			}
 		}
 		mFonts.clear();
 		for (auto& iter : mShaders)
@@ -202,12 +216,73 @@ namespace Zephyrus::Assets {
 		return new Mesh(vertices, pFilePath);
 	}
 
-	Font AssetsManager::LoadFontFromFile(const std::string& pFilePath)
+	MeshData AssetsManager::LoadMeshData(const std::string& pFilePath)
 	{
-		Font font;
-		font.Load(pFilePath);
-		ZP_LOAD("Font " + pFilePath + " successfully loaded");
-		return font;
+		MeshData data;
+		data.sourceFile = pFilePath;
+
+		std::string extension = std::filesystem::path(pFilePath).extension().string();
+		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+
+		if (extension == ".obj")
+		{
+			tinyobj::attrib_t attributes;
+			std::vector<tinyobj::shape_t> shapes;
+			std::vector<tinyobj::material_t> materials;
+			std::string warning, errors;
+
+			bool success = tinyobj::LoadObj(&attributes, &shapes, &materials, &warning, &errors, pFilePath.c_str());
+			if (!success)
+			{
+				ZP_CORE_ERROR("Mesh " + pFilePath + " does not exist or is not .obj");
+				return data;
+			}
+
+			std::vector<Vertex> vertices;
+			std::vector<uint32_t> indices;
+			for (auto& shape : shapes)
+			{
+				auto& mesh = shape.mesh;
+				for (auto& index : mesh.indices)
+				{
+					Vector3D position = {
+						attributes.vertices[index.vertex_index * 3],
+						attributes.vertices[index.vertex_index * 3 + 1],
+						attributes.vertices[index.vertex_index * 3 + 2]
+					};
+					Vector3D normal = {
+						attributes.normals[index.normal_index * 3],
+						attributes.normals[index.normal_index * 3 + 1],
+						attributes.normals[index.normal_index * 3 + 2]
+					};
+					Vector2D texCoord = {
+						attributes.texcoords[index.texcoord_index * 2],
+						attributes.texcoords[index.texcoord_index * 2 + 1]
+					};
+					vertices.push_back({ position, normal, texCoord });
+					indices.push_back(static_cast<uint32_t>(indices.size()));
+				}
+			}
+
+			data.vertices = std::move(vertices);
+			data.indices = std::move(indices);
+			ZP_LOAD("Mesh " + pFilePath + " successfully loaded");
+		}
+		else if (extension == ".fbx")
+		{
+			ZP_CORE_WARN("FBX loading not implemented yet.");
+		}
+		else
+		{
+			ZP_CORE_ERROR("Unsupported mesh format: " + extension);
+		}
+
+		return data;
+	}
+
+	IFont* AssetsManager::LoadFontFromFile(const std::string& pFilePath)
+	{
+		return mContext->GetRenderer()->LoadFont(pFilePath);
 	}
 
 	Shader AssetsManager::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)

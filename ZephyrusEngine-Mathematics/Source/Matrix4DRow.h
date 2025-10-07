@@ -47,7 +47,8 @@ public:
 	// Cast to a const float pointer
 	const float* GetAsFloatPtr() const
 	{
-		return reinterpret_cast<const float*>(&mat[0][0]);
+		auto retu = reinterpret_cast<const float*>(&mat[0][0]);
+		return retu;
 	}
 
 	// Matrix multiplication (a * b)

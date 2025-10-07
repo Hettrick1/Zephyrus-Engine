@@ -5,6 +5,7 @@
 #include "VertexArray.h"
 #include "Vertex.h"
 #include "SceneManager.h"
+#include "Interface/IMesh.h"
 
 #include "ComponentFactory.h"
 #include "JSONUtils.h"
@@ -16,7 +17,7 @@ namespace Zephyrus::ActorComponent
 	int SkySphereComponent::index = 0;
 
 	SkySphereComponent::SkySphereComponent(Actor* pOwner)
-		: Component(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D), mVao(nullptr)
+		: Component(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D)
 	{
 		mOwner->GetScene().GetRenderer()->AddSkySphere(this);
 	}
@@ -24,11 +25,6 @@ namespace Zephyrus::ActorComponent
 	SkySphereComponent::~SkySphereComponent()
 	{
 		mOwner->GetScene().GetRenderer()->AddSkySphere(nullptr);
-	}
-
-	void SkySphereComponent::OnEnd()
-	{
-		// TODO Remove sky sphere if it's the one used
 	}
 
 	std::vector<PropertyDescriptor> SkySphereComponent::GetProperties()
@@ -73,7 +69,6 @@ namespace Zephyrus::ActorComponent
 						mSphereTexture = tex;
 						mTextureIndex = tex->GetId();
 						mMesh = AssetsManager::LoadMesh("sphere.obj", "sphere");
-						mVao = mMesh->GetVao();
 						mTextureType = GL_TEXTURE_2D;
 					}
 					else
@@ -93,7 +88,6 @@ namespace Zephyrus::ActorComponent
 				mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader }, "skyboxSP");
 
 				mMesh = AssetsManager::LoadMesh("cube.obj", "cube");
-				mVao = mMesh->GetVao();
 
 				std::vector<std::string> faces;
 				mTexturesPaths.clear();

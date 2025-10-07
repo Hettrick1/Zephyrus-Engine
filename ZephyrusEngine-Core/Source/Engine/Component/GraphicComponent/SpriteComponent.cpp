@@ -101,7 +101,7 @@ namespace Zephyrus::ActorComponent
 			{
 				glDisable(GL_DEPTH_TEST);
 			}
-			pRenderer.DrawSprite(*mOwner, mTexture, Rectangle(), Vector2D(), mFlipMethode);
+			pRenderer.DrawSprite(*mOwner, mTexture, Rectangle2D(), Vector2D(), mFlipMethode);
 		}
 	}
 

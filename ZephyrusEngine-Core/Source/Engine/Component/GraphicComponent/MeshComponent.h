@@ -1,9 +1,10 @@
 #pragma once
 #include "Component.h"
+#include "Interface/IMesh.h"
 #include "Mesh.h"
 #include "Maths.h"
 
-using Zephyrus::Assets::Mesh;
+using Zephyrus::Assets::IMesh;
 using Zephyrus::Assets::Texture;
 using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::Shader;
@@ -14,7 +15,7 @@ namespace Zephyrus::ActorComponent
 	class MeshComponent : public Component
 	{
 	protected:
-		Mesh* mMesh = nullptr;
+		IMesh* mMesh = nullptr;
 		Shader mVertexShader, mFragmentShader;
 		ShaderProgram mShaderProgram;
 		Shader mOutlineVertexShader, mOutlineFragmentShader;
@@ -37,7 +38,7 @@ namespace Zephyrus::ActorComponent
 
 		virtual void Draw(const Matrix4DRow& pViewProj);
 		virtual void DrawSelected(const Matrix4DRow& pViewProj);
-		virtual void SetMesh(Mesh& pMesh);
+		virtual void SetMesh(IMesh& pMesh);
 		void SetTextureIndex(unsigned int pTextureIndex);
 
 		void AddTexture(Texture* pTexture);
@@ -49,7 +50,7 @@ namespace Zephyrus::ActorComponent
 
 		void SetTiling(const Vector2D& pTiling);
 
-		inline Mesh* GetMesh() const { return mMesh; }
+		inline IMesh* GetMesh() const { return mMesh; }
 		inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
 	};
 }

@@ -19,7 +19,7 @@ using Zephyrus::ActorComponent::SpriteComponent;
 using Zephyrus::ActorComponent::MeshComponent;
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
-using Zephyrus::Assets::VertexArray;
+using Zephyrus::Assets::VertexArrayOpenGL;
 using Zephyrus::Assets::Texture;
 
 /**
@@ -31,8 +31,8 @@ namespace Zephyrus::Render {
 	{
 	private:
 		Window* mWindow;
-		VertexArray* mFullscreenQuadVAO;
-		VertexArray* mVAO;
+		VertexArrayOpenGL* mFullscreenQuadVAO;
+		VertexArrayOpenGL* mVAO;
 		SDL_GLContext mContext;
 		std::vector<SpriteComponent*> mSprites;
 		std::vector<MeshComponent*> mMeshes;
@@ -68,6 +68,9 @@ namespace Zephyrus::Render {
 		void Close() override;
 		void Unload() override;
 
+		Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) override;
+		Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) override;
+
 		void AddSprite(SpriteComponent* pSprite) override;
 		void RemoveSprite(SpriteComponent* pSprite) override;
 
@@ -88,7 +91,7 @@ namespace Zephyrus::Render {
 		void SetProjMatrix(const Matrix4DRow& pProjMatrix) override;
 
 		// Draws a sprite for the given actor with the specified parameters
-		void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
+		void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
 		// Draws a debug box using min/max points and a world transform
 		void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) override;
 		// Draws a debug line between two points with hit information
@@ -99,7 +102,7 @@ namespace Zephyrus::Render {
 		void DrawSprites();
 		void DrawHud();
 		// Draws a HUD image with the specified texture, rectangle, origin, and tint
-		void DrawHudImage(Texture& pTexture, Rectangle pRect, Vector2D pOrigin, Vector4D pTint);
+		void DrawHudImage(Texture& pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint);
 
 		// Sets the shader program used for rendering sprites
 		void SetSpriteShaderProgram(ShaderProgram& shaderProgram) override;
