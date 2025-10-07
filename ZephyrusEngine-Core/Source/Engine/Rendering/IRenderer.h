@@ -19,6 +19,7 @@ namespace Zephyrus::Assets
 	class Texture;
 	struct MeshData;
 	class IMesh;
+	class IFont;
 }
 namespace Zephyrus::UI {
 	class HudManager;
@@ -69,6 +70,7 @@ namespace Zephyrus::Render {
 		virtual void EndDraw() = 0;
 
 		virtual Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) = 0;
+		virtual Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) = 0;
 
 		virtual void RenderActiveCamera(CameraComponent* cam) {}
 

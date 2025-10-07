@@ -7,7 +7,11 @@
 #include "Window.h"
 #include "TextAlignementEnum.h"
 #include <map>
-#include "Font.h"
+
+namespace Zephyrus::Assets
+{
+    class IFont;
+}
 
 /**
  * @brief Singleton class responsible for rendering text using OpenGL.
@@ -20,7 +24,7 @@ namespace Zephyrus::Render {
     class TextRenderer
     {
     private:
-        ~TextRenderer();
+        ~TextRenderer() = default;
         TextRenderer() = default;
         TextRenderer(const TextRenderer&) = delete;
         TextRenderer& operator=(const TextRenderer&) = delete;
@@ -35,9 +39,9 @@ namespace Zephyrus::Render {
         // Initializes the text renderer with the given window
         bool Init(Window& pWindow);
 
-        void RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Zephyrus::Assets::Font pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram = nullptr);
+        void RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Assets::IFont* pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram = nullptr);
 
         // Computes the width of the given text string at the specified scale and font
-        float ComputeTextWidth(const std::string& pText, float pScale, Zephyrus::Assets::Font pFont);
+        float ComputeTextWidth(const std::string& pText, float pScale, const Assets::IFont* pFont);
     };
 }

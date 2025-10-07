@@ -69,6 +69,7 @@ namespace Zephyrus::Render {
 		void Unload() override;
 
 		Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) override;
+		Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) override;
 
 		void AddSprite(SpriteComponent* pSprite) override;
 		void RemoveSprite(SpriteComponent* pSprite) override;

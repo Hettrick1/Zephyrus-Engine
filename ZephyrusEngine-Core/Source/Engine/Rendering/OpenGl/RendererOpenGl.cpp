@@ -10,6 +10,7 @@
 #include "Assets.h"
 #include "CameraComponent.h"
 #include "../MeshOpenGL.h"
+#include "../FontOpenGL.h"
 #include <algorithm>
 
 using Zephyrus::Assets::AssetsManager;
@@ -147,6 +148,13 @@ namespace Zephyrus::Render {
 	IMesh* RendererOpenGl::LoadMeshFromData(Assets::MeshData& data)
 	{
 		return new MeshOpenGL(data);
+	}
+
+	Assets::IFont* RendererOpenGl::LoadFont(const std::string& fontPath, unsigned int pixelHeight)
+	{
+		Assets::FontOpenGL* font = new Assets::FontOpenGL();
+		font->Load(fontPath, pixelHeight);
+		return font;
 	}
 
 	void RendererOpenGl::AddSprite(SpriteComponent* pSprite)

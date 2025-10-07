@@ -4,7 +4,7 @@
 using Zephyrus::Assets::AssetsManager;
 
 namespace Zephyrus::UI {
-    HudText::HudText(ISceneContext* pContext, const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment, Zephyrus::Assets::Font* pFont)
+    HudText::HudText(ISceneContext* pContext, const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment, Assets::IFont* pFont)
         : HudElement(pContext), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
     {
         if (pFont == nullptr) {
@@ -19,7 +19,7 @@ namespace Zephyrus::UI {
 
     void HudText::Draw(Zephyrus::Render::RendererOpenGl& pRenderer)
     {
-        Zephyrus::Render::TextRenderer::Instance().RenderText(mText, mPosition, mScale, mColor, *mFont, mAlignment, mShaderProgram);
+        Zephyrus::Render::TextRenderer::Instance().RenderText(mText, mPosition, mScale, mColor, mFont, mAlignment, mShaderProgram);
     }
 
     void HudText::SetText(std::string pText)

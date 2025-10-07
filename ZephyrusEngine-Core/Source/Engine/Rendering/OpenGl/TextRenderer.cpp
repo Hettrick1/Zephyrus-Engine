@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "Timer.h"
 #include "Assets.h"
+#include "Interface/IFont.h"
 #include <iostream>
 #include <string>
 
@@ -43,8 +44,10 @@ namespace Zephyrus::Render {
         return true;
     }
 
-    void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Zephyrus::Assets::Font pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram)
+    void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Assets::IFont* pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram)
     {
+        if (!pFont) return;
+
         float textWidth = ComputeTextWidth(pText, pScale, pFont);
 
         ShaderProgram* shaderProgram = pShaderProgram == nullptr ? &mShaderProgram : pShaderProgram;
@@ -57,7 +60,7 @@ namespace Zephyrus::Render {
         }
         else if (pAlignment == TextAlignment::RIGHT)
         {
-            position.y -= textWidth;
+            position.x -= textWidth;
         }
 
         // activate corresponding render state	
@@ -67,7 +70,6 @@ namespace Zephyrus::Render {
         shaderProgram->setFloat("time", static_cast<GLfloat>(SDL_GetTicks()));
         shaderProgram->setFloat("screenWidth", mWindow->GetDimensions().x);
         shaderProgram->setFloat("screenHeight", mWindow->GetDimensions().y);
-        shaderProgram->setMatrix4Row("projection", mProjection);
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(VAO);
 
@@ -75,53 +77,56 @@ namespace Zephyrus::Render {
         std::string::const_iterator c;
         for (c = pText.begin(); c != pText.end(); c++)
         {
-            Zephyrus::Assets::Character ch = pFont.GetCharacters()[*c];
+            const auto& characters = pFont->GetCharacters();
+            auto it = characters.find(*c);
+            if (it != characters.end())
+            {
+                const Zephyrus::Assets::CharacterInfo& ch = it->second;
+                float xpos = position.x + ch.Bearing.x * pScale;
+                float ypos = position.y - (ch.Size.y - ch.Bearing.y) * pScale;
 
-            float xpos = position.x + ch.Bearing.x * pScale;
-            float ypos = position.y - (ch.Size.y - ch.Bearing.y) * pScale;
+                float w = ch.Size.x * pScale;
+                float h = ch.Size.y * pScale;
+                // update VBO for each character
+                float vertices[6][4] = {
+                    { xpos,     ypos + h,   0.0f, 0.0f },
+                    { xpos,     ypos,       0.0f, 1.0f },
+                    { xpos + w, ypos,       1.0f, 1.0f },
 
-            float w = ch.Size.x * pScale;
-            float h = ch.Size.y * pScale;
-            // update VBO for each character
-            float vertices[6][4] = {
-                { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos,     ypos,       0.0f, 1.0f },
-                { xpos + w, ypos,       1.0f, 1.0f },
+                    { xpos,     ypos + h,   0.0f, 0.0f },
+                    { xpos + w, ypos,       1.0f, 1.0f },
+                    { xpos + w, ypos + h,   1.0f, 0.0f }
+                };
+                // render glyph texture over quad
+                pFont->BindCharacterTexture(*c);
+                
+                // update content of VBO memory
+                glBindBuffer(GL_ARRAY_BUFFER, VBO);
+                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
 
-                { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos + w, ypos,       1.0f, 1.0f },
-                { xpos + w, ypos + h,   1.0f, 0.0f }
-            };
-            // render glyph texture over quad
-            glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-            // update content of VBO memory
-            glBindBuffer(GL_ARRAY_BUFFER, VBO);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            // render quad
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-            position.x += (ch.Advance >> 6) * pScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                // render quad
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+                position.x += (ch.Advance >> 6) * pScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+            }
         }
         glBindVertexArray(0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    float TextRenderer::ComputeTextWidth(const std::string& pText, float pScale, Zephyrus::Assets::Font pFont)
+    float TextRenderer::ComputeTextWidth(const std::string& pText, float pScale, const Assets::IFont* pFont)
     {
         float width = 0.0f;
+        const auto& chars = pFont->GetCharacters();
         for (char c : pText)
         {
-            if (pFont.GetCharacters().find(c) != pFont.GetCharacters().end())
+            auto it = chars.find(c);
+            if (it != chars.end())
             {
-                width += (pFont.GetCharacters()[c].Advance >> 6) * pScale;  // Convertit 1/64 pixels en pixels
+                width += (it->second.Advance >> 6) * pScale;  // Convertit 1/64 pixels en pixels
             }
         }
         return width;
-    }
-
-    TextRenderer::~TextRenderer()
-    {
     }
 }
