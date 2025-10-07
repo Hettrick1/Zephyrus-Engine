@@ -2,6 +2,7 @@
 
 #include "Timer.h"
 #include "Assets.h"
+#include "Interface/ITexture.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -13,7 +14,7 @@ namespace Zephyrus::ActorComponent
 	{
 		if (mAnimationTextures.size() > 0)
 		{
-			SetTexture(*mAnimationTextures[0]);
+			SetTexture(mAnimationTextures[0]);
 			mCurrentFrame = 0.0f;
 			mPlayOnce = false;
 			mHasFinished = true;
@@ -30,8 +31,8 @@ namespace Zephyrus::ActorComponent
 		Component::OnStart();
 		if (mAnimationTextures.empty())
 		{
-			Texture* fallbackTexture = AssetsManager::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
-			SetTexture(*fallbackTexture);
+			Assets::ITexture* fallbackTexture = AssetsManager::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
+			SetTexture(fallbackTexture);
 			mAnimationTextures.push_back(fallbackTexture);
 		}
 	}
@@ -45,7 +46,7 @@ namespace Zephyrus::ActorComponent
 	{
 		if (!mAnimationTextures.empty())
 		{
-			SetTexture(*mAnimationTextures[0]);
+			SetTexture(mAnimationTextures[0]);
 		}
 		return {
 			{ "Textures", &mAnimationTextures, PropertyType::VectorTexture },
@@ -66,12 +67,12 @@ namespace Zephyrus::ActorComponent
 			{
 				for (auto& element : arr)
 				{
-					Texture* texture = AssetsManager::LoadTexture(element, element);
+					Assets::ITexture* texture = AssetsManager::LoadTexture(element, element);
 					AddAnimationTexture(texture);
 				}
 				if (mAnimationTextures.size() > 0)
 				{
-					SetTexture(*mAnimationTextures[0]);
+					SetTexture(mAnimationTextures[0]);
 					mCurrentFrame = 0.0f;
 					mPlayOnce = false;
 					mHasFinished = true;
@@ -95,7 +96,7 @@ namespace Zephyrus::ActorComponent
 		pWriter.BeginArray("textures");
 		for (auto& texture : mAnimationTextures)
 		{
-			pWriter.PushString(texture->GetTextureFilePath());
+			pWriter.PushString(texture->GetFilePath());
 		}
 		pWriter.EndArray();
 		pWriter.WriteFloat("animFps", mAnimationFps);
@@ -103,19 +104,19 @@ namespace Zephyrus::ActorComponent
 		Component::EndSerialize(pWriter);
 	}
 
-	void FlipbookComponent::SetAnimationTextures(const std::vector<Texture*>& pTextures)
+	void FlipbookComponent::SetAnimationTextures(const std::vector<Assets::ITexture*>& pTextures)
 	{
 		mAnimationTextures = pTextures;
 		if (mAnimationTextures.size() > 0)
 		{
-			SetTexture(*mAnimationTextures[0]);
+			SetTexture(mAnimationTextures[0]);
 			mCurrentFrame = 0.0f;
 			mPlayOnce = false;
 			mHasFinished = true;
 		}
 	}
 
-	void FlipbookComponent::AddAnimationTexture(Texture* pTexture)
+	void FlipbookComponent::AddAnimationTexture(Assets::ITexture* pTexture)
 	{
 		if (std::find(mAnimationTextures.begin(), mAnimationTextures.end(), pTexture) == mAnimationTextures.end())
 		{
@@ -165,13 +166,13 @@ namespace Zephyrus::ActorComponent
 			}
 			if (mCanPlay)
 			{
-				SetTexture(*mAnimationTextures[static_cast<int>(mCurrentFrame)]);
+				SetTexture(mAnimationTextures[static_cast<int>(mCurrentFrame)]);
 			}
 		}
 		else if (!mCanPlay)
 		{
 			mCurrentFrame = static_cast<float>(mAnimationTextures.size() - 1);
-			SetTexture(*mAnimationTextures[static_cast<int>(mCurrentFrame)]);
+			SetTexture(mAnimationTextures[static_cast<int>(mCurrentFrame)]);
 		}
 	}
 }

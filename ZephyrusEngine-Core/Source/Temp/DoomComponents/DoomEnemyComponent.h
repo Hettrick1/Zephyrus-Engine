@@ -10,10 +10,10 @@ namespace Zephyrus::ActorComponent
 	private:
 		FlipbookComponent* mEnemyFb;
 		FlipbookComponent* mSplashBlood;
-		std::vector<Texture*> EnemyShootAnim;
-		std::vector<Texture*> EnemyDieAnim;
-		std::vector<Texture*> EnemyExplodesAnim;
-		std::vector<Texture*> EnemyDamagesAnim;
+		std::vector<Assets::ITexture*> EnemyShootAnim;
+		std::vector<Assets::ITexture*> EnemyDieAnim;
+		std::vector<Assets::ITexture*> EnemyExplodesAnim;
+		std::vector<Assets::ITexture*> EnemyDamagesAnim;
 		std::string mEnemyFbId;
 		std::string mSplashBloodFbId;
 		int mHealth;

@@ -35,8 +35,8 @@ namespace Zephyrus::ActorComponent
 	void DoomMenuPC::OnStart()
 	{
 		Component::OnStart();
-		Texture* damageIndicator = Zephyrus::Assets::AssetsManager::LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
-		mDoomMenu = new Zephyrus::UI::HudImage(mOwner->GetSceneContext(), *damageIndicator, Vector2D(0, 0), 2);
+		Assets::ITexture* damageIndicator = Zephyrus::Assets::AssetsManager::LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
+		mDoomMenu = new Zephyrus::UI::HudImage(mOwner->GetSceneContext(), damageIndicator, Vector2D(0, 0), 2);
 		mDoomMenu->SetTint(Vector4D(1.0, 1.0, 1.0, 1.0));
 
 		mPressEnter = new Zephyrus::UI::HudText(mOwner->GetSceneContext(), "Press Enter To Begin", Vector2D(0.0f, -800.0f), 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), Zephyrus::UI::TextAlignment::CENTER);

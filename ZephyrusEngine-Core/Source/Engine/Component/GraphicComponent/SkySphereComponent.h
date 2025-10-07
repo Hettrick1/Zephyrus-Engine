@@ -29,7 +29,7 @@ namespace Zephyrus::ActorComponent
 		CubeTextureMap mCubeMap;
 		Vector2D mTiling;
 		unsigned int mTextureIndex = 0;
-		Zephyrus::Assets::Texture* mSphereTexture = nullptr;
+		Zephyrus::Assets::ITexture* mSphereTexture = nullptr;
 		bool mIsSphere = false;
 		GLenum mTextureType;
 
@@ -62,7 +62,7 @@ namespace Zephyrus::ActorComponent
 		inline unsigned int& GetTextureIndex() { return mTextureIndex; }
 		inline GLenum& GetTextureType() { return mTextureType; }
 		inline bool GetIsSphere() const { return mIsSphere; }
-		inline Zephyrus::Assets::Texture* GetSphereTexture() const { return mSphereTexture; }
+		inline Zephyrus::Assets::ITexture* GetSphereTexture() const { return mSphereTexture; }
 
 		static int index;
 	};

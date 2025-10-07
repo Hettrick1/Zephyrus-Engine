@@ -70,6 +70,7 @@ namespace Zephyrus::Render {
 
 		Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) override;
 		Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) override;
+		Assets::ITexture* LoadTexture(const std::string& fontPath) override;
 
 		void AddSprite(SpriteComponent* pSprite) override;
 		void RemoveSprite(SpriteComponent* pSprite) override;
@@ -91,7 +92,7 @@ namespace Zephyrus::Render {
 		void SetProjMatrix(const Matrix4DRow& pProjMatrix) override;
 
 		// Draws a sprite for the given actor with the specified parameters
-		void DrawSprite(Actor& pActor, Texture& pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
+		void DrawSprite(Actor& pActor, Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
 		// Draws a debug box using min/max points and a world transform
 		void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) override;
 		// Draws a debug line between two points with hit information
@@ -102,7 +103,7 @@ namespace Zephyrus::Render {
 		void DrawSprites();
 		void DrawHud();
 		// Draws a HUD image with the specified texture, rectangle, origin, and tint
-		void DrawHudImage(Texture& pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint);
+		void DrawHudImage(Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint) override;
 
 		// Sets the shader program used for rendering sprites
 		void SetSpriteShaderProgram(ShaderProgram& shaderProgram) override;

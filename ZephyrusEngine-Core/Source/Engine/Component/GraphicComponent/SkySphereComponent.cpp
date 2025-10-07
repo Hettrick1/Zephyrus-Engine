@@ -6,6 +6,7 @@
 #include "Vertex.h"
 #include "SceneManager.h"
 #include "Interface/IMesh.h"
+#include "Interface/ITexture.h"
 
 #include "ComponentFactory.h"
 #include "JSONUtils.h"
@@ -58,7 +59,7 @@ namespace Zephyrus::ActorComponent
 				mFragmentShader = *AssetsManager::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
 				mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "skySphereSP");
 
-				Zephyrus::Assets::Texture* tex = nullptr;
+				Zephyrus::Assets::ITexture* tex = nullptr;
 				if (auto sphereTexture = pReader.ReadArrayString("textures"))
 				{
 					const auto& arr = *sphereTexture;
@@ -67,7 +68,7 @@ namespace Zephyrus::ActorComponent
 						tex = AssetsManager::LoadTexture(arr[0], arr[0]);
 						mTexturesPaths.push_back(arr[0]);
 						mSphereTexture = tex;
-						mTextureIndex = tex->GetId();
+						mTextureIndex = tex->GetHandle();
 						mMesh = AssetsManager::LoadMesh("sphere.obj", "sphere");
 						mTextureType = GL_TEXTURE_2D;
 					}

@@ -17,7 +17,7 @@ namespace Zephyrus::UI {
     {
     }
 
-    void HudText::Draw(Zephyrus::Render::RendererOpenGl& pRenderer)
+    void HudText::Draw(Zephyrus::Render::IRenderer& pRenderer)
     {
         Zephyrus::Render::TextRenderer::Instance().RenderText(mText, mPosition, mScale, mColor, mFont, mAlignment, mShaderProgram);
     }

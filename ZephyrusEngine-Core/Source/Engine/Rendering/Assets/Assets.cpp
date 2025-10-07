@@ -10,12 +10,13 @@
 #include "Data/MeshData.h"
 #include "Interface/IMesh.h"
 #include "Interface/IFont.h"
+#include "Interface/ITexture.h"
 #include <filesystem>
 
 namespace Zephyrus::Assets {
 	using Zephyrus::Assets::Texture;
 
-	std::map<std::string, Texture> AssetsManager::mTextures = {};
+	std::map<std::string, ITexture*> AssetsManager::mTextures = {};
 	std::map<std::string, IFont*> AssetsManager::mFonts = {};
 	std::map<std::string, IMesh*> AssetsManager::mMeshes = {};
 	std::map<std::string, Shader> AssetsManager::mShaders = {};
@@ -28,21 +29,22 @@ namespace Zephyrus::Assets {
 	const std::string AssetsManager::FONT_PATH = "../Content/Fonts/";
 	const std::string AssetsManager::SHADER_PATH = "../Content/Shaders/";
 
-	Texture* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
+	ITexture* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
 	{
 		if (mTextures.find(pName) == mTextures.end()) {
-			mTextures[pName] = LoadTextureFromFile(*mContext->GetRenderer(), GetFullPath(pFilePath, AssetType::Texture));
-			return &mTextures[pName];
+			mTextures[pName] = LoadTextureFromFile(GetFullPath(pFilePath, AssetType::Texture));
+			return mTextures[pName];
 		}
-		return &mTextures[pName];
+		return mTextures[pName];
 	}
 
-	Texture& AssetsManager::GetTexture(const std::string& pName)
+	ITexture* AssetsManager::GetTexture(const std::string& pName)
 	{
 		if (mTextures.find(pName) == mTextures.end()) {
 			std::ostringstream loadError;
 			loadError << "Texture " << pName << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
+			return nullptr;
 		}
 		return mTextures[pName];
 	}
@@ -57,7 +59,6 @@ namespace Zephyrus::Assets {
 		if (mMeshes.find(pName) == mMeshes.end()) {
 			auto data = LoadMeshData(GetFullPath(pFilePath, AssetType::Mesh));
 			mMeshes[pName] = mContext->GetRenderer()->LoadMeshFromData(data);
-			//mMeshes[pName] = LoadMeshFromFile(GetFullPath(pFilePath, AssetType::Mesh));
 			return mMeshes[pName];
 		}
 		return mMeshes[pName];
@@ -69,6 +70,7 @@ namespace Zephyrus::Assets {
 			std::ostringstream loadError;
 			loadError << "Mesh " << pName << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
+			return nullptr;
 		}
 		return mMeshes[pName];
 	}
@@ -88,6 +90,7 @@ namespace Zephyrus::Assets {
 			std::ostringstream loadError;
 			loadError << "Font " << pName << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
+			return nullptr;
 		}
 		return mFonts[pName];
 	}
@@ -126,7 +129,11 @@ namespace Zephyrus::Assets {
 	{
 		for (auto& iter : mTextures)
 		{
-			iter.second.Unload();
+			if (iter.second)
+			{
+				delete iter.second;
+				iter.second = nullptr;
+			}
 		}
 		mTextures.clear();
 		for (auto& iter : mMeshes)
@@ -160,12 +167,9 @@ namespace Zephyrus::Assets {
 		mShaderPrograms.clear();
 	}
 
-	Texture AssetsManager::LoadTextureFromFile(Zephyrus::Render::IRenderer& pRenderer, const std::string& pFilePath)
+	ITexture* AssetsManager::LoadTextureFromFile(const std::string& pFilePath)
 	{
-		Texture texture;
-		texture.Load(pRenderer, pFilePath);
-		ZP_LOAD("Texture " + pFilePath + " successfully loaded");
-		return texture;
+		return mContext->GetRenderer()->LoadTexture(pFilePath);
 	}
 
 	Mesh* AssetsManager::LoadMeshFromFile(const std::string& pFilePath)

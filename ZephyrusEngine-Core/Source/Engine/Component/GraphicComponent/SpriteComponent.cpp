@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "JSONUtils.h"
 #include "DebugRenderer.h"
+#include "Interface/ITexture.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -13,9 +14,9 @@ namespace Zephyrus::ActorComponent
 		: Component(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(Zephyrus::Render::IRenderer::Flip::None)
 	{
 		mOwner->GetScene().GetRenderer()->AddSprite(this);
-		mTexture = *AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
-		mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
-		mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
+		mTexture = AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
+		mTexWidth = static_cast<int>(mTexture->GetWidth());
+		mTexHeight = static_cast<int>(mTexture->GetHeight());
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
 	}
@@ -48,10 +49,10 @@ namespace Zephyrus::ActorComponent
 		Component::Deserialize(pReader);
 		if (auto texturePath = pReader.ReadString("texture"))
 		{
-			mTexture = *AssetsManager::LoadTexture(*texturePath, *texturePath);
+			mTexture = AssetsManager::LoadTexture(*texturePath, *texturePath);
 		}
-		mTexWidth = static_cast<int>(mTexture.GetTextureSize().x);
-		mTexHeight = static_cast<int>(mTexture.GetTextureSize().y);
+		mTexWidth = static_cast<int>(mTexture->GetWidth());
+		mTexHeight = static_cast<int>(mTexture->GetHeight());
 		if (auto texturePath = pReader.ReadBool("cullOff"))
 		{
 			SetCullOff(*texturePath);
@@ -63,24 +64,24 @@ namespace Zephyrus::ActorComponent
 	void SpriteComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
-		pWriter.WriteString("texture", mTexture.GetTextureFilePath());
+		pWriter.WriteString("texture", mTexture->GetFilePath());
 		pWriter.WriteBool("cullOff", mCullOff);
 		Component::EndSerialize(pWriter);
 	}
 
-	void SpriteComponent::SetTexture(const Zephyrus::Assets::Texture& pTexture)
+	void SpriteComponent::SetTexture(Assets::ITexture* pTexture)
 	{
 		mTexture = pTexture;
-		if (mTexHeightOverride == 0 || mTexWidthOverride == 0)
-		{
-			mTexture.UpdateInfo(mTexWidth, mTexHeight);
-		}
-		else
-		{
-			mTexWidth = mTexWidthOverride;
-			mTexHeight = mTexHeightOverride;
-			mTexture.OverrideTextureSize(mTexWidth, mTexHeight);
-		}
+		//if (mTexHeightOverride == 0 || mTexWidthOverride == 0)
+		//{
+		//	mTexture->UpdateInfo(mTexWidth, mTexHeight);
+		//}
+		//else
+		//{
+		//	mTexWidth = mTexWidthOverride;
+		//	mTexHeight = mTexHeightOverride;
+		//	mTexture->OverrideTextureSize(mTexWidth, mTexHeight);
+		//}
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
 	}

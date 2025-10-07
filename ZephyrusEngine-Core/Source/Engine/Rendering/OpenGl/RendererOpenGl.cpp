@@ -11,6 +11,7 @@
 #include "CameraComponent.h"
 #include "../MeshOpenGL.h"
 #include "../FontOpenGL.h"
+#include "../TextureOpenGL.h"
 #include <algorithm>
 
 using Zephyrus::Assets::AssetsManager;
@@ -157,6 +158,13 @@ namespace Zephyrus::Render {
 		return font;
 	}
 
+	Assets::ITexture* RendererOpenGl::LoadTexture(const std::string& fontPath)
+	{
+		Assets::TextureOpenGL* texture = new Assets::TextureOpenGL();
+		texture->Load(fontPath);
+		return texture;
+	}
+
 	void RendererOpenGl::AddSprite(SpriteComponent* pSprite)
 	{
 		int spriteDrawOrder = pSprite->GetDrawOrder();
@@ -230,14 +238,14 @@ namespace Zephyrus::Render {
 		mDebugRenderer->SetProjMatrix(pProjMatrix);
 	}
 
-	void RendererOpenGl::DrawSprite(Actor& pActor, Texture& pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
+	void RendererOpenGl::DrawSprite(Actor& pActor, Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
 	{
 		if (mSpriteShaderProgram == nullptr)
 		{
 			return;
 		}
 		mSpriteShaderProgram->Use();
-		pTexture.SetActive();
+		pTexture->Bind();
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	}
 
@@ -263,7 +271,7 @@ namespace Zephyrus::Render {
 			mSkySphereComponent->GetMesh()->Bind();
 			if (mSkySphereComponent->GetIsSphere())
 			{
-				mSkySphereComponent->GetSphereTexture()->SetActive();
+				mSkySphereComponent->GetSphereTexture()->Bind();
 			}
 			else
 			{
@@ -330,7 +338,7 @@ namespace Zephyrus::Render {
 		}
 	}
 
-	void RendererOpenGl::DrawHudImage(Texture& pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint)
+	void RendererOpenGl::DrawHudImage(Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint)
 	{
 		if (mSpriteShaderProgram == nullptr)
 		{
@@ -349,7 +357,7 @@ namespace Zephyrus::Render {
 		mSpriteShaderProgram->setMatrix4Row("uWorldTransform", world);
 		mSpriteShaderProgram->setVector4f("uTint", pTint);
 		mVAO->SetActive();
-		pTexture.SetActive();
+		pTexture->Bind();
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	}
 

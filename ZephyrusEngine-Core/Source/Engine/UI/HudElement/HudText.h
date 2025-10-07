@@ -25,7 +25,7 @@ namespace Zephyrus::UI {
         ~HudText();
 
         // Draws the text on the HUD using the specified renderer.
-        void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) override;
+        void Draw(Zephyrus::Render::IRenderer& pRenderer) override;
 
         // Sets the text to display.
         void SetText(std::string pText);

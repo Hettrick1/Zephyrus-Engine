@@ -6,6 +6,7 @@
 #include "Vertex.h"
 #include "DebugRenderer.h"
 #include "JSONUtils.h"
+#include "Interface/ITexture.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -53,7 +54,7 @@ namespace Zephyrus::ActorComponent
 				{
 					for (auto& element : arr)
 					{
-						Texture* texture = AssetsManager::LoadTexture(element, element);
+						Assets::ITexture* texture = AssetsManager::LoadTexture(element, element);
 						AddTexture(texture);
 					}
 				}
@@ -87,7 +88,7 @@ namespace Zephyrus::ActorComponent
 		pWriter.BeginArray("textures");
 		for (auto& texture : GetAllTextures())
 		{
-			pWriter.PushString(texture->GetTextureFilePath());
+			pWriter.PushString(texture->GetFilePath());
 		}
 		pWriter.EndArray();
 		pWriter.WriteInt("textureIndex", mTextureIndex);
@@ -132,10 +133,10 @@ namespace Zephyrus::ActorComponent
 		{
 			mTextureIndex = 0;
 		}
-		Texture* tex = GetTexture(mTextureIndex);
+		Assets::ITexture* tex = GetTexture(mTextureIndex);
 		if (tex)
 		{
-			tex->SetActive();
+			tex->Bind();
 		}
 		mMesh->Bind();
 		if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
@@ -170,7 +171,7 @@ namespace Zephyrus::ActorComponent
 		}
 	}
 
-	void MeshComponent::AddTexture(Texture* pTexture)
+	void MeshComponent::AddTexture(Assets::ITexture* pTexture)
 	{
 		if (std::find(mTextures.begin(), mTextures.end(), pTexture) == mTextures.end())
 		{
@@ -178,7 +179,7 @@ namespace Zephyrus::ActorComponent
 		}
 	}
 
-	Texture* MeshComponent::GetTexture(unsigned int pTextureIndex)
+	Assets::ITexture* MeshComponent::GetTexture(unsigned int pTextureIndex)
 	{
 		if (pTextureIndex < GetTextureArraySize())
 		{

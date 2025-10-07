@@ -4,6 +4,11 @@
 #include "Mesh.h"
 #include "Maths.h"
 
+namespace Zephyrus::Assets
+{
+	class ITexture;
+}
+
 using Zephyrus::Assets::IMesh;
 using Zephyrus::Assets::Texture;
 using Zephyrus::Render::ShaderProgram;
@@ -21,7 +26,7 @@ namespace Zephyrus::ActorComponent
 		Shader mOutlineVertexShader, mOutlineFragmentShader;
 		ShaderProgram mOutlineShaderProgram;
 		Vector2D mTiling;
-		std::vector<Texture*> mTextures;
+		std::vector<Assets::ITexture*> mTextures;
 		unsigned int mTextureIndex = 0;
 	public:
 		MeshComponent(Actor* pOwner);
@@ -41,10 +46,10 @@ namespace Zephyrus::ActorComponent
 		virtual void SetMesh(IMesh& pMesh);
 		void SetTextureIndex(unsigned int pTextureIndex);
 
-		void AddTexture(Texture* pTexture);
-		Texture* GetTexture(unsigned int pTextureIndex);
+		void AddTexture(Assets::ITexture* pTexture);
+		Assets::ITexture* GetTexture(unsigned int pTextureIndex);
 		inline unsigned int GetTextureArraySize() const { return mTextures.size(); }
-		inline std::vector<Texture*> GetAllTextures() const { return mTextures; }
+		inline std::vector<Assets::ITexture*> GetAllTextures() const { return mTextures; }
 
 		void SetShaderProgram(const ShaderProgram& pShaderProgram);
 

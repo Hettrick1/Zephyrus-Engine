@@ -46,9 +46,9 @@ namespace Zephyrus::ActorComponent
 		mGun = mOwner->GetComponentOfType<FlipbookComponent>();
 		ZP_ASSERT(mGun, "FlipbookComponent not found !");
 
-		Texture* doomHud = AssetsManager::LoadTexture("Sprites/Doom/DoomHud.png", "doomHud");
-		gunIcon = *AssetsManager::LoadTexture("Sprites/Doom/DoomHudGunIcon.png", "gunIcon");
-		shotgunIcon = *AssetsManager::LoadTexture("Sprites/Doom/DoomHudShotGunIcon.png", "shotgunIcon");
+		Assets::ITexture* doomHud = AssetsManager::LoadTexture("Sprites/Doom/DoomHud.png", "doomHud");
+		gunIcon = AssetsManager::LoadTexture("Sprites/Doom/DoomHudGunIcon.png", "gunIcon");
+		shotgunIcon = AssetsManager::LoadTexture("Sprites/Doom/DoomHudShotGunIcon.png", "shotgunIcon");
 
 		mGunAnim = {
 			AssetsManager::LoadTexture("Sprites/Doom/gun1.png", "gun1"),
@@ -78,7 +78,7 @@ namespace Zephyrus::ActorComponent
 
 		mWeaponIconImage = new HudImage(mOwner->GetSceneContext(), gunIcon, Vector2D(400, -980), Vector2D(10, 10));
 		mWeaponIconImage->SetDrawOrder(100.0f);
-		HudImage* doomHudImage = new HudImage(mOwner->GetSceneContext(), *doomHud, Vector2D(0, -920), Vector2D(10, 10));
+		HudImage* doomHudImage = new HudImage(mOwner->GetSceneContext(), doomHud, Vector2D(0, -920), Vector2D(10, 10));
 		doomHudImage->SetDrawOrder(10.0f);
 		mFpsText = new HudText(mOwner->GetSceneContext(), "AAAAAAAAA", Vector2D(-1900.0f, 1000.0f), 0.5f, Vector4D(1, 0, 1, 1));
 		mFpsText->SetDrawOrder(101.0f);
@@ -89,8 +89,8 @@ namespace Zephyrus::ActorComponent
 		mArmorText = new HudText(mOwner->GetSceneContext(), std::to_string(mArmor), Vector2D(840.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
 		mArmorText->SetDrawOrder(101.0f);
 
-		Texture* damageIndicator = AssetsManager::LoadTexture("Sprites/Doom/DamageIndicator.png", "DamageIndicator");
-		mDamageIndicatorImage = new HudImage(mOwner->GetSceneContext(), *damageIndicator, Vector2D(0, 0), 2);
+		Assets::ITexture* damageIndicator = AssetsManager::LoadTexture("Sprites/Doom/DamageIndicator.png", "DamageIndicator");
+		mDamageIndicatorImage = new HudImage(mOwner->GetSceneContext(), damageIndicator, Vector2D(0, 0), 2);
 		mDamageIndicatorImage->SetDrawOrder(0.0f);
 		mDamageIndicatorImage->SetTint(Vector4D(1.0, 1.0, 1.0, 0.0));
 		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();

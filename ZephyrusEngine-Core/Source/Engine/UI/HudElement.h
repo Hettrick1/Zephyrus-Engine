@@ -20,7 +20,7 @@ namespace Zephyrus::UI {
     public:
         HudElement(ISceneContext* pContext);
         virtual ~HudElement() = default;
-        virtual void Draw(Zephyrus::Render::RendererOpenGl& pRenderer) = 0;
+        virtual void Draw(Zephyrus::Render::IRenderer& pRenderer) = 0;
 
         // Sets the position of the HUD element.
         void SetPosition(const Vector2D& pPosition);
