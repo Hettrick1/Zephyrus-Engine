@@ -4,6 +4,11 @@ Zephyrus est un moteur de jeu 3D développé en C++ dans le cadre d'un projet pe
 
 ---
 
+## 🎯 Objectifs
+
+L’objectif de Zephyrus est de servir à la fois de **bac à sable technique** pour expérimenter des concepts avancés (rendu, architecture, systèmes) et de **base de projet** pour des jeux 3D simples à moyen terme.
+
+---
 ## ⚠️ Attention : Documentation obsolète
 
 > **La documentation actuelle n'est pas à jour.**  
@@ -37,6 +42,12 @@ Zephyrus est un moteur de jeu 3D développé en C++ dans le cadre d'un projet pe
 
 ---
 
+<img width="1919" height="1033" alt="ZephyrusEditor" src="https://github.com/user-attachments/assets/1b639f33-276c-419a-a6c8-666ca878e279" />
+<img width="1919" height="1033" alt="ZephyrusEditor3" src="https://github.com/user-attachments/assets/06b6a73a-8d0d-404b-9c38-734b4aee8dfb" />
+<img width="1919" height="1033" alt="ZephyrusEditor2" src="https://github.com/user-attachments/assets/3badf1a9-470d-4285-b930-888400b8cf58" />
+
+---
+
 ## 🧪 Projets réalisés avec Zephyrus
 
 - 🎳 **Bowling** : Simulation simple d’un jeu de bowling
@@ -55,11 +66,5 @@ Voici les évolutions prévues du moteur :
   - Amélioration de l'abstraction
 - 🌟 Ajout de systèmes de **lumières**
 - 🛠️ Développement continu de l’éditeur
-
----
-
-## 🎯 Objectifs
-
-L’objectif de Zephyrus est de servir à la fois de **bac à sable technique** pour expérimenter des concepts avancés (rendu, architecture, systèmes) et de **base de projet** pour des jeux 3D simples à moyen terme.
 
 ---
