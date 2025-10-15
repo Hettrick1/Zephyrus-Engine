@@ -22,7 +22,7 @@ L’objectif de Zephyrus est de servir à la fois de **bac à sable technique** 
 ## 📌 À propos
 
 - **Type** : Projet personnel & scolaire  
-- **Technos** : C++, OpenGL, SDL2, Bullet  
+- **Technos** : C++, OpenGL, SDL2, Bullet, ImGui  
 - **Participants** : Solo  
 - **Début** : Février 2025 — *En cours de développement*
 
