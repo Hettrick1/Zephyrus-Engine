@@ -10,7 +10,7 @@ namespace Zephyrus::ActorComponent
     CameraComponent::CameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)
         : Component(pOwner, "CameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
     {
-        renderTarget = new Zephyrus::Render::RenderTarget(pWidth, pHeight);
+        mRenderTarget = new Zephyrus::Render::RenderTarget(pWidth, pHeight);
         mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
         if (pUsage == CameraUsage::Game)
         {
@@ -20,9 +20,9 @@ namespace Zephyrus::ActorComponent
 
     CameraComponent::~CameraComponent()
     {
-        if (renderTarget) {
-            delete renderTarget;
-            renderTarget = nullptr;
+        if (mRenderTarget) {
+            delete mRenderTarget;
+            mRenderTarget = nullptr;
         }
     }
 
@@ -91,7 +91,7 @@ namespace Zephyrus::ActorComponent
         mWidth = pDimensions.x;
         mHeight = pDimensions.y;
         mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
-        renderTarget->Resize(mWidth, mHeight);
+        mRenderTarget->Resize(mWidth, mHeight);
     }
 
     inline void CameraComponent::SetFov(float pFov)
@@ -150,20 +150,21 @@ namespace Zephyrus::ActorComponent
 
     void CameraComponent::RenderScene()
     {
-        if (!renderTarget) return;
+        if (!mRenderTarget) return;
 
-        renderTarget->Bind();
-        glViewport(0, 0, renderTarget->GetDimensions().x, renderTarget->GetDimensions().y);
+        mRenderTarget->Bind();
 
         mOwner->GetSceneContext()->GetRenderer()->SetProjMatrix(mProjMatrix);
         mOwner->GetSceneContext()->GetRenderer()->SetViewMatrix(mViewMatrix);
 
         mOwner->GetSceneContext()->GetActiveScene()->BeginRender();
         mOwner->GetSceneContext()->GetActiveScene()->RenderCurrentSceneOnly();
+        // TODO move debug draw for physics
         auto world = mOwner->GetSceneContext()->GetPhysicsWorld();
         world->GetWorld()->debugDrawWorld();
         auto debugRenderer = mOwner->GetSceneContext()->GetActiveScene()->GetPhysicDebugRenderer();
         debugRenderer->FlushDraw(this);
-        renderTarget->Unbind();
+
+        mRenderTarget->Unbind();
     }
 }

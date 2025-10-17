@@ -18,7 +18,6 @@ namespace Zephyrus::ActorComponent
     private:
         Matrix4DRow mViewMatrix;
         Matrix4DRow mProjMatrix;
-
         float mFov = 70.0f;
         float mOldFov = mFov;
         float mWidth = 1920;
@@ -29,9 +28,8 @@ namespace Zephyrus::ActorComponent
         float mOldNear = mNearClip;
         float mFarClip = 10000.0f;
         float mOldFar = mFarClip;
+        Zephyrus::Render::RenderTarget* mRenderTarget = nullptr;
     public:
-        GLsync mFence = 0;
-
         CameraComponent(Actor* pOwner, int pWidth = 1920, int pHeight = 1080, CameraUsage pUsage = CameraUsage::Game);
         ~CameraComponent();
 
@@ -53,8 +51,8 @@ namespace Zephyrus::ActorComponent
 
         void RenderScene();
 
-        CameraUsage usage;
+        inline Zephyrus::Render::RenderTarget* GetRenderTarget() const { return mRenderTarget; }
 
-        Zephyrus::Render::RenderTarget* renderTarget = nullptr;
+        CameraUsage usage;
     };
 }

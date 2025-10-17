@@ -8,6 +8,7 @@
 #include <vector>
 #include "DebugRenderer.h"
 #include "SkySphereComponent.h"
+#include "RenderTarget.h"
 
 namespace Zephyrus::ActorComponent {
 	class Actor;

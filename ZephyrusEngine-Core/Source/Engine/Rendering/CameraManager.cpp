@@ -105,5 +105,5 @@ void CameraManager::Unload()
             cam->RenderScene();
          }
      }*/
-     mContext->GetActiveScene()->EndRender();
+     //mContext->GetActiveScene()->EndRender();
  }

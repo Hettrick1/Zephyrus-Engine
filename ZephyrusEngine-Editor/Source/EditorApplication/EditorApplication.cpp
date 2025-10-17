@@ -104,7 +104,7 @@ void EditorApplication::InitializePanels()
 {
     std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(mSceneManager, prefabPanelName);
     std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(mSceneManager, consolePanelName);
-    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(mSceneManager, scenePanelName, mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->renderTarget->GetColorTexture());
+    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(mSceneManager, scenePanelName, mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->GetRenderTarget()->GetColorTexture());
     std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(mSceneManager, inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(mSceneManager, sceneHierarchyName);
     std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(mSceneManager, contentBrowserName);
@@ -231,7 +231,7 @@ void EditorApplication::RenderImgui()
                 if (ImGui::Begin("Camera Preview")) 
                 { 
                     ImVec2 previewSize = ImGui::GetContentRegionAvail();
-                    ImGui::Image((ImTextureID)(intptr_t)cam->renderTarget->GetColorTexture(), previewSize, ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::Image((ImTextureID)(intptr_t)cam->GetRenderTarget()->GetColorTexture(), previewSize, ImVec2(0, 1), ImVec2(1, 0));
                 } 
                 ImGui::End();
             }

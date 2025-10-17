@@ -15,6 +15,7 @@ namespace Zephyrus::Render {
     void RenderTarget::Bind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+        glViewport(0, 0, mWidth, mHeight);
     }
 
     void RenderTarget::Unbind()

@@ -113,7 +113,7 @@ namespace Zephyrus::Render {
 
 	void RendererOpenGl::RenderActiveCamera(CameraComponent* cam)
 	{
-		if (!cam || !cam->renderTarget) return;
+		if (!cam || !cam->GetRenderTarget()) return;
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, mWindow->GetDimensions().x, mWindow->GetDimensions().y);
@@ -122,10 +122,13 @@ namespace Zephyrus::Render {
 		mFullscreenQuadVAO->SetActive();
 		mFullscreenShaderProgram->Use();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, cam->renderTarget->GetColorTexture());
+		glBindTexture(GL_TEXTURE_2D, cam->GetRenderTarget()->GetColorTexture());
 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glEnable(GL_DEPTH);
+
+
+		EndDraw();
 	}
 
 	void RendererOpenGl::Close()
