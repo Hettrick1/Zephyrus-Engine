@@ -21,7 +21,7 @@ namespace Zephyrus::Render {
         ~RenderTarget();
 
         void Bind();
-        static void Unbind();
+        void Unbind();
 
         void Resize(int pWidth, int pHeight);
 

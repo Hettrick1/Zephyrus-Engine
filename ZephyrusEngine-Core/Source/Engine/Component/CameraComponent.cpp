@@ -164,6 +164,6 @@ namespace Zephyrus::ActorComponent
         world->GetWorld()->debugDrawWorld();
         auto debugRenderer = mOwner->GetSceneContext()->GetActiveScene()->GetPhysicDebugRenderer();
         debugRenderer->FlushDraw(this);
-        Zephyrus::Render::RenderTarget::Unbind();
+        renderTarget->Unbind();
     }
 }

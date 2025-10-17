@@ -11,7 +11,7 @@ namespace Zephyrus::UI {
         mElements.push_back(pElement);
     }
 
-    void HudContainer::Draw(Zephyrus::Render::RendererOpenGl& pRenderer)
+    void HudContainer::Draw(Zephyrus::Render::IRenderer& pRenderer)
     {
         for (auto& element : mElements) {
             element->Draw(pRenderer);
