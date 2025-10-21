@@ -3,6 +3,9 @@
 #include "SceneHierarchyPanel.h"
 #include "CameraComponent.h"
 
+#include <unordered_map>
+#include <functional>
+
 using Zephyrus::ActorComponent::Actor;
 using Zephyrus::ActorComponent::Component;
 using Zephyrus::ActorComponent::CameraComponent;
@@ -16,6 +19,7 @@ class InspectorPanel : public Panel
 private:
 	SceneHierarchyPanel* mHierarchy = nullptr;
 	Component* mActiveComponent = nullptr;
+	std::unordered_map<PropertyType, std::function<void(const PropertyDescriptor&, float, float)>> mPropertySetters;
 public:
 	InspectorPanel(ISceneContext* pSceneContext, const std::string& pName);
 	~InspectorPanel();

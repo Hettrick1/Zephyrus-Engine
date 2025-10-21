@@ -19,6 +19,20 @@ using Zephyrus::Assets::AssetsManager;
 InspectorPanel::InspectorPanel(ISceneContext* pSceneContext, const std::string& pName)
 	: Panel(pSceneContext, pName)
 {
+	mPropertySetters[PropertyType::Float] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyFloat(p, lw, iw); };
+	mPropertySetters[PropertyType::Int] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyInt(p, lw, iw); };
+	mPropertySetters[PropertyType::Bool] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyBool(p, lw, iw); };
+	mPropertySetters[PropertyType::String] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyString(p, lw, iw); };
+	mPropertySetters[PropertyType::Vec2] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyVector2D(p, lw, iw); };
+	mPropertySetters[PropertyType::Vec3] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyVector3D(p, lw, iw); };
+	mPropertySetters[PropertyType::Quaternion] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyQuaternion(p, lw, iw); };
+	mPropertySetters[PropertyType::Texture] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyTexture(p, lw, iw); };
+	mPropertySetters[PropertyType::Font] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyFont(p, lw, iw); };
+	mPropertySetters[PropertyType::Mesh] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyMesh(p, lw, iw); };
+	mPropertySetters[PropertyType::VectorTexture] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyVectorTexture(p, lw, iw); };
+	mPropertySetters[PropertyType::Prefab] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyPrefab(p, lw, iw); };
+	mPropertySetters[PropertyType::CubeMap] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyCubemap(p, lw, iw); };
+	mPropertySetters[PropertyType::Component] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyComponent(p, lw, iw); };
 }
 
 InspectorPanel::~InspectorPanel()
@@ -549,53 +563,13 @@ void InspectorPanel::DrawProperty(const PropertyDescriptor& property)
 	ImGui::AlignTextToFramePadding();
 	float labelWidth = 125;
 	float inputWidth = ImGui::GetContentRegionAvail().x - labelWidth;
-	switch (property.type)
+
+	auto it = mPropertySetters.find(property.type);
+	if (it != mPropertySetters.end())
 	{
-	case PropertyType::Float:
-		SetPropertyFloat(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Int:
-		SetPropertyInt(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Bool:
-		SetPropertyBool(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::String:
-		SetPropertyString(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Vec3:
-		SetPropertyVector3D(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Vec2:
-		SetPropertyVector2D(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Quaternion:
-		SetPropertyQuaternion(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Texture:
-		SetPropertyTexture(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Font:
-		SetPropertyFont(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Mesh:
-		SetPropertyMesh(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::VectorTexture:
-		SetPropertyVectorTexture(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Prefab:
-		SetPropertyPrefab(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::CubeMap:
-		SetPropertyCubemap(property, labelWidth, inputWidth);
-		break;
-	case PropertyType::Component:
-		SetPropertyComponent(property, labelWidth, inputWidth);
-		break;
-	default:
-		break;
+		it->second(property, labelWidth, inputWidth);
 	}
+
 	ImGui::Separator();
 }
 
@@ -711,20 +685,13 @@ void InspectorPanel::SetPropertyVector2D(const PropertyDescriptor& pProperty, co
 
 void InspectorPanel::SetPropertyQuaternion(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
+	// TODO
 }
 
 void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	Property prop;
 	prop = MakeUndoableProperty<Zephyrus::Assets::ITexture*>(pProperty, mActiveComponent);
-	//if (pProperty.isPointer)
-	//{
-	//	
-	//}
-	//else
-	//{
-	//	prop = MakeUndoableProperty<Texture>(pProperty, mActiveComponent);
-	//}
 	Zephyrus::Assets::ITexture* tex = static_cast<Zephyrus::Assets::ITexture*>(prop.getter());
 	if (!tex)
 	{
@@ -772,6 +739,7 @@ void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, con
 
 void InspectorPanel::SetPropertyFont(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
+	// TODO
 }
 
 void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
