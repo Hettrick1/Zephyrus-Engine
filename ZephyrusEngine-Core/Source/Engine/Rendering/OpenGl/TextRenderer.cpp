@@ -62,8 +62,7 @@ namespace Zephyrus::Render {
         {
             position.x -= textWidth;
         }
-
-        // activate corresponding render state	
+	
         shaderProgram->Use();
         shaderProgram->setMatrix4Row("projection", mProjection);
         shaderProgram->setVector4f("textColor", pColor);
@@ -87,7 +86,7 @@ namespace Zephyrus::Render {
 
                 float w = ch.Size.x * pScale;
                 float h = ch.Size.y * pScale;
-                // update VBO for each character
+
                 float vertices[6][4] = {
                     { xpos,     ypos + h,   0.0f, 0.0f },
                     { xpos,     ypos,       0.0f, 1.0f },
@@ -97,17 +96,13 @@ namespace Zephyrus::Render {
                     { xpos + w, ypos,       1.0f, 1.0f },
                     { xpos + w, ypos + h,   1.0f, 0.0f }
                 };
-                // render glyph texture over quad
                 pFont->BindCharacterTexture(*c);
                 
-                // update content of VBO memory
                 glBindBuffer(GL_ARRAY_BUFFER, VBO);
-                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
+                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
-                // render quad
                 glDrawArrays(GL_TRIANGLES, 0, 6);
-                // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
                 position.x += (ch.Advance >> 6) * pScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
             }
         }
@@ -124,7 +119,7 @@ namespace Zephyrus::Render {
             auto it = chars.find(c);
             if (it != chars.end())
             {
-                width += (it->second.Advance >> 6) * pScale;  // Convertit 1/64 pixels en pixels
+                width += (it->second.Advance >> 6) * pScale;
             }
         }
         return width;

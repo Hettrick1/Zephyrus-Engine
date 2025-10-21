@@ -37,19 +37,15 @@ namespace Zephyrus::Assets {
             // set size to load glyphs as
             FT_Set_Pixel_Sizes(face, 0, pixelHeight);
 
-            // disable byte-alignment restriction
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-            // load first 128 characters of ASCII set
             for (unsigned char c = 0; c < 128; c++)
             {
-                // Load character glyph 
                 if (FT_Load_Char(face, c, FT_LOAD_RENDER))
                 {
                     ZP_CORE_ERROR("FREETYPE: Failed to load GLYPHS");
                     continue;
                 }
-                // generate texture
                 unsigned int texture;
                 glGenTextures(1, &texture);
                 glBindTexture(GL_TEXTURE_2D, texture);
@@ -64,12 +60,11 @@ namespace Zephyrus::Assets {
                     GL_UNSIGNED_BYTE,
                     face->glyph->bitmap.buffer
                 );
-                // set texture options
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                // now store character for later use
+
                 CharacterGL ch;
                 ch.TextureID = texture;
                 ch.Size = Vector2D(face->glyph->bitmap.width, face->glyph->bitmap.rows);
@@ -81,7 +76,6 @@ namespace Zephyrus::Assets {
             }
             glBindTexture(GL_TEXTURE_2D, 0);
         }
-        // destroy FreeType once we're finished
         FT_Done_Face(face);
         FT_Done_FreeType(ft);
         return true;
