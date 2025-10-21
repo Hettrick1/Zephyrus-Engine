@@ -75,7 +75,7 @@ namespace Zephyrus::Application {
 #ifdef _DEBUG
             mSceneManager->LoadSceneWithFile(mStartUpScene, mRenderer);
 #else
-            mSceneManager->LoadSplashScreen(new SplashScreen(mStartUpScene), mRenderer);
+            mSceneManager->LoadSplashScreen(new Scenes::SplashScreen(mSceneManager, mStartUpScene), mRenderer);
 #endif
             Loop();
         }

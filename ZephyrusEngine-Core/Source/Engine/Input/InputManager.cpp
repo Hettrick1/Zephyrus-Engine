@@ -84,14 +84,14 @@ namespace Zephyrus::Inputs {
         {
             return;
         }
-        for (auto it = mActionKeyBindings.begin(); it != mActionKeyBindings.end(); ++it)
+        for (auto action : mActionKeyBindings)
         {
             if (!mContext->GetActiveScene()->GetSceneLoaded())
             {
                 return;
             }
-            auto& key = it->first;
-            auto& actions = it->second;
+            auto& key = action.first;
+            auto& actions = action.second;
             for (auto* action : actions)
             {
                 action->Update();

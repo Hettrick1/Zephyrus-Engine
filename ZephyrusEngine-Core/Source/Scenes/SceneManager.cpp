@@ -92,7 +92,7 @@ namespace Zephyrus::Scenes {
 
 	void SceneManager::Update(float pDetltaTime)
 	{
-		SetSceneLoaded(true);
+		SetSceneLoaded(true); // TODO : move this in the loadscene when we have the new input system, this will solve a random crash
 		ActiveScene->Update(pDetltaTime);
 	}
 
