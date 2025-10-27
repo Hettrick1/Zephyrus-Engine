@@ -6,7 +6,8 @@
 #include "CameraComponent.h"
 
 namespace Zephyrus::Scenes {
-	SceneManager::SceneManager()
+	SceneManager::SceneManager(Render::IRenderer* pRenderer)
+		: mRenderer{ pRenderer }
 	{
 		mComponentFactory = new ComponentFactory();
 		mPrefabFactory = new Zephyrus::Factory::PrefabFactory(this, mComponentFactory);;
@@ -18,18 +19,18 @@ namespace Zephyrus::Scenes {
 	void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 	{
 		mIsSceneLoaded = false;
-		Zephyrus::Render::IRenderer* renderer = nullptr;
+		mRenderer = nullptr;
 		if (ActiveScene != nullptr)
 		{
 			ActiveScene->Close();
-			renderer = ActiveScene->GetRenderer();
+			mRenderer = ActiveScene->GetRenderer();
 			delete ActiveScene;
 			ActiveScene = nullptr;
 		}
 		ActiveScene = pScene;
-		if (renderer != nullptr)
+		if (mRenderer != nullptr)
 		{
-			ActiveScene->SetRenderer(renderer);
+			ActiveScene->SetRenderer(mRenderer);
 			ActiveScene->Start();
 			if (pCallPostStart)
 			{
@@ -51,11 +52,11 @@ namespace Zephyrus::Scenes {
 	{
 		std::string filepath = pFilePath;
 		SetSceneLoaded(false);
-		Zephyrus::Render::IRenderer* renderer = pRenderer;
+		mRenderer = pRenderer;
 		if (ActiveScene != nullptr)
 		{
 			ActiveScene->Close();
-			renderer = ActiveScene->GetRenderer();
+			mRenderer = ActiveScene->GetRenderer();
 			delete ActiveScene;
 			ActiveScene = nullptr;
 		}
@@ -63,9 +64,9 @@ namespace Zephyrus::Scenes {
 		std::string filename = fsPath.filename().string();
 
 		ActiveScene = new Scene(this, filename);
-		if (renderer != nullptr)
+		if (mRenderer != nullptr)
 		{
-			ActiveScene->SetRenderer(renderer);
+			ActiveScene->SetRenderer(mRenderer);
 			ActiveScene->SetFilePath(filepath);
 			mSceneFactory->PopulateSceneFromFile(ActiveScene, filepath);
 			ActiveScene->Start();
@@ -139,6 +140,10 @@ namespace Zephyrus::Scenes {
 		if (ActiveScene)
 		{
 			return ActiveScene->GetRenderer();
+		}
+		else
+		{
+			return mRenderer;
 		}
 		return nullptr;
 	}

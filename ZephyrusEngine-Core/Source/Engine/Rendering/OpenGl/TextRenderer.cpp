@@ -22,9 +22,9 @@ namespace Zephyrus::Render {
     bool TextRenderer::Init(Window& pWindow)
     {
         mWindow = &pWindow;
-        mVertexShader = *AssetsManager::LoadShader("TextRenderer.vert", ShaderType::VERTEX, "TextRendererVert");
-        mFragmentShader = *AssetsManager::LoadShader("TextRenderer.frag", ShaderType::FRAGMENT, "TextRendererFrag");
-        mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "textRendererSP");
+        mVertexShader = AssetsManager::LoadShader("TextRenderer.vert", ShaderType::VERTEX, "TextRendererVert");
+        mFragmentShader = AssetsManager::LoadShader("TextRenderer.frag", ShaderType::FRAGMENT, "TextRendererFrag");
+        mShaderProgram = *AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "textRendererSP");
         mProjection = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.000001f, 100000);
         mShaderProgram.Use();
         mShaderProgram.setMatrix4Row("projection", mProjection);

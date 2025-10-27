@@ -13,7 +13,7 @@ namespace Zephyrus::Render {
 		glDeleteProgram(mId);
 	}
 
-	void ShaderProgram::Compose(std::vector<Shader*>& pShaders)
+	void ShaderProgram::Compose(std::vector<IShader*>& pShaders)
 	{
 		mId = glCreateProgram();
 		mShaderProgramType = 0;

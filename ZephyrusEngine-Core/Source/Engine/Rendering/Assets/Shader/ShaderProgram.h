@@ -2,7 +2,7 @@
 
 #include "glew.h"
 
-#include "Shader.h"
+#include "Interface/IShader.h"
 
 #include "Matrix4DRow.h"
 #include "Matrix4D.h"
@@ -32,7 +32,7 @@ namespace Zephyrus::Render {
 		void Unload();
 
 		// Composes the shader program from a list of shaders
-		void Compose(std::vector<Shader*>& pShaders);
+		void Compose(std::vector<IShader*>& pShaders);
 
 		inline unsigned int GetID() const { return mId; }
 		inline uint8_t GetType() const { return mShaderProgramType; }

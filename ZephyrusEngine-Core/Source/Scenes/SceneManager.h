@@ -17,13 +17,14 @@ namespace Zephyrus::Scenes
 	{
 	public:
 
-		ComponentFactory* mComponentFactory;
-		IPrefabFactory* mPrefabFactory;
-		ISceneFactory* mSceneFactory;
+		ComponentFactory* mComponentFactory{ nullptr };
+		IPrefabFactory* mPrefabFactory{ nullptr };
+		ISceneFactory* mSceneFactory{ nullptr };
+		Render::IRenderer* mRenderer{ nullptr };
 
 		Scene* ActiveScene;
 		bool mIsSceneLoaded;
-		SceneManager();
+		SceneManager(Render::IRenderer* pRenderer = nullptr);
 		SceneManager(const SceneManager&) = delete;
 		SceneManager& operator=(const SceneManager&) = delete;
 

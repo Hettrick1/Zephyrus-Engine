@@ -6,6 +6,7 @@
 #include "Matrix4DRow.h"
 #include "SDL_image.h"
 #include "Vector4D.h"
+#include "../Interface/IShader.h"
 
 namespace Zephyrus::ActorComponent
 {
@@ -26,7 +27,6 @@ namespace Zephyrus::Assets
 namespace Zephyrus::UI {
 	class HudManager;
 }
-
 
 namespace Zephyrus::Physics
 {
@@ -73,7 +73,8 @@ namespace Zephyrus::Render {
 
 		virtual Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) = 0;
 		virtual Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) = 0;
-		virtual Assets::ITexture* LoadTexture(const std::string& fontPath) = 0;
+		virtual Assets::ITexture* LoadTexture(const std::string& texturePath) = 0;
+		virtual IShader* LoadShader(const std::string& shaderPath, ShaderType type) = 0;
 
 		virtual void RenderActiveCamera(CameraComponent* cam) {}
 

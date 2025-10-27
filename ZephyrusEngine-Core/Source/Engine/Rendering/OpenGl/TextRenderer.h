@@ -29,8 +29,9 @@ namespace Zephyrus::Render {
         TextRenderer(const TextRenderer&) = delete;
         TextRenderer& operator=(const TextRenderer&) = delete;
         unsigned int VAO = 0, VBO = 0;
-        Window* mWindow = nullptr;
-        Shader mVertexShader, mFragmentShader;
+        Window* mWindow{ nullptr };
+        IShader* mVertexShader{ nullptr };
+        IShader* mFragmentShader{ nullptr };
         ShaderProgram mShaderProgram;
         Matrix4DRow mProjection;
     public:

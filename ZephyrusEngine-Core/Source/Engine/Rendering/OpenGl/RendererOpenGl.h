@@ -40,12 +40,12 @@ namespace Zephyrus::Render {
 		ShaderProgram* mSpriteShaderProgram;
 		Matrix4DRow mSpriteViewProj;
 		Matrix4DRow mView, mProj;
-		Shader mSpriteVertexShader;
-		Shader mSpriteFragmentShader;
+		IShader* mSpriteVertexShader{ nullptr };
+		IShader* mSpriteFragmentShader{ nullptr };
 		ShaderProgram mSpriteShaderProgramTemp;
-		Shader mFullscreenVertexShader;
-		Shader mFullscreenFragmentShader;
-		ShaderProgram* mFullscreenShaderProgram = nullptr;
+		IShader* mFullscreenVertexShader{ nullptr };
+		IShader* mFullscreenFragmentShader{ nullptr };
+		ShaderProgram* mFullscreenShaderProgram{ nullptr };
 		HudManager* mHud;
 		DebugRenderer* mDebugRenderer;
 		bool mWireFrameMode;
@@ -71,7 +71,8 @@ namespace Zephyrus::Render {
 
 		Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) override;
 		Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) override;
-		Assets::ITexture* LoadTexture(const std::string& fontPath) override;
+		Assets::ITexture* LoadTexture(const std::string& texturePath) override;
+		IShader* LoadShader(const std::string& shaderPath, ShaderType type) override;
 
 		void AddSprite(SpriteComponent* pSprite) override;
 		void RemoveSprite(SpriteComponent* pSprite) override;

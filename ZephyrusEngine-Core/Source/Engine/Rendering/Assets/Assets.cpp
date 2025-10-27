@@ -19,7 +19,7 @@ namespace Zephyrus::Assets {
 	std::map<std::string, ITexture*> AssetsManager::mTextures = {};
 	std::map<std::string, IFont*> AssetsManager::mFonts = {};
 	std::map<std::string, IMesh*> AssetsManager::mMeshes = {};
-	std::map<std::string, Shader> AssetsManager::mShaders = {};
+	std::map<std::string, Render::IShader*> AssetsManager::mShaders = {};
 	std::map<std::string, ShaderProgram> AssetsManager::mShaderPrograms = {};
 
 	ISceneContext* AssetsManager::mContext{nullptr};
@@ -95,16 +95,16 @@ namespace Zephyrus::Assets {
 		return mFonts[pName];
 	}
 
-	Shader* AssetsManager::LoadShader(const std::string& pFilePath, ShaderType pType, const std::string& pName)
+	Render::IShader* AssetsManager::LoadShader(const std::string& pFilePath, Render::ShaderType pType, const std::string& pName)
 	{
 		if (mShaders.find(pName) == mShaders.end()) {
 			mShaders[pName] = LoadShaderFromFile(GetFullPath(pFilePath, AssetType::Shader), pType);
-			return &mShaders[pName];
+			return mShaders[pName];
 		}
-		return &mShaders[pName];
+		return mShaders[pName];
 	}
 
-	Shader& AssetsManager::GetShader(const std::string& pName)
+	Render::IShader* AssetsManager::GetShader(const std::string& pName)
 	{
 		if (mShaders.find(pName) == mShaders.end()) {
 			std::ostringstream loadError;
@@ -114,7 +114,7 @@ namespace Zephyrus::Assets {
 		return mShaders[pName];
 	}
 
-	ShaderProgram* AssetsManager::LoadShaderProgram(std::vector<Shader*> pShaders, const std::string& pName)
+	ShaderProgram* AssetsManager::LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName)
 	{
 		if (mShaderPrograms.find(pName) == mShaderPrograms.end()) {
 			ShaderProgram program = ShaderProgram();
@@ -157,7 +157,9 @@ namespace Zephyrus::Assets {
 		mFonts.clear();
 		for (auto& iter : mShaders)
 		{
-			iter.second.Unload();
+			iter.second->Unload();
+			delete iter.second;
+			iter.second = nullptr;
 		}
 		mShaders.clear();
 		for (auto& iter : mShaderPrograms)
@@ -289,12 +291,9 @@ namespace Zephyrus::Assets {
 		return mContext->GetRenderer()->LoadFont(pFilePath);
 	}
 
-	Shader AssetsManager::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)
+	Render::IShader* AssetsManager::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)
 	{
-		Shader shader;
-		shader.Load(pFilePath, pType);
-		ZP_LOAD("Shader " + pFilePath + " successfully loaded");
-		return shader;
+		return mContext->GetRenderer()->LoadShader(pFilePath, pType);
 	}
 
 	std::string AssetsManager::GetFullPath(const std::string& pPath, AssetType pType)

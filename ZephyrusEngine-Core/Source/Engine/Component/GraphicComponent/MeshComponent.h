@@ -20,10 +20,12 @@ namespace Zephyrus::ActorComponent
 	class MeshComponent : public Component
 	{
 	protected:
-		IMesh* mMesh = nullptr;
-		Shader mVertexShader, mFragmentShader;
+		IMesh* mMesh{ nullptr };
+		Render::IShader* mVertexShader{ nullptr };
+		Render::IShader* mFragmentShader{ nullptr };
 		ShaderProgram mShaderProgram;
-		Shader mOutlineVertexShader, mOutlineFragmentShader;
+		Render::IShader* mOutlineVertexShader{ nullptr };
+		Render::IShader* mOutlineFragmentShader{ nullptr };
 		ShaderProgram mOutlineShaderProgram;
 		Vector2D mTiling;
 		std::vector<Assets::ITexture*> mTextures;

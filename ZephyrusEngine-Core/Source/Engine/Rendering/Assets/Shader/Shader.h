@@ -1,43 +1,33 @@
 #pragma once
 
-#include <string>
-#include <fstream>
-
+#include "../Interface/IShader.h"
 
 namespace Zephyrus::Render {
-	enum class ShaderType {
-		VERTEX,
-		FRAGMENT,
-		TESSELLATION_CONTROL,
-		TESSELLATION_EVALUATION,
-		GEOMETRY
-	};
-
 	/**
 	 * @class Shader
 	 * @brief Classe représentant un shader OpenGL.
 	 *
 	 * Permet de charger le code source d'un shader, de stocker son identifiant et son type.
 	 */
-	class Shader
+	class Shader : public IShader
 	{
 	protected:
-		std::string mCode;
-		unsigned int mId;
-		ShaderType mType;
+		std::string mCode{ "" };
+		unsigned int mId{ 0 };
+		ShaderType mType{ ShaderType::VERTEX };
 	public:
-		Shader();
+		Shader() = default;
 		Shader(int pId, const std::string& pCode, ShaderType pShaderType);
 		~Shader();
 
-		void Load(const std::string& pFileName, ShaderType pShaderType);
+		void Load(const std::string& pFileName, ShaderType pShaderType) override;
 
-		void Unload();
+		void Unload() override;
 
-		int GetID() const { return mId; }
+		inline int GetID() const override { return mId; }
 
-		std::string& GetCode();
+		std::string& GetCode() override;
 
-		inline ShaderType GetType() const { return mType; }
+		inline ShaderType GetType() const override { return mType; }
 	};
 }

@@ -14,8 +14,8 @@ namespace Zephyrus::Render {
 	class DebugRenderer
 	{
 	private:
-		Shader mDebugVertex;
-		Shader mDebugFragment;
+		Render::IShader* mDebugVertex{ nullptr };
+		Render::IShader* mDebugFragment{ nullptr };
 		ShaderProgram mDebugShaderProgram;
 		Matrix4DRow mView, mProj;
 		Window* mWindow;

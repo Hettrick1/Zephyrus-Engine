@@ -21,9 +21,9 @@ namespace Zephyrus::Physics
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
         glBindVertexArray(0);
 
-        mDebugVertex = *AssetsManager::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
-        mDebugFragment = *AssetsManager::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
-        mDebugShaderProgram = *AssetsManager::LoadShaderProgram({ &mDebugVertex, &mDebugFragment }, "debugSP");
+        mDebugVertex = AssetsManager::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
+        mDebugFragment = AssetsManager::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
+        mDebugShaderProgram = *AssetsManager::LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
         mProj = Matrix4DRow::CreatePerspectiveFOV(70, 1920, 1080, 0.1f, 10000000);
     }
 

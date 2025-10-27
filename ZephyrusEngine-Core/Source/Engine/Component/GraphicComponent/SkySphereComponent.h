@@ -3,7 +3,7 @@
 #include "Texture.h"
 #include "Maths.h"
 #include "CubeTextureMap.h"
-#include "Shader.h"
+#include "Interface/IShader.h"
 #include "ShaderProgram.h"
 
 namespace Zephyrus::Assets {
@@ -12,7 +12,6 @@ namespace Zephyrus::Assets {
 
 using Zephyrus::Assets::CubeTextureMap;
 using Zephyrus::Render::ShaderProgram;
-using Zephyrus::Render::Shader;
 using Zephyrus::Render::ShaderType;
 /**
  * @brief Component that manages and renders a sky sphere or skybox in the scene.
@@ -23,13 +22,16 @@ namespace Zephyrus::ActorComponent
 	class SkySphereComponent : public Component
 	{
 	protected:
-		Assets::IMesh* mMesh = nullptr;
-		Shader mVertexShader, mFragmentShader, mTescShader, mTeseShader;
+		Assets::IMesh* mMesh{ nullptr };
+		Render::IShader* mVertexShader{ nullptr };
+		Render::IShader* mFragmentShader{ nullptr };
+		Render::IShader* mTescShader{ nullptr };
+		Render::IShader* mTeseShader{ nullptr };
 		ShaderProgram mShaderProgram;
 		CubeTextureMap mCubeMap;
 		Vector2D mTiling;
 		unsigned int mTextureIndex = 0;
-		Zephyrus::Assets::ITexture* mSphereTexture = nullptr;
+		Zephyrus::Assets::ITexture* mSphereTexture{ nullptr };
 		bool mIsSphere = false;
 		GLenum mTextureType;
 

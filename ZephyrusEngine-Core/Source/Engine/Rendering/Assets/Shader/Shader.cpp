@@ -3,11 +3,6 @@
 #include "glew.h"
 
 namespace Zephyrus::Render {
-	Shader::Shader()
-		: mId(0), mCode(""), mType(ShaderType::VERTEX)
-	{
-	}
-
 	Shader::Shader(int pId, const std::string& pCode, ShaderType pShaderType)
 		: mId(pId), mCode(pCode), mType(pShaderType)
 	{

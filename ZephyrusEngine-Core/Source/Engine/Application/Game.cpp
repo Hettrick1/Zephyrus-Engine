@@ -66,8 +66,9 @@ namespace Zephyrus::Application {
         mGameWindow = new Window(1920, 1080, false);
         mRenderer = new Zephyrus::Render::RendererOpenGl();
 
-        mSceneManager = new Zephyrus::Scenes::SceneManager;
+        mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);
         Assets::AssetsManager::SetContext(mSceneManager);
+
         // For now
         InputManager::Instance().SetContext(mSceneManager);
 

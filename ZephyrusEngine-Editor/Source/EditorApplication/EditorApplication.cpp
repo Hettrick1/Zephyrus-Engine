@@ -50,7 +50,7 @@ void EditorApplication::Initialize()
 {
     mGameWindow = new Window(1920, 1030, true);
     mRenderer = new Zephyrus::Render::RendererOpenGl();
-    mSceneManager = new Zephyrus::Scenes::SceneManager();
+    mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);
     Zephyrus::Assets::AssetsManager::SetContext(mSceneManager);
     // For now
     InputManager::Instance().SetContext(mSceneManager);

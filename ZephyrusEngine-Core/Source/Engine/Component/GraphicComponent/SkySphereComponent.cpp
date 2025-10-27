@@ -55,8 +55,8 @@ namespace Zephyrus::ActorComponent
 			if (*isSphere) 
 			{
 				mIsSphere = true;
-				mVertexShader = *AssetsManager::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
-				mFragmentShader = *AssetsManager::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
+				mVertexShader = AssetsManager::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
+				mFragmentShader = AssetsManager::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
 				mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "skySphereSP");
 
 				Zephyrus::Assets::ITexture* tex = nullptr;
@@ -81,12 +81,12 @@ namespace Zephyrus::ActorComponent
 			else
 			{
 				mIsSphere = false;
-				mVertexShader = *AssetsManager::LoadShader("VertFrag/SkyBox.vert", ShaderType::VERTEX, "SkyBoxVert");
-				mFragmentShader = *AssetsManager::LoadShader("VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "SkyBoxFrag");
-				mTescShader = *AssetsManager::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
-				mTeseShader = *AssetsManager::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
+				mVertexShader = AssetsManager::LoadShader("VertFrag/SkyBox.vert", ShaderType::VERTEX, "SkyBoxVert");
+				mFragmentShader = AssetsManager::LoadShader("VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "SkyBoxFrag");
+				mTescShader = AssetsManager::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
+				mTeseShader = AssetsManager::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
 
-				mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mTescShader, &mTeseShader, &mFragmentShader }, "skyboxSP");
+				mShaderProgram = *AssetsManager::LoadShaderProgram({ mVertexShader, mTescShader, mTeseShader, mFragmentShader }, "skyboxSP");
 
 				mMesh = AssetsManager::LoadMesh("cube.obj", "cube");
 

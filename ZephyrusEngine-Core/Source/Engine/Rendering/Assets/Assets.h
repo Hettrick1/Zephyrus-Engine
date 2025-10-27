@@ -4,7 +4,7 @@
 #include "Mesh.h"
 #include "Font.h"
 #include "ShaderProgram.h"
-#include "Shader.h"
+#include "../Interface/IShader.h"
 
 #include <map>
 #include <string>
@@ -18,7 +18,7 @@ class ISceneContext;
 
 using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::Shader;
-using Zephyrus::Render::ShaderType;
+
 
 namespace Zephyrus::Assets {
 
@@ -51,13 +51,13 @@ namespace Zephyrus::Assets {
 
 		// Loads a font from file (internal use)
 		static IFont* LoadFontFromFile(const std::string& pFilePath);
-		static Shader LoadShaderFromFile(const std::string& pFilePath, ShaderType pType);
+		static Render::IShader* LoadShaderFromFile(const std::string& pFilePath, Render::ShaderType pType);
 
 	public:
 		static std::map<std::string, ITexture*> mTextures;
 		static std::map<std::string, IMesh*> mMeshes;
 		static std::map<std::string, IFont*> mFonts;
-		static std::map<std::string, Shader> mShaders;
+		static std::map<std::string, Render::IShader*> mShaders;
 		static std::map<std::string, ShaderProgram> mShaderPrograms;
 		static ISceneContext* mContext;
 
@@ -67,8 +67,8 @@ namespace Zephyrus::Assets {
 		static const std::string SHADER_PATH;
 
 		// Loads a texture from file and stores it with the given name
-		static Zephyrus::Assets::ITexture* LoadTexture(const std::string& pFilePath, const std::string& pName);
-		static Zephyrus::Assets::ITexture* GetTexture(const std::string& pName);
+		static Assets::ITexture* LoadTexture(const std::string& pFilePath, const std::string& pName);
+		static Assets::ITexture* GetTexture(const std::string& pName);
 
 		static void SetContext(ISceneContext* pContext);
 
@@ -80,10 +80,10 @@ namespace Zephyrus::Assets {
 		static IFont* LoadFont(const std::string& pFilePath, const std::string& pName);
 		static IFont* GetFont(const std::string& pName);
 
-		static Shader* LoadShader(const std::string& pFilePath, ShaderType pType, const std::string& pName);
-		static Shader& GetShader(const std::string& pName);
+		static Render::IShader* LoadShader(const std::string& pFilePath, Render::ShaderType pType, const std::string& pName);
+		static Render::IShader* GetShader(const std::string& pName);
 
-		static ShaderProgram* LoadShaderProgram(std::vector<Shader*> pShaders, const std::string& pName);
+		static ShaderProgram* LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName);
 
 		static std::string GetFullPath(const std::string& pPath, AssetType pType);
 

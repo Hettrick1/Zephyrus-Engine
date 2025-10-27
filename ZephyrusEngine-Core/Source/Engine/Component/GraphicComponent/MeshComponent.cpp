@@ -17,13 +17,13 @@ namespace Zephyrus::ActorComponent
 	{
 		mOwner->GetScene().GetRenderer()->AddMesh(this);
 
-		mVertexShader = *AssetsManager::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
-		mFragmentShader = *AssetsManager::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
-		mShaderProgram = *AssetsManager::LoadShaderProgram({ &mVertexShader, &mFragmentShader }, "basicMeshSP");
+		mVertexShader = AssetsManager::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
+		mFragmentShader = AssetsManager::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
+		mShaderProgram = *AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "basicMeshSP");
 
-		mOutlineVertexShader = *AssetsManager::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
-		mOutlineFragmentShader = *AssetsManager::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
-		mOutlineShaderProgram = *AssetsManager::LoadShaderProgram({ &mOutlineVertexShader, &mOutlineFragmentShader }, "OutlineSP");
+		mOutlineVertexShader = AssetsManager::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
+		mOutlineFragmentShader = AssetsManager::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
+		mOutlineShaderProgram = *AssetsManager::LoadShaderProgram({ mOutlineVertexShader, mOutlineFragmentShader }, "OutlineSP");
 
 		mMesh = AssetsManager::LoadMesh("cube.obj", "cube.obj");
 		auto texture = AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
