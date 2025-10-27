@@ -1,29 +1,29 @@
-#include "RenderTarget.h"
+#include "RenderTargetOpenGL.h"
 #include "Log.h"
 
 namespace Zephyrus::Render {
-    RenderTarget::RenderTarget(int pWidth, int pHeight)
+    RenderTargetOpenGL::RenderTargetOpenGL(int pWidth, int pHeight)
         : mWidth(pWidth), mHeight(pHeight)
     {
         Init();
     }
-    RenderTarget::~RenderTarget()
+    RenderTargetOpenGL::~RenderTargetOpenGL()
     {
         Destroy();
     }
 
-    void RenderTarget::Bind()
+    void RenderTargetOpenGL::Bind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
         glViewport(0, 0, mWidth, mHeight);
     }
 
-    void RenderTarget::Unbind()
+    void RenderTargetOpenGL::Unbind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void RenderTarget::Resize(int pWidth, int pHeight)
+    void RenderTargetOpenGL::Resize(int pWidth, int pHeight)
     {
         if (pWidth == mWidth && pHeight == mHeight) return;
         mWidth = pWidth;
@@ -32,7 +32,7 @@ namespace Zephyrus::Render {
         Init();
     }
 
-    void RenderTarget::Init()
+    void RenderTargetOpenGL::Init()
     {
         glGenFramebuffers(1, &mFbo);
         glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
@@ -58,7 +58,7 @@ namespace Zephyrus::Render {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void RenderTarget::Destroy()
+    void RenderTargetOpenGL::Destroy()
     {
         if (mDepthTexture) { glDeleteTextures(1, &mDepthTexture); mDepthTexture = 0; }
         if (mColorTexture) { glDeleteTextures(1, &mColorTexture); mColorTexture = 0; }

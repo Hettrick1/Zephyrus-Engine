@@ -10,7 +10,7 @@ namespace Zephyrus::ActorComponent
     CameraComponent::CameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)
         : Component(pOwner, "CameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
     {
-        mRenderTarget = new Zephyrus::Render::RenderTarget(pWidth, pHeight);
+        mRenderTarget = new Zephyrus::Render::RenderTargetOpenGL(pWidth, pHeight);
         mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
         if (pUsage == CameraUsage::Game)
         {

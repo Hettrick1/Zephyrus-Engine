@@ -1,5 +1,5 @@
 #pragma once
-#include "RenderTarget.h"
+#include "RenderTargetOpenGL.h"
 #include "Matrix4DRow.h"
 #include "Vector3D.h"
 #include "Component.h"
@@ -28,7 +28,7 @@ namespace Zephyrus::ActorComponent
         float mOldNear = mNearClip;
         float mFarClip = 10000.0f;
         float mOldFar = mFarClip;
-        Zephyrus::Render::RenderTarget* mRenderTarget = nullptr;
+        Zephyrus::Render::IRenderTarget* mRenderTarget = nullptr;
     public:
         CameraComponent(Actor* pOwner, int pWidth = 1920, int pHeight = 1080, CameraUsage pUsage = CameraUsage::Game);
         ~CameraComponent();
@@ -51,7 +51,7 @@ namespace Zephyrus::ActorComponent
 
         void RenderScene();
 
-        inline Zephyrus::Render::RenderTarget* GetRenderTarget() const { return mRenderTarget; }
+        inline Zephyrus::Render::IRenderTarget* GetRenderTarget() const { return mRenderTarget; }
 
         CameraUsage usage;
     };
