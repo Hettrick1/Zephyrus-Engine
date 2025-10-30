@@ -1,13 +1,7 @@
-#include "ShaderProgram.h"
+#include "ShaderProgramOpenGL.h"
 #include "Log.h"
 
 namespace Zephyrus::Render {
-	ShaderProgram::ShaderProgram()
-		:mId(0), mShaderProgramType(0)
-	{
-
-	}
-
 	void ShaderProgram::Unload()
 	{
 		glDeleteProgram(mId);

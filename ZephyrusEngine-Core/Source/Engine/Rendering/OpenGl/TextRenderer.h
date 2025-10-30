@@ -3,7 +3,7 @@
 #include "Vector2D.h"
 #include "Vector3D.h"
 #include "Matrix4DRow.h"
-#include "ShaderProgram.h"
+#include "Interface/IShaderProgram.h"
 #include "Window.h"
 #include "TextAlignementEnum.h"
 #include <map>
@@ -32,7 +32,7 @@ namespace Zephyrus::Render {
         Window* mWindow{ nullptr };
         IShader* mVertexShader{ nullptr };
         IShader* mFragmentShader{ nullptr };
-        ShaderProgram mShaderProgram;
+        IShaderProgram* mShaderProgram;
         Matrix4DRow mProjection;
     public:
         static TextRenderer& Instance();
@@ -40,7 +40,7 @@ namespace Zephyrus::Render {
         // Initializes the text renderer with the given window
         bool Init(Window& pWindow);
 
-        void RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Assets::IFont* pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram = nullptr);
+        void RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Assets::IFont* pFont, TextAlignment pAlignment, IShaderProgram* pShaderProgram = nullptr);
 
         // Computes the width of the given text string at the specified scale and font
         float ComputeTextWidth(const std::string& pText, float pScale, const Assets::IFont* pFont);

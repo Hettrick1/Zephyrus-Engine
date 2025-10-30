@@ -7,6 +7,7 @@
 #include "SDL_image.h"
 #include "Vector4D.h"
 #include "../Interface/IShader.h"
+#include "../Interface/IShaderProgram.h"
 
 namespace Zephyrus::ActorComponent
 {
@@ -75,6 +76,7 @@ namespace Zephyrus::Render {
 		virtual Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) = 0;
 		virtual Assets::ITexture* LoadTexture(const std::string& texturePath) = 0;
 		virtual IShader* LoadShader(const std::string& shaderPath, ShaderType type) = 0;
+		virtual IShaderProgram* LoadShaderProgram(std::vector<IShader*> pShaders) = 0;
 
 		virtual void RenderActiveCamera(CameraComponent* cam) {}
 
@@ -93,7 +95,7 @@ namespace Zephyrus::Render {
 		virtual void AddDebugLine(Zephyrus::Debug::DebugLine* pLine) {} // DEBUG PURPOSE ONLY
 		virtual void RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine) {} // DEBUG PURPOSE ONLY
 
-		virtual void SetSpriteShaderProgram(class ShaderProgram& pShaderProgram) {}
+		virtual void SetSpriteShaderProgram(IShaderProgram* pShaderProgram) {}
 		virtual void SetViewMatrix(const Matrix4DRow& pViewMatrix) {}
 		virtual void SetProjMatrix(const Matrix4DRow& pProjMatrix) {}
 

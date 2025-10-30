@@ -1,7 +1,6 @@
 #pragma once
 #include "HudElement.h"
 #include "TextRenderer.h"
-#include "RendererOpenGl.h"
 #include "TextAlignementEnum.h"
 
 /**
@@ -9,7 +8,6 @@
  * It allows customization of text content, position, scale, color, alignment, font, and shader program.
  */
 
-using Zephyrus::Render::ShaderProgram;
 namespace Zephyrus::UI {
     class HudText : public HudElement
     {
@@ -19,7 +17,7 @@ namespace Zephyrus::UI {
         Vector4D mColor;
         TextAlignment mAlignment;
         Assets::IFont* mFont = nullptr;
-        ShaderProgram* mShaderProgram = nullptr;
+        Render::IShaderProgram* mShaderProgram = nullptr;
     public:
         HudText(ISceneContext* pContext, const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Assets::IFont* pFont = nullptr);
         ~HudText();
@@ -36,6 +34,6 @@ namespace Zephyrus::UI {
         inline Vector4D GetColor() const { return mColor; }
 
         // Sets the shader program used for rendering the text.
-        void SetShaderProgram(ShaderProgram* pShaderProgram);
+        void SetShaderProgram(Render::IShaderProgram* pShaderProgram);
     };
 }

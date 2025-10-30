@@ -66,7 +66,7 @@ namespace Zephyrus::Render {
 		}
 		mSpriteVertexShader = AssetsManager::LoadShader("Simple.vert", ShaderType::VERTEX, "SimpleVert");
 		mSpriteFragmentShader = AssetsManager::LoadShader("Simple.frag", ShaderType::FRAGMENT, "SimpleFrag");
-		mSpriteShaderProgramTemp = *AssetsManager::LoadShaderProgram({ mSpriteVertexShader, mSpriteFragmentShader }, "simpleSpriteSP");
+		mSpriteShaderProgramTemp = AssetsManager::LoadShaderProgram({ mSpriteVertexShader, mSpriteFragmentShader }, "simpleSpriteSP");
 		SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 
 		mVAO = new VertexArrayOpenGL(Zephyrus::Assets::spriteVertices, 32);
@@ -177,6 +177,13 @@ namespace Zephyrus::Render {
 		return shader;
 	}
 
+	IShaderProgram* RendererOpenGl::LoadShaderProgram(std::vector<IShader*> pShaders)
+	{
+		ShaderProgram* program = new ShaderProgram();
+		program->Compose(pShaders);
+		return program;
+	}
+
 	void RendererOpenGl::AddSprite(SpriteComponent* pSprite)
 	{
 		int spriteDrawOrder = pSprite->GetDrawOrder();
@@ -276,10 +283,10 @@ namespace Zephyrus::Render {
 		if (mSkySphereComponent != nullptr) {
 			glEnable(GL_DEPTH_TEST);
 			glDepthMask(GL_FALSE);
-			mSkySphereComponent->GetShaderProgram().Use();
-			mSkySphereComponent->GetShaderProgram().setMatrix4Row("uWorld", Matrix4DRow::Identity);
+			mSkySphereComponent->GetShaderProgram()->Use();
+			mSkySphereComponent->GetShaderProgram()->setMatrix4Row("uWorld", Matrix4DRow::Identity);
 			Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView);
-			mSkySphereComponent->GetShaderProgram().setMatrix4Row("uViewProj", skyView * mProj);
+			mSkySphereComponent->GetShaderProgram()->setMatrix4Row("uViewProj", skyView * mProj);
 			mSkySphereComponent->GetMesh()->Bind();
 			if (mSkySphereComponent->GetIsSphere())
 			{
@@ -373,9 +380,9 @@ namespace Zephyrus::Render {
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	}
 
-	void RendererOpenGl::SetSpriteShaderProgram(ShaderProgram& shaderProgram)
+	void RendererOpenGl::SetSpriteShaderProgram(IShaderProgram* shaderProgram)
 	{
-		mSpriteShaderProgram = &shaderProgram;
+		mSpriteShaderProgram = shaderProgram;
 		mSpriteShaderProgram->Use();
 	}
 

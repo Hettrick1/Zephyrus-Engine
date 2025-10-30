@@ -9,7 +9,7 @@
  * @brief Manages an OpenGL shader program, allowing composition, usage, and uniform variable setting.
  */
 namespace Zephyrus::Render {
-	class ShaderProgram : IShaderProgram
+	class ShaderProgram : public IShaderProgram
 	{
 	private:
 		unsigned int mId{ 0 };

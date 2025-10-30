@@ -3,21 +3,21 @@
 #include "MeshComponent.h"
 #include "CubeTextureMap.h"
 #include "Interface/IMesh.h"
+#include "Interface/IShaderProgram.h"
 #include "Maths.h"
 
 using Zephyrus::Assets::CubeTextureMap;
-using Zephyrus::Render::ShaderProgram;
 
 namespace Zephyrus::ActorComponent
 {
 	class CubeMapMeshComponent : public MeshComponent
 	{
 	public:
-		CubeMapMeshComponent(Actor* pOwner, Assets::IMesh* pMesh, CubeTextureMap pCubeMap, ShaderProgram* pProgram = nullptr);
+		CubeMapMeshComponent(Actor* pOwner, Assets::IMesh* pMesh, CubeTextureMap pCubeMap, Render::IShaderProgram* pProgram = nullptr);
 		virtual ~CubeMapMeshComponent();
 		void Draw(const Matrix4DRow& viewProj) override;
 
-		inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
+		inline Render::IShaderProgram* GetShaderProgram() { return mShaderProgram; }
 
 	protected:
 		CubeTextureMap mCubeMapTexture;

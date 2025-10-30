@@ -56,7 +56,7 @@ namespace Zephyrus::ActorComponent
 				mIsSphere = true;
 				mVertexShader = AssetsManager::LoadShader("VertFrag/SkySphere.vert", ShaderType::VERTEX, "SkySphereVert");
 				mFragmentShader = AssetsManager::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
-				mShaderProgram = *AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "skySphereSP");
+				mShaderProgram = AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "skySphereSP");
 
 				Assets::ITexture* tex = nullptr;
 				if (auto sphereTexture = pReader.ReadArrayString("textures"))
@@ -85,7 +85,7 @@ namespace Zephyrus::ActorComponent
 				mTescShader = AssetsManager::LoadShader("Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "SkyBoxTesc");
 				mTeseShader = AssetsManager::LoadShader("Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "SkyBoxTese");
 
-				mShaderProgram = *AssetsManager::LoadShaderProgram({ mVertexShader, mTescShader, mTeseShader, mFragmentShader }, "skyboxSP");
+				mShaderProgram = AssetsManager::LoadShaderProgram({ mVertexShader, mTescShader, mTeseShader, mFragmentShader }, "skyboxSP");
 
 				mMesh = AssetsManager::LoadMesh("cube.obj", "cube");
 
@@ -139,7 +139,7 @@ namespace Zephyrus::ActorComponent
 		mTextureIndex = pTextureIndex;
 	}
 
-	void SkySphereComponent::SetShaderProgram(const ShaderProgram& pShaderProgram)
+	void SkySphereComponent::SetShaderProgram(Render::IShaderProgram* pShaderProgram)
 	{
 		mShaderProgram = pShaderProgram;
 	}

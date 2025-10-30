@@ -24,10 +24,10 @@ namespace Zephyrus::Render {
         mWindow = &pWindow;
         mVertexShader = AssetsManager::LoadShader("TextRenderer.vert", ShaderType::VERTEX, "TextRendererVert");
         mFragmentShader = AssetsManager::LoadShader("TextRenderer.frag", ShaderType::FRAGMENT, "TextRendererFrag");
-        mShaderProgram = *AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "textRendererSP");
+        mShaderProgram = AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "textRendererSP");
         mProjection = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.000001f, 100000);
-        mShaderProgram.Use();
-        mShaderProgram.setMatrix4Row("projection", mProjection);
+        mShaderProgram->Use();
+        mShaderProgram->setMatrix4Row("projection", mProjection);
 
         // configure VAO/VBO for texture quads
         glGenVertexArrays(1, &VAO);
@@ -44,13 +44,13 @@ namespace Zephyrus::Render {
         return true;
     }
 
-    void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Assets::IFont* pFont, TextAlignment pAlignment, ShaderProgram* pShaderProgram)
+    void TextRenderer::RenderText(std::string pText, const Vector2D& pPos, float pScale, Vector4D pColor, Assets::IFont* pFont, TextAlignment pAlignment, IShaderProgram* pShaderProgram)
     {
         if (!pFont) return;
 
         float textWidth = ComputeTextWidth(pText, pScale, pFont);
 
-        ShaderProgram* shaderProgram = pShaderProgram == nullptr ? &mShaderProgram : pShaderProgram;
+        IShaderProgram* shaderProgram = pShaderProgram == nullptr ? mShaderProgram : pShaderProgram;
 
         Vector2D position = pPos;
 

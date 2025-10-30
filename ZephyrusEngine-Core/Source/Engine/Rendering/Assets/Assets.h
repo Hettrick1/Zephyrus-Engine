@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ShaderProgram.h"
+#include "../Interface/IShaderProgram.h"
 #include "../Interface/IShader.h"
 #include "Vertex.h"
 
@@ -13,8 +13,6 @@
  */
 
 class ISceneContext;
-
-using Zephyrus::Render::ShaderProgram;
 
 namespace Zephyrus::Assets {
 
@@ -44,13 +42,14 @@ namespace Zephyrus::Assets {
 		// Loads a font from file (internal use)
 		static IFont* LoadFontFromFile(const std::string& pFilePath);
 		static Render::IShader* LoadShaderFromFile(const std::string& pFilePath, Render::ShaderType pType);
+		static Render::IShaderProgram* LoadProgramWithShaders(std::vector<Render::IShader*> pShaders);
 
 	public:
 		static std::map<std::string, ITexture*> mTextures;
 		static std::map<std::string, IMesh*> mMeshes;
 		static std::map<std::string, IFont*> mFonts;
 		static std::map<std::string, Render::IShader*> mShaders;
-		static std::map<std::string, ShaderProgram> mShaderPrograms;
+		static std::map<std::string, Render::IShaderProgram*> mShaderPrograms;
 		static ISceneContext* mContext;
 
 		static const std::string IMPORT_PATH;
@@ -75,7 +74,7 @@ namespace Zephyrus::Assets {
 		static Render::IShader* LoadShader(const std::string& pFilePath, Render::ShaderType pType, const std::string& pName);
 		static Render::IShader* GetShader(const std::string& pName);
 
-		static ShaderProgram* LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName);
+		static Render::IShaderProgram* LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName);
 
 		static std::string GetFullPath(const std::string& pPath, AssetType pType);
 

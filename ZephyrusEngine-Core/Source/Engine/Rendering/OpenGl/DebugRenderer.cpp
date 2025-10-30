@@ -24,7 +24,7 @@ namespace Zephyrus::Render {
 		glLineWidth(4);
 		mDebugVertex = AssetsManager::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
 		mDebugFragment = AssetsManager::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
-		mDebugShaderProgram = *AssetsManager::LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
+		mDebugShaderProgram = AssetsManager::LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
 		mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 		mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, pWindow.GetDimensions().x, pWindow.GetDimensions().y, 0.01f, 10000.0f);
 		GLfloat vertices[] = {
@@ -91,8 +91,8 @@ namespace Zephyrus::Render {
 		glEnable(GL_DEPTH_TEST);
 		if (mDrawSelected || mDrawDebug)
 		{
-			mDebugShaderProgram.Use();
-			mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
+			mDebugShaderProgram->Use();
+			mDebugShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
 		}
 		if (mDrawDebug) {
 			if (mDrawLines)
@@ -123,10 +123,10 @@ namespace Zephyrus::Render {
 	{
 		glBindVertexArray(mDebugBoxVao);
 
-		mDebugShaderProgram.Use();
+		mDebugShaderProgram->Use();
 		Matrix4DRow wt = pWorldTransform;
-		mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);
-		mDebugShaderProgram.setVector3f("uColor", Vector3D(0, 1, 0));
+		mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
+		mDebugShaderProgram->setVector3f("uColor", Vector3D(0, 1, 0));
 
 		glDrawArrays(GL_LINES, 0, 24);
 	}
@@ -137,7 +137,7 @@ namespace Zephyrus::Render {
 		glLineWidth(2);
 		glBindVertexArray(mDebugBoxVao);
 
-		mDebugShaderProgram.Use();
+		mDebugShaderProgram->Use();
 
 		Matrix4DRow wt = pWorldTransform;
 
@@ -145,9 +145,9 @@ namespace Zephyrus::Render {
 		wt *= Matrix4DRow::CreateFromQuaternion(pWorldTransform.GetRotation());
 		wt *= Matrix4DRow::CreateTranslation(pWorldTransform.GetTranslation());
 
-		mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
-		mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);
-		mDebugShaderProgram.setVector3f("uColor", Vector3D(1.0, 0.7, 0));
+		mDebugShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
+		mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
+		mDebugShaderProgram->setVector3f("uColor", Vector3D(1.0, 0.7, 0));
 
 		glDrawArrays(GL_LINES, 0, 24);
 		glLineWidth(4);
@@ -164,15 +164,15 @@ namespace Zephyrus::Render {
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(lineVertices), lineVertices);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		mDebugShaderProgram.Use();
+		mDebugShaderProgram->Use();
 		Matrix4DRow worldTransform = Matrix4DRow::Identity;
-		mDebugShaderProgram.setMatrix4Row("uWorldTransform", worldTransform);
+		mDebugShaderProgram->setMatrix4Row("uWorldTransform", worldTransform);
 
 		if (pHit.HitActor) {
-			mDebugShaderProgram.setVector3f("uColor", Vector3D(1, 0, 0));
+			mDebugShaderProgram->setVector3f("uColor", Vector3D(1, 0, 0));
 		}
 		else {
-			mDebugShaderProgram.setVector3f("uColor", Vector3D(0, 1, 0));
+			mDebugShaderProgram->setVector3f("uColor", Vector3D(0, 1, 0));
 		}
 
 		glBindVertexArray(mDebugLineVao);
@@ -186,10 +186,10 @@ namespace Zephyrus::Render {
 			Matrix4DRow wt = Matrix4DRow::CreateScale(size * 2);
 			wt *= Matrix4DRow::CreateTranslation(pHit.HitPoint - size);
 
-			mDebugShaderProgram.Use();
-			mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);
+			mDebugShaderProgram->Use();
+			mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
 
-			mDebugShaderProgram.setVector3f("uColor", Vector3D(1, 1, 0));
+			mDebugShaderProgram->setVector3f("uColor", Vector3D(1, 1, 0));
 
 			glBindVertexArray(mDebugBoxVao);
 			glDrawArrays(GL_LINES, 0, 24);

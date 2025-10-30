@@ -2,10 +2,11 @@
 
 #include "IRenderer.h"
 #include "VertexArray.h"
-#include "ShaderProgram.h"
+#include "Interface/IShaderProgram.h"
 #include "Window.h"
 #include "Matrix4DRow.h"
 #include "DebugLine.h"
+#include "glew.h"
 
 /**
  * @brief Renders debug visualizations such as colliders and lines for debugging purposes.
@@ -16,7 +17,7 @@ namespace Zephyrus::Render {
 	private:
 		Render::IShader* mDebugVertex{ nullptr };
 		Render::IShader* mDebugFragment{ nullptr };
-		ShaderProgram mDebugShaderProgram;
+		Render::IShaderProgram* mDebugShaderProgram;
 		Matrix4DRow mView, mProj;
 		Window* mWindow;
 		std::vector<Zephyrus::Debug::DebugLine*> mLines;

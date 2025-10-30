@@ -34,7 +34,7 @@ namespace Zephyrus::Scenes {
 		Render::IShader* frag = AssetsManager::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
 
 		mZephyrusText = new Zephyrus::UI::HudText(mContext, "Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
-		mZephyrusText->SetShaderProgram(AssetsManager::LoadShaderProgram({ &vert, &frag }, "splashScreenSP"));
+		mZephyrusText->SetShaderProgram(AssetsManager::LoadShaderProgram({ vert, frag }, "splashScreenSP"));
 
 		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
 		SDL_SetRelativeMouseMode(SDL_TRUE);

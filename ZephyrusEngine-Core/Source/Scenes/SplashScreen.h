@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scene.h"
-#include "ShaderProgram.h"
+#include "Interface/IShaderProgram.h"
 #include "HudText.h"
 
 namespace Zephyrus::Scenes {

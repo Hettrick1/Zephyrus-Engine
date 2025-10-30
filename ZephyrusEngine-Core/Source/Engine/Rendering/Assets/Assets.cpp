@@ -20,7 +20,7 @@ namespace Zephyrus::Assets {
 	std::map<std::string, IFont*> AssetsManager::mFonts = {};
 	std::map<std::string, IMesh*> AssetsManager::mMeshes = {};
 	std::map<std::string, Render::IShader*> AssetsManager::mShaders = {};
-	std::map<std::string, ShaderProgram> AssetsManager::mShaderPrograms = {};
+	std::map<std::string, Render::IShaderProgram*> AssetsManager::mShaderPrograms = {};
 
 	ISceneContext* AssetsManager::mContext{nullptr};
 
@@ -114,15 +114,13 @@ namespace Zephyrus::Assets {
 		return mShaders[pName];
 	}
 
-	ShaderProgram* AssetsManager::LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName)
+	Render::IShaderProgram* AssetsManager::LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName)
 	{
 		if (mShaderPrograms.find(pName) == mShaderPrograms.end()) {
-			ShaderProgram program = ShaderProgram();
-			program.Compose(pShaders);
-			mShaderPrograms[pName] = program;
-			return &mShaderPrograms[pName];
+			mShaderPrograms[pName] = LoadProgramWithShaders(pShaders);
+			return mShaderPrograms[pName];
 		}
-		return &mShaderPrograms[pName];
+		return mShaderPrograms[pName];
 	}
 
 	void AssetsManager::Clear()
@@ -164,7 +162,9 @@ namespace Zephyrus::Assets {
 		mShaders.clear();
 		for (auto& iter : mShaderPrograms)
 		{
-			iter.second.Unload();
+			iter.second->Unload();
+			delete iter.second;
+			iter.second = nullptr;
 		}
 		mShaderPrograms.clear();
 	}
@@ -246,6 +246,11 @@ namespace Zephyrus::Assets {
 	Render::IShader* AssetsManager::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)
 	{
 		return mContext->GetRenderer()->LoadShader(pFilePath, pType);
+	}
+
+	Render::IShaderProgram* AssetsManager::LoadProgramWithShaders(std::vector<Render::IShader*> pShaders)
+	{
+		return mContext->GetRenderer()->LoadShaderProgram(pShaders);
 	}
 
 	std::string AssetsManager::GetFullPath(const std::string& pPath, AssetType pType)

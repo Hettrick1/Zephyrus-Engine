@@ -19,11 +19,11 @@ namespace Zephyrus::ActorComponent
 
 		mVertexShader = AssetsManager::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
 		mFragmentShader = AssetsManager::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
-		mShaderProgram = *AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "basicMeshSP");
+		mShaderProgram = AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "basicMeshSP");
 
 		mOutlineVertexShader = AssetsManager::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
 		mOutlineFragmentShader = AssetsManager::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
-		mOutlineShaderProgram = *AssetsManager::LoadShaderProgram({ mOutlineVertexShader, mOutlineFragmentShader }, "OutlineSP");
+		mOutlineShaderProgram = AssetsManager::LoadShaderProgram({ mOutlineVertexShader, mOutlineFragmentShader }, "OutlineSP");
 
 		mMesh = AssetsManager::LoadMesh("cube.obj", "cube.obj");
 		auto texture = AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
@@ -125,10 +125,10 @@ namespace Zephyrus::ActorComponent
 		}
 
 		Matrix4DRow wt = GetWorldTransform();
-		mShaderProgram.Use();
-		mShaderProgram.setMatrix4Row("uViewProj", pViewProj);
-		mShaderProgram.setMatrix4Row("uWorldTransform", wt);
-		mShaderProgram.setVector2f("uTiling", mTiling);
+		mShaderProgram->Use();
+		mShaderProgram->setMatrix4Row("uViewProj", pViewProj);
+		mShaderProgram->setMatrix4Row("uWorldTransform", wt);
+		mShaderProgram->setVector2f("uTiling", mTiling);
 		if (GetTextureArraySize() < mTextureIndex)
 		{
 			mTextureIndex = 0;
@@ -139,7 +139,7 @@ namespace Zephyrus::ActorComponent
 			tex->Bind();
 		}
 		mMesh->Bind();
-		if ((mShaderProgram.GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+		if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
 		{
 			glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
 		}
@@ -154,9 +154,9 @@ namespace Zephyrus::ActorComponent
 
 	}
 
-	void MeshComponent::SetMesh(IMesh& pMesh)
+	void MeshComponent::SetMesh(IMesh* pMesh)
 	{
-		mMesh = &pMesh;
+		mMesh = pMesh;
 	}
 
 	void MeshComponent::SetTextureIndex(unsigned int pTextureIndex)
@@ -193,7 +193,7 @@ namespace Zephyrus::ActorComponent
 	}
 
 
-	void MeshComponent::SetShaderProgram(const ShaderProgram& pShaderProgram)
+	void MeshComponent::SetShaderProgram(Render::IShaderProgram* pShaderProgram)
 	{
 		mShaderProgram = pShaderProgram;
 	}

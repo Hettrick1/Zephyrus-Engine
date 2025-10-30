@@ -32,7 +32,7 @@ namespace Zephyrus::UI {
         mColor = pColor;
     }
 
-    void HudText::SetShaderProgram(ShaderProgram* pShaderProgram)
+    void HudText::SetShaderProgram(Render::IShaderProgram* pShaderProgram)
     {
         mShaderProgram = pShaderProgram;
     }

@@ -23,7 +23,7 @@ namespace Zephyrus::Physics
 
         mDebugVertex = AssetsManager::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
         mDebugFragment = AssetsManager::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
-        mDebugShaderProgram = *AssetsManager::LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
+        mDebugShaderProgram = AssetsManager::LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
         mProj = Matrix4DRow::CreatePerspectiveFOV(70, 1920, 1080, 0.1f, 10000000);
     }
 
@@ -53,7 +53,7 @@ namespace Zephyrus::Physics
         glBufferData(GL_ARRAY_BUFFER, mLines.size() * sizeof(float), mLines.data(), GL_DYNAMIC_DRAW);
 
         glBindVertexArray(vao);
-        mDebugShaderProgram.Use();
+        mDebugShaderProgram->Use();
         Matrix4DRow mView;
         if (cam == nullptr)
         {
@@ -67,9 +67,9 @@ namespace Zephyrus::Physics
             mProj = cam->GetProjMatrix();
         }
         auto wt = Matrix4DRow::Identity;
-        mDebugShaderProgram.setVector3f("uColor", Vector3D(0.0, 1.0, 0));
-        mDebugShaderProgram.setMatrix4Row("uViewProj", mView * mProj);
-        mDebugShaderProgram.setMatrix4Row("uWorldTransform", wt);
+        mDebugShaderProgram->setVector3f("uColor", Vector3D(0.0, 1.0, 0));
+        mDebugShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
+        mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
         glDrawArrays(GL_LINES, 0, mLines.size() / 3);
         glBindVertexArray(0);
         glLineWidth(6);

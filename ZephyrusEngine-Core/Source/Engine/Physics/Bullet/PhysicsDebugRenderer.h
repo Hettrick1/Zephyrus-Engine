@@ -4,12 +4,11 @@
 #include <glew.h>
 
 #include "Interface/IShader.h"
-#include "ShaderProgram.h"
+#include "Interface/IShaderProgram.h"
 #include "CameraComponent.h"
 
 class ISceneContext;
 
-using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::ShaderType;
 
 namespace Zephyrus::Physics
@@ -20,9 +19,9 @@ namespace Zephyrus::Physics
         int mDebugMode;
         std::vector<float> mLines;
         unsigned int vao, vbo;
-        Render::IShader* mDebugVertex{ nullptr };;
-        Render::IShader* mDebugFragment{ nullptr };;
-        ShaderProgram mDebugShaderProgram;
+        Render::IShader* mDebugVertex{ nullptr };
+        Render::IShader* mDebugFragment{ nullptr };
+        Render::IShaderProgram* mDebugShaderProgram{ nullptr };
         Matrix4DRow mProj;
         ISceneContext* mContext{ nullptr };
     public:

@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Interface/IMesh.h"
-#include "Shader/ShaderProgram.h"
+#include "Interface/IShaderProgram.h"
 #include "Interface/IShader.h"
 #include "Maths.h"
 
@@ -11,7 +11,6 @@ namespace Zephyrus::Assets
 }
 
 using Zephyrus::Assets::IMesh;
-using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::ShaderType;
 
 namespace Zephyrus::ActorComponent
@@ -22,10 +21,10 @@ namespace Zephyrus::ActorComponent
 		IMesh* mMesh{ nullptr };
 		Render::IShader* mVertexShader{ nullptr };
 		Render::IShader* mFragmentShader{ nullptr };
-		ShaderProgram mShaderProgram;
+		Render::IShaderProgram* mShaderProgram{ nullptr };
 		Render::IShader* mOutlineVertexShader{ nullptr };
 		Render::IShader* mOutlineFragmentShader{ nullptr };
-		ShaderProgram mOutlineShaderProgram;
+		Render::IShaderProgram* mOutlineShaderProgram{ nullptr };
 		Vector2D mTiling;
 		std::vector<Assets::ITexture*> mTextures;
 		unsigned int mTextureIndex = 0;
@@ -44,7 +43,7 @@ namespace Zephyrus::ActorComponent
 
 		virtual void Draw(const Matrix4DRow& pViewProj);
 		virtual void DrawSelected(const Matrix4DRow& pViewProj);
-		virtual void SetMesh(IMesh& pMesh);
+		virtual void SetMesh(IMesh* pMesh);
 		void SetTextureIndex(unsigned int pTextureIndex);
 
 		void AddTexture(Assets::ITexture* pTexture);
@@ -52,11 +51,11 @@ namespace Zephyrus::ActorComponent
 		inline unsigned int GetTextureArraySize() const { return mTextures.size(); }
 		inline std::vector<Assets::ITexture*> GetAllTextures() const { return mTextures; }
 
-		void SetShaderProgram(const ShaderProgram& pShaderProgram);
+		void SetShaderProgram(Render::IShaderProgram* pShaderProgram);
 
 		void SetTiling(const Vector2D& pTiling);
 
 		inline IMesh* GetMesh() const { return mMesh; }
-		inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
+		inline Render::IShaderProgram* GetShaderProgram() { return mShaderProgram; }
 	};
 }

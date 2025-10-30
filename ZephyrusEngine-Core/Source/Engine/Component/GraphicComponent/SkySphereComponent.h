@@ -4,14 +4,16 @@
 #include "CubeTextureMap.h"
 #include "Interface/IShader.h"
 #include "Interface/ITexture.h"
-#include "ShaderProgram.h"
+#include "Interface/IShaderProgram.h"
+
+// TODO : Remove this include
+#include "glew.h"
 
 namespace Zephyrus::Assets {
 	class IMesh;
 }
 
 using Zephyrus::Assets::CubeTextureMap;
-using Zephyrus::Render::ShaderProgram;
 using Zephyrus::Render::ShaderType;
 /**
  * @brief Component that manages and renders a sky sphere or skybox in the scene.
@@ -27,7 +29,7 @@ namespace Zephyrus::ActorComponent
 		Render::IShader* mFragmentShader{ nullptr };
 		Render::IShader* mTescShader{ nullptr };
 		Render::IShader* mTeseShader{ nullptr };
-		ShaderProgram mShaderProgram;
+		Render::IShaderProgram* mShaderProgram;
 		CubeTextureMap mCubeMap;
 		Vector2D mTiling;
 		unsigned int mTextureIndex = 0;
@@ -51,7 +53,7 @@ namespace Zephyrus::ActorComponent
 		void SetTextureIndex(unsigned int pTextureIndex);
 
 		// Sets the shader program used for rendering
-		void SetShaderProgram(const ShaderProgram& pShaderProgram);
+		void SetShaderProgram(Render::IShaderProgram* pShaderProgram);
 
 		// Sets the tiling factor for the sky texture
 		void SetTiling(const Vector2D& pTiling);
@@ -59,7 +61,7 @@ namespace Zephyrus::ActorComponent
 		void SetTexturePaths(std::vector<std::string>& pTexturesPaths);
 
 		inline Assets::IMesh* GetMesh() const { return mMesh; }
-		inline ShaderProgram& GetShaderProgram() { return mShaderProgram; }
+		inline Render::IShaderProgram* GetShaderProgram() { return mShaderProgram; }
 		inline CubeTextureMap& GetCubeMap() { return mCubeMap; }
 		inline unsigned int& GetTextureIndex() { return mTextureIndex; }
 		inline GLenum& GetTextureType() { return mTextureType; }

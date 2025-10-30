@@ -2,7 +2,7 @@
 
 #include "IRenderer.h"
 #include "VertexArray.h"
-#include "ShaderProgram.h"
+#include "ShaderProgramOpenGL.h"
 #include "DebugLine.h"
 #include <vector>
 #include "DebugRenderer.h"
@@ -20,7 +20,6 @@ using Zephyrus::ActorComponent::MeshComponent;
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
 using Zephyrus::Assets::VertexArrayOpenGL;
-using Zephyrus::Assets::Texture;
 
 /**
  * @brief OpenGL renderer implementation for rendering sprites, meshes, sky spheres, HUD, and debug elements.
@@ -30,26 +29,26 @@ namespace Zephyrus::Render {
 	class RendererOpenGl : public IRenderer
 	{
 	private:
-		Window* mWindow;
-		VertexArrayOpenGL* mFullscreenQuadVAO;
-		VertexArrayOpenGL* mVAO;
+		Window* mWindow{ nullptr };
+		VertexArrayOpenGL* mFullscreenQuadVAO{ nullptr };
+		VertexArrayOpenGL* mVAO{ nullptr };
 		SDL_GLContext mContext;
 		std::vector<SpriteComponent*> mSprites;
 		std::vector<MeshComponent*> mMeshes;
-		ShaderProgram* mSpriteShaderProgram;
+		IShaderProgram* mSpriteShaderProgram{ nullptr };
 		Matrix4DRow mSpriteViewProj;
 		Matrix4DRow mView, mProj;
 		IShader* mSpriteVertexShader{ nullptr };
 		IShader* mSpriteFragmentShader{ nullptr };
-		ShaderProgram mSpriteShaderProgramTemp;
+		IShaderProgram* mSpriteShaderProgramTemp{ nullptr };
 		IShader* mFullscreenVertexShader{ nullptr };
 		IShader* mFullscreenFragmentShader{ nullptr };
-		ShaderProgram* mFullscreenShaderProgram{ nullptr };
-		HudManager* mHud;
-		DebugRenderer* mDebugRenderer;
+		IShaderProgram* mFullscreenShaderProgram{ nullptr };
+		HudManager* mHud{ nullptr };
+		DebugRenderer* mDebugRenderer{ nullptr };
 		bool mWireFrameMode;
-		SkySphereComponent* mSkySphereComponent;
-		Actor* mSelectedActor = nullptr;
+		SkySphereComponent* mSkySphereComponent{ nullptr };
+		Actor* mSelectedActor{ nullptr };
 
 	public:
 		RendererOpenGl();
@@ -72,6 +71,7 @@ namespace Zephyrus::Render {
 		Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) override;
 		Assets::ITexture* LoadTexture(const std::string& texturePath) override;
 		IShader* LoadShader(const std::string& shaderPath, ShaderType type) override;
+		IShaderProgram* LoadShaderProgram(std::vector<IShader*> pShaders) override;
 
 		void AddSprite(SpriteComponent* pSprite) override;
 		void RemoveSprite(SpriteComponent* pSprite) override;
@@ -107,7 +107,7 @@ namespace Zephyrus::Render {
 		void DrawHudImage(Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint) override;
 
 		// Sets the shader program used for rendering sprites
-		void SetSpriteShaderProgram(ShaderProgram& shaderProgram) override;
+		void SetSpriteShaderProgram(IShaderProgram* shaderProgram) override;
 
 		// Sets the HUD manager
 		void SetHud(HudManager* pHud) override;
