@@ -20,6 +20,7 @@ namespace Zephyrus::Assets {
 	struct MeshData;
 	class ITexture;
 	class IFont;
+	class ICubeMapTexture;
 
 	enum class AssetType
 	{
@@ -43,6 +44,7 @@ namespace Zephyrus::Assets {
 		static IFont* LoadFontFromFile(const std::string& pFilePath);
 		static Render::IShader* LoadShaderFromFile(const std::string& pFilePath, Render::ShaderType pType);
 		static Render::IShaderProgram* LoadProgramWithShaders(std::vector<Render::IShader*> pShaders);
+		static ICubeMapTexture* LoadCubemapFromFile(const std::vector<std::string>& pCubePaths);
 
 	public:
 		static std::map<std::string, ITexture*> mTextures;
@@ -50,6 +52,7 @@ namespace Zephyrus::Assets {
 		static std::map<std::string, IFont*> mFonts;
 		static std::map<std::string, Render::IShader*> mShaders;
 		static std::map<std::string, Render::IShaderProgram*> mShaderPrograms;
+		static std::map<std::string, ICubeMapTexture*> mCubemaps;
 		static ISceneContext* mContext;
 
 		static const std::string IMPORT_PATH;
@@ -57,11 +60,14 @@ namespace Zephyrus::Assets {
 		static const std::string FONT_PATH;
 		static const std::string SHADER_PATH;
 
-		// Loads a texture from file and stores it with the given name
-		static Assets::ITexture* LoadTexture(const std::string& pFilePath, const std::string& pName);
-		static Assets::ITexture* GetTexture(const std::string& pName);
-
 		static void SetContext(ISceneContext* pContext);
+
+		// Loads a texture from file and stores it with the given name
+		static ITexture* LoadTexture(const std::string& pFilePath, const std::string& pName);
+		static ITexture* GetTexture(const std::string& pName);
+
+		static ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths, const std::string& pName);
+		static ICubeMapTexture* GetCubemap(const std::string& pName);
 
 		// Loads a mesh from file and stores it with the given name
 		static IMesh* LoadMesh(const std::string& pFilePath, const std::string& pName);

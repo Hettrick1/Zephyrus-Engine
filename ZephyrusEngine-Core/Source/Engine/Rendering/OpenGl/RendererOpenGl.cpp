@@ -12,6 +12,7 @@
 #include "../MeshOpenGL.h"
 #include "../FontOpenGL.h"
 #include "../TextureOpenGL.h"
+#include "CubemapTextureOpenGL.h"
 #include "ShaderOpenGL.h"
 #include <algorithm>
 
@@ -169,6 +170,13 @@ namespace Zephyrus::Render {
 		return texture;
 	}
 
+	Assets::ICubeMapTexture* RendererOpenGl::LoadCubemap(const std::vector<std::string>& pCubePaths)
+	{
+		Assets::CubeTextureMap* cubemap = new Assets::CubeTextureMap();
+		cubemap->Load(pCubePaths);
+		return cubemap;
+	}
+
 	IShader* RendererOpenGl::LoadShader(const std::string& shaderPath, ShaderType type)
 	{
 		ShaderOpenGL* shader = new ShaderOpenGL();
@@ -294,7 +302,7 @@ namespace Zephyrus::Render {
 			}
 			else
 			{
-				mSkySphereComponent->GetCubeMap().SetActive();
+				mSkySphereComponent->GetCubeMap()->SetActive();
 			}
 			GLenum drawMode = mSkySphereComponent->GetTextureType() == GL_TEXTURE_2D ? GL_TRIANGLES : GL_PATCHES;
 			glDrawArrays(drawMode, 0, mSkySphereComponent->GetMesh()->GetVertexCount());

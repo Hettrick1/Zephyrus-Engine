@@ -19,11 +19,11 @@ namespace Zephyrus::ActorComponent
 
 namespace Zephyrus::Assets
 {
-	class Texture;
 	struct MeshData;
 	class IMesh;
 	class IFont;
 	class ITexture;
+	class ICubeMapTexture;
 }
 namespace Zephyrus::UI {
 	class HudManager;
@@ -44,7 +44,6 @@ using Zephyrus::ActorComponent::MeshComponent;
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
 using Zephyrus::Application::Window;
-using Zephyrus::Assets::Texture;
 using Zephyrus::UI::HudManager;
 
 namespace Zephyrus::Render {
@@ -75,6 +74,7 @@ namespace Zephyrus::Render {
 		virtual Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) = 0;
 		virtual Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) = 0;
 		virtual Assets::ITexture* LoadTexture(const std::string& texturePath) = 0;
+		virtual Assets::ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths) = 0;
 		virtual IShader* LoadShader(const std::string& shaderPath, ShaderType type) = 0;
 		virtual IShaderProgram* LoadShaderProgram(std::vector<IShader*> pShaders) = 0;
 

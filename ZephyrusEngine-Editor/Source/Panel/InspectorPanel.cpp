@@ -8,7 +8,7 @@
 #include "ComponentFactory.h"
 #include "Log.h"
 #include "Component.h"
-#include "CubeTextureMap.h"
+#include "Interface/ICubeMapTexture.h"
 #include "../EditorUI/Property.h"
 #include "SceneManager.h"
 #include "Interface/IMesh.h"
@@ -792,8 +792,8 @@ void InspectorPanel::SetPropertyMesh(const PropertyDescriptor& pProperty, const 
 
 void InspectorPanel::SetPropertyCubemap(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
-	auto prop = MakeUndoableProperty<Zephyrus::Assets::CubeTextureMap>(pProperty, mActiveComponent);
-	Zephyrus::Assets::CubeTextureMap* cubemap = static_cast<Zephyrus::Assets::CubeTextureMap*>(prop.getter());
+	auto prop = MakeUndoableProperty<Zephyrus::Assets::ICubeMapTexture*>(pProperty, mActiveComponent);
+	Zephyrus::Assets::ICubeMapTexture* cubemap = static_cast<Zephyrus::Assets::ICubeMapTexture*>(prop.getter());
 
 	if (!cubemap)
 	{
@@ -838,17 +838,14 @@ void InspectorPanel::SetPropertyCubemap(const PropertyDescriptor& pProperty, con
 	}
 	if (ImGui::Button("Create Texture Map"))
 	{
-		Zephyrus::Assets::CubeTextureMap newCubemap;
-		if (newCubemap.CreateCubeTextureMap(newFaces))
+		Zephyrus::Assets::ICubeMapTexture* newCubemap = AssetsManager::LoadCubemap(newFaces, newFaces[0]);
+		if (!newCubemap)
 		{
-			// reset temp files for old cubetexturemap
-			cubemap->SetTempFilePath(cubemap->GetFaceFilePath());
-			prop.setter(&newCubemap);
+			ZP_CORE_ERROR("Cubemap creation failed!");
+			return;
 		}
-		else
-		{
-			ZP_EDITOR_ERROR("cannot create the cube texture map");
-		}
+		cubemap->SetTempFilePath(cubemap->GetFaceFilePath());
+		prop.setter(newCubemap);
 	}
 }
 

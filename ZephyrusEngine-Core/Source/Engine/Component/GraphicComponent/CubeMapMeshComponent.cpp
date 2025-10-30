@@ -6,7 +6,7 @@
 
 namespace Zephyrus::ActorComponent
 {
-	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Assets::IMesh* pMesh, CubeTextureMap pCubeMap, Render::IShaderProgram* pProgram)
+	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Assets::IMesh* pMesh, Assets::ICubeMapTexture* pCubeMap, Render::IShaderProgram* pProgram)
 		:MeshComponent(pOwner), mCubeMapTexture(pCubeMap)
 	{
 		MeshComponent::SetMesh(pMesh);
@@ -28,7 +28,7 @@ namespace Zephyrus::ActorComponent
 			mShaderProgram->setVector2f("uTiling", mTiling);
 			mShaderProgram->setFloat("uLod", mOwner->GetLod());
 			mShaderProgram->setFloat("uTime", SDL_GetTicks());
-			mCubeMapTexture.SetActive();
+			mCubeMapTexture->SetActive();
 			mMesh->Bind();
 			if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
 			{

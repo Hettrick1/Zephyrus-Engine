@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Maths.h"
-#include "CubeTextureMap.h"
+#include "Interface/ICubeMapTexture.h"
 #include "Interface/IShader.h"
 #include "Interface/ITexture.h"
 #include "Interface/IShaderProgram.h"
@@ -13,7 +13,6 @@ namespace Zephyrus::Assets {
 	class IMesh;
 }
 
-using Zephyrus::Assets::CubeTextureMap;
 using Zephyrus::Render::ShaderType;
 /**
  * @brief Component that manages and renders a sky sphere or skybox in the scene.
@@ -29,8 +28,8 @@ namespace Zephyrus::ActorComponent
 		Render::IShader* mFragmentShader{ nullptr };
 		Render::IShader* mTescShader{ nullptr };
 		Render::IShader* mTeseShader{ nullptr };
-		Render::IShaderProgram* mShaderProgram;
-		CubeTextureMap mCubeMap;
+		Render::IShaderProgram* mShaderProgram{ nullptr };
+		Assets::ICubeMapTexture* mCubeMap{ nullptr };;
 		Vector2D mTiling;
 		unsigned int mTextureIndex = 0;
 		Zephyrus::Assets::ITexture* mSphereTexture{ nullptr };
@@ -62,7 +61,7 @@ namespace Zephyrus::ActorComponent
 
 		inline Assets::IMesh* GetMesh() const { return mMesh; }
 		inline Render::IShaderProgram* GetShaderProgram() { return mShaderProgram; }
-		inline CubeTextureMap& GetCubeMap() { return mCubeMap; }
+		inline Assets::ICubeMapTexture* GetCubeMap() { return mCubeMap; }
 		inline unsigned int& GetTextureIndex() { return mTextureIndex; }
 		inline GLenum& GetTextureType() { return mTextureType; }
 		inline bool GetIsSphere() const { return mIsSphere; }

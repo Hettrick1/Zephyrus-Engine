@@ -14,15 +14,14 @@
 #include <filesystem>
 
 namespace Zephyrus::Assets {
-	using Zephyrus::Assets::Texture;
-
 	std::map<std::string, ITexture*> AssetsManager::mTextures = {};
 	std::map<std::string, IFont*> AssetsManager::mFonts = {};
 	std::map<std::string, IMesh*> AssetsManager::mMeshes = {};
 	std::map<std::string, Render::IShader*> AssetsManager::mShaders = {};
 	std::map<std::string, Render::IShaderProgram*> AssetsManager::mShaderPrograms = {};
+	std::map<std::string, ICubeMapTexture*> AssetsManager::mCubemaps = {};
 
-	ISceneContext* AssetsManager::mContext{nullptr};
+	ISceneContext* AssetsManager::mContext{ nullptr };
 
 	const std::string AssetsManager::IMPORT_PATH = "../Content/";
 	const std::string AssetsManager::MESH_PATH = "../Content/Meshes/";
@@ -47,6 +46,26 @@ namespace Zephyrus::Assets {
 			return nullptr;
 		}
 		return mTextures[pName];
+	}
+
+	ICubeMapTexture* AssetsManager::LoadCubemap(const std::vector<std::string>& pCubePaths, const std::string& pName)
+	{
+		if (mCubemaps.find(pName) == mCubemaps.end()) {
+			mCubemaps[pName] = LoadCubemapFromFile(pCubePaths);
+			return mCubemaps[pName];
+		}
+		return mCubemaps[pName];
+	}
+
+	ICubeMapTexture* AssetsManager::GetCubemap(const std::string& pName)
+	{
+		if (mCubemaps.find(pName) == mCubemaps.end()) {
+			std::ostringstream loadError;
+			loadError << "Cubemap " << pName << " does not exists in assets manager\n";
+			ZP_CORE_ERROR(loadError.str());
+			return nullptr;
+		}
+		return mCubemaps[pName];
 	}
 
 	void AssetsManager::SetContext(ISceneContext* pContext)
@@ -251,6 +270,11 @@ namespace Zephyrus::Assets {
 	Render::IShaderProgram* AssetsManager::LoadProgramWithShaders(std::vector<Render::IShader*> pShaders)
 	{
 		return mContext->GetRenderer()->LoadShaderProgram(pShaders);
+	}
+
+	ICubeMapTexture* AssetsManager::LoadCubemapFromFile(const std::vector<std::string>& pCubePaths)
+	{
+		return mContext->GetRenderer()->LoadCubemap(pCubePaths);
 	}
 
 	std::string AssetsManager::GetFullPath(const std::string& pPath, AssetType pType)

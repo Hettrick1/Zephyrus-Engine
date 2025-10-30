@@ -1,9 +1,9 @@
-#include "CubeTextureMap.h"
+#include "CubemapTextureOpenGL.h"
 #include "RendererOpenGl.h"
 #include "Assets.h"
 
 namespace Zephyrus::Assets {
-	bool CubeTextureMap::CreateCubeTextureMap(const std::vector<std::string>& pCubePaths)
+	bool CubeTextureMap::Load(const std::vector<std::string>& pCubePaths)
 	{
 		unsigned char* data = nullptr;
 		int width = 0, height = 0, channels = 0;

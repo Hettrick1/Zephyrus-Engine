@@ -33,7 +33,7 @@ namespace Zephyrus::ActorComponent
 		if (mIsSphere)
 		{
 			prop = {
-				{"Texture : ", &mSphereTexture, PropertyType::Texture, true}
+				{"Texture : ", &mSphereTexture, PropertyType::Texture}
 			};
 		}
 		else
@@ -94,7 +94,6 @@ namespace Zephyrus::ActorComponent
 
 				if (auto cubeTexture = pReader.ReadArrayString("textures"))
 				{
-					bool cubemapSuccess = false;
 					const auto& arr = *cubeTexture;
 
 					if (!arr.empty() && arr.size() == 6)
@@ -104,9 +103,13 @@ namespace Zephyrus::ActorComponent
 							faces.push_back(element);
 							mTexturesPaths.push_back(element);
 						}
-						cubemapSuccess = mCubeMap.CreateCubeTextureMap(faces);
-						ZP_CORE_ASSERT(cubemapSuccess, "Cubemap creation failed!");
-						mTextureIndex = mCubeMap.GetID();
+						mCubeMap = AssetsManager::LoadCubemap(faces, faces[0]);
+						if (!mCubeMap)
+						{
+							ZP_CORE_ERROR("Cubemap creation failed!");
+							return;
+						}
+						mTextureIndex = mCubeMap->GetHandle();
 						mTextureType = GL_TEXTURE_CUBE_MAP;
 					}
 					else

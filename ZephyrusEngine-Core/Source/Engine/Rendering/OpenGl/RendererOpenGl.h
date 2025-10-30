@@ -70,6 +70,7 @@ namespace Zephyrus::Render {
 		Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) override;
 		Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) override;
 		Assets::ITexture* LoadTexture(const std::string& texturePath) override;
+		Assets::ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths) override;
 		IShader* LoadShader(const std::string& shaderPath, ShaderType type) override;
 		IShaderProgram* LoadShaderProgram(std::vector<IShader*> pShaders) override;
 
