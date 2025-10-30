@@ -22,7 +22,7 @@ namespace Zephyrus::Assets
 	struct MeshData;
 	class IMesh;
 	class IFont;
-	class ITexture;
+	class ITexture2D;
 	class ICubeMapTexture;
 }
 namespace Zephyrus::UI {
@@ -73,7 +73,7 @@ namespace Zephyrus::Render {
 
 		virtual Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) = 0;
 		virtual Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) = 0;
-		virtual Assets::ITexture* LoadTexture(const std::string& texturePath) = 0;
+		virtual Assets::ITexture2D* LoadTexture(const std::string& texturePath) = 0;
 		virtual Assets::ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths) = 0;
 		virtual IShader* LoadShader(const std::string& shaderPath, ShaderType type) = 0;
 		virtual IShaderProgram* LoadShaderProgram(std::vector<IShader*> pShaders) = 0;
@@ -102,8 +102,8 @@ namespace Zephyrus::Render {
 		virtual void SetSelectedActor(Actor* pSelectedActor) {};
 
 		virtual RendererType GetType() const = 0;
-		virtual void DrawSprite(Actor& pActor, Assets::ITexture* pTex, Rectangle2D pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
-		virtual void DrawHudImage(Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint) = 0;
+		virtual void DrawSprite(Actor& pActor, Assets::ITexture2D* pTex, Rectangle2D pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
+		virtual void DrawHudImage(Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint) = 0;
 		virtual void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) {}
 		virtual void DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit) {}
 		virtual SDL_Renderer* ToSdlRenderer() { return nullptr; }

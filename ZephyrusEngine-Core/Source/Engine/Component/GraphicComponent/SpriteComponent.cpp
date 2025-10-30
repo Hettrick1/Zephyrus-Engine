@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include "JSONUtils.h"
 #include "DebugRenderer.h"
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -69,7 +69,7 @@ namespace Zephyrus::ActorComponent
 		Component::EndSerialize(pWriter);
 	}
 
-	void SpriteComponent::SetTexture(Assets::ITexture* pTexture)
+	void SpriteComponent::SetTexture(Assets::ITexture2D* pTexture)
 	{
 		mTexture = pTexture;
 		//if (mTexHeightOverride == 0 || mTexWidthOverride == 0)

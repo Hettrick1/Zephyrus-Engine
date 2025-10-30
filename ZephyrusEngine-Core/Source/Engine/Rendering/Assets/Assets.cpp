@@ -10,11 +10,11 @@
 #include "Data/MeshData.h"
 #include "Interface/IMesh.h"
 #include "Interface/IFont.h"
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 #include <filesystem>
 
 namespace Zephyrus::Assets {
-	std::map<std::string, ITexture*> AssetsManager::mTextures = {};
+	std::map<std::string, ITexture2D*> AssetsManager::mTextures = {};
 	std::map<std::string, IFont*> AssetsManager::mFonts = {};
 	std::map<std::string, IMesh*> AssetsManager::mMeshes = {};
 	std::map<std::string, Render::IShader*> AssetsManager::mShaders = {};
@@ -28,7 +28,7 @@ namespace Zephyrus::Assets {
 	const std::string AssetsManager::FONT_PATH = "../Content/Fonts/";
 	const std::string AssetsManager::SHADER_PATH = "../Content/Shaders/";
 
-	ITexture* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
+	ITexture2D* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
 	{
 		if (mTextures.find(pName) == mTextures.end()) {
 			mTextures[pName] = LoadTextureFromFile(GetFullPath(pFilePath, AssetType::Texture));
@@ -37,7 +37,7 @@ namespace Zephyrus::Assets {
 		return mTextures[pName];
 	}
 
-	ITexture* AssetsManager::GetTexture(const std::string& pName)
+	ITexture2D* AssetsManager::GetTexture(const std::string& pName)
 	{
 		if (mTextures.find(pName) == mTextures.end()) {
 			std::ostringstream loadError;
@@ -188,7 +188,7 @@ namespace Zephyrus::Assets {
 		mShaderPrograms.clear();
 	}
 
-	ITexture* AssetsManager::LoadTextureFromFile(const std::string& pFilePath)
+	ITexture2D* AssetsManager::LoadTextureFromFile(const std::string& pFilePath)
 	{
 		return mContext->GetRenderer()->LoadTexture(pFilePath);
 	}

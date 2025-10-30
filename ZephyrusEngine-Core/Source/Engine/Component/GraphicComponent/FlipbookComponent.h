@@ -13,7 +13,7 @@ namespace Zephyrus::ActorComponent
 	class FlipbookComponent : public SpriteComponent
 	{
 	private:
-		std::vector<Assets::ITexture* > mAnimationTextures;
+		std::vector<Assets::ITexture2D* > mAnimationTextures;
 		float mCurrentFrame;
 		float mAnimationFps;
 		bool mIsLooping, mPlayOnce, mHasFinished, mCanPlay, mCanPlayPending;
@@ -34,8 +34,8 @@ namespace Zephyrus::ActorComponent
 		static Component* Create(Actor* pOwner) { return new FlipbookComponent(pOwner); }
 
 		// Sets the textures used for the animation
-		void SetAnimationTextures(const std::vector<Assets::ITexture*>& pTextures);
-		void AddAnimationTexture(Assets::ITexture* pTexture);
+		void SetAnimationTextures(const std::vector<Assets::ITexture2D*>& pTextures);
+		void AddAnimationTexture(Assets::ITexture2D* pTexture);
 		// Sets the animation frame rate (frames per second)
 		void SetAnimationFps(float pFps);
 		// Starts playing the animation from the beginning

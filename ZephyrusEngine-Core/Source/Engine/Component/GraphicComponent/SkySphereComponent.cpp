@@ -58,7 +58,7 @@ namespace Zephyrus::ActorComponent
 				mFragmentShader = AssetsManager::LoadShader("VertFrag/SkySphere.frag", ShaderType::FRAGMENT, "SkySphereFrag");
 				mShaderProgram = AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "skySphereSP");
 
-				Assets::ITexture* tex = nullptr;
+				Assets::ITexture2D* tex = nullptr;
 				if (auto sphereTexture = pReader.ReadArrayString("textures"))
 				{
 					const auto& arr = *sphereTexture;

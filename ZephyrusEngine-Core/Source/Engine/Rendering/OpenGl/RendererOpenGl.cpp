@@ -163,7 +163,7 @@ namespace Zephyrus::Render {
 		return font;
 	}
 
-	Assets::ITexture* RendererOpenGl::LoadTexture(const std::string& texturePath)
+	Assets::ITexture2D* RendererOpenGl::LoadTexture(const std::string& texturePath)
 	{
 		Assets::TextureOpenGL* texture = new Assets::TextureOpenGL();
 		texture->Load(texturePath);
@@ -265,7 +265,7 @@ namespace Zephyrus::Render {
 		mDebugRenderer->SetProjMatrix(pProjMatrix);
 	}
 
-	void RendererOpenGl::DrawSprite(Actor& pActor, Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
+	void RendererOpenGl::DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
 	{
 		if (mSpriteShaderProgram == nullptr)
 		{
@@ -302,7 +302,7 @@ namespace Zephyrus::Render {
 			}
 			else
 			{
-				mSkySphereComponent->GetCubeMap()->SetActive();
+				mSkySphereComponent->GetCubeMap()->Bind();
 			}
 			GLenum drawMode = mSkySphereComponent->GetTextureType() == GL_TEXTURE_2D ? GL_TRIANGLES : GL_PATCHES;
 			glDrawArrays(drawMode, 0, mSkySphereComponent->GetMesh()->GetVertexCount());
@@ -365,7 +365,7 @@ namespace Zephyrus::Render {
 		}
 	}
 
-	void RendererOpenGl::DrawHudImage(Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint)
+	void RendererOpenGl::DrawHudImage(Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint)
 	{
 		if (mSpriteShaderProgram == nullptr)
 		{

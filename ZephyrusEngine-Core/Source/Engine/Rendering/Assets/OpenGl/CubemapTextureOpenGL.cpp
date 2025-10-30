@@ -53,8 +53,16 @@ namespace Zephyrus::Assets {
 		return true;
 	}
 
-	void CubemapTextureOpenGL::SetActive() const
+	void CubemapTextureOpenGL::Bind(unsigned int slot) const
 	{
+		glActiveTexture(GL_TEXTURE0 + slot);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureId);
 	}
+
+	void CubemapTextureOpenGL::Unbind(unsigned int slot) const
+	{
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	}
+
 }

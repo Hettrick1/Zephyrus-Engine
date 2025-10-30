@@ -6,7 +6,7 @@
 #include "Vertex.h"
 #include "DebugRenderer.h"
 #include "JSONUtils.h"
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -54,7 +54,7 @@ namespace Zephyrus::ActorComponent
 				{
 					for (auto& element : arr)
 					{
-						Assets::ITexture* texture = AssetsManager::LoadTexture(element, element);
+						Assets::ITexture2D* texture = AssetsManager::LoadTexture(element, element);
 						AddTexture(texture);
 					}
 				}
@@ -133,7 +133,7 @@ namespace Zephyrus::ActorComponent
 		{
 			mTextureIndex = 0;
 		}
-		Assets::ITexture* tex = GetTexture(mTextureIndex);
+		Assets::ITexture2D* tex = GetTexture(mTextureIndex);
 		if (tex)
 		{
 			tex->Bind();
@@ -171,7 +171,7 @@ namespace Zephyrus::ActorComponent
 		}
 	}
 
-	void MeshComponent::AddTexture(Assets::ITexture* pTexture)
+	void MeshComponent::AddTexture(Assets::ITexture2D* pTexture)
 	{
 		if (std::find(mTextures.begin(), mTextures.end(), pTexture) == mTextures.end())
 		{
@@ -179,7 +179,7 @@ namespace Zephyrus::ActorComponent
 		}
 	}
 
-	Assets::ITexture* MeshComponent::GetTexture(unsigned int pTextureIndex)
+	Assets::ITexture2D* MeshComponent::GetTexture(unsigned int pTextureIndex)
 	{
 		if (pTextureIndex < GetTextureArraySize())
 		{

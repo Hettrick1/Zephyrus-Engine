@@ -28,7 +28,7 @@ namespace Zephyrus::ActorComponent
 			mShaderProgram->setVector2f("uTiling", mTiling);
 			mShaderProgram->setFloat("uLod", mOwner->GetLod());
 			mShaderProgram->setFloat("uTime", SDL_GetTicks());
-			mCubeMapTexture->SetActive();
+			mCubeMapTexture->Bind();
 			mMesh->Bind();
 			if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
 			{

@@ -12,7 +12,7 @@
 #include "../EditorUI/Property.h"
 #include "SceneManager.h"
 #include "Interface/IMesh.h"
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -691,8 +691,8 @@ void InspectorPanel::SetPropertyQuaternion(const PropertyDescriptor& pProperty, 
 void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	Property prop;
-	prop = MakeUndoableProperty<Zephyrus::Assets::ITexture*>(pProperty, mActiveComponent);
-	Zephyrus::Assets::ITexture* tex = static_cast<Zephyrus::Assets::ITexture*>(prop.getter());
+	prop = MakeUndoableProperty<Zephyrus::Assets::ITexture2D*>(pProperty, mActiveComponent);
+	Zephyrus::Assets::ITexture2D* tex = static_cast<Zephyrus::Assets::ITexture2D*>(prop.getter());
 	if (!tex)
 	{
 		return;
@@ -708,7 +708,7 @@ void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, con
 	ImGui::SetNextItemWidth(pInputWidth);
 	if (ImGui::InputText(("##Texture" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		Zephyrus::Assets::ITexture* newTex = AssetsManager::LoadTexture(buffer, buffer);
+		Zephyrus::Assets::ITexture2D* newTex = AssetsManager::LoadTexture(buffer, buffer);
 		if (newTex)
 		{
 			prop.setter(newTex);
@@ -723,7 +723,7 @@ void InspectorPanel::SetPropertyTexture(const PropertyDescriptor& pProperty, con
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 		{
 			std::string textureID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Assets::ITexture* droppedTex = AssetsManager::LoadTexture(textureID, textureID);
+			Zephyrus::Assets::ITexture2D* droppedTex = AssetsManager::LoadTexture(textureID, textureID);
 			if (droppedTex)
 			{
 				prop.setter(droppedTex);
@@ -914,8 +914,8 @@ void InspectorPanel::SetPropertyComponent(const PropertyDescriptor& pProperty, c
 
 void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
-	auto prop = MakeUndoableProperty<std::vector<Zephyrus::Assets::ITexture*>>(pProperty, mActiveComponent);
-	auto* textures = static_cast<std::vector<Zephyrus::Assets::ITexture*>*>(prop.getter());
+	auto prop = MakeUndoableProperty<std::vector<Zephyrus::Assets::ITexture2D*>>(pProperty, mActiveComponent);
+	auto* textures = static_cast<std::vector<Zephyrus::Assets::ITexture2D*>*>(prop.getter());
 	if (!textures)
 	{
 		return;
@@ -924,7 +924,7 @@ void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pPropert
 	{
 		for (size_t i = 0; i < textures->size(); i++)
 		{
-			Zephyrus::Assets::ITexture* tex = (*textures)[i];
+			Zephyrus::Assets::ITexture2D* tex = (*textures)[i];
 			std::string label = "Texture " + std::to_string(i);
 
 			char buffer[128];
@@ -940,7 +940,7 @@ void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pPropert
 			ImGui::PushID((int)i);
 			if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 			{
-				Zephyrus::Assets::ITexture* newTex = AssetsManager::LoadTexture(buffer, buffer);
+				Zephyrus::Assets::ITexture2D* newTex = AssetsManager::LoadTexture(buffer, buffer);
 				if (newTex)
 				{
 					auto newVec = *textures;
@@ -953,7 +953,7 @@ void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pPropert
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 				{
 					std::string textureID((const char*)payload->Data, payload->DataSize);
-					Zephyrus::Assets::ITexture* droppedTex = AssetsManager::LoadTexture(textureID, textureID);
+					Zephyrus::Assets::ITexture2D* droppedTex = AssetsManager::LoadTexture(textureID, textureID);
 					if (droppedTex)
 					{
 						auto newVec = *textures;

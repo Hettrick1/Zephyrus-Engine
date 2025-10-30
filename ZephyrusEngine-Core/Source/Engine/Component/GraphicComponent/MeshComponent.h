@@ -7,7 +7,7 @@
 
 namespace Zephyrus::Assets
 {
-	class ITexture;
+	class ITexture2D;
 }
 
 using Zephyrus::Assets::IMesh;
@@ -26,7 +26,7 @@ namespace Zephyrus::ActorComponent
 		Render::IShader* mOutlineFragmentShader{ nullptr };
 		Render::IShaderProgram* mOutlineShaderProgram{ nullptr };
 		Vector2D mTiling;
-		std::vector<Assets::ITexture*> mTextures;
+		std::vector<Assets::ITexture2D*> mTextures;
 		unsigned int mTextureIndex = 0;
 	public:
 		MeshComponent(Actor* pOwner);
@@ -46,10 +46,10 @@ namespace Zephyrus::ActorComponent
 		virtual void SetMesh(IMesh* pMesh);
 		void SetTextureIndex(unsigned int pTextureIndex);
 
-		void AddTexture(Assets::ITexture* pTexture);
-		Assets::ITexture* GetTexture(unsigned int pTextureIndex);
+		void AddTexture(Assets::ITexture2D* pTexture);
+		Assets::ITexture2D* GetTexture(unsigned int pTextureIndex);
 		inline unsigned int GetTextureArraySize() const { return mTextures.size(); }
-		inline std::vector<Assets::ITexture*> GetAllTextures() const { return mTextures; }
+		inline std::vector<Assets::ITexture2D*> GetAllTextures() const { return mTextures; }
 
 		void SetShaderProgram(Render::IShaderProgram* pShaderProgram);
 

@@ -1,5 +1,5 @@
 #include "ContentBrowserPanel.h"
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 #include "Assets.h"
 #include "SceneManager.h"
 #include "HudManager.h"
@@ -347,7 +347,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
 
 ImTextureID ContentBrowserPanel::GetImageFromExtension(const std::string& extension, std::string filepath)
 {
-    Zephyrus::Assets::ITexture* tex;
+    Zephyrus::Assets::ITexture2D* tex;
     if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
     {
         tex = AssetsManager::LoadTexture(filepath, filepath);

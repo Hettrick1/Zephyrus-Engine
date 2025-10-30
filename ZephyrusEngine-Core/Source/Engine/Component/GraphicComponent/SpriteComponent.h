@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "IRenderer.h"
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 
 /**
  * @brief Component that handles rendering a 2D sprite for an Actor.
@@ -12,7 +12,7 @@ namespace Zephyrus::ActorComponent
 	class SpriteComponent : public Component
 	{
 	protected:
-		Assets::ITexture* mTexture;
+		Assets::ITexture2D* mTexture;
 		int mDrawOrder = 0;
 		int mTexWidth = 0;
 		int mTexHeight = 0;
@@ -36,7 +36,7 @@ namespace Zephyrus::ActorComponent
 		static Component* Create(Actor* pOwner) { return new SpriteComponent(pOwner, "SpriteComponent"); }
 
 		// Sets the texture used by the sprite
-		virtual void SetTexture(Assets::ITexture* pTexture);
+		virtual void SetTexture(Assets::ITexture2D* pTexture);
 		// Sets the flip method for rendering the sprite
 		void SetFlipMethode(Zephyrus::Render::IRenderer::Flip pFlipMethode);
 		virtual void Draw(const Zephyrus::Render::IRenderer& pRenderer);
@@ -48,7 +48,7 @@ namespace Zephyrus::ActorComponent
 
 		void SetDrawOrder(const int pOrder);
 
-		inline Assets::ITexture* GetTexture() { return mTexture; }
+		inline Assets::ITexture2D* GetTexture() { return mTexture; }
 		inline int GetDrawOrder() const { return mDrawOrder; }
 		inline int GetTexWidth() const { return mTexWidth; }
 		inline int GetTexHeight() const { return mTexHeight; }

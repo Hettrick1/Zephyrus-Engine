@@ -16,7 +16,12 @@ namespace Zephyrus::Assets {
 		// Loads and creates a cube texture map from the provided file paths for each face.
 		bool Load(const std::vector<std::string>& pCubePaths) override;
 		inline uint64_t GetHandle() const override { return mTextureId; }
-		void SetActive() const override;
+		void Bind(unsigned int slot = 0) const override;
+		void Unbind(unsigned int slot = 0) const override;
+
+		inline int GetWidth() const override { return mWidth; }
+		inline int GetHeight() const override { return mHeight; }
+
 		inline std::vector<std::string> GetFaceFilePath() const override { return mCubeFacePaths; }
 		inline void SetTempFilePath(const std::vector<std::string>& pFilePath) override { mTempFacePaths = pFilePath; }
 		inline std::vector<std::string> GetTempFilePath() const override { return mTempFacePaths; }

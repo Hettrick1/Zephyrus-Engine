@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 #include "glew.h"
 
 namespace Zephyrus::Assets
 {
-	class TextureOpenGL : public ITexture
+	class TextureOpenGL : public ITexture2D
 	{
 	private:
 		unsigned int mTextureID{ 0 };

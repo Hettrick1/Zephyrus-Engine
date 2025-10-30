@@ -2,7 +2,7 @@
 
 #include "Timer.h"
 #include "Assets.h"
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -31,7 +31,7 @@ namespace Zephyrus::ActorComponent
 		Component::OnStart();
 		if (mAnimationTextures.empty())
 		{
-			Assets::ITexture* fallbackTexture = AssetsManager::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
+			Assets::ITexture2D* fallbackTexture = AssetsManager::LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
 			SetTexture(fallbackTexture);
 			mAnimationTextures.push_back(fallbackTexture);
 		}
@@ -67,7 +67,7 @@ namespace Zephyrus::ActorComponent
 			{
 				for (auto& element : arr)
 				{
-					Assets::ITexture* texture = AssetsManager::LoadTexture(element, element);
+					Assets::ITexture2D* texture = AssetsManager::LoadTexture(element, element);
 					AddAnimationTexture(texture);
 				}
 				if (mAnimationTextures.size() > 0)
@@ -104,7 +104,7 @@ namespace Zephyrus::ActorComponent
 		Component::EndSerialize(pWriter);
 	}
 
-	void FlipbookComponent::SetAnimationTextures(const std::vector<Assets::ITexture*>& pTextures)
+	void FlipbookComponent::SetAnimationTextures(const std::vector<Assets::ITexture2D*>& pTextures)
 	{
 		mAnimationTextures = pTextures;
 		if (mAnimationTextures.size() > 0)
@@ -116,7 +116,7 @@ namespace Zephyrus::ActorComponent
 		}
 	}
 
-	void FlipbookComponent::AddAnimationTexture(Assets::ITexture* pTexture)
+	void FlipbookComponent::AddAnimationTexture(Assets::ITexture2D* pTexture)
 	{
 		if (std::find(mAnimationTextures.begin(), mAnimationTextures.end(), pTexture) == mAnimationTextures.end())
 		{

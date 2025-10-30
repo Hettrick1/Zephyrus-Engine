@@ -8,7 +8,7 @@
 
 namespace Zephyrus::Assets
 {
-	class ITexture;
+	class ITexture2D;
 }
 
 using Zephyrus::UI::HudText;
@@ -27,10 +27,10 @@ namespace Zephyrus::ActorComponent
 		HudText* mArmorText = nullptr;
 		HudImage* mWeaponIconImage = nullptr;
 		HudImage* mDamageIndicatorImage = nullptr;
-		Assets::ITexture* gunIcon;
-		Assets::ITexture* shotgunIcon;
-		std::vector<Assets::ITexture*> mGunAnim;
-		std::vector<Assets::ITexture*> mShotgunAnim;
+		Assets::ITexture2D* gunIcon;
+		Assets::ITexture2D* shotgunIcon;
+		std::vector<Assets::ITexture2D*> mGunAnim;
+		std::vector<Assets::ITexture2D*> mShotgunAnim;
 		int mGunAmo;
 		int mHealth;
 		int mArmor;

@@ -3,7 +3,7 @@
 #include "Maths.h"
 #include "Interface/ICubeMapTexture.h"
 #include "Interface/IShader.h"
-#include "Interface/ITexture.h"
+#include "Interface/ITexture2D.h"
 #include "Interface/IShaderProgram.h"
 
 // TODO : Remove this include
@@ -29,10 +29,10 @@ namespace Zephyrus::ActorComponent
 		Render::IShader* mTescShader{ nullptr };
 		Render::IShader* mTeseShader{ nullptr };
 		Render::IShaderProgram* mShaderProgram{ nullptr };
-		Assets::ICubeMapTexture* mCubeMap{ nullptr };;
+		Assets::ICubeMapTexture* mCubeMap{ nullptr };
 		Vector2D mTiling;
 		unsigned int mTextureIndex = 0;
-		Zephyrus::Assets::ITexture* mSphereTexture{ nullptr };
+		Zephyrus::Assets::ITexture2D* mSphereTexture{ nullptr };
 		bool mIsSphere = false;
 		GLenum mTextureType;
 
@@ -65,7 +65,7 @@ namespace Zephyrus::ActorComponent
 		inline unsigned int& GetTextureIndex() { return mTextureIndex; }
 		inline GLenum& GetTextureType() { return mTextureType; }
 		inline bool GetIsSphere() const { return mIsSphere; }
-		inline Zephyrus::Assets::ITexture* GetSphereTexture() const { return mSphereTexture; }
+		inline Zephyrus::Assets::ITexture2D* GetSphereTexture() const { return mSphereTexture; }
 
 		static int index;
 	};

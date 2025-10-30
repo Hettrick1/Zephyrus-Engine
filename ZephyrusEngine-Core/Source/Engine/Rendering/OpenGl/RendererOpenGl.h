@@ -69,7 +69,7 @@ namespace Zephyrus::Render {
 
 		Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) override;
 		Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) override;
-		Assets::ITexture* LoadTexture(const std::string& texturePath) override;
+		Assets::ITexture2D* LoadTexture(const std::string& texturePath) override;
 		Assets::ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths) override;
 		IShader* LoadShader(const std::string& shaderPath, ShaderType type) override;
 		IShaderProgram* LoadShaderProgram(std::vector<IShader*> pShaders) override;
@@ -94,7 +94,7 @@ namespace Zephyrus::Render {
 		void SetProjMatrix(const Matrix4DRow& pProjMatrix) override;
 
 		// Draws a sprite for the given actor with the specified parameters
-		void DrawSprite(Actor& pActor, Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
+		void DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
 		// Draws a debug box using min/max points and a world transform
 		void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) override;
 		// Draws a debug line between two points with hit information
@@ -105,7 +105,7 @@ namespace Zephyrus::Render {
 		void DrawSprites();
 		void DrawHud();
 		// Draws a HUD image with the specified texture, rectangle, origin, and tint
-		void DrawHudImage(Assets::ITexture* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint) override;
+		void DrawHudImage(Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint) override;
 
 		// Sets the shader program used for rendering sprites
 		void SetSpriteShaderProgram(IShaderProgram* shaderProgram) override;
