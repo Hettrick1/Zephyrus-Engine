@@ -174,54 +174,6 @@ namespace Zephyrus::Assets {
 		return mContext->GetRenderer()->LoadTexture(pFilePath);
 	}
 
-	Mesh* AssetsManager::LoadMeshFromFile(const std::string& pFilePath)
-	{
-		Mesh loaded;
-		tinyobj::attrib_t attributes;
-		std::vector<tinyobj::shape_t> shapes;
-		std::vector<tinyobj::material_t> materials;
-		std::string warning, errors;
-		std::string dir = "Meshes/";
-		bool success = tinyobj::LoadObj(&attributes, &shapes, &materials, &warning, &errors, +pFilePath.c_str());
-		if (!success)
-		{
-			ZP_CORE_ERROR("Mesh " + pFilePath + " does not exist or is not .obj");
-			return new Mesh();
-		}
-		else
-		{
-			ZP_LOAD("Mesh " + pFilePath + " successfully loaded");
-		}
-		std::vector<Vertex> vertices;
-		for (int i = 0; i < static_cast<int>(shapes.size()); i++)
-		{
-			tinyobj::shape_t& shape = shapes[i];
-			tinyobj::mesh_t& mesh = shape.mesh;
-			for (int j = 0; j < static_cast<int>(mesh.indices.size()); j++)
-			{
-				tinyobj::index_t i = mesh.indices[j];
-				Vector3D position = Vector3D{
-					attributes.vertices[i.vertex_index * 3],
-					attributes.vertices[i.vertex_index * 3 + 1],
-					attributes.vertices[i.vertex_index * 3 + 2]
-				};
-				Vector3D normal = Vector3D{
-					attributes.normals[i.normal_index * 3],
-					attributes.normals[i.normal_index * 3 + 1],
-					attributes.normals[i.normal_index * 3 + 2]
-				};
-				Vector2D texCoord = {
-					attributes.texcoords[i.texcoord_index * 2],
-					attributes.texcoords[i.texcoord_index * 2 + 1],
-				};
-				Vertex vert = { position, normal, texCoord };
-				vertices.push_back(vert);
-			}
-
-		}
-		return new Mesh(vertices, pFilePath);
-	}
-
 	MeshData AssetsManager::LoadMeshData(const std::string& pFilePath)
 	{
 		MeshData data;
@@ -244,7 +196,7 @@ namespace Zephyrus::Assets {
 				return data;
 			}
 
-			std::vector<Vertex> vertices;
+			std::vector<Render::Vertex> vertices;
 			std::vector<uint32_t> indices;
 			for (auto& shape : shapes)
 			{

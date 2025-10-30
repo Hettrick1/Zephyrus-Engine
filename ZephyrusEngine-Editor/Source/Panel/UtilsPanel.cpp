@@ -1,11 +1,10 @@
 #include "UtilsPanel.h"
-#include "Texture.h"
 #include "Assets/Assets.h"
-#include <cstdlib>
-#include <windows.h>
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Interface/ITexture.h"
+#include <cstdlib>
+#include <windows.h>
 
 using Zephyrus::Assets::AssetsManager;
 

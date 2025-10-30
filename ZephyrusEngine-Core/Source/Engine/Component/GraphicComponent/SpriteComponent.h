@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
-#include "Texture.h"
+#include "IRenderer.h"
+#include "Interface/ITexture.h"
 
 /**
  * @brief Component that handles rendering a 2D sprite for an Actor.
@@ -17,7 +18,7 @@ namespace Zephyrus::ActorComponent
 		int mTexHeight = 0;
 		int mTexWidthOverride = 0;
 		int mTexHeightOverride = 0;
-		Zephyrus::Render::IRenderer::Flip mFlipMethode = Zephyrus::Render::IRenderer::Flip::None;
+		Render::IRenderer::Flip mFlipMethode = Render::IRenderer::Flip::None;
 		bool mCullOff = false;
 		float aspectRatio = 0.0, aspectRatioInv = 0.0;
 	public:

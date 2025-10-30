@@ -1,7 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "Interface/IMesh.h"
-#include "Mesh.h"
+#include "Shader/ShaderProgram.h"
+#include "Interface/IShader.h"
 #include "Maths.h"
 
 namespace Zephyrus::Assets
@@ -10,9 +11,7 @@ namespace Zephyrus::Assets
 }
 
 using Zephyrus::Assets::IMesh;
-using Zephyrus::Assets::Texture;
 using Zephyrus::Render::ShaderProgram;
-using Zephyrus::Render::Shader;
 using Zephyrus::Render::ShaderType;
 
 namespace Zephyrus::ActorComponent

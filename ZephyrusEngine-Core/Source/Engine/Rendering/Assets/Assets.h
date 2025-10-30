@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Texture.h"
-#include "Mesh.h"
-#include "Font.h"
 #include "ShaderProgram.h"
 #include "../Interface/IShader.h"
+#include "Vertex.h"
 
 #include <map>
 #include <string>
@@ -17,8 +15,6 @@
 class ISceneContext;
 
 using Zephyrus::Render::ShaderProgram;
-using Zephyrus::Render::Shader;
-
 
 namespace Zephyrus::Assets {
 
@@ -35,8 +31,6 @@ namespace Zephyrus::Assets {
 		Shader
 	};
 
-	Zephyrus::Render::Vertex;
-
 	class AssetsManager
 	{
 	private:
@@ -44,8 +38,6 @@ namespace Zephyrus::Assets {
 
 		// Loads a texture from file (internal use)
 		static ITexture* LoadTextureFromFile(const std::string& pFilePath);
-		// Loads a mesh from file (internal use)
-		static Mesh* LoadMeshFromFile(const std::string& pFilePath);
 
 		static MeshData LoadMeshData(const std::string& pFilePath);
 

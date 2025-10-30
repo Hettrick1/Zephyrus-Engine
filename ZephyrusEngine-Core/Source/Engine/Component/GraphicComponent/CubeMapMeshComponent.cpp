@@ -1,5 +1,7 @@
 #include "CubeMapMeshComponent.h"
 #include "VertexArray.h"
+#include "Actor.h"
+#include "SDL.h"
 
 namespace Zephyrus::ActorComponent
 {

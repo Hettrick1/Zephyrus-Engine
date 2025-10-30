@@ -1,9 +1,9 @@
 #pragma once
 #include "Component.h"
-#include "Texture.h"
 #include "Maths.h"
 #include "CubeTextureMap.h"
 #include "Interface/IShader.h"
+#include "Interface/ITexture.h"
 #include "ShaderProgram.h"
 
 namespace Zephyrus::Assets {

@@ -9,7 +9,7 @@
 #include "PrefabFactory.h"
 
 using Zephyrus::Assets::AssetsManager;
-using Zephyrus::Render::Shader;
+using Zephyrus::Render::IShader;
 using Zephyrus::Render::ShaderType;
 
 namespace Zephyrus::Scenes {

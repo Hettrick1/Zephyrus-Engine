@@ -4,7 +4,6 @@
 #include "VertexArray.h"
 #include "ShaderProgram.h"
 #include "DebugLine.h"
-#include "Texture.h"
 #include <vector>
 #include "DebugRenderer.h"
 #include "SkySphereComponent.h"

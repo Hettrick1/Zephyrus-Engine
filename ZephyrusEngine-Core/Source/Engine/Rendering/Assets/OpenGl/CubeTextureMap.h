@@ -1,5 +1,6 @@
 #pragma once
-#include "Texture.h"
+#include <vector>
+#include <string>
 
 namespace Zephyrus::Assets {
 	// Represents an OpenGL cube texture map, typically used for environment mapping (e.g., skyboxes).

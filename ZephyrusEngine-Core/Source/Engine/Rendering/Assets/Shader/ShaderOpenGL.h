@@ -9,16 +9,16 @@ namespace Zephyrus::Render {
 	 *
 	 * Permet de charger le code source d'un shader, de stocker son identifiant et son type.
 	 */
-	class Shader : public IShader
+	class ShaderOpenGL : public IShader
 	{
 	protected:
 		std::string mCode{ "" };
 		unsigned int mId{ 0 };
 		ShaderType mType{ ShaderType::VERTEX };
 	public:
-		Shader() = default;
-		Shader(int pId, const std::string& pCode, ShaderType pShaderType);
-		~Shader();
+		ShaderOpenGL() = default;
+		ShaderOpenGL(int pId, const std::string& pCode, ShaderType pShaderType);
+		~ShaderOpenGL();
 
 		void Load(const std::string& pFileName, ShaderType pShaderType) override;
 

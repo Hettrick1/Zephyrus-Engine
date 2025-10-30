@@ -1,19 +1,19 @@
-#include "Shader.h"
+#include "ShaderOpenGL.h"
 #include "Log.h"
 #include "glew.h"
 
 namespace Zephyrus::Render {
-	Shader::Shader(int pId, const std::string& pCode, ShaderType pShaderType)
+	ShaderOpenGL::ShaderOpenGL(int pId, const std::string& pCode, ShaderType pShaderType)
 		: mId(pId), mCode(pCode), mType(pShaderType)
 	{
 
 	}
 
-	Shader::~Shader()
+	ShaderOpenGL::~ShaderOpenGL()
 	{
 	}
 
-	void Shader::Load(const std::string& pFileName, ShaderType pShaderType)
+	void ShaderOpenGL::Load(const std::string& pFileName, ShaderType pShaderType)
 	{
 		mType = pShaderType;
 		std::ifstream myFile;
@@ -63,12 +63,12 @@ namespace Zephyrus::Render {
 		glCompileShader(mId);
 	}
 
-	void Shader::Unload()
+	void ShaderOpenGL::Unload()
 	{
 		glDeleteShader(mId);
 	}
 
-	std::string& Shader::GetCode()
+	std::string& ShaderOpenGL::GetCode()
 	{
 		return mCode;
 	}

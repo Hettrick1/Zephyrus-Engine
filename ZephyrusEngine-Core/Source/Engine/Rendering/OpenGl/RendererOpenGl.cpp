@@ -12,6 +12,7 @@
 #include "../MeshOpenGL.h"
 #include "../FontOpenGL.h"
 #include "../TextureOpenGL.h"
+#include "ShaderOpenGL.h"
 #include <algorithm>
 
 using Zephyrus::Assets::AssetsManager;
@@ -170,7 +171,7 @@ namespace Zephyrus::Render {
 
 	IShader* RendererOpenGl::LoadShader(const std::string& shaderPath, ShaderType type)
 	{
-		Shader* shader = new Shader();
+		ShaderOpenGL* shader = new ShaderOpenGL();
 		shader->Load(shaderPath, type);
 		ZP_LOAD("Shader " + shaderPath + " successfully loaded");
 		return shader;
