@@ -3,7 +3,7 @@
 
 namespace Zephyrus::Assets {
 	// Represents an OpenGL cube texture map, typically used for environment mapping (e.g., skyboxes).
-	class CubeTextureMap : public ICubeMapTexture
+	class CubemapTextureOpenGL : public ICubeMapTexture
 	{
 	private:
 		int mWidth{ 0 };
@@ -12,7 +12,7 @@ namespace Zephyrus::Assets {
 		std::vector<std::string> mCubeFacePaths;
 		std::vector<std::string> mTempFacePaths;
 	public:
-		CubeTextureMap() = default;
+		CubemapTextureOpenGL() = default;
 		// Loads and creates a cube texture map from the provided file paths for each face.
 		bool Load(const std::vector<std::string>& pCubePaths) override;
 		inline uint64_t GetHandle() const override { return mTextureId; }

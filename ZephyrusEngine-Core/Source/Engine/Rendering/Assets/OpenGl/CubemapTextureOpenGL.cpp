@@ -3,7 +3,7 @@
 #include "Assets.h"
 
 namespace Zephyrus::Assets {
-	bool CubeTextureMap::Load(const std::vector<std::string>& pCubePaths)
+	bool CubemapTextureOpenGL::Load(const std::vector<std::string>& pCubePaths)
 	{
 		unsigned char* data = nullptr;
 		int width = 0, height = 0, channels = 0;
@@ -53,7 +53,7 @@ namespace Zephyrus::Assets {
 		return true;
 	}
 
-	void CubeTextureMap::SetActive() const
+	void CubemapTextureOpenGL::SetActive() const
 	{
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureId);
 	}

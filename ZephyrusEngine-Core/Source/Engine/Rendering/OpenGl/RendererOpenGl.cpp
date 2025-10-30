@@ -172,7 +172,7 @@ namespace Zephyrus::Render {
 
 	Assets::ICubeMapTexture* RendererOpenGl::LoadCubemap(const std::vector<std::string>& pCubePaths)
 	{
-		Assets::CubeTextureMap* cubemap = new Assets::CubeTextureMap();
+		Assets::CubemapTextureOpenGL* cubemap = new Assets::CubemapTextureOpenGL();
 		cubemap->Load(pCubePaths);
 		return cubemap;
 	}
