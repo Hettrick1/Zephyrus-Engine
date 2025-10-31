@@ -1,32 +1,58 @@
 #pragma once
 
-#include "Texture.h"
+#include "Interface/ITextureBase.h"
 #include "IMaterial.h"
+#include <map>
 
 namespace Zephyrus::Material
 {
 	class Material : public IMaterial
 	{
+	private:
+		Render::IShader* mVertShader{ nullptr };
+		Render::IShader* mFragShader{ nullptr };
+		Render::IShader* mTescShader{ nullptr };
+		Render::IShader* mTeseShader{ nullptr };
+		Render::IShader* mGeomShader{ nullptr };
+
+		Render::IShaderProgram* mShaderProgram{ nullptr };
+
+		std::map<std::string, Assets::ITextureBase*> mtextures;
+
+		std::map<std::string, int> mIntProperties;
+		std::map<std::string, float> mfloatProperties;
+		std::map<std::string, Vector2D> mVec2Properties;
+		std::map<std::string, Vector3D> mVec3Properties;
+		std::map<std::string, Vector4D> mVec4Properties;
+		std::map<std::string, Matrix4DRow> mMat4Properties;
+
 	public:
+
 		Material();
 		~Material();
 
-        void Bind() const;
-        void Unbind() const;
+		void SetVertexShader(Render::IShader* s) override;
+		void SetFragmentShader(Render::IShader* s) override;
+		void SetTessControlShader(Render::IShader* s) override;
+		void SetTessEvalShader(Render::IShader* s) override;
+		void SetGeometryShader(Render::IShader* s) override;
 
-        // Accès aux textures par layer
-        void SetTexture(const std::string& layerName, const std::string& texturePath);
-        const std::string& GetTexture(const std::string& layerName) const;
+		void RebuildShaderProgram() override;
 
-        // Paramètres PBR
-        void SetParameter(const std::string& name, float value);
-        float GetParameter(const std::string& name) const;
+		void SetTexture(const std::string& uniformName, Assets::ITextureBase* texture) override;
+		void RemoveTexture(const std::string& uniformName) override;
 
-        // Sérialisation / désérialisation
-        void Serialize(Serialization::ISerializer& writer) const;
-        void Deserialize(Serialization::IDeserializer&& value);
-	private:
-        std::unordered_map<std::string, Assets::Texture*> mTextures;
-        std::unordered_map<std::string, float> mParams;
+		void SetProperty(const std::string& uniformName, float value) override;
+		void SetProperty(const std::string& uniformName, int value) override;
+		void SetProperty(const std::string& uniformName, const Vector2D& value) override;
+		void SetProperty(const std::string& uniformName, const Vector3D& value) override;
+		void SetProperty(const std::string& uniformName, const Vector4D& value) override;
+		void SetProperty(const std::string& uniformName, const Matrix4DRow& value) override;
+		void RemoveProperty(const std::string& uniformName) override;
+
+		void Use() override;
+
+		void Serialize(Serialization::ISerializer& writer) const override;
+		void Deserialize(Serialization::IDeserializer& value) override;
 	};
 }

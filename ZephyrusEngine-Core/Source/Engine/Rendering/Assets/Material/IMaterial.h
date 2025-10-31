@@ -2,7 +2,12 @@
 
 #include <string>
 
+#include "Interface/IShaderProgram.h"
+#include "Interface/ITextureBase.h"
+
 #include "JSONUtils.h"
+
+#include <variant>
 
 namespace Zephyrus::Material
 {
@@ -11,20 +16,28 @@ namespace Zephyrus::Material
     public:
         virtual ~IMaterial() = default;
 
-        // Binding du material pour le renderer actuel
-        virtual void Bind() const = 0;
-        virtual void Unbind() const = 0;
+        virtual void SetVertexShader(Render::IShader* s) = 0;
+        virtual void SetFragmentShader(Render::IShader* s) = 0;
+        virtual void SetTessControlShader(Render::IShader* s) = 0;
+        virtual void SetTessEvalShader(Render::IShader* s) = 0;
+        virtual void SetGeometryShader(Render::IShader* s) = 0;
 
-        // Accès aux textures par layer
-        virtual void SetTexture(const std::string& layerName, const std::string& texturePath) = 0;
-        virtual const std::string& GetTexture(const std::string& layerName) const = 0;
+        virtual void RebuildShaderProgram() = 0;
 
-        // Paramètres PBR
-        virtual void SetParameter(const std::string& name, float value) = 0;
-        virtual float GetParameter(const std::string& name) const = 0;
+        virtual void SetTexture(const std::string& uniformName, Assets::ITextureBase* texture) = 0;
+        virtual void RemoveTexture(const std::string& uniformName) = 0;
 
-        // Sérialisation / désérialisation
+        virtual void SetProperty(const std::string& uniformName, float value) = 0;
+        virtual void SetProperty(const std::string& uniformName, int value) = 0;
+        virtual void SetProperty(const std::string& uniformName, const Vector2D& value) = 0;
+        virtual void SetProperty(const std::string& uniformName, const Vector3D& value) = 0;
+        virtual void SetProperty(const std::string& uniformName, const Vector4D& value) = 0;
+        virtual void SetProperty(const std::string& uniformName, const Matrix4DRow& value) = 0;
+        virtual void RemoveProperty(const std::string& uniformName) = 0;
+
+        virtual void Use() = 0;
+
         virtual void Serialize(Serialization::ISerializer& writer) const = 0;
-        virtual void Deserialize(Serialization::IDeserializer&& value) = 0;
+        virtual void Deserialize(Serialization::IDeserializer& value) = 0;
     };
 }
