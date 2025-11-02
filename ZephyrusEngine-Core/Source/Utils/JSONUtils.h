@@ -15,27 +15,13 @@
 
 namespace Serialization::Json
 {
-	//std::optional<Vector3D> ReadVector3D(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<Vector2D> ReadVector2D(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<float> ReadFloat(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<int> ReadInt(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<bool> ReadBool(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<std::string> ReadString(const rapidjson::Value& pObj, const char* pKey);
-
-	//std::optional<std::vector<float>> ReadArrayFloat(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<std::vector<int>> ReadArrayInt(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<std::vector<bool>> ReadArrayBool(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<std::vector<std::string>> ReadArrayString(const rapidjson::Value& pObj, const char* pKey);
-
-	//const rapidjson::Value* ReadObject(const rapidjson::Value& pObj, const char* pKey);
-	//std::optional<std::vector<const rapidjson::Value*>> ReadArrayObject(const rapidjson::Value& pObj, const char* pKey);
-
 	class JsonReader : public IDeserializer
 	{
 	private:
-	private:
 		rapidjson::Document mDocument;
-		const rapidjson::Value* mCurrentValue = nullptr;
+		const rapidjson::Value* mCurrentValue{ nullptr };
+		rapidjson::Value::ConstMemberIterator mObjectIterator;
+		std::string mCurrentKey{ "" };
 		std::stack<const rapidjson::Value*> mContextStack;
 
 		struct ArrayContext
@@ -53,17 +39,21 @@ namespace Serialization::Json
 		bool BeginObject(const char* pKey = nullptr) override;
 		void EndObject() override;
 
-		std::optional<std::string> ReadString(const char* pKey) override;
-		std::optional<float> ReadFloat(const char* pKey) override;
-		std::optional<int> ReadInt(const char* pKey) override;
-		std::optional<bool> ReadBool(const char* pKey) override;
-		std::optional<Vector3D> ReadVector3D(const char* pKey) override;
-		std::optional<Vector2D> ReadVector2D(const char* pKey) override;
+		std::string GetCurrentKey() override;
+
+		std::optional<std::string> ReadString(const char* pKey = nullptr) override;
+		std::optional<float> ReadFloat(const char* pKey = nullptr) override;
+		std::optional<int> ReadInt(const char* pKey = nullptr) override;
+		std::optional<bool> ReadBool(const char* pKey = nullptr) override;
+		std::optional<Vector4D> ReadVector4D(const char* pKey = nullptr) override;
+		std::optional<Vector3D> ReadVector3D(const char* pKey = nullptr) override;
+		std::optional<Vector2D> ReadVector2D(const char* pKey = nullptr) override;
+		std::optional<Matrix4DRow> ReadMatrix4DRow(const char* pKey = nullptr) override;
 
 		template<typename T>
-		std::optional<std::vector<T>> ReadArray(const char* pKey)
+		std::optional<std::vector<T>> ReadArray(const char* pKey = nullptr)
 		{
-			const auto* arr = GetMember(mCurrentValue, pKey);
+			const auto* arr = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
 			if (!arr || !arr->IsArray()) 
 			{
 				return std::nullopt;
@@ -72,45 +62,37 @@ namespace Serialization::Json
 			std::vector<T> result;
 			for (auto& val : arr->GetArray())
 			{
-				const auto* arr = GetMember(mCurrentValue, pKey);
-				if (!arr || !arr->IsArray())
-					return std::nullopt;
-
-				std::vector<T> result;
-				for (auto& val : arr->GetArray())
+				if constexpr (std::is_same_v<T, std::string>)
 				{
-					if constexpr (std::is_same_v<T, std::string>)
-					{
-						if (val.IsString()) result.push_back(val.GetString());
-					}
-					else if constexpr (std::is_same_v<T, float>)
-					{
-						if (val.IsNumber()) result.push_back(val.GetFloat());
-					}
-					else if constexpr (std::is_same_v<T, int>)
-					{
-						if (val.IsInt()) result.push_back(val.GetInt());
-					}
-					else if constexpr (std::is_same_v<T, bool>)
-					{
-						if (val.IsBool()) result.push_back(val.GetBool());
-					}
-					else
-					{
-						ZP_CORE_ERROR("Type not supported for ReadArray");
-					}
+					if (val.IsString()) result.push_back(val.GetString());
 				}
-				return result;
+				else if constexpr (std::is_same_v<T, float>)
+				{
+					if (val.IsNumber()) result.push_back(val.GetFloat());
+				}
+				else if constexpr (std::is_same_v<T, int>)
+				{
+					if (val.IsInt()) result.push_back(val.GetInt());
+				}
+				else if constexpr (std::is_same_v<T, bool>)
+				{
+					if (val.IsBool()) result.push_back(val.GetBool());
+				}
+				else
+				{
+					ZP_CORE_ERROR("Type not supported for ReadArray");
+				}
 			}
 			return result;
 		}
 
-		std::optional<std::vector<std::string>> ReadArrayString(const char* pKey) override;
-		std::optional<std::vector<float>> ReadArrayFloat(const char* pKey) override;
-		std::optional<std::vector<int>> ReadArrayInt(const char* pKey) override;
-		std::optional<std::vector<bool>> ReadArrayBool(const char* pKey) override;
-		std::optional<std::vector<Vector3D>> ReadArrayVector3D(const char* pKey) override;
-		std::optional<std::vector<Vector2D>> ReadArrayVector2D(const char* pKey) override;
+		std::optional<std::vector<std::string>> ReadArrayString(const char* pKey = nullptr) override;
+		std::optional<std::vector<float>> ReadArrayFloat(const char* pKey = nullptr) override;
+		std::optional<std::vector<int>> ReadArrayInt(const char* pKey = nullptr) override;
+		std::optional<std::vector<bool>> ReadArrayBool(const char* pKey = nullptr) override;
+		std::optional<std::vector<Vector4D>> ReadArrayVector4D(const char* pKey = nullptr) override;
+		std::optional<std::vector<Vector3D>> ReadArrayVector3D(const char* pKey = nullptr) override;
+		std::optional<std::vector<Vector2D>> ReadArrayVector2D(const char* pKey = nullptr) override;
 
 		bool BeginObjectArray(const char* pKey) override;
 		bool NextObjectElement() override;
@@ -134,8 +116,10 @@ namespace Serialization::Json
 		void WriteFloat(const char* pKey, float pValue) override;
 		void WriteInt(const char* pKey, int pValue) override;
 		void WriteBool(const char* pKey, bool pValue) override;
+		void WriteVector4D(const char* pKey, const Vector4D& pVec) override;
 		void WriteVector3D(const char* pKey, const Vector3D& pVec) override;
 		void WriteVector2D(const char* pKey, const Vector2D& pVec) override;
+		void WriteMatrice4DRow(const char* pKey, const Matrix4DRow& pMat) override;
 		void PushString(const std::string& pValue) override;
 		void PushFloat(float pValue) override;
 		void PushInt(int pValue) override;

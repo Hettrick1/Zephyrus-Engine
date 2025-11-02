@@ -8,6 +8,8 @@
 #include "JSONUtils.h"
 #include "Interface/ITexture2D.h"
 
+#include "Material/Material.h"
+
 using Zephyrus::Assets::AssetsManager;
 
 namespace Zephyrus::ActorComponent
@@ -29,10 +31,17 @@ namespace Zephyrus::ActorComponent
 		auto texture = AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
 		AddTexture(texture);
 		SetTextureIndex(0);
+
+		Serialization::Json::JsonReader reader;
+		reader.LoadDocument("../Content/Material/BasicMesh.zpmat");
+		Zephyrus::Material::Material* mat = new Material::Material();
+		mat->Deserialize(reader);
+		mMaterial = mat;
 	}
 
 	MeshComponent::~MeshComponent()
 	{
+		delete mMaterial;
 	}
 
 	void MeshComponent::Deserialize(Serialization::IDeserializer& pReader)
@@ -125,7 +134,9 @@ namespace Zephyrus::ActorComponent
 		}
 
 		Matrix4DRow wt = GetWorldTransform();
-		mShaderProgram->Use();
+
+		mMaterial->Use(wt, pViewProj);
+		/*mShaderProgram->Use();
 		mShaderProgram->setMatrix4Row("uViewProj", pViewProj);
 		mShaderProgram->setMatrix4Row("uWorldTransform", wt);
 		mShaderProgram->setVector2f("uTiling", mTiling);
@@ -137,7 +148,7 @@ namespace Zephyrus::ActorComponent
 		if (tex)
 		{
 			tex->Bind();
-		}
+		}*/
 		mMesh->Bind();
 		if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
 		{

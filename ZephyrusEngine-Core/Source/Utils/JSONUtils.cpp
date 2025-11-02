@@ -4,149 +4,6 @@
 
 namespace Serialization::Json {
 
- /*   std::optional<Vector3D> ReadVector3D(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray())
-        {
-            return std::nullopt;
-        }
-        const auto& array = pObj[pKey].GetArray();
-        if (array.Size() != 3)
-        {
-            ZP_CORE_ERROR(std::string(pKey) + " must be an array of 3 floats!");
-            return std::nullopt;
-        }
-        return Vector3D(array[0].GetFloat(), array[1].GetFloat(), array[2].GetFloat());
-    }
-    std::optional<Vector2D> ReadVector2D(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray())
-        {
-            return std::nullopt;
-        }
-        const auto& array = pObj[pKey].GetArray();
-        if (array.Size() != 2)
-        {
-            ZP_CORE_ERROR(std::string(pKey) + " must be an array of 2 floats!");
-            return std::nullopt;
-        }
-        return Vector2D(array[0].GetFloat(), array[1].GetFloat());
-    }
-    std::optional<float> ReadFloat(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsNumber())
-            return std::nullopt;
-        return pObj[pKey].GetFloat();
-    }
-    std::optional<int> ReadInt(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsInt())
-            return std::nullopt;
-        return pObj[pKey].GetInt();
-    }
-    std::optional<bool> ReadBool(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsBool())
-            return std::nullopt;
-        return pObj[pKey].GetBool();
-    }
-    std::optional<std::string> ReadString(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsString())
-            return std::nullopt;
-        return pObj[pKey].GetString();
-    }
-    std::optional<std::vector<float>> ReadArrayFloat(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray())
-        {
-            return std::nullopt;
-        }
-        std::vector<float> result;
-        for (auto& v : pObj[pKey].GetArray())
-        {
-            if (v.IsNumber()) {
-                result.push_back(v.GetFloat());
-            }
-        }
-       
-        return result;
-    }
-    std::optional<std::vector<int>> ReadArrayInt(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray())
-        {
-            return std::nullopt;
-        }
-        std::vector<int> result;
-        for (auto& v : pObj[pKey].GetArray())
-        {
-            if (v.IsInt()) {
-                result.push_back(v.GetInt());
-            }
-        }
-
-        return result;
-    }
-    std::optional<std::vector<bool>> ReadArrayBool(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray())
-        {
-            return std::nullopt;
-        }
-        std::vector<bool> result;
-        for (auto& v : pObj[pKey].GetArray())
-        {
-            if (v.IsBool()) {
-                result.push_back(v.GetBool());
-            }
-        }
-
-        return result;
-    }
-    std::optional<std::vector<std::string>> ReadArrayString(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray())
-        {
-            return std::nullopt;
-        }
-        std::vector<std::string> result;
-        for (auto& v : pObj[pKey].GetArray())
-        {
-            if (v.IsString()) {
-                result.push_back(v.GetString());
-            }
-        }
-
-        return result;
-    }
-    const rapidjson::Value* ReadObject(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (pObj.HasMember(pKey) && pObj[pKey].IsObject()) {
-            return &pObj[pKey];
-        }
-        else
-        {
-            return nullptr;
-        }
-    }
-    std::optional<std::vector<const rapidjson::Value*>> ReadArrayObject(const rapidjson::Value& pObj, const char* pKey)
-    {
-        if (!pObj.HasMember(pKey) || !pObj[pKey].IsArray()) {
-            return std::nullopt;
-        }
-        std::vector<const rapidjson::Value*> result;
-        for (auto& v : pObj[pKey].GetArray())
-        {
-            if (v.IsObject()) {
-                result.push_back(&v);
-            }
-        }
-        return result;
-    }*/
-
-
-
     const rapidjson::Value* JsonReader::GetMember(const rapidjson::Value* parent, const char* key)
     {
         if (!parent || !parent->IsObject()) return nullptr;
@@ -185,6 +42,7 @@ namespace Serialization::Json {
 
         mContextStack.push(mCurrentValue);
         mCurrentValue = obj;
+        mObjectIterator = mCurrentValue->MemberBegin();
         return true;
     }
     void JsonReader::EndObject()
@@ -195,9 +53,13 @@ namespace Serialization::Json {
             mContextStack.pop();
         }
     }
+    std::string JsonReader::GetCurrentKey()
+    {
+        return mCurrentKey;
+    }
     std::optional<std::string> JsonReader::ReadString(const char* pKey)
     {
-        const auto* v = GetMember(mCurrentValue, pKey);
+        const auto* v = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
         if (!v || !v->IsString()) 
         {
             return std::nullopt;
@@ -206,7 +68,7 @@ namespace Serialization::Json {
     }
     std::optional<float> JsonReader::ReadFloat(const char* pKey)
     {
-        const auto* v = GetMember(mCurrentValue, pKey);
+        const auto* v = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
         if (!v || !v->IsFloat())
         {
             return std::nullopt;
@@ -215,7 +77,7 @@ namespace Serialization::Json {
     }
     std::optional<int> JsonReader::ReadInt(const char* pKey)
     {
-        const auto* v = GetMember(mCurrentValue, pKey);
+        const auto* v = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
         if (!v || !v->IsInt())
         {
             return std::nullopt;
@@ -224,16 +86,25 @@ namespace Serialization::Json {
     }
     std::optional<bool> JsonReader::ReadBool(const char* pKey)
     {
-        const auto* v = GetMember(mCurrentValue, pKey);
+        const auto* v = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
         if (!v || !v->IsBool())
         {
             return std::nullopt;
         }
         return v->GetBool();
     }
+    std::optional<Vector4D> JsonReader::ReadVector4D(const char* pKey)
+    {
+        const auto* v = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
+        if (!v || !v->IsArray() || v->Size() != 4)
+        {
+            return std::nullopt;
+        }
+        return Vector4D((*v)[0].GetFloat(), (*v)[1].GetFloat(), (*v)[2].GetFloat(), (*v)[3].GetFloat());
+    }
     std::optional<Vector3D> JsonReader::ReadVector3D(const char* pKey)
     {
-        const auto* v = GetMember(mCurrentValue, pKey);
+        const auto* v = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
         if (!v || !v->IsArray() || v->Size() != 3) 
         {
             return std::nullopt;
@@ -242,12 +113,17 @@ namespace Serialization::Json {
     }
     std::optional<Vector2D> JsonReader::ReadVector2D(const char* pKey)
     {
-        const auto* v = GetMember(mCurrentValue, pKey);
+        const auto* v = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
         if (!v || !v->IsArray() || v->Size() != 2) 
         {
             return std::nullopt;
         }
         return Vector2D((*v)[0].GetFloat(), (*v)[1].GetFloat());
+    }
+
+    std::optional<Matrix4DRow> JsonReader::ReadMatrix4DRow(const char* pKey)
+    {
+        return std::nullopt;
     }
 
     std::optional<std::vector<std::string>> JsonReader::ReadArrayString(const char* pKey)
@@ -266,9 +142,27 @@ namespace Serialization::Json {
     {
         return ReadArray<bool>(pKey);
     }
+    std::optional<std::vector<Vector4D>> JsonReader::ReadArrayVector4D(const char* pKey)
+    {
+        const auto* arr = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
+        if (!arr || !arr->IsArray())
+        {
+            return std::nullopt;
+        }
+
+        std::vector<Vector4D> result;
+        for (auto& val : arr->GetArray())
+        {
+            if (val.IsArray() && val.Size() == 4)
+            {
+                result.emplace_back(val[0].GetFloat(), val[1].GetFloat(), val[2].GetFloat(), val[3].GetFloat());
+            }
+        }
+        return result;
+    }
     std::optional<std::vector<Vector3D>> JsonReader::ReadArrayVector3D(const char* pKey)
     {
-        const auto* arr = GetMember(mCurrentValue, pKey);
+        const auto* arr = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
         if (!arr || !arr->IsArray()) 
         {
             return std::nullopt;
@@ -286,7 +180,7 @@ namespace Serialization::Json {
     }
     std::optional<std::vector<Vector2D>> JsonReader::ReadArrayVector2D(const char* pKey)
     {
-        const auto* arr = GetMember(mCurrentValue, pKey);
+        const auto* arr = pKey ? GetMember(mCurrentValue, pKey) : mCurrentValue;
         if (!arr || !arr->IsArray()) 
         {
             return std::nullopt;
@@ -304,7 +198,7 @@ namespace Serialization::Json {
     }
     bool JsonReader::BeginObjectArray(const char* pKey)
     {
-        const rapidjson::Value* arr = GetMember(mCurrentValue, pKey);
+        const auto* arr = GetMember(mCurrentValue, pKey);
         if (!arr || !arr->IsArray())
         {
             return false;
@@ -315,21 +209,36 @@ namespace Serialization::Json {
     }
     bool JsonReader::NextObjectElement()
     {
-        if (mArrayStack.empty())
-            return false;
-
-        auto& ctx = mArrayStack.top();
-        if (ctx.it == ctx.end)
-            return false;
-
-        if (!ctx.it->IsObject())
+        if (!mArrayStack.empty())
         {
-            ++ctx.it;
-            return false;
+            auto& ctx = mArrayStack.top();
+            if (ctx.it == ctx.end)
+                return false;
+
+            mCurrentValue = &(*ctx.it++);
+            mCurrentKey.clear();
+
+            if (mCurrentValue->IsObject())
+                mObjectIterator = mCurrentValue->MemberBegin();
+
+            return true;
         }
 
-        mContextStack.push(mCurrentValue);
-        mCurrentValue = &(*ctx.it++);
+        if (!mCurrentValue || !mCurrentValue->IsObject())
+            return false;
+
+        auto it = mCurrentValue->MemberBegin();
+        auto end = mCurrentValue->MemberEnd();
+
+        if (it == end)
+            return false;
+
+        const auto& member = *it;
+        mCurrentKey = member.name.GetString();
+        mCurrentValue = &member.value;
+
+        mObjectIterator = it + 1;
+
         return true;
     }
     void JsonReader::EndObjectArray()
@@ -403,6 +312,15 @@ namespace Serialization::Json {
     {
         mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), rapidjson::Value(pValue).Move(), *mAllocator);
     }
+    void JsonWriter::WriteVector4D(const char* pKey, const Vector4D& pVec)
+    {
+        rapidjson::Value arr(rapidjson::kArrayType);
+        arr.PushBack(pVec.x, *mAllocator);
+        arr.PushBack(pVec.y, *mAllocator);
+        arr.PushBack(pVec.z, *mAllocator);
+        arr.PushBack(pVec.w, *mAllocator);
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
+    }
     void JsonWriter::WriteVector3D(const char* pKey, const Vector3D& pVec)
     {
         rapidjson::Value arr(rapidjson::kArrayType);
@@ -416,6 +334,21 @@ namespace Serialization::Json {
         rapidjson::Value arr(rapidjson::kArrayType);
         arr.PushBack(pVec.x, *mAllocator);
         arr.PushBack(pVec.y, *mAllocator);
+        mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
+    }
+    void JsonWriter::WriteMatrice4DRow(const char* pKey, const Matrix4DRow& pMat)
+    {
+        rapidjson::Value arr(rapidjson::kArrayType);
+
+        for (int i = 0; i < 4; ++i)
+        {
+            rapidjson::Value row(rapidjson::kArrayType);
+            for (int j = 0; j < 4; ++j)
+                row.PushBack(pMat.mat[i][j], *mAllocator);
+
+            arr.PushBack(row, *mAllocator);
+        }
+
         mCurrentValue->AddMember(rapidjson::Value(pKey, *mAllocator).Move(), arr, *mAllocator);
     }
     void JsonWriter::PushString(const std::string& pValue)

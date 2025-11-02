@@ -11,6 +11,12 @@
 #include <btBulletCollisionCommon.h>
 
 #include <iostream>
+
+
+#include "Material/Material.h"
+#include "Utils/JSONUtils.h"
+
+
 namespace Zephyrus::Application {
     Game::Game(const std::string& pTitle, const std::string& pStartupScene)
         : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
@@ -84,6 +90,23 @@ namespace Zephyrus::Application {
 
     void Game::Loop()
     {
+        /*Serialization::Json::JsonReader reader;
+        reader.LoadDocument("../Content/Material/testmat.zpmat");
+        Zephyrus::Material::Material mat;
+        mat.Deserialize(reader);*/
+        Zephyrus::Material::Material mat;
+        mat.SetVertexShader(Assets::AssetsManager::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert"));
+        mat.SetFragmentShader(Assets::AssetsManager::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag"));
+
+        mat.SetProperty("uTiling", Vector2D(1, 1));
+        mat.SetTexture("albedo", Assets::AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png"));
+
+        Serialization::Json::JsonWriter writer;
+
+        mat.Serialize(writer);
+
+        writer.SaveDocument("../Content/Material/basicMesh.zpmat");
+
         while (mIsRunning) {
             Timer::ComputeDeltaTime();
             Input();

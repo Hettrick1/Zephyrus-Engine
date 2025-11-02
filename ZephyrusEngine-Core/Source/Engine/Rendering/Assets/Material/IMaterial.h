@@ -36,8 +36,9 @@ namespace Zephyrus::Material
         virtual void RemoveProperty(const std::string& uniformName) = 0;
 
         virtual void Use() = 0;
+        virtual void Use(const Matrix4DRow& world, const Matrix4DRow& viewProj) = 0;
 
         virtual void Serialize(Serialization::ISerializer& writer) const = 0;
-        virtual void Deserialize(Serialization::IDeserializer& value) = 0;
+        virtual void Deserialize(Serialization::IDeserializer& reader) = 0;
     };
 }

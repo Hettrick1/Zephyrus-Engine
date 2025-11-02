@@ -24,6 +24,7 @@ namespace Zephyrus::Render {
 			ZP_CORE_ERROR("Error - Failed to open" + pFileName);
 
 		}
+		mFilePath = pFileName;
 		std::string fileText = "";
 		std::string line = "";
 		while (getline(myFile, line))

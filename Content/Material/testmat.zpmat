@@ -1,0 +1,22 @@
+{
+    "shaders": {
+        "vertex": "../Content/Shaders/BasicMesh.vert",
+        "fragment": "../Content/Shaders/BasicMesh.frag"
+    },
+    "textures": {
+        "albedo": {
+            "type": "Texture2D",
+            "path": "../Content/Sprites/planks.png"
+        }
+    },
+    "floatProperties": {},
+    "intProperties": {
+        "test": 10
+    },
+    "vec2Properties": {},
+    "vec3Properties": {
+        "testvec3": [10.0, 50.0, 10.0]
+    },
+    "vec4Properties": {},
+    "mat4Properties": {}
+}

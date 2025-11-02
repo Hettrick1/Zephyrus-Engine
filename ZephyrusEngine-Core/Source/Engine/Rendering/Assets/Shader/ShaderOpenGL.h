@@ -15,6 +15,7 @@ namespace Zephyrus::Render {
 		std::string mCode{ "" };
 		unsigned int mId{ 0 };
 		ShaderType mType{ ShaderType::VERTEX };
+		std::string mFilePath{ "" };
 	public:
 		ShaderOpenGL() = default;
 		ShaderOpenGL(int pId, const std::string& pCode, ShaderType pShaderType);
@@ -25,6 +26,7 @@ namespace Zephyrus::Render {
 		void Unload() override;
 
 		inline int GetID() const override { return mId; }
+		inline std::string GetFilePath() const { return mFilePath; }
 
 		std::string& GetCode() override;
 

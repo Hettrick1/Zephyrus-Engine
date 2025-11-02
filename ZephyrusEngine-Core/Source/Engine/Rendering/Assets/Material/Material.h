@@ -17,7 +17,7 @@ namespace Zephyrus::Material
 
 		Render::IShaderProgram* mShaderProgram{ nullptr };
 
-		std::map<std::string, Assets::ITextureBase*> mtextures;
+		std::map<std::string, Assets::ITextureBase*> mTextures;
 
 		std::map<std::string, int> mIntProperties;
 		std::map<std::string, float> mfloatProperties;
@@ -51,8 +51,9 @@ namespace Zephyrus::Material
 		void RemoveProperty(const std::string& uniformName) override;
 
 		void Use() override;
+		void Use(const Matrix4DRow& world, const Matrix4DRow& viewProj) override;
 
 		void Serialize(Serialization::ISerializer& writer) const override;
-		void Deserialize(Serialization::IDeserializer& value) override;
+		void Deserialize(Serialization::IDeserializer& reader) override;
 	};
 }
