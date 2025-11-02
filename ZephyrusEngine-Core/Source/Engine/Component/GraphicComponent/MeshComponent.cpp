@@ -8,6 +8,8 @@
 #include "JSONUtils.h"
 #include "Interface/ITexture2D.h"
 
+
+// TO BE REMOVED
 #include "Material/Material.h"
 
 using Zephyrus::Assets::AssetsManager;
@@ -32,6 +34,8 @@ namespace Zephyrus::ActorComponent
 		AddTexture(texture);
 		SetTextureIndex(0);
 
+
+		//FOR NOW, NEED TO SERIALIZE THE MATERIAL IN THE COMPONENT SERIALISATION
 		Serialization::Json::JsonReader reader;
 		reader.LoadDocument("../Content/Material/BasicMesh.zpmat");
 		Zephyrus::Material::Material* mat = new Material::Material();
@@ -135,6 +139,7 @@ namespace Zephyrus::ActorComponent
 
 		Matrix4DRow wt = GetWorldTransform();
 
+		//FOR NOW
 		mMaterial->Use(wt, pViewProj);
 		/*mShaderProgram->Use();
 		mShaderProgram->setMatrix4Row("uViewProj", pViewProj);
