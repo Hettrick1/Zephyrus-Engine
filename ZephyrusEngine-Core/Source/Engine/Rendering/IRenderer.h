@@ -25,6 +25,7 @@ namespace Zephyrus::Assets
 	class ITexture2D;
 	class ICubeMapTexture;
 }
+
 namespace Zephyrus::UI {
 	class HudManager;
 }

@@ -90,10 +90,7 @@ namespace Zephyrus::Application {
 
     void Game::Loop()
     {
-        /*Serialization::Json::JsonReader reader;
-        reader.LoadDocument("../Content/Material/testmat.zpmat");
-        Zephyrus::Material::Material mat;
-        mat.Deserialize(reader);*/
+        //temp to create easily materials
         Zephyrus::Material::Material mat;
         mat.SetVertexShader(Assets::AssetsManager::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert"));
         mat.SetFragmentShader(Assets::AssetsManager::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag"));

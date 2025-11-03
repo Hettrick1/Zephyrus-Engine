@@ -7,6 +7,7 @@ namespace Zephyrus::Factory
     class ComponentFactory;
     class IPrefabFactory;
     class ISceneFactory;
+    class ISerializationFactory;
 }
 
 namespace Zephyrus::Physics
@@ -34,6 +35,7 @@ public:
     virtual Zephyrus::Factory::IPrefabFactory* GetPrefabFactory() = 0;
     virtual Zephyrus::Factory::ISceneFactory* GetSceneFactory() = 0;
     virtual Zephyrus::Scenes::Scene* GetActiveScene() = 0;
+    virtual Zephyrus::Factory::ISerializationFactory* GetSerializationFactory() = 0;
     virtual void LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer = nullptr, bool pCallPostStart = true) = 0;
     virtual void SetSceneLoaded(bool pSceneLoaded) = 0;
 };

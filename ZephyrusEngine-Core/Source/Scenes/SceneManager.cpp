@@ -2,6 +2,7 @@
 #include "SceneFactory.h"
 #include "ComponentFactory.h"
 #include "PrefabFactory.h"
+#include "JsonSerializationFactory.h"
 #include <filesystem>
 #include "CameraComponent.h"
 
@@ -12,6 +13,7 @@ namespace Zephyrus::Scenes {
 		mComponentFactory = new ComponentFactory();
 		mPrefabFactory = new Zephyrus::Factory::PrefabFactory(this, mComponentFactory);;
 		mSceneFactory = new Zephyrus::Factory::SceneFactory(this);
+		mSerializationFactory = new Zephyrus::Factory::JsonSerializationFactory();
 		mIsSceneLoaded = false;
 		ActiveScene = nullptr;
 	}
@@ -184,6 +186,14 @@ namespace Zephyrus::Scenes {
 		if (ActiveScene)
 		{
 			return ActiveScene;
+		}
+		return nullptr;
+	}
+	Zephyrus::Factory::ISerializationFactory* SceneManager::GetSerializationFactory()
+	{
+		if (mSerializationFactory)
+		{
+			return mSerializationFactory;
 		}
 		return nullptr;
 	}

@@ -2,7 +2,7 @@
 
 #include "Interface/ITextureBase.h"
 #include "IMaterial.h"
-#include <map>
+#include <unordered_map>
 
 namespace Zephyrus::Material
 {
@@ -17,14 +17,14 @@ namespace Zephyrus::Material
 
 		Render::IShaderProgram* mShaderProgram{ nullptr };
 
-		std::map<std::string, Assets::ITextureBase*> mTextures;
+		std::unordered_map<std::string, Assets::ITextureBase*> mTextures;
 
-		std::map<std::string, int> mIntProperties;
-		std::map<std::string, float> mfloatProperties;
-		std::map<std::string, Vector2D> mVec2Properties;
-		std::map<std::string, Vector3D> mVec3Properties;
-		std::map<std::string, Vector4D> mVec4Properties;
-		std::map<std::string, Matrix4DRow> mMat4Properties;
+		std::unordered_map<std::string, int> mIntProperties;
+		std::unordered_map<std::string, float> mfloatProperties;
+		std::unordered_map<std::string, Vector2D> mVec2Properties;
+		std::unordered_map<std::string, Vector3D> mVec3Properties;
+		std::unordered_map<std::string, Vector4D> mVec4Properties;
+		std::unordered_map<std::string, Matrix4DRow> mMat4Properties;
 
 	public:
 
@@ -39,6 +39,8 @@ namespace Zephyrus::Material
 
 		void RebuildShaderProgram() override;
 
+		inline Render::IShaderProgram* GetShaderProgram() override { return mShaderProgram; }
+
 		void SetTexture(const std::string& uniformName, Assets::ITextureBase* texture) override;
 		void RemoveTexture(const std::string& uniformName) override;
 
@@ -50,8 +52,7 @@ namespace Zephyrus::Material
 		void SetProperty(const std::string& uniformName, const Matrix4DRow& value) override;
 		void RemoveProperty(const std::string& uniformName) override;
 
-		void Use() override;
-		void Use(const Matrix4DRow& world, const Matrix4DRow& viewProj) override;
+		void Use(const Matrix4DRow* world = nullptr, const Matrix4DRow* viewproj = nullptr) override;
 
 		void Serialize(Serialization::ISerializer& writer) const override;
 		void Deserialize(Serialization::IDeserializer& reader) override;

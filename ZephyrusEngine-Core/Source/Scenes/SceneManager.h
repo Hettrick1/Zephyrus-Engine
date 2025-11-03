@@ -6,7 +6,7 @@
 using Zephyrus::Factory::ComponentFactory;
 using Zephyrus::Factory::IPrefabFactory;
 using Zephyrus::Factory::ISceneFactory;
-
+using Zephyrus::Factory::ISerializationFactory;
 /**
  * @brief Manages the current scene, including loading, starting, updating, rendering, and unloading scenes.
  * Provides static methods to control the active scene in the editor or engine.
@@ -20,6 +20,7 @@ namespace Zephyrus::Scenes
 		ComponentFactory* mComponentFactory{ nullptr };
 		IPrefabFactory* mPrefabFactory{ nullptr };
 		ISceneFactory* mSceneFactory{ nullptr };
+		ISerializationFactory* mSerializationFactory{ nullptr };
 		Render::IRenderer* mRenderer{ nullptr };
 
 		Scene* ActiveScene;
@@ -57,6 +58,7 @@ namespace Zephyrus::Scenes
 		Zephyrus::Factory::IPrefabFactory* GetPrefabFactory() override;
 		Zephyrus::Factory::ISceneFactory* GetSceneFactory() override;
 		Zephyrus::Scenes::Scene* GetActiveScene() override;
+		Zephyrus::Factory::ISerializationFactory* GetSerializationFactory() override;
 		void SetSceneLoaded(bool pSceneLoaded) override;
 	};
 }

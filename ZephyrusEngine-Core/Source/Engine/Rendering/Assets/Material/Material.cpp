@@ -129,7 +129,7 @@ namespace Zephyrus::Material
 		mVec4Properties.erase(uniformName);
 		mMat4Properties.erase(uniformName);
 	}
-	void Material::Use()
+	void Material::Use(const Matrix4DRow* world, const Matrix4DRow* viewproj)
 	{
 		if (!mShaderProgram)
 			return;
@@ -167,13 +167,16 @@ namespace Zephyrus::Material
 			tex->Bind(slot);
 			++slot;
 		}
+		if (world)
+		{
+			mShaderProgram->setMatrix4Row("uWorldTransform", *world);
+		}
+		if (viewproj)
+		{
+			mShaderProgram->setMatrix4Row("uViewProj", *viewproj);
+		}
 	}
-	void Material::Use(const Matrix4DRow& world, const Matrix4DRow& viewProj)
-	{
-		Use();
-		mShaderProgram->setMatrix4Row("uViewProj", viewProj);
-		mShaderProgram->setMatrix4Row("uWorldTransform", world);
-	}
+
 	void Material::Serialize(Serialization::ISerializer& writer) const
 	{
 		writer.BeginObject("shaders");

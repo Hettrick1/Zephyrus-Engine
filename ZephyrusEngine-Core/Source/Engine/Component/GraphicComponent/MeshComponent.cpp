@@ -11,6 +11,7 @@
 
 // TO BE REMOVED
 #include "Material/Material.h"
+#include "Material/MaterialInstance.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -36,11 +37,8 @@ namespace Zephyrus::ActorComponent
 
 
 		//FOR NOW, NEED TO SERIALIZE THE MATERIAL IN THE COMPONENT SERIALISATION
-		Serialization::Json::JsonReader reader;
-		reader.LoadDocument("../Content/Material/BasicMesh.zpmat");
-		Zephyrus::Material::Material* mat = new Material::Material();
-		mat->Deserialize(reader);
-		mMaterial = mat;
+		auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/BasicMesh.zpmat", "../Content/Material/BasicMesh.zpmat");
+		mMaterial = new Material::MaterialInstance(mat);
 	}
 
 	MeshComponent::~MeshComponent()
@@ -92,6 +90,9 @@ namespace Zephyrus::ActorComponent
 			SetTextureIndex(0);
 			ZP_CORE_WARN("No mesh referenced in the prefab actor !");
 		}
+
+		// TODO serialize materials
+		mMaterial->SetTexture("albedo", mTextures[mTextureIndex]);
 	}
 
 	void MeshComponent::Serialize(Serialization::ISerializer& pWriter)
@@ -140,7 +141,7 @@ namespace Zephyrus::ActorComponent
 		Matrix4DRow wt = GetWorldTransform();
 
 		//FOR NOW
-		mMaterial->Use(wt, pViewProj);
+		mMaterial->Use(&wt, &pViewProj);
 		/*mShaderProgram->Use();
 		mShaderProgram->setMatrix4Row("uViewProj", pViewProj);
 		mShaderProgram->setMatrix4Row("uWorldTransform", wt);
@@ -163,11 +164,6 @@ namespace Zephyrus::ActorComponent
 		{
 			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
 		}
-	}
-
-	void MeshComponent::DrawSelected(const Matrix4DRow& pViewProj)
-	{
-
 	}
 
 	void MeshComponent::SetMesh(IMesh* pMesh)
@@ -217,5 +213,9 @@ namespace Zephyrus::ActorComponent
 	void MeshComponent::SetTiling(const Vector2D& pTiling)
 	{
 		mTiling = pTiling;
+
+
+		// TODO serialize materials (need tiling to be in the material instance)
+		mMaterial->SetVector2D("uTiling", mTiling);
 	}
 }

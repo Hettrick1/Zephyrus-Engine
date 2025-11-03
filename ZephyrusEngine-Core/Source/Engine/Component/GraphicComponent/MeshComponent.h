@@ -3,7 +3,7 @@
 #include "Interface/IMesh.h"
 #include "Interface/IShaderProgram.h"
 #include "Interface/IShader.h"
-#include "Material/IMaterial.h"
+#include "Material/IMaterialInstance.h"
 #include "Maths.h"
 
 namespace Zephyrus::Assets
@@ -26,7 +26,7 @@ namespace Zephyrus::ActorComponent
 		Render::IShader* mOutlineVertexShader{ nullptr };
 		Render::IShader* mOutlineFragmentShader{ nullptr };
 		Render::IShaderProgram* mOutlineShaderProgram{ nullptr };
-		Material::IMaterial* mMaterial{ nullptr };
+		Material::IMaterialInstance* mMaterial{ nullptr };
 		Vector2D mTiling;
 		std::vector<Assets::ITexture2D*> mTextures;
 		unsigned int mTextureIndex = 0;
@@ -44,7 +44,6 @@ namespace Zephyrus::ActorComponent
 		std::vector<PropertyDescriptor> GetProperties() override;
 
 		virtual void Draw(const Matrix4DRow& pViewProj);
-		virtual void DrawSelected(const Matrix4DRow& pViewProj);
 		virtual void SetMesh(IMesh* pMesh);
 		void SetTextureIndex(unsigned int pTextureIndex);
 

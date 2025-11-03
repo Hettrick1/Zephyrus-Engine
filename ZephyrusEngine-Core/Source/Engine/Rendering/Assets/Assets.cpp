@@ -11,6 +11,9 @@
 #include "Interface/IMesh.h"
 #include "Interface/IFont.h"
 #include "Interface/ITexture2D.h"
+#include "Material/IMaterial.h"
+#include "Material/Material.h"
+#include "ISerializationFactory.h"
 #include <filesystem>
 
 namespace Zephyrus::Assets {
@@ -20,6 +23,7 @@ namespace Zephyrus::Assets {
 	std::map<std::string, Render::IShader*> AssetsManager::mShaders = {};
 	std::map<std::string, Render::IShaderProgram*> AssetsManager::mShaderPrograms = {};
 	std::map<std::string, ICubeMapTexture*> AssetsManager::mCubemaps = {};
+	std::map<std::string, Material::IMaterial*> AssetsManager::mMaterials = {};
 
 	ISceneContext* AssetsManager::mContext{ nullptr };
 
@@ -142,6 +146,25 @@ namespace Zephyrus::Assets {
 		return mShaderPrograms[pName];
 	}
 
+	Material::IMaterial* AssetsManager::LoadMaterial(const std::string& pFilePath, const std::string& pName)
+	{
+		if (mMaterials.find(pName) == mMaterials.end()) {
+			mMaterials[pName] = LoadMaterialFromFile(pFilePath);
+			return mMaterials[pName];
+		}
+		return mMaterials[pName];
+	}
+
+	Material::IMaterial* AssetsManager::GetMaterial(const std::string& pName)
+	{
+		if (mMaterials.find(pName) == mMaterials.end()) {
+			std::ostringstream loadError;
+			loadError << "Shader " << pName << " does not exists in assets manager\n";
+			ZP_CORE_ERROR(loadError.str());
+		}
+		return mMaterials[pName];
+	}
+
 	void AssetsManager::Clear()
 	{
 		for (auto& iter : mTextures)
@@ -186,6 +209,12 @@ namespace Zephyrus::Assets {
 			iter.second = nullptr;
 		}
 		mShaderPrograms.clear();
+		for (auto& iter : mMaterials)
+		{
+			delete iter.second;
+			iter.second = nullptr;
+		}
+		mMaterials.clear();
 	}
 
 	ITexture2D* AssetsManager::LoadTextureFromFile(const std::string& pFilePath)
@@ -275,6 +304,22 @@ namespace Zephyrus::Assets {
 	ICubeMapTexture* AssetsManager::LoadCubemapFromFile(const std::vector<std::string>& pCubePaths)
 	{
 		return mContext->GetRenderer()->LoadCubemap(pCubePaths);
+	}
+
+	Material::IMaterial* AssetsManager::LoadMaterialFromFile(const std::string& pFilePath)
+	{
+		Material::Material* mat = new Material::Material();
+		auto reader = mContext->GetSerializationFactory()->CreateDeserializer();
+		reader->LoadDocument(pFilePath);
+		if (reader->LoadDocument(pFilePath))
+		{
+			mat->Deserialize(*reader);
+		}
+		else
+		{
+			return nullptr;
+		}
+		return mat;
 	}
 
 	std::string AssetsManager::GetFullPath(const std::string& pPath, AssetType pType)

@@ -24,6 +24,8 @@ namespace Zephyrus::Material
 
         virtual void RebuildShaderProgram() = 0;
 
+        virtual Render::IShaderProgram* GetShaderProgram() = 0;
+
         virtual void SetTexture(const std::string& uniformName, Assets::ITextureBase* texture) = 0;
         virtual void RemoveTexture(const std::string& uniformName) = 0;
 
@@ -35,8 +37,7 @@ namespace Zephyrus::Material
         virtual void SetProperty(const std::string& uniformName, const Matrix4DRow& value) = 0;
         virtual void RemoveProperty(const std::string& uniformName) = 0;
 
-        virtual void Use() = 0;
-        virtual void Use(const Matrix4DRow& world, const Matrix4DRow& viewProj) = 0;
+        virtual void Use(const Matrix4DRow* world = nullptr, const Matrix4DRow* viewproj = nullptr) = 0;
 
         virtual void Serialize(Serialization::ISerializer& writer) const = 0;
         virtual void Deserialize(Serialization::IDeserializer& reader) = 0;

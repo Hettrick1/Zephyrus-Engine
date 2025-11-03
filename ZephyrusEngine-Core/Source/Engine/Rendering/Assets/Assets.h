@@ -14,6 +14,11 @@
 
 class ISceneContext;
 
+namespace Zephyrus::Material
+{
+	class IMaterial;
+}
+
 namespace Zephyrus::Assets {
 
 	class IMesh;
@@ -45,15 +50,18 @@ namespace Zephyrus::Assets {
 		static Render::IShader* LoadShaderFromFile(const std::string& pFilePath, Render::ShaderType pType);
 		static Render::IShaderProgram* LoadProgramWithShaders(std::vector<Render::IShader*> pShaders);
 		static ICubeMapTexture* LoadCubemapFromFile(const std::vector<std::string>& pCubePaths);
+		static Material::IMaterial* LoadMaterialFromFile(const std::string& pFilePath);
 
-	public:
 		static std::map<std::string, ITexture2D*> mTextures;
 		static std::map<std::string, IMesh*> mMeshes;
 		static std::map<std::string, IFont*> mFonts;
 		static std::map<std::string, Render::IShader*> mShaders;
 		static std::map<std::string, Render::IShaderProgram*> mShaderPrograms;
 		static std::map<std::string, ICubeMapTexture*> mCubemaps;
+		static std::map<std::string, Material::IMaterial*> mMaterials;
 		static ISceneContext* mContext;
+
+	public:
 
 		static const std::string IMPORT_PATH;
 		static const std::string MESH_PATH;
@@ -81,6 +89,9 @@ namespace Zephyrus::Assets {
 		static Render::IShader* GetShader(const std::string& pName);
 
 		static Render::IShaderProgram* LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName);
+
+		static Material::IMaterial* LoadMaterial(const std::string& pFilePath, const std::string& pName);
+		static Material::IMaterial* GetMaterial(const std::string& pName);
 
 		static std::string GetFullPath(const std::string& pPath, AssetType pType);
 
