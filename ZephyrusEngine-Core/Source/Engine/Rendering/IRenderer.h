@@ -39,6 +39,11 @@ namespace Zephyrus::Debug {
 	struct DebugLine;
 }
 
+namespace Zephyrus::Material
+{
+	class IMaterial;
+}
+
 using Zephyrus::ActorComponent::Actor;
 using Zephyrus::ActorComponent::SpriteComponent;
 using Zephyrus::ActorComponent::MeshComponent;
@@ -78,6 +83,7 @@ namespace Zephyrus::Render {
 		virtual Assets::ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths) = 0;
 		virtual IShader* LoadShader(const std::string& shaderPath, ShaderType type) = 0;
 		virtual IShaderProgram* LoadShaderProgram(std::vector<IShader*> pShaders) = 0;
+		virtual Material::IMaterial* CreateMaterial() = 0;
 
 		virtual void RenderActiveCamera(CameraComponent* cam) {}
 

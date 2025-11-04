@@ -1,7 +1,7 @@
 #include "PrefabFactory.h"
 #include "rapidjson/document.h"
 #include "Log.h"
-#include "JSONUtils.h"
+#include "ISerializationFactory.h"
 #include "Scene.h"
 #include <fstream>
 #include <sstream>
@@ -26,8 +26,8 @@ namespace Zephyrus::Factory {
             fullPath = pPrefabName;
         }
 
-        Serialization::Json::JsonReader reader;
-        if (!reader.LoadDocument(fullPath))
+        auto reader = mSceneContext->GetSerializationFactory()->CreateDeserializer();
+        if (!reader->LoadDocument(fullPath))
         {
             ZP_CORE_ERROR("Impossible to open or parse the prefab: " + fullPath);
             return nullptr;
@@ -36,15 +36,15 @@ namespace Zephyrus::Factory {
         auto actor = new Actor(mSceneContext, *pScene);
         actor->SetPrefab(pPrefabName);
 
-        actor->Deserialize(reader);
+        actor->Deserialize(*reader);
 
-        if (reader.BeginObjectArray("components"))
+        if (reader->BeginObjectArray("components"))
         {
-            while (reader.NextObjectElement())
+            while (reader->NextObjectElement())
             {
-                CreateAndAttachComponent(reader, actor);
+                CreateAndAttachComponent(*reader, actor);
             }
-            reader.EndObjectArray();
+            reader->EndObjectArray();
         }
 
         ZP_LOAD("Prefab " + actor->GetName() + " loaded");
@@ -70,8 +70,8 @@ namespace Zephyrus::Factory {
             fullPath = pPrefabName;
         }
 
-        Serialization::Json::JsonReader reader;
-        if (!reader.LoadDocument(fullPath))
+        auto reader = mSceneContext->GetSerializationFactory()->CreateDeserializer();
+        if (!reader->LoadDocument(fullPath))
         {
             ZP_CORE_ERROR("Impossible to open or parse the prefab: " + fullPath);
             return nullptr;
@@ -80,15 +80,15 @@ namespace Zephyrus::Factory {
         auto actor = new Actor(mSceneContext, *pScene);
         actor->SetPrefab(pPrefabName);
 
-        actor->Deserialize(reader);
+        actor->Deserialize(*reader);
 
-        if (reader.BeginObjectArray("components"))
+        if (reader->BeginObjectArray("components"))
         {
-            while (reader.NextObjectElement())
+            while (reader->NextObjectElement())
             {
-                CreateAndAttachComponent(reader, actor, false);
+                CreateAndAttachComponent(*reader, actor, false);
             }
-            reader.EndObjectArray();
+            reader->EndObjectArray();
         }
 
         ZP_LOAD("Prefab " + actor->GetName() + " loaded");

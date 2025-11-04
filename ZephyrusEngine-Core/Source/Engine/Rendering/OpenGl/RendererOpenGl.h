@@ -73,6 +73,7 @@ namespace Zephyrus::Render {
 		Assets::ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths) override;
 		IShader* LoadShader(const std::string& shaderPath, ShaderType type) override;
 		IShaderProgram* LoadShaderProgram(std::vector<IShader*> pShaders) override;
+		Material::IMaterial* CreateMaterial() override;
 
 		void AddSprite(SpriteComponent* pSprite) override;
 		void RemoveSprite(SpriteComponent* pSprite) override;

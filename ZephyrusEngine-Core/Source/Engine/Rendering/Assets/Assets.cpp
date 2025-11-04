@@ -308,7 +308,7 @@ namespace Zephyrus::Assets {
 
 	Material::IMaterial* AssetsManager::LoadMaterialFromFile(const std::string& pFilePath)
 	{
-		Material::Material* mat = new Material::Material();
+		auto mat = mContext->GetRenderer()->CreateMaterial();
 		auto reader = mContext->GetSerializationFactory()->CreateDeserializer();
 		reader->LoadDocument(pFilePath);
 		if (reader->LoadDocument(pFilePath))

@@ -12,6 +12,7 @@
 #include "../MeshOpenGL.h"
 #include "../FontOpenGL.h"
 #include "../TextureOpenGL.h"
+#include "Material/Material.h"
 #include "CubemapTextureOpenGL.h"
 #include "ShaderOpenGL.h"
 #include <algorithm>
@@ -190,6 +191,11 @@ namespace Zephyrus::Render {
 		ShaderProgram* program = new ShaderProgram();
 		program->Compose(pShaders);
 		return program;
+	}
+
+	Material::IMaterial* RendererOpenGl::CreateMaterial()
+	{
+		return new Material::Material();
 	}
 
 	void RendererOpenGl::AddSprite(SpriteComponent* pSprite)

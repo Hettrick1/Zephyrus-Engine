@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Scene.h"
 #include <algorithm>
+#include "ISerializationFactory.h"
 
 #define UUID_SYSTEM_GENERATOR
 #include "uuid.h"
@@ -244,32 +245,32 @@ namespace Zephyrus::ActorComponent
 
     void Actor::SerializePrefab(const std::string& pFilePath)
     {
-        auto writer = Serialization::Json::JsonWriter();
+        auto writer = mContext->GetSerializationFactory()->CreateSerializer();
 
-        writer.WriteString("name", mName);
-        writer.WriteString("state", ActorStateToString(mState));
+        writer->WriteString("name", mName);
+        writer->WriteString("state", ActorStateToString(mState));
         if (!mTags.empty())
         {
-            writer.BeginArray("actorTags");
+            writer->BeginArray("actorTags");
             for (auto tag : mTags)
             {
-                writer.PushString(tag);
+                writer->PushString(tag);
             }
-            writer.EndArray();
+            writer->EndArray();
         }
-        writer.BeginObject("transform");
-        writer.WriteVector3D("position", GetPosition());
-        writer.WriteVector3D("rotation", GetRotationEuler());
-        writer.WriteVector3D("size", GetSize());
-        writer.EndObject();
+        writer->BeginObject("transform");
+        writer->WriteVector3D("position", GetPosition());
+        writer->WriteVector3D("rotation", GetRotationEuler());
+        writer->WriteVector3D("size", GetSize());
+        writer->EndObject();
 
-        writer.BeginArray("components");
+        writer->BeginArray("components");
         for (auto& comp : mComponents)
         {
-            comp->Serialize(writer);
+            comp->Serialize(*writer);
         }
-        writer.EndArray();
-        writer.SaveDocument(pFilePath);
+        writer->EndArray();
+        writer->SaveDocument(pFilePath);
     }
 
     void Actor::SetName(const std::string& pName)
