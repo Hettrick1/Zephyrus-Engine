@@ -407,4 +407,8 @@ namespace Zephyrus::Material
 		}
 		RebuildShaderProgram();
 	}
+	void Material::SetFilePath(const std::string& filePath)
+	{
+		mFilePath = filePath;
+	}
 }

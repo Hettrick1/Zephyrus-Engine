@@ -14,6 +14,10 @@ namespace Zephyrus::ActorComponent
 	public:
 		RenderComponent(Actor* pOwner, const std::string& pName);
 		virtual ~RenderComponent();
+
+		virtual void Deserialize(Serialization::IDeserializer& pReader) override;
+		virtual void Serialize(Serialization::ISerializer& pWriter) override;
+
 		virtual void Draw(const Zephyrus::Render::IRenderer& pRenderer) = 0;
 		inline Material::IMaterial* GetMaterial() const { return mMaterial->GetBaseMaterial(); }
 		inline Material::IMaterialInstance* GetMaterialInstance() const { return mMaterial; }

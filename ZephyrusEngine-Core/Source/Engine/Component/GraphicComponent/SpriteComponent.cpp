@@ -19,9 +19,6 @@ namespace Zephyrus::ActorComponent
 		mTexHeight = static_cast<int>(mTexture->GetHeight());
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
-
-		auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/BasicSprite.zpmat", "../Content/Material/BasicSprite.zpmat");
-		SetMaterial(mat);
 	}
 
 	SpriteComponent::~SpriteComponent()
@@ -49,7 +46,7 @@ namespace Zephyrus::ActorComponent
 
 	void SpriteComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pReader);
+		RenderComponent::Deserialize(pReader);
 		if (auto texturePath = pReader.ReadString("texture"))
 		{
 			SetTexture(AssetsManager::LoadTexture(*texturePath, *texturePath));
@@ -69,6 +66,7 @@ namespace Zephyrus::ActorComponent
 		Component::BeginSerialize(pWriter);
 		pWriter.WriteString("texture", mTexture->GetFilePath());
 		pWriter.WriteBool("cullOff", mCullOff);
+		RenderComponent::Serialize(pWriter);
 		Component::EndSerialize(pWriter);
 	}
 

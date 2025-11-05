@@ -101,6 +101,7 @@ namespace Zephyrus::ActorComponent
 		pWriter.EndArray();
 		pWriter.WriteFloat("animFps", mAnimationFps);
 		pWriter.WriteBool("isLooping", mIsLooping);
+		RenderComponent::Serialize(pWriter);
 		Component::EndSerialize(pWriter);
 	}
 

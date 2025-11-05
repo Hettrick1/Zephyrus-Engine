@@ -26,6 +26,8 @@ namespace Zephyrus::Material
 		std::unordered_map<std::string, Vector4D> mVec4Properties;
 		std::unordered_map<std::string, Matrix4DRow> mMat4Properties;
 
+		std::string mFilePath{ " " };
+
 	public:
 
 		Material();
@@ -56,5 +58,8 @@ namespace Zephyrus::Material
 
 		void Serialize(Serialization::ISerializer& writer) const override;
 		void Deserialize(Serialization::IDeserializer& reader) override;
+
+		inline std::string GetFilePath() const override { return mFilePath; }
+		void SetFilePath(const std::string& filePath) override;
 	};
 }

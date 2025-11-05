@@ -18,23 +18,10 @@ namespace Zephyrus::ActorComponent
 	{
 		mOwner->GetScene().GetRenderer()->AddMesh(this);
 
-		mVertexShader = AssetsManager::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert");
-		mFragmentShader = AssetsManager::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag");
-		mShaderProgram = AssetsManager::LoadShaderProgram({ mVertexShader, mFragmentShader }, "basicMeshSP");
-
-		mOutlineVertexShader = AssetsManager::LoadShader("BasicOutline.vert", ShaderType::VERTEX, "OutlineVert");
-		mOutlineFragmentShader = AssetsManager::LoadShader("BasicOutline.frag", ShaderType::FRAGMENT, "OutlineFrag");
-		mOutlineShaderProgram = AssetsManager::LoadShaderProgram({ mOutlineVertexShader, mOutlineFragmentShader }, "OutlineSP");
-
 		mMesh = AssetsManager::LoadMesh("cube.obj", "cube.obj");
 		auto texture = AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
 		AddTexture(texture);
 		SetTextureIndex(0);
-
-
-		//FOR NOW, NEED TO SERIALIZE THE MATERIAL IN THE COMPONENT SERIALISATION
-		auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/BasicMesh.zpmat", "../Content/Material/BasicMesh.zpmat");
-		SetMaterial(mat);
 	}
 
 	MeshComponent::~MeshComponent()
@@ -43,7 +30,7 @@ namespace Zephyrus::ActorComponent
 
 	void MeshComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pReader);
+		RenderComponent::Deserialize(pReader);
 		if (auto mesh = pReader.ReadString("mesh"))
 		{
 			mMesh = AssetsManager::LoadMesh(*mesh, *mesh);
@@ -102,6 +89,7 @@ namespace Zephyrus::ActorComponent
 		pWriter.EndArray();
 		pWriter.WriteInt("textureIndex", mTextureIndex);
 		pWriter.WriteVector2D("textureTiling", mTiling);
+		RenderComponent::Serialize(pWriter);
 		Component::EndSerialize(pWriter);
 	}
 
@@ -132,34 +120,7 @@ namespace Zephyrus::ActorComponent
 		{
 			return;
 		}
-
-		Matrix4DRow wt = GetWorldTransform();
-
-		//FOR NOW
-		/*mMaterial->Use(&wt, &pViewProj);*/
-		/*mShaderProgram->Use();
-		mShaderProgram->setMatrix4Row("uViewProj", pViewProj);
-		mShaderProgram->setMatrix4Row("uWorldTransform", wt);
-		mShaderProgram->setVector2f("uTiling", mTiling);
-		if (GetTextureArraySize() < mTextureIndex)
-		{
-			mTextureIndex = 0;
-		}
-		Assets::ITexture2D* tex = GetTexture(mTextureIndex);
-		if (tex)
-		{
-			tex->Bind();
-		}*/
 		pRenderer.DrawMesh(mMaterial, mMesh, GetWorldTransform());
-		//mMesh->Bind();
-		//if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
-		//{
-		//	glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
-		//}
-		//else
-		//{
-		//	glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
-		//}
 	}
 
 	void MeshComponent::SetMesh(IMesh* pMesh)
@@ -200,18 +161,12 @@ namespace Zephyrus::ActorComponent
 		}
 	}
 
-
-	void MeshComponent::SetShaderProgram(Render::IShaderProgram* pShaderProgram)
-	{
-		mShaderProgram = pShaderProgram;
-	}
-
 	void MeshComponent::SetTiling(const Vector2D& pTiling)
 	{
 		mTiling = pTiling;
 
 
 		// TODO serialize materials (need tiling to be in the material instance)
-		mMaterial->SetVector2D("uTiling", mTiling);
+		mMaterial->SetVector2D("uTiling", pTiling);
 	}
 }

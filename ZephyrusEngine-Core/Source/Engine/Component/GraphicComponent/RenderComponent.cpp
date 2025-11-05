@@ -1,5 +1,6 @@
 #include "RenderComponent.h"
 #include "Material/MaterialInstance.h"
+#include "Assets/Assets.h"
 
 namespace Zephyrus::ActorComponent
 {
@@ -14,6 +15,29 @@ namespace Zephyrus::ActorComponent
 		{
 			delete mMaterial;
 			mMaterial = nullptr;
+		}
+	}
+
+	void RenderComponent::Deserialize(Serialization::IDeserializer& pReader)
+	{
+		Component::Deserialize(pReader);
+		if (pReader.BeginObject("materialInstance"))
+		{
+			if (auto materialPath = pReader.ReadString("baseMaterial"))
+			{
+				auto mat = Assets::AssetsManager::LoadMaterial(*materialPath, *materialPath);
+				SetMaterial(mat);
+				mMaterial->Deserialize(pReader);
+			}
+			pReader.EndObject();
+		}
+	}
+
+	void RenderComponent::Serialize(Serialization::ISerializer& pWriter)
+	{
+		if (mMaterial)
+		{
+			mMaterial->Serialize(pWriter);
 		}
 	}
 

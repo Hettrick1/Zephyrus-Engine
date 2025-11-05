@@ -16,7 +16,12 @@
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [0.0, 0.0, 0.0]
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "fov": 70.0,
+                        "width": 1920.0,
+                        "height": 1080.0,
+                        "nearClip": 0.1,
+                        "farClip": 10000.0
                     }
                 }]
         }, {
@@ -39,7 +44,19 @@
                         "mesh": "../Content/Meshes/sphere.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [1.0, 1.0]
+                        "textureTiling": [1.0, 1.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [1.0, 1.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "PlayerStartComponent",

@@ -41,5 +41,8 @@ namespace Zephyrus::Material
 
         virtual void Serialize(Serialization::ISerializer& writer) const = 0;
         virtual void Deserialize(Serialization::IDeserializer& reader) = 0;
+
+        virtual void SetFilePath(const std::string& filePath) = 0;
+        virtual std::string GetFilePath() const = 0;
     };
 }

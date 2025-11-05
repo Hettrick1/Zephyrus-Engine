@@ -19,12 +19,6 @@ namespace Zephyrus::ActorComponent
 	{
 	protected:
 		IMesh* mMesh{ nullptr };
-		Render::IShader* mVertexShader{ nullptr };
-		Render::IShader* mFragmentShader{ nullptr };
-		Render::IShaderProgram* mShaderProgram{ nullptr };
-		Render::IShader* mOutlineVertexShader{ nullptr };
-		Render::IShader* mOutlineFragmentShader{ nullptr };
-		Render::IShaderProgram* mOutlineShaderProgram{ nullptr };
 		Vector2D mTiling;
 		std::vector<Assets::ITexture2D*> mTextures;
 		unsigned int mTextureIndex = 0;
@@ -56,6 +50,5 @@ namespace Zephyrus::ActorComponent
 		void SetTiling(const Vector2D& pTiling);
 
 		inline IMesh* GetMesh() const { return mMesh; }
-		inline Render::IShaderProgram* GetShaderProgram() { return mShaderProgram; }
 	};
 }

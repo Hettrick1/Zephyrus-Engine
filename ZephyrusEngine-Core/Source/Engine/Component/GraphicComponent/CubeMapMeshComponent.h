@@ -15,8 +15,6 @@ namespace Zephyrus::ActorComponent
 		virtual ~CubeMapMeshComponent();
 		void Draw(const Zephyrus::Render::IRenderer& pRenderer) override;
 
-		inline Render::IShaderProgram* GetShaderProgram() { return mShaderProgram; }
-
 	protected:
 		Assets::ICubeMapTexture* mCubeMapTexture;
 	};

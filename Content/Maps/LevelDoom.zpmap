@@ -20,7 +20,19 @@
                         "mesh": "../Content/Meshes/sphere.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [1.0, 1.0]
+                        "textureTiling": [1.0, 1.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [1.0, 1.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "PlayerStartComponent",
@@ -74,7 +86,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 3,
-                        "textureTiling": [150.0, 6.0]
+                        "textureTiling": [150.0, 6.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268bis.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [150.0, 6.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -109,7 +133,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 3,
-                        "textureTiling": [150.0, 6.0]
+                        "textureTiling": [150.0, 6.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268bis.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [150.0, 6.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -144,7 +180,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 150.0]
+                        "textureTiling": [6.0, 150.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 150.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -179,7 +227,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 150.0]
+                        "textureTiling": [6.0, 150.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 150.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -214,7 +274,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 150.0]
+                        "textureTiling": [6.0, 150.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 150.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -249,7 +321,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 150.0]
+                        "textureTiling": [6.0, 150.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 150.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -284,7 +368,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0]
+                        "textureTiling": [6.0, 6.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 6.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -319,7 +415,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0]
+                        "textureTiling": [6.0, 6.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 6.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -354,7 +462,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 2,
-                        "textureTiling": [300.0, 300.0]
+                        "textureTiling": [300.0, 300.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/091.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [300.0, 300.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -389,7 +509,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0]
+                        "textureTiling": [6.0, 6.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 6.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -424,7 +556,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0]
+                        "textureTiling": [6.0, 6.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 6.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -459,7 +603,19 @@
                         "mesh": "../Content/Meshes/cube.obj",
                         "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
                         "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0]
+                        "textureTiling": [6.0, 6.0],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/268.png"
+                                }
+                            },
+                            "vec2Properties": {
+                                "uTiling": [6.0, 6.0]
+                            }
+                        }
                     }
                 }, {
                     "type": "CubeColliderComponent",
@@ -491,7 +647,16 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/amoPu.png",
-                        "cullOff": false
+                        "cullOff": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/amoPu.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "PickUpComponent",
@@ -532,7 +697,16 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/lifePu.png",
-                        "cullOff": false
+                        "cullOff": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/lifePu.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "PickUpComponent",
@@ -573,7 +747,16 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/lifePu.png",
-                        "cullOff": false
+                        "cullOff": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/lifePu.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "PickUpComponent",
@@ -614,7 +797,16 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/armorPu.png",
-                        "cullOff": false
+                        "cullOff": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/armorPu.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "PickUpComponent",
@@ -655,7 +847,16 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "texture": "../Content/Sprites/Doom/armorPu.png",
-                        "cullOff": false
+                        "cullOff": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/armorPu.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "PickUpComponent",
@@ -700,7 +901,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
                         "animFps": 4.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -712,7 +922,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
                         "animFps": 40.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "CapsuleColliderComponent",
@@ -757,7 +976,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
                         "animFps": 4.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -769,7 +997,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
                         "animFps": 40.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "CapsuleColliderComponent",
@@ -814,7 +1051,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
                         "animFps": 4.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -826,7 +1072,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
                         "animFps": 40.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "CapsuleColliderComponent",
@@ -871,7 +1126,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
                         "animFps": 4.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -883,7 +1147,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
                         "animFps": 40.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "CapsuleColliderComponent",
@@ -928,7 +1201,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
                         "animFps": 4.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "FlipbookComponent",
@@ -940,7 +1222,16 @@
                         "cullOff": false,
                         "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
                         "animFps": 40.0,
-                        "isLooping": false
+                        "isLooping": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": {
+                                "albedo": {
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }
+                            }
+                        }
                     }
                 }, {
                     "type": "CapsuleColliderComponent",
