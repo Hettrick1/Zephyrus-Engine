@@ -19,6 +19,9 @@ namespace Zephyrus::ActorComponent
 		mTexHeight = static_cast<int>(mTexture->GetHeight());
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
+
+		auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/BasicSprite.zpmat", "../Content/Material/BasicSprite.zpmat");
+		SetMaterial(mat);
 	}
 
 	SpriteComponent::~SpriteComponent()
@@ -49,7 +52,7 @@ namespace Zephyrus::ActorComponent
 		Component::Deserialize(pReader);
 		if (auto texturePath = pReader.ReadString("texture"))
 		{
-			mTexture = AssetsManager::LoadTexture(*texturePath, *texturePath);
+			SetTexture(AssetsManager::LoadTexture(*texturePath, *texturePath));
 		}
 		mTexWidth = static_cast<int>(mTexture->GetWidth());
 		mTexHeight = static_cast<int>(mTexture->GetHeight());
@@ -82,6 +85,7 @@ namespace Zephyrus::ActorComponent
 		//	mTexHeight = mTexHeightOverride;
 		//	mTexture->OverrideTextureSize(mTexWidth, mTexHeight);
 		//}
+		mMaterial->SetTexture("albedo", mTexture);
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
 	}

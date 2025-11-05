@@ -1,0 +1,20 @@
+{
+    "shaders": {
+        "vertex": "../Content/Shaders/Simple.vert",
+        "fragment": "../Content/Shaders/Simple.frag"
+    },
+    "textures": {
+        "albedo": {
+            "type": "Texture2D",
+            "path": "../Content/Sprites/uv_mapper.jpg"
+        }
+    },
+    "floatProperties": {},
+    "intProperties": {},
+    "vec2Properties": {},
+    "vec3Properties": {},
+    "vec4Properties": {
+        "uTint": [1.0, 1.0, 1.0, 1.0]
+    },
+    "mat4Properties": {}
+}

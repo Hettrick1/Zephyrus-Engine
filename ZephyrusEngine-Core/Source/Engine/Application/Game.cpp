@@ -92,17 +92,17 @@ namespace Zephyrus::Application {
     {
         //temp to create easily materials
         Zephyrus::Material::Material mat;
-        mat.SetVertexShader(Assets::AssetsManager::LoadShader("BasicMesh.vert", ShaderType::VERTEX, "basicMeshVert"));
-        mat.SetFragmentShader(Assets::AssetsManager::LoadShader("BasicMesh.frag", ShaderType::FRAGMENT, "basicMeshFrag"));
+        mat.SetVertexShader(Assets::AssetsManager::LoadShader("Simple.vert", ShaderType::VERTEX, "Simple.vert"));
+        mat.SetFragmentShader(Assets::AssetsManager::LoadShader("Simple.frag", ShaderType::FRAGMENT, "Simple.frag"));
 
-        mat.SetProperty("uTiling", Vector2D(1, 1));
-        mat.SetTexture("albedo", Assets::AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png"));
+        mat.SetProperty("uTint", Vector4D(1, 1, 1, 1));
+        mat.SetTexture("albedo", Assets::AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg"));
 
         Serialization::Json::JsonWriter writer;
 
         mat.Serialize(writer);
 
-        writer.SaveDocument("../Content/Material/basicMesh.zpmat");
+        writer.SaveDocument("../Content/Material/BasicSprite.zpmat");
 
         while (mIsRunning) {
             Timer::ComputeDeltaTime();
