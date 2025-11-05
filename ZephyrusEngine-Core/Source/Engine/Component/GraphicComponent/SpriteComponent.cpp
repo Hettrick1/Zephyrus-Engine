@@ -11,7 +11,7 @@ using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::ActorComponent
 {
 	SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
-		: Component(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(Zephyrus::Render::IRenderer::Flip::None)
+		: RenderComponent(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(Zephyrus::Render::IRenderer::Flip::None)
 	{
 		mOwner->GetScene().GetRenderer()->AddSprite(this);
 		mTexture = AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
@@ -102,7 +102,7 @@ namespace Zephyrus::ActorComponent
 			{
 				glDisable(GL_DEPTH_TEST);
 			}
-			pRenderer.DrawSprite(*mOwner, mTexture, Rectangle2D(), Vector2D(), mFlipMethode);
+			pRenderer.DrawSprite(mMaterial, GetWorldTransform());
 		}
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
-#include "Component.h"
 #include "IRenderer.h"
 #include "Interface/ITexture2D.h"
+#include "RenderComponent.h"
 
 /**
  * @brief Component that handles rendering a 2D sprite for an Actor.
@@ -9,7 +9,7 @@
  */
 namespace Zephyrus::ActorComponent
 {
-	class SpriteComponent : public Component
+	class SpriteComponent : public RenderComponent
 	{
 	protected:
 		Assets::ITexture2D* mTexture;
@@ -39,7 +39,8 @@ namespace Zephyrus::ActorComponent
 		virtual void SetTexture(Assets::ITexture2D* pTexture);
 		// Sets the flip method for rendering the sprite
 		void SetFlipMethode(Zephyrus::Render::IRenderer::Flip pFlipMethode);
-		virtual void Draw(const Zephyrus::Render::IRenderer& pRenderer);
+
+		virtual void Draw(const Zephyrus::Render::IRenderer& pRenderer) override;
 
 		// Enables or disables culling for the sprite
 		void SetCullOff(bool cull);

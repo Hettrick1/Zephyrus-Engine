@@ -1,10 +1,9 @@
 #pragma once
-#include "Component.h"
 #include "Interface/IMesh.h"
 #include "Interface/IShaderProgram.h"
 #include "Interface/IShader.h"
-#include "Material/IMaterialInstance.h"
 #include "Maths.h"
+#include "RenderComponent.h"
 
 namespace Zephyrus::Assets
 {
@@ -16,7 +15,7 @@ using Zephyrus::Render::ShaderType;
 
 namespace Zephyrus::ActorComponent
 {
-	class MeshComponent : public Component
+	class MeshComponent : public RenderComponent
 	{
 	protected:
 		IMesh* mMesh{ nullptr };
@@ -26,7 +25,6 @@ namespace Zephyrus::ActorComponent
 		Render::IShader* mOutlineVertexShader{ nullptr };
 		Render::IShader* mOutlineFragmentShader{ nullptr };
 		Render::IShaderProgram* mOutlineShaderProgram{ nullptr };
-		Material::IMaterialInstance* mMaterial{ nullptr };
 		Vector2D mTiling;
 		std::vector<Assets::ITexture2D*> mTextures;
 		unsigned int mTextureIndex = 0;
@@ -43,7 +41,8 @@ namespace Zephyrus::ActorComponent
 		void OnEnd() override;
 		std::vector<PropertyDescriptor> GetProperties() override;
 
-		virtual void Draw(const Matrix4DRow& pViewProj);
+		virtual void Draw(const Zephyrus::Render::IRenderer& pRenderer) override;
+
 		virtual void SetMesh(IMesh* pMesh);
 		void SetTextureIndex(unsigned int pTextureIndex);
 

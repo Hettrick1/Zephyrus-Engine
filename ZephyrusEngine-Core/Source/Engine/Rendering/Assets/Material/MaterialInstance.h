@@ -18,6 +18,7 @@ namespace Zephyrus::Material
         std::unordered_map<std::string, Assets::ITextureBase*> mTextureOverrides;
     public:
         MaterialInstance(IMaterial* base);
+        ~MaterialInstance() = default;
         void SetMaterial(IMaterial* newMaterial) override;
         void ClearOverride(const std::string& name) override;
         void ClearOverrides() override;

@@ -9,16 +9,12 @@
 #include "Interface/ITexture2D.h"
 
 
-// TO BE REMOVED
-#include "Material/Material.h"
-#include "Material/MaterialInstance.h"
-
 using Zephyrus::Assets::AssetsManager;
 
 namespace Zephyrus::ActorComponent
 {
 	MeshComponent::MeshComponent(Actor* pOwner)
-		: Component(pOwner, "MeshComponent"), mMesh(nullptr), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
+		: RenderComponent(pOwner, "MeshComponent"), mMesh(nullptr), mTiling(Vector2D(pOwner->GetTransformComponent().GetSize().x, pOwner->GetTransformComponent().GetSize().y))
 	{
 		mOwner->GetScene().GetRenderer()->AddMesh(this);
 
@@ -38,12 +34,11 @@ namespace Zephyrus::ActorComponent
 
 		//FOR NOW, NEED TO SERIALIZE THE MATERIAL IN THE COMPONENT SERIALISATION
 		auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/BasicMesh.zpmat", "../Content/Material/BasicMesh.zpmat");
-		mMaterial = new Material::MaterialInstance(mat);
+		SetMaterial(mat);
 	}
 
 	MeshComponent::~MeshComponent()
 	{
-		delete mMaterial;
 	}
 
 	void MeshComponent::Deserialize(Serialization::IDeserializer& pReader)
@@ -131,7 +126,7 @@ namespace Zephyrus::ActorComponent
 		};
 	}
 
-	void MeshComponent::Draw(const Matrix4DRow& pViewProj)
+	void MeshComponent::Draw(const Zephyrus::Render::IRenderer& pRenderer)
 	{
 		if (!mMesh)
 		{
@@ -141,7 +136,7 @@ namespace Zephyrus::ActorComponent
 		Matrix4DRow wt = GetWorldTransform();
 
 		//FOR NOW
-		mMaterial->Use(&wt, &pViewProj);
+		/*mMaterial->Use(&wt, &pViewProj);*/
 		/*mShaderProgram->Use();
 		mShaderProgram->setMatrix4Row("uViewProj", pViewProj);
 		mShaderProgram->setMatrix4Row("uWorldTransform", wt);
@@ -155,15 +150,16 @@ namespace Zephyrus::ActorComponent
 		{
 			tex->Bind();
 		}*/
-		mMesh->Bind();
-		if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
-		{
-			glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
-		}
-		else
-		{
-			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
-		}
+		pRenderer.DrawMesh(mMaterial, mMesh, GetWorldTransform());
+		//mMesh->Bind();
+		//if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+		//{
+		//	glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
+		//}
+		//else
+		//{
+		//	glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
+		//}
 	}
 
 	void MeshComponent::SetMesh(IMesh* pMesh)

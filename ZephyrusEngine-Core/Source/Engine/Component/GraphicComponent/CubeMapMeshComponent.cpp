@@ -17,28 +17,28 @@ namespace Zephyrus::ActorComponent
 	{
 	}
 
-	void CubeMapMeshComponent::Draw(const Matrix4DRow& viewProj)
+	void CubeMapMeshComponent::Draw(const Zephyrus::Render::IRenderer& pRenderer)
 	{
-		if (mMesh)
-		{
-			Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
-			mShaderProgram->Use();
-			mShaderProgram->setMatrix4Row("uViewProj", viewProj);
-			mShaderProgram->setMatrix4Row("uWorldTransform", wt);
-			mShaderProgram->setVector2f("uTiling", mTiling);
-			mShaderProgram->setFloat("uLod", mOwner->GetLod());
-			mShaderProgram->setFloat("uTime", SDL_GetTicks());
-			mCubeMapTexture->Bind();
-			mMesh->Bind();
-			if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
-			{
-				//glPatchParameteri(GL_PATCH_VERTICES, 3);
-				glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
-			}
-			else
-			{
-				glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
-			}
-		}
+		//if (mMesh)
+		//{
+		//	Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
+		//	mShaderProgram->Use();
+		//	mShaderProgram->setMatrix4Row("uViewProj", viewProj);
+		//	mShaderProgram->setMatrix4Row("uWorldTransform", wt);
+		//	mShaderProgram->setVector2f("uTiling", mTiling);
+		//	mShaderProgram->setFloat("uLod", mOwner->GetLod());
+		//	mShaderProgram->setFloat("uTime", SDL_GetTicks());
+		//	mCubeMapTexture->Bind();
+		//	mMesh->Bind();
+		//	if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+		//	{
+		//		//glPatchParameteri(GL_PATCH_VERTICES, 3);
+		//		glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
+		//	}
+		//	else
+		//	{
+		//		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
+		//	}
+		//}
 	}
 }
