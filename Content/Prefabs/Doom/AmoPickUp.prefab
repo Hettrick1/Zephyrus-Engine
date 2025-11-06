@@ -13,7 +13,15 @@
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [90, 0, 0],
-                "texture" : "Sprites/Doom/amoPu.png"
+                "texture" : "Sprites/Doom/amoPu.png",
+                "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }]
+                        }
             }
         },
         {

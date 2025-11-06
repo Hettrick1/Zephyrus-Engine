@@ -41,7 +41,15 @@
             "properties": {
                 "relativePosition" : [0, 2, -0.5],
                 "relativeRotation" : [90, 0, 0],
-                "cullOff" : true
+                "cullOff" : true,
+                "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }]
+                        }
             }
         },
         {

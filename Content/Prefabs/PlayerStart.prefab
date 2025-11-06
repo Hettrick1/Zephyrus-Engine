@@ -17,7 +17,15 @@
                 "textures" : [
                     "Sprites/uv_mapper.jpg"
                 ],
-                "textureIndex" : 1
+                "textureIndex" : 1,
+                "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }]
+                        }
             }
         },
         {

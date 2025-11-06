@@ -198,7 +198,7 @@ namespace Serialization::Json {
     }
     bool JsonReader::BeginObjectArray(const char* pKey)
     {
-        const auto* arr = GetMember(mCurrentValue, pKey);
+        const rapidjson::Value* arr = GetMember(mCurrentValue, pKey);
         if (!arr || !arr->IsArray())
         {
             return false;
@@ -209,36 +209,21 @@ namespace Serialization::Json {
     }
     bool JsonReader::NextObjectElement()
     {
-        if (!mArrayStack.empty())
+        if (mArrayStack.empty())
+            return false;
+
+        auto& ctx = mArrayStack.top();
+        if (ctx.it == ctx.end)
+            return false;
+
+        if (!ctx.it->IsObject())
         {
-            auto& ctx = mArrayStack.top();
-            if (ctx.it == ctx.end)
-                return false;
-
-            mCurrentValue = &(*ctx.it++);
-            mCurrentKey.clear();
-
-            if (mCurrentValue->IsObject())
-                mObjectIterator = mCurrentValue->MemberBegin();
-
-            return true;
+            ++ctx.it;
+            return false;
         }
 
-        if (!mCurrentValue || !mCurrentValue->IsObject())
-            return false;
-
-        auto it = mCurrentValue->MemberBegin();
-        auto end = mCurrentValue->MemberEnd();
-
-        if (it == end)
-            return false;
-
-        const auto& member = *it;
-        mCurrentKey = member.name.GetString();
-        mCurrentValue = &member.value;
-
-        mObjectIterator = it + 1;
-
+        mContextStack.push(mCurrentValue);
+        mCurrentValue = &(*ctx.it++);
         return true;
     }
     void JsonReader::EndObjectArray()
@@ -254,6 +239,7 @@ namespace Serialization::Json {
 
         mArrayStack.pop();
     }
+
 
     JsonWriter::JsonWriter()
     {

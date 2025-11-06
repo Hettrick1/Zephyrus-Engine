@@ -210,7 +210,6 @@ namespace Zephyrus::Material
 			}
 			writer.EndArray();
 		}
-		writer.EndObject();
 
 		// --- Mat4 properties ---
 		if (!mMatrix4DOverrides.empty())

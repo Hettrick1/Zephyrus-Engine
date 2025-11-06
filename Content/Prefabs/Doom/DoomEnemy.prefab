@@ -15,7 +15,15 @@
                 "relativePosition" : [0, 0, 0.2],
                 "relativeRotation" : [90, 0, 0],
                 "relativeSize" : [2.5, 2.5, 2.5],
-                "tags" : ["enemyFB"]
+                "tags" : ["enemyFB"],
+                "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }]
+                        }
             }
         },
         {
@@ -24,7 +32,15 @@
             "properties": {
                 "relativePosition" : [0, 0.1, 0.3],
                 "relativeRotation" : [90, 0, 0],
-                "relativeSize" : [1.3, 1.3, 1.3]
+                "relativeSize" : [1.3, 1.3, 1.3],
+                "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }]
+                        }
             }
         },
         {

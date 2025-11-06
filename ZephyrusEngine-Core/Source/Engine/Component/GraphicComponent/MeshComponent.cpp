@@ -22,6 +22,9 @@ namespace Zephyrus::ActorComponent
 		auto texture = AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png");
 		AddTexture(texture);
 		SetTextureIndex(0);
+
+		/*auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/BasicMesh.zpmat", "../Content/Material/BasicMesh.zpmat");
+		SetMaterial(mat);*/
 	}
 
 	MeshComponent::~MeshComponent()
