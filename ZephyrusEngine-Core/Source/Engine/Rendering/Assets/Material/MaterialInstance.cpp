@@ -105,96 +105,142 @@ namespace Zephyrus::Material
 	{
 		writer.BeginObject("materialInstance");
 
-		writer.WriteString("baseMaterial", mBaseMaterial->GetFilePath());
+		writer.WriteString("baseMaterial", mBaseMaterial ? mBaseMaterial->GetFilePath() : "");
 
-		writer.BeginObject("textures");
-		for (auto& [name, tex] : mTextureOverrides)
+		if (!mTextureOverrides.empty())
 		{
-			writer.BeginObject(name.c_str());
+			writer.BeginArray("textures");
 
-			if (auto tex2D = dynamic_cast<Assets::ITexture2D*>(tex))
+			for (auto& [name, tex] : mTextureOverrides)
 			{
-				writer.WriteString("type", "Texture2D");
-				writer.WriteString("path", tex2D->GetFilePath());
-			}
-			else if (auto cubemap = dynamic_cast<Assets::ICubeMapTexture*>(tex))
-			{
-				writer.WriteString("type", "Cubemap");
-				writer.BeginArray("paths");
-				for (auto& face : cubemap->GetFaceFilePath())
-					writer.PushString(face);
-				writer.EndArray();
-			}
-			else
-			{
-				writer.WriteString("type", "Unknown");
+				writer.BeginObject();
+
+				writer.WriteString("name", name);
+
+				if (auto tex2D = dynamic_cast<Assets::ITexture2D*>(tex))
+				{
+					writer.WriteString("type", "Texture2D");
+					writer.WriteString("path", tex2D->GetFilePath());
+				}
+				else if (auto cubemap = dynamic_cast<Assets::ICubeMapTexture*>(tex))
+				{
+					writer.WriteString("type", "Cubemap");
+					writer.BeginArray("paths");
+					for (auto& facePath : cubemap->GetFaceFilePath())
+						writer.PushString(facePath);
+					writer.EndArray();
+				}
+				else
+				{
+					writer.WriteString("type", "Unknown");
+				}
+
+				writer.EndObject();
 			}
 
-			writer.EndObject();
+			writer.EndArray();
 		}
 
-		writer.EndObject();
-
+		// --- Float properties ---
 		if (!mFloatOverrides.empty())
 		{
-			writer.BeginObject("floatProperties");
+			writer.BeginArray("floatProperties");
 			for (auto& [name, value] : mFloatOverrides)
-				writer.WriteFloat(name.c_str(), value);
-			writer.EndObject();
+			{
+				writer.BeginObject();
+				writer.WriteString("name", name);
+				writer.WriteFloat("value", value);
+				writer.EndObject();
+			}
+			writer.EndArray();
 		}
 
+		// --- Int properties ---
 		if (!mIntOverrides.empty())
 		{
-			writer.BeginObject("intProperties");
+			writer.BeginArray("intProperties");
 			for (auto& [name, value] : mIntOverrides)
-				writer.WriteInt(name.c_str(), value);
-			writer.EndObject();
+			{
+				writer.BeginObject();
+				writer.WriteString("name", name);
+				writer.WriteInt("value", value);
+				writer.EndObject();
+			}
+			writer.EndArray();
 		}
 
+		// --- Vec2 properties ---
 		if (!mVector2DOverrides.empty())
 		{
-			writer.BeginObject("vec2Properties");
+			writer.BeginArray("vec2Properties");
 			for (auto& [name, value] : mVector2DOverrides)
-				writer.WriteVector2D(name.c_str(), value);
-			writer.EndObject();
+			{
+				writer.BeginObject();
+				writer.WriteString("name", name);
+				writer.WriteVector2D("value", value);
+				writer.EndObject();
+			}
+			writer.EndArray();
 		}
 
+		// --- Vec3 properties ---
 		if (!mVector3DOverrides.empty())
 		{
-			writer.BeginObject("vec3Properties");
+			writer.BeginArray("vec3Properties");
 			for (auto& [name, value] : mVector3DOverrides)
-				writer.WriteVector3D(name.c_str(), value);
-			writer.EndObject();
+			{
+				writer.BeginObject();
+				writer.WriteString("name", name);
+				writer.WriteVector3D("value", value);
+				writer.EndObject();
+			}
+			writer.EndArray();
 		}
 
+		// --- Vec4 properties ---
 		if (!mVector4DOverrides.empty())
 		{
-			writer.BeginObject("vec4Properties");
+			writer.BeginArray("vec4Properties");
 			for (auto& [name, value] : mVector4DOverrides)
-				writer.WriteVector4D(name.c_str(), value);
-			writer.EndObject();
+			{
+				writer.BeginObject();
+				writer.WriteString("name", name);
+				writer.WriteVector4D("value", value);
+				writer.EndObject();
+			}
+			writer.EndArray();
 		}
+		writer.EndObject();
 
+		// --- Mat4 properties ---
 		if (!mMatrix4DOverrides.empty())
 		{
-			writer.BeginObject("mat4Properties");
+			writer.BeginArray("mat4Properties");
 			for (auto& [name, value] : mMatrix4DOverrides)
-				writer.WriteMatrice4DRow(name.c_str(), value);
-			writer.EndObject();
+			{
+				writer.BeginObject();
+				writer.WriteString("name", name);
+				writer.WriteMatrice4DRow("value", value);
+				writer.EndObject();
+			}
+			writer.EndArray();
 		}
 		writer.EndObject();
 	}
 	void MaterialInstance::Deserialize(Serialization::IDeserializer& reader)
 	{
-		if (reader.BeginObject("textures"))
+		// --- Textures ---
+		if (reader.BeginObjectArray("textures"))
 		{
 			while (reader.NextObjectElement())
 			{
-				auto texTypeOpt = reader.ReadString("type");
-				if (!texTypeOpt.has_value())
+				auto nameOpt = reader.ReadString("name");
+				auto typeOpt = reader.ReadString("type");
+				if (!nameOpt.has_value() || !typeOpt.has_value())
 					continue;
 
-				const std::string& type = texTypeOpt.value();
+				const std::string& name = nameOpt.value();
+				const std::string& type = typeOpt.value();
 
 				if (type == "Texture2D")
 				{
@@ -203,105 +249,108 @@ namespace Zephyrus::Material
 					{
 						auto tex = Assets::AssetsManager::LoadTexture(pathOpt.value(), pathOpt.value());
 						if (tex)
-							mTextureOverrides[reader.GetCurrentKey()] = tex;
+							mTextureOverrides[name] = tex;
 					}
 				}
 				else if (type == "Cubemap")
 				{
 					auto facesOpt = reader.ReadArrayString("paths");
-					if (facesOpt.has_value() && facesOpt.value().size() == 6)
+					if (facesOpt.has_value() && facesOpt->size() == 6)
 					{
-						std::string name;
-						for (auto path : facesOpt.value())
-						{
-							name += path;
-						}
-						auto tex = Assets::AssetsManager::LoadCubemap(facesOpt.value(), name);
+						std::string cubeKey;
+						for (auto& path : facesOpt.value())
+							cubeKey += path;
+
+						auto tex = Assets::AssetsManager::LoadCubemap(facesOpt.value(), cubeKey);
 						if (tex)
-						{
-							mTextureOverrides[reader.GetCurrentKey()] = tex;
-						}
+							mTextureOverrides[name] = tex;
 					}
 				}
 				else
 				{
-					ZP_CORE_WARN("Unknown texture type found in material deserialization");
+					ZP_CORE_WARN("Unknown texture type found while deserializing material instance:" + type);
 				}
 			}
 
-			reader.EndObject();
+			reader.EndObjectArray();
 		}
 
-		if (reader.BeginObject("floatProperties"))
+		// --- Float properties ---
+		if (reader.BeginObjectArray("floatProperties"))
 		{
 			while (reader.NextObjectElement())
 			{
-				std::string key = reader.GetCurrentKey();
-				auto value = reader.ReadFloat();
-				if (value.has_value())
-					mFloatOverrides[key] = value.value();
+				auto nameOpt = reader.ReadString("name");
+				auto valueOpt = reader.ReadFloat("value");
+				if (nameOpt && valueOpt)
+					mFloatOverrides[nameOpt.value()] = valueOpt.value();
 			}
-			reader.EndObject();
+			reader.EndObjectArray();
 		}
 
-		if (reader.BeginObject("intProperties"))
+		// --- Int properties ---
+		if (reader.BeginObjectArray("intProperties"))
 		{
 			while (reader.NextObjectElement())
 			{
-				std::string key = reader.GetCurrentKey();
-				auto value = reader.ReadInt();
-				if (value.has_value())
-					mIntOverrides[key] = value.value();
+				auto nameOpt = reader.ReadString("name");
+				auto valueOpt = reader.ReadInt("value");
+				if (nameOpt && valueOpt)
+					mIntOverrides[nameOpt.value()] = valueOpt.value();
 			}
-			reader.EndObject();
+			reader.EndObjectArray();
 		}
 
-		if (reader.BeginObject("vec2Properties"))
+		// --- Vec2 properties ---
+		if (reader.BeginObjectArray("vec2Properties"))
 		{
 			while (reader.NextObjectElement())
 			{
-				std::string key = reader.GetCurrentKey();
-				auto value = reader.ReadVector2D();
-				if (value.has_value())
-					mVector2DOverrides[key] = value.value();
+				auto nameOpt = reader.ReadString("name");
+				auto valueOpt = reader.ReadVector2D("value");
+				if (nameOpt && valueOpt)
+					mVector2DOverrides[nameOpt.value()] = valueOpt.value();
 			}
-			reader.EndObject();
+			reader.EndObjectArray();
 		}
 
-		if (reader.BeginObject("vec3Properties"))
+		// --- Vec3 properties ---
+		if (reader.BeginObjectArray("vec3Properties"))
 		{
 			while (reader.NextObjectElement())
 			{
-				std::string key = reader.GetCurrentKey();
-				auto value = reader.ReadVector3D();
-				if (value.has_value())
-					mVector3DOverrides[key] = value.value();
+				auto nameOpt = reader.ReadString("name");
+				auto valueOpt = reader.ReadVector3D("value");
+				if (nameOpt && valueOpt)
+					mVector3DOverrides[nameOpt.value()] = valueOpt.value();
 			}
-			reader.EndObject();
+			reader.EndObjectArray();
 		}
 
-		if (reader.BeginObject("vec4Properties"))
+		// --- Vec4 properties ---
+		if (reader.BeginObjectArray("vec4Properties"))
 		{
 			while (reader.NextObjectElement())
 			{
-				std::string key = reader.GetCurrentKey();
-				auto value = reader.ReadVector4D();
-				if (value.has_value())
-					mVector4DOverrides[key] = value.value();
+				auto nameOpt = reader.ReadString("name");
+				auto valueOpt = reader.ReadVector4D("value");
+				if (nameOpt && valueOpt)
+					mVector4DOverrides[nameOpt.value()] = valueOpt.value();
 			}
-			reader.EndObject();
+			reader.EndObjectArray();
 		}
 
-		if (reader.BeginObject("mat4Properties"))
+		// --- Vec4 properties ---
+		if (reader.BeginObjectArray("mat4Properties"))
 		{
 			while (reader.NextObjectElement())
 			{
-				std::string key = reader.GetCurrentKey();
-				auto matOpt = reader.ReadMatrix4DRow();
-				if (matOpt.has_value())
-					mMatrix4DOverrides[key] = matOpt.value();
+				auto nameOpt = reader.ReadString("name");
+				auto valueOpt = reader.ReadMatrix4DRow("value");
+				if (nameOpt && valueOpt)
+					mMatrix4DOverrides[nameOpt.value()] = valueOpt.value();
 			}
-			reader.EndObject();
+			reader.EndObjectArray();
 		}
 	}
 }

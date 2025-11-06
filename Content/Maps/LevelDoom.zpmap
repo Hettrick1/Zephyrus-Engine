@@ -22,16 +22,16 @@
                         "textureIndex": 1,
                         "textureTiling": [1.0, 1.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/uv_mapper.jpg"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [1.0, 1.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [1.0, 1.0]
+                                }]
                         }
                     }
                 }, {
@@ -88,16 +88,16 @@
                         "textureIndex": 3,
                         "textureTiling": [150.0, 6.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268bis.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [150.0, 6.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [150.0, 6.0]
+                                }]
                         }
                     }
                 }, {
@@ -135,16 +135,16 @@
                         "textureIndex": 3,
                         "textureTiling": [150.0, 6.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268bis.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [150.0, 6.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [150.0, 6.0]
+                                }]
                         }
                     }
                 }, {
@@ -182,16 +182,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 150.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 150.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 150.0]
+                                }]
                         }
                     }
                 }, {
@@ -229,16 +229,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 150.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 150.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 150.0]
+                                }]
                         }
                     }
                 }, {
@@ -276,16 +276,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 150.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 150.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 150.0]
+                                }]
                         }
                     }
                 }, {
@@ -323,16 +323,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 150.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 150.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 150.0]
+                                }]
                         }
                     }
                 }, {
@@ -370,16 +370,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 6.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 6.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 6.0]
+                                }]
                         }
                     }
                 }, {
@@ -417,16 +417,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 6.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 6.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 6.0]
+                                }]
                         }
                     }
                 }, {
@@ -464,16 +464,16 @@
                         "textureIndex": 2,
                         "textureTiling": [300.0, 300.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/091.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [300.0, 300.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [300.0, 300.0]
+                                }]
                         }
                     }
                 }, {
@@ -511,16 +511,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 6.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 6.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 6.0]
+                                }]
                         }
                     }
                 }, {
@@ -558,16 +558,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 6.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 6.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 6.0]
+                                }]
                         }
                     }
                 }, {
@@ -605,16 +605,16 @@
                         "textureIndex": 1,
                         "textureTiling": [6.0, 6.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/268.png"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [6.0, 6.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [6.0, 6.0]
+                                }]
                         }
                     }
                 }, {
@@ -649,13 +649,12 @@
                         "texture": "../Content/Sprites/Doom/amoPu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/amoPu.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -699,13 +698,12 @@
                         "texture": "../Content/Sprites/Doom/lifePu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/lifePu.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -749,13 +747,12 @@
                         "texture": "../Content/Sprites/Doom/lifePu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/lifePu.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -799,13 +796,12 @@
                         "texture": "../Content/Sprites/Doom/armorPu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/armorPu.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -849,13 +845,12 @@
                         "texture": "../Content/Sprites/Doom/armorPu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/armorPu.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -903,13 +898,12 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -924,13 +918,12 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -978,13 +971,12 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -999,13 +991,12 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -1053,13 +1044,12 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -1074,13 +1064,12 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -1128,13 +1117,12 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -1149,13 +1137,12 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -1203,13 +1190,12 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {
@@ -1224,13 +1210,12 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
-                                }
-                            }
+                                }]
                         }
                     }
                 }, {

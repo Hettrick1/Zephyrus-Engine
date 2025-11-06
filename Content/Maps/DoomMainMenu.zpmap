@@ -46,16 +46,16 @@
                         "textureIndex": 1,
                         "textureTiling": [1.0, 1.0],
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": {
-                                "albedo": {
+                            "BaseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/uv_mapper.jpg"
-                                }
-                            },
-                            "vec2Properties": {
-                                "uTiling": [1.0, 1.0]
-                            }
+                                }],
+                            "Vec2Properties": [{
+                                    "Name": "uTiling",
+                                    "Value": [1.0, 1.0]
+                                }]
                         }
                     }
                 }, {

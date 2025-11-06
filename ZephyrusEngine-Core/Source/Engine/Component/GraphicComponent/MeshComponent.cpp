@@ -73,6 +73,7 @@ namespace Zephyrus::ActorComponent
 			ZP_CORE_WARN("No mesh referenced in the prefab actor !");
 		}
 
+		if (!mMaterial) return;
 		// TODO serialize materials
 		mMaterial->SetTexture("albedo", mTextures[mTextureIndex]);
 	}
@@ -165,7 +166,7 @@ namespace Zephyrus::ActorComponent
 	{
 		mTiling = pTiling;
 
-
+		if (!mMaterial) return;
 		// TODO serialize materials (need tiling to be in the material instance)
 		mMaterial->SetVector2D("uTiling", pTiling);
 	}

@@ -92,17 +92,17 @@ namespace Zephyrus::Application {
     {
         //temp to create easily materials
         Zephyrus::Material::Material mat;
-        mat.SetVertexShader(Assets::AssetsManager::LoadShader("Simple.vert", ShaderType::VERTEX, "Simple.vert"));
-        mat.SetFragmentShader(Assets::AssetsManager::LoadShader("Simple.frag", ShaderType::FRAGMENT, "Simple.frag"));
+        mat.SetVertexShader(Assets::AssetsManager::LoadShader("../Content/Shaders/BasicMesh.vert", ShaderType::VERTEX, "../Content/Shaders/BasicMesh.vert"));
+        mat.SetFragmentShader(Assets::AssetsManager::LoadShader("../Content/Shaders/BasicMesh.frag", ShaderType::FRAGMENT, "../Content/Shaders/BasicMesh.frag"));
 
-        mat.SetProperty("uTint", Vector4D(1, 1, 1, 1));
-        mat.SetTexture("albedo", Assets::AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg"));
+        mat.SetProperty("uTiling", Vector2D(1, 1));
+        mat.SetTexture("albedo", Assets::AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png"));
 
         Serialization::Json::JsonWriter writer;
 
         mat.Serialize(writer);
 
-        writer.SaveDocument("../Content/Material/BasicSprite.zpmat");
+        writer.SaveDocument("../Content/Material/BasicMesh.zpmat");
 
         while (mIsRunning) {
             Timer::ComputeDeltaTime();
