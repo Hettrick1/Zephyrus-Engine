@@ -187,6 +187,8 @@ void EditorApplication::Update()
     }
     auto world = mSceneManager->GetPhysicsWorld();
     world->Update(0);
+
+    EventSystem::Update();
 }
 
 void EditorApplication::Render()

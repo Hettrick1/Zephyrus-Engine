@@ -11,6 +11,9 @@ private:
 	static bool mCanUndo;
 	static bool mCanRedo;
 public:
+
+	static void Update();
+
 	static void DoEvent(Event* event);
 	static void UndoLastEvent();
 	static void RedoLastUndo();

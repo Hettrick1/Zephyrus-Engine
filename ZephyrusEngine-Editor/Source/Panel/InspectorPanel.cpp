@@ -599,7 +599,8 @@ void InspectorPanel::SetPropertyFloat(const PropertyDescriptor& pProperty, const
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
 	std::string label = "##" + prop.name;
-	if (ImGui::InputFloat(label.c_str(), &fVar))
+	ImGui::InputFloat(label.c_str(), &fVar);
+	if(ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 	{
 		prop.setter(&fVar);
 	}
@@ -613,7 +614,8 @@ void InspectorPanel::SetPropertyInt(const PropertyDescriptor& pProperty, const f
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
 	std::string label = "##" + prop.name;
-	if (ImGui::InputInt(label.c_str(), &iVar))
+	ImGui::InputInt(label.c_str(), &iVar);
+	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 	{
 		prop.setter(&iVar);
 	}

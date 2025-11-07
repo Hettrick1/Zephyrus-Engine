@@ -6,6 +6,11 @@ std::vector<Event*> EventSystem::mUndoedEvents;
 bool EventSystem::mCanUndo = false;
 bool EventSystem::mCanRedo = false;
 
+void EventSystem::Update()
+{
+	ZP_EDITOR_WARN("number of events : " + std::to_string(mAllEvents.size()));
+}
+
 void EventSystem::DoEvent(Event* event)
 {
 	//Zephyrus::Scenes::SceneManager::ActiveScene->SetIsSaved(false);
