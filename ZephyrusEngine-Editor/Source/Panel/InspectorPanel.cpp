@@ -1024,6 +1024,11 @@ void InspectorPanel::SetPropertyMaterialInstance(const PropertyDescriptor& prope
 		prop.setter(&materialInstance);
 	}
 
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip(buffer);
+	}
+
 	if (ImGui::TreeNodeEx("Material Properties", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		// --- TEXTURES OVERRIDES ---
@@ -1058,6 +1063,11 @@ void InspectorPanel::SetPropertyMaterialInstance(const PropertyDescriptor& prope
 							);
 							EventSystem::DoEvent(evt);
 						}
+					}
+
+					if (ImGui::IsItemHovered())
+					{
+						ImGui::SetTooltip(buffer);
 					}
 
 					// drag & drop
@@ -1096,6 +1106,11 @@ void InspectorPanel::SetPropertyMaterialInstance(const PropertyDescriptor& prope
 						{
 							faces[i] = buffer;
 							cubemap->SetTempFilePath(faces);
+						}
+
+						if (ImGui::IsItemHovered())
+						{
+							ImGui::SetTooltip(buffer);
 						}
 
 						if (ImGui::BeginDragDropTarget())
