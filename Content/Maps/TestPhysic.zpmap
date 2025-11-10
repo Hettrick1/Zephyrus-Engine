@@ -18,9 +18,18 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/sphere.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [1.0, 1.0]
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [1.0, 1.0]
+                                }]
+                        }
                     }
                 }, {
                     "type": "PlayerStartComponent",

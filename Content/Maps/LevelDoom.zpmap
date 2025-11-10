@@ -18,9 +18,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/sphere.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [1.0, 1.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -62,7 +59,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [20.0, 0.0, 0.0],
                         "isSphere": false,
-                        "textures": ["Sprites/Doom/skybox/front.png", "Sprites/Doom/skybox/back.png", "Sprites/Doom/skybox/top.png", "Sprites/Doom/skybox/bottom.png", "Sprites/Doom/skybox/left.png", "Sprites/Doom/skybox/right.png"],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/Skybox.zpmat",
                             "textures": [{
@@ -92,9 +88,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 3,
-                        "textureTiling": [150.0, 6.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -139,9 +132,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 3,
-                        "textureTiling": [150.0, 6.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -186,9 +176,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 150.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -233,9 +220,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 150.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -280,9 +264,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 150.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -327,9 +308,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 150.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -374,9 +352,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -421,9 +396,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -468,9 +440,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 2,
-                        "textureTiling": [300.0, 300.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -515,9 +484,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -562,9 +528,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -609,9 +572,6 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
-                        "textures": ["../Content/Sprites/planks.png", "../Content/Sprites/Doom/268.png", "../Content/Sprites/Doom/091.png", "../Content/Sprites/Doom/268bis.png", "../Content/Sprites/uv_mapper.jpg"],
-                        "textureIndex": 1,
-                        "textureTiling": [6.0, 6.0],
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{

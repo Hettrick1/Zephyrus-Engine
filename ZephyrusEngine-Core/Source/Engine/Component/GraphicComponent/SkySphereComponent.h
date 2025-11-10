@@ -22,17 +22,7 @@ namespace Zephyrus::ActorComponent
 	{
 	protected:
 		Assets::IMesh* mMesh{ nullptr };
-		Render::IShader* mVertexShader{ nullptr };
-		Render::IShader* mFragmentShader{ nullptr };
-		Render::IShader* mTescShader{ nullptr };
-		Render::IShader* mTeseShader{ nullptr };
-		Render::IShaderProgram* mShaderProgram{ nullptr };
-		Assets::ICubeMapTexture* mCubeMap{ nullptr };
-		Vector2D mTiling;
-		unsigned int mTextureIndex = 0;
-		Zephyrus::Assets::ITexture2D* mSphereTexture{ nullptr };
 		bool mIsSphere = false;
-
 		std::vector<std::string> mTexturesPaths;
 
 	public:
@@ -47,23 +37,10 @@ namespace Zephyrus::ActorComponent
 
 		std::vector<PropertyDescriptor> GetProperties() override;
 
-		// Sets the index of the texture to use
-		void SetTextureIndex(unsigned int pTextureIndex);
-
-		// Sets the shader program used for rendering
-		void SetShaderProgram(Render::IShaderProgram* pShaderProgram);
-
-		// Sets the tiling factor for the sky texture
-		void SetTiling(const Vector2D& pTiling);
-
 		void SetTexturePaths(std::vector<std::string>& pTexturesPaths);
 
 		inline Assets::IMesh* GetMesh() const { return mMesh; }
-		inline Render::IShaderProgram* GetShaderProgram() { return mShaderProgram; }
-		inline Assets::ICubeMapTexture* GetCubeMap() { return mCubeMap; }
-		inline unsigned int& GetTextureIndex() { return mTextureIndex; }
 		inline bool GetIsSphere() const { return mIsSphere; }
-		inline Zephyrus::Assets::ITexture2D* GetSphereTexture() const { return mSphereTexture; }
 
 		static int index;
 	};
