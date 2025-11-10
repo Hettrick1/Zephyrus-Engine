@@ -13,6 +13,7 @@ enum class PropertyType
     Texture, 
     Font, 
     Mesh,
+    MaterialInstance,
     VectorTexture,
     Prefab,
     CubeMap,

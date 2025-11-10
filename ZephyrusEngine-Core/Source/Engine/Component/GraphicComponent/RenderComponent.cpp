@@ -7,15 +7,12 @@ namespace Zephyrus::ActorComponent
 	RenderComponent::RenderComponent(Actor* pOwner, const std::string& pName)
 		: Component(pOwner, pName)
 	{
+		mMaterial = Material::MaterialInstance();
 	}
 
 	RenderComponent::~RenderComponent()
 	{
-		if(mMaterial)
-		{
-			delete mMaterial;
-			mMaterial = nullptr;
-		}
+
 	}
 
 	void RenderComponent::Deserialize(Serialization::IDeserializer& pReader)
@@ -27,7 +24,7 @@ namespace Zephyrus::ActorComponent
 			{
 				auto mat = Assets::AssetsManager::LoadMaterial(*materialPath, *materialPath);
 				SetMaterial(mat);
-				mMaterial->Deserialize(pReader);
+				mMaterial.Deserialize(pReader);
 			}
 			pReader.EndObject();
 		}
@@ -35,25 +32,18 @@ namespace Zephyrus::ActorComponent
 
 	void RenderComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
-		if (mMaterial)
+		if (mMaterial.GetBaseMaterial())
 		{
-			mMaterial->Serialize(pWriter);
+			mMaterial.Serialize(pWriter);
 		}
 	}
 
 	void RenderComponent::SetMaterial(Material::IMaterial* newMaterial)
 	{
-		if (mMaterial)
+		if (mMaterial.GetBaseMaterial() == newMaterial)
 		{
-			if (mMaterial->GetBaseMaterial() == newMaterial)
-			{
-				return;
-			}
-			mMaterial->SetMaterial(newMaterial);
+			return;
 		}
-		else
-		{
-			mMaterial = new Material::MaterialInstance(newMaterial);
-		}
+		mMaterial.SetMaterial(newMaterial);
 	}
 }

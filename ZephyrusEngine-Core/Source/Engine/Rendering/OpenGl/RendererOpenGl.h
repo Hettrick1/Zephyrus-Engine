@@ -94,8 +94,8 @@ namespace Zephyrus::Render {
 		void SetViewMatrix(const Matrix4DRow& pViewMatrix) override;
 		void SetProjMatrix(const Matrix4DRow& pProjMatrix) override;
 
-		virtual void DrawSprite(Material::IMaterialInstance* pMaterial, const Matrix4DRow& pWorldTransform) const override;
-		virtual void DrawMesh(Material::IMaterialInstance* pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const override;
+		virtual void DrawSprite(Material::MaterialInstance& pMaterial, const Matrix4DRow& pWorldTransform) const override;
+		virtual void DrawMesh(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const override;
 
 		// Draws a sprite for the given actor with the specified parameters
 		void DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;

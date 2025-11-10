@@ -54,6 +54,14 @@ namespace Zephyrus::Material
 		void SetProperty(const std::string& uniformName, const Matrix4DRow& value) override;
 		void RemoveProperty(const std::string& uniformName) override;
 
+		inline std::unordered_map<std::string, float> GetFloatProperties() override { return mfloatProperties; }
+		inline std::unordered_map<std::string, int> GetIntProperties() override { return mIntProperties; }
+		inline std::unordered_map<std::string, Vector2D> GetVec2Properties() override { return mVec2Properties; }
+		inline std::unordered_map<std::string, Vector3D> GetVec3Properties() override { return mVec3Properties; }
+		inline std::unordered_map<std::string, Vector4D> GetVec4Properties() override { return mVec4Properties; }
+		inline std::unordered_map<std::string, Matrix4DRow> GetMatrix4Properties() override { return mMat4Properties; }
+		inline std::unordered_map<std::string, Assets::ITextureBase*> GetTextureProperties() override { return mTextures; }
+
 		void Use(const Matrix4DRow* world = nullptr, const Matrix4DRow* viewproj = nullptr) override;
 
 		void Serialize(Serialization::ISerializer& writer) const override;

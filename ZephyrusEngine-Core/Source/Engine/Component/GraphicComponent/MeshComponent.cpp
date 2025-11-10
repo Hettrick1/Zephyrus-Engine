@@ -76,9 +76,8 @@ namespace Zephyrus::ActorComponent
 			ZP_CORE_WARN("No mesh referenced in the prefab actor !");
 		}
 
-		if (!mMaterial) return;
 		// TODO serialize materials
-		mMaterial->SetTexture("albedo", mTextures[mTextureIndex]);
+		mMaterial.SetTexture("albedo", mTextures[mTextureIndex]);
 	}
 
 	void MeshComponent::Serialize(Serialization::ISerializer& pWriter)
@@ -112,6 +111,7 @@ namespace Zephyrus::ActorComponent
 		return
 		{
 			{ "Mesh : ", &mMesh, PropertyType::Mesh },
+			{ "Material Instance : ", &mMaterial, PropertyType::MaterialInstance},
 			{ "Textures : ", &mTextures, PropertyType::VectorTexture },
 			{ "Texture Index : ", &mTextureIndex, PropertyType::Int },
 			{ "Texture Tiling : ", &mTiling, PropertyType::Vec2 },
@@ -169,8 +169,7 @@ namespace Zephyrus::ActorComponent
 	{
 		mTiling = pTiling;
 
-		if (!mMaterial) return;
 		// TODO serialize materials (need tiling to be in the material instance)
-		mMaterial->SetVector2D("uTiling", pTiling);
+		mMaterial.SetVector2D("uTiling", pTiling);
 	}
 }

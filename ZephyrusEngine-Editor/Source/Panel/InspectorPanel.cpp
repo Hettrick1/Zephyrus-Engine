@@ -13,6 +13,7 @@
 #include "SceneManager.h"
 #include "Interface/IMesh.h"
 #include "Interface/ITexture2D.h"
+#include "Material/MaterialInstance.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -33,6 +34,7 @@ InspectorPanel::InspectorPanel(ISceneContext* pSceneContext, const std::string& 
 	mPropertySetters[PropertyType::Prefab] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyPrefab(p, lw, iw); };
 	mPropertySetters[PropertyType::CubeMap] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyCubemap(p, lw, iw); };
 	mPropertySetters[PropertyType::Component] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyComponent(p, lw, iw); };
+	mPropertySetters[PropertyType::MaterialInstance] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyMaterialInstance(p, lw, iw); };
 }
 
 InspectorPanel::~InspectorPanel()
@@ -300,7 +302,8 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Position");
 	ImGui::SameLine(labelWidth);
-	if (ImGui::InputFloat3("##Position", position, "%.3f"))
+	ImGui::InputFloat3("##Position", position, "%.3f");
+	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 	{
 		SetPositionEvent* posEvent = new SetPositionEvent(pActor, pActor->GetPosition(), Vector3D(position[0], position[1], position[2]));
 		EventSystem::DoEvent(posEvent);
@@ -312,7 +315,8 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Rotation");
 	ImGui::SameLine(labelWidth);
-	if (ImGui::InputFloat3("##Rotation", rotation, "%.3f"))
+	ImGui::InputFloat3("##Rotation", rotation, "%.3f");
+	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 	{
 		auto euler = Vector3D(rotation[0], rotation[1], rotation[2]);
 
@@ -330,7 +334,8 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Size");
 	ImGui::SameLine(labelWidth);
-	if (ImGui::InputFloat3("##Size", size, "%.3f"))
+	ImGui::InputFloat3("##Size", size, "%.3f");
+	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 	{
 		Vector3D prevSize = pActor->GetSize();
 		Vector3D newSize(size[0], size[1], size[2]);
@@ -459,7 +464,8 @@ void InspectorPanel::DrawComponentInfos()
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("Position");
 			ImGui::SameLine(labelWidth);
-			if (ImGui::InputFloat3("##RelativePosition", position, "%.3f"))
+			ImGui::InputFloat3("##RelativePosition", position, "%.3f");
+			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 			{
 				//TODO Event to set relative pos
 				auto pos = Vector3D(position[0], position[1], position[2]);
@@ -472,7 +478,8 @@ void InspectorPanel::DrawComponentInfos()
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("Rotation");
 			ImGui::SameLine(labelWidth);
-			if (ImGui::InputFloat3("##RelativeRotation", rotation, "%.3f"))
+			ImGui::InputFloat3("##RelativeRotation", rotation, "%.3f");
+			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 			{
 				auto euler = Vector3D(rotation[0], rotation[1], rotation[2]);
 
@@ -490,7 +497,8 @@ void InspectorPanel::DrawComponentInfos()
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("Size");
 			ImGui::SameLine(labelWidth);
-			if (ImGui::InputFloat3("##RelativeSize", size, "%.3f"))
+			ImGui::InputFloat3("##RelativeSize", size, "%.3f");
+			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 			{
 				Vector3D prevSize = mActiveComponent->GetRelativeSize();
 				Vector3D newSize(size[0], size[1], size[2]);
@@ -990,6 +998,182 @@ void InspectorPanel::SetPropertyVectorTexture(const PropertyDescriptor& pPropert
 			newVec.push_back(nullptr);
 			prop.setter(&newVec);
 		}
+		ImGui::TreePop();
+	}
+}
+
+void InspectorPanel::SetPropertyMaterialInstance(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<Zephyrus::Material::MaterialInstance>(property, mActiveComponent);
+	auto* instance = static_cast<Zephyrus::Material::MaterialInstance*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+	char buffer[255];
+	strncpy(buffer, instance->GetBaseMaterial()->GetFilePath().c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		auto newMaterial = AssetsManager::LoadMaterial(buffer, buffer);
+		if (newMaterial == instance->GetBaseMaterial())
+		{
+			return;
+		}
+
+		auto materialInstance = Zephyrus::Material::MaterialInstance();
+		materialInstance.SetMaterial(newMaterial);
+		prop.setter(&materialInstance);
+	}
+
+	if (ImGui::TreeNodeEx("Material Properties", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		// --- FLOAT OVERRIDES ---
+		auto floatOverrides = instance->GetFloatOverrides();
+		if (!floatOverrides.empty() && ImGui::TreeNode("Float"))
+		{
+			for (auto& [name, value] : floatOverrides)
+			{
+				ImGui::PushID(name.c_str());
+				ImGui::Text("%s", name.c_str());
+				ImGui::SameLine(pLabelWidth);
+				ImGui::SetNextItemWidth(pInputWidth);
+
+				float v = value;
+				ImGui::InputFloat("##Value", &v, 0.01f, 0.1f, "%.3f");
+				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+				{
+					auto oldVal = value;
+					auto* evt = new SetGenericPropertyEvent<float>(
+						nullptr,
+						oldVal,
+						v,
+						[instance, name](float val) { instance->SetFloat(name, val); }
+					);
+					EventSystem::DoEvent(evt);
+				}
+				ImGui::PopID();
+			}
+			ImGui::TreePop();
+		}
+
+		// --- INT OVERRIDES ---
+		auto intOverrides = instance->GetIntOverrides();
+		if (!intOverrides.empty() && ImGui::TreeNode("Int"))
+		{
+			for (auto& [name, value] : intOverrides)
+			{
+				ImGui::PushID(name.c_str());
+				ImGui::Text("%s", name.c_str());
+				ImGui::SameLine(pLabelWidth);
+				ImGui::SetNextItemWidth(pInputWidth);
+
+				int v = value;
+				ImGui::InputInt("##Value", &v, 0, 0);
+				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+				{
+					auto oldVal = value;
+					auto* evt = new SetGenericPropertyEvent<int>(
+						nullptr,
+						oldVal,
+						v,
+						[instance, name](int val) { instance->SetInt(name, val); }
+					);
+					EventSystem::DoEvent(evt);
+				}
+				ImGui::PopID();
+			}
+			ImGui::TreePop();
+		}
+
+		// --- VECTOR2 OVERRIDES ---
+		auto vec2Overrides = instance->GetVec2Overrides();
+		if (!vec2Overrides.empty() && ImGui::TreeNode("Vector 2D"))
+		{
+			for (auto& [name, value] : vec2Overrides)
+			{
+				ImGui::PushID(name.c_str());
+				ImGui::Text("%s", name.c_str());
+				ImGui::SameLine(pLabelWidth);
+				ImGui::SetNextItemWidth(pInputWidth);
+
+				float v[2] = { value.x, value.y };
+				ImGui::InputFloat2("##Value", v, "%.3f");
+				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+				{
+					Vector2D oldVal = value;
+					Vector2D newVal(v[0], v[1]);
+					auto* evt = new SetGenericPropertyEvent<Vector2D>(
+						nullptr,
+						oldVal,
+						newVal,
+						[instance, name](const Vector2D& val) { instance->SetVector2D(name, val); }
+					);
+					EventSystem::DoEvent(evt);
+				}
+				ImGui::PopID();
+			}
+			ImGui::TreePop();
+		}
+
+		// --- VECTOR3 OVERRIDES ---
+		auto vec3Overrides = instance->GetVec3Overrides();
+		if (!vec3Overrides.empty() && ImGui::TreeNode("Vector 3D"))
+		{
+			for (auto& [name, value] : vec3Overrides)
+			{
+				ImGui::PushID(name.c_str());
+				ImGui::Text("%s", name.c_str());
+				ImGui::SameLine(pLabelWidth);
+				ImGui::SetNextItemWidth(pInputWidth);
+
+				float v[3] = { value.x, value.y, value.z };
+				ImGui::InputFloat3("##Value", v, "%.3f");
+				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+				{
+					Vector3D oldVal = value;
+					Vector3D newVal(v[0], v[1], v[2]);
+					auto* evt = new SetGenericPropertyEvent<Vector3D>(
+						nullptr,
+						oldVal,
+						newVal,
+						[instance, name](const Vector3D& val) { instance->SetVector3D(name, val); }
+					);
+					EventSystem::DoEvent(evt);
+				}
+				ImGui::PopID();
+			}
+			ImGui::TreePop();
+		}
+
+		// --- VECTOR4 OVERRIDES ---
+		auto vec4Overrides = instance->GetVec4Overrides();
+		if (!vec4Overrides.empty() && ImGui::TreeNode("Vector 4D"))
+		{
+			for (auto& [name, value] : vec4Overrides)
+			{
+				ImGui::PushID(name.c_str());
+				ImGui::Text("%s", name.c_str());
+				ImGui::SameLine(pLabelWidth);
+				ImGui::SetNextItemWidth(pInputWidth);
+
+				float v[4] = { value.x, value.y, value.z, value.w };
+				ImGui::InputFloat4("##Value", v, "%.2f");
+				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+				{
+					Vector4D oldVal = value;
+					Vector4D newVal(v[0], v[1], v[2], v[3]);
+					auto* evt = new SetGenericPropertyEvent<Vector4D>(
+						nullptr,
+						oldVal,
+						newVal,
+						[instance, name](const Vector4D& val) { instance->SetVector4D(name, val); }
+					);
+					EventSystem::DoEvent(evt);
+				}
+				ImGui::PopID();
+			}
+			ImGui::TreePop();
+		}
+
 		ImGui::TreePop();
 	}
 }

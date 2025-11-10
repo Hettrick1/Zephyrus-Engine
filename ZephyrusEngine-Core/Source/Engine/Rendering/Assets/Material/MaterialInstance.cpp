@@ -5,14 +5,51 @@
 
 namespace Zephyrus::Material
 {
-	MaterialInstance::MaterialInstance(IMaterial* base)
-		: mBaseMaterial(base)
-	{
-	}
 	void MaterialInstance::SetMaterial(IMaterial* newMaterial)
 	{
 		mBaseMaterial = newMaterial;
 		ClearOverrides();
+
+		if (!mBaseMaterial)
+			return;
+
+		// --- FLOAT ---
+		for (auto& [name, value] : mBaseMaterial->GetFloatProperties())
+		{
+			mFloatOverrides[name] = value;
+		}
+
+		// --- INT ---
+		for (auto& [name, value] : mBaseMaterial->GetIntProperties())
+		{
+			mIntOverrides[name] = value;
+		}
+
+		// --- VECTOR2 ---
+		for (auto& [name, value] : mBaseMaterial->GetVec2Properties())
+		{
+			mVector2DOverrides[name] = value;
+		}
+
+		// --- VECTOR3 ---
+		for (auto& [name, value] : mBaseMaterial->GetVec3Properties())
+		{
+			mVector3DOverrides[name] = value;
+		}
+
+		// --- VECTOR4 ---
+		for (auto& [name, value] : mBaseMaterial->GetVec4Properties())
+		{
+			mVector4DOverrides[name] = value;
+		}
+
+		// --- MATRIX4D ---
+		for (auto& [name, value] : mBaseMaterial->GetMatrix4Properties())
+			mMatrix4DOverrides[name] = value;
+
+		// --- TEXTURE ---
+		for (auto& [name, texture] : mBaseMaterial->GetTextureProperties())
+			mTextureOverrides[name] = texture;
 	}
 	void MaterialInstance::ClearOverride(const std::string& name)
 	{

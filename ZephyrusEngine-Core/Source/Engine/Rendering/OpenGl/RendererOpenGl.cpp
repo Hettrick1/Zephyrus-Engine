@@ -271,27 +271,19 @@ namespace Zephyrus::Render {
 		mDebugRenderer->SetProjMatrix(pProjMatrix);
 	}
 
-	void RendererOpenGl::DrawSprite(Material::IMaterialInstance* pMaterial, const Matrix4DRow& pWorldTransform) const
+	void RendererOpenGl::DrawSprite(Material::MaterialInstance& pMaterial, const Matrix4DRow& pWorldTransform) const
 	{
-		if (!pMaterial)
-		{
-			return;
-		}
 		Matrix4DRow viewProj = mView * mProj;
-		pMaterial->Use(&pWorldTransform, &viewProj);
+		pMaterial.Use(&pWorldTransform, &viewProj);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	}
 
-	void RendererOpenGl::DrawMesh(Material::IMaterialInstance* pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const
+	void RendererOpenGl::DrawMesh(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const
 	{
-		if (!pMaterial)
-		{
-			return;
-		}
 		Matrix4DRow viewProj = mView * mProj;
-		pMaterial->Use(&pWorldTransform, &viewProj);
+		pMaterial.Use(&pWorldTransform, &viewProj);
 		pMesh->Bind();
-		if ((pMaterial->GetBaseMaterial()->GetShaderProgram()->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+		if ((pMaterial.GetBaseMaterial()->GetShaderProgram()->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
 		{
 			glDrawArrays(GL_PATCHES, 0, pMesh->GetVertexCount());
 		}

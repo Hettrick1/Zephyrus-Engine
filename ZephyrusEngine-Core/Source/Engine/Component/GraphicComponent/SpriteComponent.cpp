@@ -86,7 +86,7 @@ namespace Zephyrus::ActorComponent
 		//	mTexHeight = mTexHeightOverride;
 		//	mTexture->OverrideTextureSize(mTexWidth, mTexHeight);
 		//}
-		mMaterial->SetTexture("albedo", mTexture);
+		mMaterial.SetTexture("albedo", mTexture);
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
 	}

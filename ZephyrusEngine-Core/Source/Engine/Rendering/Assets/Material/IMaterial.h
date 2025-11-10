@@ -6,8 +6,7 @@
 #include "Interface/ITextureBase.h"
 
 #include "JSONUtils.h"
-
-#include <variant>
+#include <unordered_map>
 
 namespace Zephyrus::Material
 {
@@ -36,6 +35,14 @@ namespace Zephyrus::Material
         virtual void SetProperty(const std::string& uniformName, const Vector4D& value) = 0;
         virtual void SetProperty(const std::string& uniformName, const Matrix4DRow& value) = 0;
         virtual void RemoveProperty(const std::string& uniformName) = 0;
+
+        virtual std::unordered_map<std::string, float> GetFloatProperties() = 0;
+        virtual std::unordered_map<std::string, int> GetIntProperties() = 0;
+        virtual std::unordered_map<std::string, Vector2D> GetVec2Properties() = 0;
+        virtual std::unordered_map<std::string, Vector3D> GetVec3Properties() = 0;
+        virtual std::unordered_map<std::string, Vector4D> GetVec4Properties() = 0;
+        virtual std::unordered_map<std::string, Matrix4DRow> GetMatrix4Properties() = 0;
+        virtual std::unordered_map<std::string, Assets::ITextureBase*> GetTextureProperties() = 0;
 
         virtual void Use(const Matrix4DRow* world = nullptr, const Matrix4DRow* viewproj = nullptr) = 0;
 
