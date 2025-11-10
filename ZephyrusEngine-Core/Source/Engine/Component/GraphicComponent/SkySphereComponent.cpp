@@ -17,7 +17,7 @@ namespace Zephyrus::ActorComponent
 	int SkySphereComponent::index = 0;
 
 	SkySphereComponent::SkySphereComponent(Actor* pOwner)
-		: RenderComponent(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D)
+		: RenderComponent(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false)
 	{
 		mOwner->GetScene().GetRenderer()->AddSkySphere(this);
 	}
@@ -70,16 +70,12 @@ namespace Zephyrus::ActorComponent
 						mSphereTexture = tex;
 						mTextureIndex = tex->GetHandle();
 						mMesh = AssetsManager::LoadMesh("sphere.obj", "sphere");
-						mTextureType = GL_TEXTURE_2D;
 					}
 					else
 					{
 						ZP_CORE_ERROR("Textures array must contain at least one string!");
 					}
 				}
-				/*auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/SkySphere.zpmat", "../Content/Material/SkySphere.zpmat");
-				mat->SetTexture("albedo", tex);
-				SetMaterial(mat);*/
 			}
 			else
 			{
@@ -114,15 +110,11 @@ namespace Zephyrus::ActorComponent
 							return;
 						}
 						mTextureIndex = mCubeMap->GetHandle();
-						mTextureType = GL_TEXTURE_CUBE_MAP;
 					}
 					else
 					{
 						ZP_CORE_ASSERT(arr.size() == 6, "Textures array must contain 6 strings!");
 					}
-					/*auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/Skybox.zpmat", "../Content/Material/SkySphere.zpmat.zpmat");
-					mat->SetTexture("albedo", mCubeMap);
-					SetMaterial(mat);*/
 				}
 			}
 		}

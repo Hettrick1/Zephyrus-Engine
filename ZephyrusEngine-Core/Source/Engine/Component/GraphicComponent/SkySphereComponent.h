@@ -7,9 +7,6 @@
 #include "Interface/IShaderProgram.h"
 #include "RenderComponent.h"
 
-// TODO : Remove this include
-#include "glew.h"
-
 namespace Zephyrus::Assets {
 	class IMesh;
 }
@@ -35,7 +32,6 @@ namespace Zephyrus::ActorComponent
 		unsigned int mTextureIndex = 0;
 		Zephyrus::Assets::ITexture2D* mSphereTexture{ nullptr };
 		bool mIsSphere = false;
-		GLenum mTextureType;
 
 		std::vector<std::string> mTexturesPaths;
 
@@ -66,7 +62,6 @@ namespace Zephyrus::ActorComponent
 		inline Render::IShaderProgram* GetShaderProgram() { return mShaderProgram; }
 		inline Assets::ICubeMapTexture* GetCubeMap() { return mCubeMap; }
 		inline unsigned int& GetTextureIndex() { return mTextureIndex; }
-		inline GLenum& GetTextureType() { return mTextureType; }
 		inline bool GetIsSphere() const { return mIsSphere; }
 		inline Zephyrus::Assets::ITexture2D* GetSphereTexture() const { return mSphereTexture; }
 

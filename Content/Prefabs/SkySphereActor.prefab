@@ -14,7 +14,15 @@
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0],
                 "isSphere" : true,
-                "textures" : ["../Content/Sprites/LakeSkyTexture.png"]
+                "textures" : ["../Content/Sprites/LakeSkyTexture.png"],
+                "materialInstance": {
+                            "baseMaterial": "../Content/Material/SkySphere.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/LakeSkyTexture.png"
+                                }]
+                        }
             }
         }
     ]
