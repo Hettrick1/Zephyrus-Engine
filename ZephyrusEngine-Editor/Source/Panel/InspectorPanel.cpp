@@ -1026,6 +1026,113 @@ void InspectorPanel::SetPropertyMaterialInstance(const PropertyDescriptor& prope
 
 	if (ImGui::TreeNodeEx("Material Properties", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		// --- TEXTURES OVERRIDES ---
+
+		auto texOverrides = instance->GetTextureOverrides();
+		if (!texOverrides.empty() && ImGui::TreeNode("Textures"))
+		{
+			for (auto& [name, tex] : texOverrides)
+			{
+				ImGui::PushID(name.c_str());
+				ImGui::Text("%s", name.c_str());
+				ImGui::SameLine(pLabelWidth);
+				ImGui::SetNextItemWidth(pInputWidth);
+
+				if (auto* tex2D = dynamic_cast<Zephyrus::Assets::ITexture2D*>(tex))
+				{
+					char buffer[256];
+					strncpy(buffer, tex2D->GetFilePath().c_str(), sizeof(buffer));
+					buffer[sizeof(buffer) - 1] = '\0';
+
+					if (ImGui::InputText(("##" + name).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+					{
+						auto oldTex = tex2D;
+						Zephyrus::Assets::ITexture2D* newTex = AssetsManager::LoadTexture(buffer, buffer);
+						if (newTex)
+						{
+							auto* evt = new SetGenericPropertyEvent<Zephyrus::Assets::ITexture2D*>(
+								nullptr,
+								oldTex,
+								newTex,
+								[instance, name](Zephyrus::Assets::ITexture2D* val) { instance->SetTexture(name, val); }
+							);
+							EventSystem::DoEvent(evt);
+						}
+					}
+
+					// drag & drop
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+						{
+							std::string texID((const char*)payload->Data, payload->DataSize);
+							Zephyrus::Assets::ITexture2D* newTex = AssetsManager::LoadTexture(texID, texID);
+							if (newTex)
+							{
+								auto oldTex = tex2D;
+								auto* evt = new SetGenericPropertyEvent<Zephyrus::Assets::ITexture2D*>(
+									nullptr,
+									oldTex,
+									newTex,
+									[instance, name](Zephyrus::Assets::ITexture2D* val) { instance->SetTexture(name, val); }
+								);
+								EventSystem::DoEvent(evt);
+							}
+						}
+						ImGui::EndDragDropTarget();
+					}
+				}
+				else if (auto* cubemap = dynamic_cast<Zephyrus::Assets::ICubeMapTexture*>(tex))
+				{
+					std::vector<std::string> faces = cubemap->GetTempFilePath();
+					for (size_t i = 0; i < 6; i++)
+					{
+						char buffer[128];
+						strncpy(buffer, faces[i].c_str(), sizeof(buffer));
+						buffer[sizeof(buffer) - 1] = '\0';
+
+						ImGui::PushID((int)i);
+						if (ImGui::InputText(("##Face" + std::to_string(i)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+						{
+							faces[i] = buffer;
+							cubemap->SetTempFilePath(faces);
+						}
+
+						if (ImGui::BeginDragDropTarget())
+						{
+							if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+							{
+								std::string texID((const char*)payload->Data, payload->DataSize);
+								faces[i] = texID;
+								cubemap->SetTempFilePath(faces);
+							}
+							ImGui::EndDragDropTarget();
+						}
+						ImGui::PopID();
+					}
+
+					if (ImGui::Button(("Create Cubemap##" + name).c_str()))
+					{
+						Zephyrus::Assets::ICubeMapTexture* newCubemap = AssetsManager::LoadCubemap(faces, faces[0]);
+						if (newCubemap)
+						{
+							auto oldTex = cubemap;
+							auto* evt = new SetGenericPropertyEvent<Zephyrus::Assets::ICubeMapTexture*>(
+								nullptr,
+								oldTex,
+								newCubemap,
+								[instance, name](Zephyrus::Assets::ICubeMapTexture* val) { instance->SetTexture(name, val); }
+							);
+							EventSystem::DoEvent(evt);
+						}
+					}
+				}
+
+				ImGui::PopID();
+			}
+			ImGui::TreePop();
+		}
+
 		// --- FLOAT OVERRIDES ---
 		auto floatOverrides = instance->GetFloatOverrides();
 		if (!floatOverrides.empty() && ImGui::TreeNode("Float"))
