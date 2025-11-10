@@ -113,6 +113,8 @@ namespace Zephyrus::Render {
 
 		virtual void DrawSprite(Material::MaterialInstance& pMaterial, const Matrix4DRow& pWorldTransform) const = 0;
 		virtual void DrawMesh(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const = 0;
+		virtual void DrawSkyBox(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const = 0;
+		virtual void DrawSkySphere(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const = 0;
 
 		virtual void DrawSprite(Actor& pActor, Assets::ITexture2D* pTex, Rectangle2D pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
 		virtual void DrawHudImage(Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint) = 0;

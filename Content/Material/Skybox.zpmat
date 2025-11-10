@@ -1,0 +1,13 @@
+{
+    "shaders": {
+        "vertex": "../Content/Shaders/VertFrag/SkyBox.vert",
+        "fragment": "../Content/Shaders/VertFrag/SkyBox.frag",
+        "control": "../Content/Shaders/Tesselation/SkyBox.tesc",
+        "eval": "../Content/Shaders/Tesselation/SkyBox.tese"
+    },
+    "textures": [{
+            "name": "albedo",
+            "type": "Cubemap",
+            "paths": ["../Content/Sprites/SkyBox/DAY_CLOUDS_S.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_N.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_T.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_B.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_W.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_E.jpg"]
+        }]
+}

@@ -5,6 +5,7 @@
 #include "Interface/IShader.h"
 #include "Interface/ITexture2D.h"
 #include "Interface/IShaderProgram.h"
+#include "RenderComponent.h"
 
 // TODO : Remove this include
 #include "glew.h"
@@ -20,7 +21,7 @@ using Zephyrus::Render::ShaderType;
  */
 namespace Zephyrus::ActorComponent
 {
-	class SkySphereComponent : public Component
+	class SkySphereComponent : public RenderComponent
 	{
 	protected:
 		Assets::IMesh* mMesh{ nullptr };
@@ -45,6 +46,8 @@ namespace Zephyrus::ActorComponent
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;
 		static Component* Create(Actor* pOwner) { return new SkySphereComponent(pOwner); }
+
+		void Draw(const Zephyrus::Render::IRenderer& pRenderer) override;
 
 		std::vector<PropertyDescriptor> GetProperties() override;
 

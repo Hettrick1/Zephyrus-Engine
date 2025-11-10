@@ -51,7 +51,8 @@ namespace Zephyrus::ActorComponent
 		return {
 			{ "Textures", &mAnimationTextures, PropertyType::VectorTexture },
 			{ "Is Looping : ", &mIsLooping, PropertyType::Bool},
-			{ "Animation FPS : ", &mAnimationFps, PropertyType::Float}
+			{ "Animation FPS : ", &mAnimationFps, PropertyType::Float},
+			{ "Material Instance : ",&mMaterial, PropertyType::MaterialInstance },
 		};
 	}
 

@@ -15,12 +15,12 @@
                 "relativeRotation" : [20, 0, 0],
                 "isSphere" : false,
                 "textures" : [
-                    "Sprites/SkyBox/DAY_CLOUDS_S.jpg",
-                    "Sprites/SkyBox/DAY_CLOUDS_N.jpg",
-                    "Sprites/SkyBox/DAY_CLOUDS_T.jpg",
-                    "Sprites/SkyBox/DAY_CLOUDS_B.jpg",
-                    "Sprites/SkyBox/DAY_CLOUDS_W.jpg",
-                    "Sprites/SkyBox/DAY_CLOUDS_E.jpg"
+                    "../Content/Sprites/SkyBox/DAY_CLOUDS_S.jpg",
+                    "../Content/Sprites/SkyBox/DAY_CLOUDS_N.jpg",
+                    "../Content/Sprites/SkyBox/DAY_CLOUDS_T.jpg",
+                    "../Content/Sprites/SkyBox/DAY_CLOUDS_B.jpg",
+                    "../Content/Sprites/SkyBox/DAY_CLOUDS_W.jpg",
+                    "../Content/Sprites/SkyBox/DAY_CLOUDS_E.jpg"
                 ]
             }
         }

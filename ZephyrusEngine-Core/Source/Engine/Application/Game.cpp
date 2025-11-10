@@ -92,17 +92,28 @@ namespace Zephyrus::Application {
     {
         //temp to create easily materials
         Zephyrus::Material::Material mat;
-        mat.SetVertexShader(Assets::AssetsManager::LoadShader("../Content/Shaders/BasicMesh.vert", ShaderType::VERTEX, "../Content/Shaders/BasicMesh.vert"));
-        mat.SetFragmentShader(Assets::AssetsManager::LoadShader("../Content/Shaders/BasicMesh.frag", ShaderType::FRAGMENT, "../Content/Shaders/BasicMesh.frag"));
+        mat.SetVertexShader(Assets::AssetsManager::LoadShader("../Content/Shaders/VertFrag/SkyBox.vert", ShaderType::VERTEX, "../Content/Shaders/VertFrag/SkyBox.vert"));
+        mat.SetFragmentShader(Assets::AssetsManager::LoadShader("../Content/Shaders/VertFrag/SkyBox.frag", ShaderType::FRAGMENT, "../Content/Shaders/VertFrag/SkyBox.frag"));
+        mat.SetTessControlShader(Assets::AssetsManager::LoadShader("../Content/Shaders/Tesselation/SkyBox.tesc", ShaderType::TESSELLATION_CONTROL, "../Content/Shaders/Tesselation/SkyBox.tesc"));
+        mat.SetTessEvalShader(Assets::AssetsManager::LoadShader("../Content/Shaders/Tesselation/SkyBox.tese", ShaderType::TESSELLATION_EVALUATION, "../Content/Shaders/Tesselation/SkyBox.tese"));
 
-        mat.SetProperty("uTiling", Vector2D(1, 1));
-        mat.SetTexture("albedo", Assets::AssetsManager::LoadTexture("../Content/Sprites/planks.png", "../Content/Sprites/planks.png"));
+        std::vector<std::string> paths =
+        {
+            "../Content/Sprites/SkyBox/DAY_CLOUDS_S.jpg",
+            "../Content/Sprites/SkyBox/DAY_CLOUDS_N.jpg",
+            "../Content/Sprites/SkyBox/DAY_CLOUDS_T.jpg",
+            "../Content/Sprites/SkyBox/DAY_CLOUDS_B.jpg",
+            "../Content/Sprites/SkyBox/DAY_CLOUDS_W.jpg",
+            "../Content/Sprites/SkyBox/DAY_CLOUDS_E.jpg"
+        };
+
+        mat.SetTexture("albedo", Assets::AssetsManager::LoadCubemap(paths, paths[0]));
 
         Serialization::Json::JsonWriter writer;
 
         mat.Serialize(writer);
 
-        writer.SaveDocument("../Content/Material/BasicMesh.zpmat");
+        writer.SaveDocument("../Content/Material/SkyBox.zpmat");
 
         while (mIsRunning) {
             Timer::ComputeDeltaTime();

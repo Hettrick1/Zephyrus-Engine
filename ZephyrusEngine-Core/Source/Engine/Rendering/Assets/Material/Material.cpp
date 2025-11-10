@@ -65,7 +65,6 @@ namespace Zephyrus::Material
 			return;
 		}
 		shaders.push_back(mVertShader);
-		shaders.push_back(mFragShader);
 		if (mTescShader && mTeseShader)
 		{
 			shaders.push_back(mTescShader);
@@ -75,6 +74,7 @@ namespace Zephyrus::Material
 		{
 			shaders.push_back(mGeomShader);
 		}
+		shaders.push_back(mFragShader);
 
 		std::string programName;
 		for (auto s : shaders)

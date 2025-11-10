@@ -293,6 +293,26 @@ namespace Zephyrus::Render {
 		}
 	}
 
+	void RendererOpenGl::DrawSkyBox(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const
+	{
+		Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView);
+		Matrix4DRow viewProj = skyView * mProj;
+		pMaterial.Use(&Matrix4DRow::Identity, &viewProj);
+		mSkySphereComponent->GetMesh()->Bind();
+		glDrawArrays(GL_PATCHES, 0, mSkySphereComponent->GetMesh()->GetVertexCount());
+	}
+
+	void RendererOpenGl::DrawSkySphere(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const
+	{
+		Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView);
+		Matrix4DRow viewProj = skyView * mProj;
+		pMaterial.Use(&Matrix4DRow::Identity, &viewProj);
+
+		mSkySphereComponent->GetMesh()->Bind();
+
+		glDrawArrays(GL_TRIANGLES, 0, mSkySphereComponent->GetMesh()->GetVertexCount());
+	}
+
 	void RendererOpenGl::DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
 	{
 		if (mSpriteShaderProgram == nullptr)
@@ -319,21 +339,7 @@ namespace Zephyrus::Render {
 		if (mSkySphereComponent != nullptr) {
 			glEnable(GL_DEPTH_TEST);
 			glDepthMask(GL_FALSE);
-			mSkySphereComponent->GetShaderProgram()->Use();
-			mSkySphereComponent->GetShaderProgram()->setMatrix4Row("uWorld", Matrix4DRow::Identity);
-			Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView);
-			mSkySphereComponent->GetShaderProgram()->setMatrix4Row("uViewProj", skyView * mProj);
-			mSkySphereComponent->GetMesh()->Bind();
-			if (mSkySphereComponent->GetIsSphere())
-			{
-				mSkySphereComponent->GetSphereTexture()->Bind();
-			}
-			else
-			{
-				mSkySphereComponent->GetCubeMap()->Bind();
-			}
-			GLenum drawMode = mSkySphereComponent->GetTextureType() == GL_TEXTURE_2D ? GL_TRIANGLES : GL_PATCHES;
-			glDrawArrays(drawMode, 0, mSkySphereComponent->GetMesh()->GetVertexCount());
+			mSkySphereComponent->Draw(*this);
 			glDepthMask(GL_TRUE);
 		}
 	}

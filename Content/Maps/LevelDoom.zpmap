@@ -62,7 +62,15 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [20.0, 0.0, 0.0],
                         "isSphere": false,
-                        "textures": ["Sprites/Doom/skybox/front.png", "Sprites/Doom/skybox/back.png", "Sprites/Doom/skybox/top.png", "Sprites/Doom/skybox/bottom.png", "Sprites/Doom/skybox/left.png", "Sprites/Doom/skybox/right.png"]
+                        "textures": ["Sprites/Doom/skybox/front.png", "Sprites/Doom/skybox/back.png", "Sprites/Doom/skybox/top.png", "Sprites/Doom/skybox/bottom.png", "Sprites/Doom/skybox/left.png", "Sprites/Doom/skybox/right.png"],
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/Skybox.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Cubemap",
+                                    "paths": ["Sprites/Doom/skybox/front.png", "Sprites/Doom/skybox/back.png", "Sprites/Doom/skybox/top.png", "Sprites/Doom/skybox/bottom.png", "Sprites/Doom/skybox/left.png", "Sprites/Doom/skybox/right.png"]
+                                }]
+                        }
                     }
                 }]
         }, {
@@ -654,6 +662,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/amoPu.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -703,6 +715,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/lifePu.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -752,6 +768,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/lifePu.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -801,6 +821,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/armorPu.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -850,6 +874,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/armorPu.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -903,6 +931,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -923,6 +955,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -976,6 +1012,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -996,6 +1036,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -1049,6 +1093,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -1069,6 +1117,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -1122,6 +1174,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -1142,6 +1198,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -1195,6 +1255,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -1215,6 +1279,10 @@
                                     "name": "albedo",
                                     "type": "Texture2D",
                                     "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                }],
+                            "vec4Properties": [{
+                                    "name": "uTint",
+                                    "value": [1.0, 1.0, 1.0, 1.0]
                                 }]
                         }
                     }

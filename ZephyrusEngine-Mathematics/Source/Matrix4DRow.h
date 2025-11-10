@@ -214,7 +214,7 @@ public:
 		return retVal;
 	}
 
-	static Matrix4DRow DeleteTranslation(Matrix4DRow& matrix) 
+	static Matrix4DRow DeleteTranslation(const Matrix4DRow& matrix) 
 	{
 		float temp[4][4] =
 		{

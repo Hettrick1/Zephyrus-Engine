@@ -14,7 +14,7 @@
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0],
                 "isSphere" : true,
-                "textures" : ["Sprites/LakeSkyTexture.png"]
+                "textures" : ["../Content/Sprites/LakeSkyTexture.png"]
             }
         }
     ]

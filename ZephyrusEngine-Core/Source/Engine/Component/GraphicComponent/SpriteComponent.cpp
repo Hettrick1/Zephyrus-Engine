@@ -43,7 +43,8 @@ namespace Zephyrus::ActorComponent
 	std::vector<PropertyDescriptor> SpriteComponent::GetProperties()
 	{
 		return {
-			 { "Texture", &mTexture, PropertyType::Texture }
+			 { "Texture", &mTexture, PropertyType::Texture },
+			 { "Material Instance : ",& mMaterial, PropertyType::MaterialInstance },
 		};
 	}
 

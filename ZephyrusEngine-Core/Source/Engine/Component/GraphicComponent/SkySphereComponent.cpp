@@ -17,7 +17,7 @@ namespace Zephyrus::ActorComponent
 	int SkySphereComponent::index = 0;
 
 	SkySphereComponent::SkySphereComponent(Actor* pOwner)
-		: Component(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D)
+		: RenderComponent(pOwner, "SkySphereComponent"), mMesh(nullptr), mTiling(1), mIsSphere(false), mTextureType(GL_TEXTURE_2D)
 	{
 		mOwner->GetScene().GetRenderer()->AddSkySphere(this);
 	}
@@ -27,28 +27,29 @@ namespace Zephyrus::ActorComponent
 		mOwner->GetScene().GetRenderer()->AddSkySphere(nullptr);
 	}
 
-	std::vector<PropertyDescriptor> SkySphereComponent::GetProperties()
+	void SkySphereComponent::Draw(const Zephyrus::Render::IRenderer& pRenderer)
 	{
-		std::vector<PropertyDescriptor> prop;
 		if (mIsSphere)
 		{
-			prop = {
-				{"Texture : ", &mSphereTexture, PropertyType::Texture}
-			};
+			mOwner->GetSceneContext()->GetRenderer()->DrawSkySphere(mMaterial, mMesh, GetWorldTransform());
 		}
 		else
 		{
-			prop = {
-				{"Textures : ", &mCubeMap, PropertyType::CubeMap}
-			};
+			mOwner->GetSceneContext()->GetRenderer()->DrawSkyBox(mMaterial, mMesh, GetWorldTransform());
 		}
+	}
 
-		return prop;
+	std::vector<PropertyDescriptor> SkySphereComponent::GetProperties()
+	{
+		return 
+		{ 
+			{ "Material Instance : ", &mMaterial, PropertyType::MaterialInstance }
+		};
 	}
 
 	void SkySphereComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
-		Component::Deserialize(pReader);
+		RenderComponent::Deserialize(pReader);
 		if (auto isSphere = pReader.ReadBool("isSphere"))
 		{
 			if (*isSphere) 
@@ -76,6 +77,9 @@ namespace Zephyrus::ActorComponent
 						ZP_CORE_ERROR("Textures array must contain at least one string!");
 					}
 				}
+				/*auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/SkySphere.zpmat", "../Content/Material/SkySphere.zpmat");
+				mat->SetTexture("albedo", tex);
+				SetMaterial(mat);*/
 			}
 			else
 			{
@@ -116,6 +120,9 @@ namespace Zephyrus::ActorComponent
 					{
 						ZP_CORE_ASSERT(arr.size() == 6, "Textures array must contain 6 strings!");
 					}
+					/*auto mat = Assets::AssetsManager::LoadMaterial("../Content/Material/Skybox.zpmat", "../Content/Material/SkySphere.zpmat.zpmat");
+					mat->SetTexture("albedo", mCubeMap);
+					SetMaterial(mat);*/
 				}
 			}
 		}
@@ -133,7 +140,7 @@ namespace Zephyrus::ActorComponent
 			pWriter.PushString(texture);
 		}
 		pWriter.EndArray();
-
+		RenderComponent::Serialize(pWriter);
 		Component::EndSerialize(pWriter);
 	}
 

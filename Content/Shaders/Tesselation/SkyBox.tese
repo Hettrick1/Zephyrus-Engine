@@ -2,7 +2,7 @@
 
 layout(triangles, equal_spacing, cw) in;
 
-uniform mat4 uWorld;
+uniform mat4 uWorldTransform;
 uniform mat4 uViewProj;
 
 in TESC_OUT{
@@ -47,7 +47,7 @@ void main(void)
    gl_Position = pos;
    tese_out.normal = interpolate3D(tese_in[0].normal, tese_in[1].normal, tese_in[2].normal);
 
-   gl_Position *= uWorld * uViewProj;
+   gl_Position *= uWorldTransform * uViewProj;
 
    tese_out.color = mix(tese_in[0].color, tese_in[1].color, gl_TessCoord.x);
    tese_out.texCoord = interpolate3D(tese_in[0].texCoord, tese_in[1].texCoord, tese_in[2].texCoord);

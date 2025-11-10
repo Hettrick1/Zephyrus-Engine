@@ -1,0 +1,11 @@
+{
+    "shaders": {
+        "vertex": "../Content/Shaders/VertFrag/SkySphere.vert",
+        "fragment": "../Content/Shaders/VertFrag/SkySphere.frag"
+    },
+    "textures": [{
+            "name": "albedo",
+            "type": "Texture2D",
+            "path": "../Content/Sprites/LakeSkyTexture.png"
+        }]
+}

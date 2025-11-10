@@ -112,9 +112,6 @@ namespace Zephyrus::ActorComponent
 		{
 			{ "Mesh : ", &mMesh, PropertyType::Mesh },
 			{ "Material Instance : ", &mMaterial, PropertyType::MaterialInstance},
-			{ "Textures : ", &mTextures, PropertyType::VectorTexture },
-			{ "Texture Index : ", &mTextureIndex, PropertyType::Int },
-			{ "Texture Tiling : ", &mTiling, PropertyType::Vec2 },
 		};
 	}
 
