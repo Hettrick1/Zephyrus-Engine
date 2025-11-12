@@ -1011,6 +1011,9 @@ void InspectorPanel::SetPropertyMaterialInstance(const PropertyDescriptor& prope
 	strncpy(buffer, instance->GetBaseMaterial()->GetFilePath().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
+	ImGui::Text("Base Material : ");
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
 	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		auto newMaterial = AssetsManager::LoadMaterial(buffer, buffer);
