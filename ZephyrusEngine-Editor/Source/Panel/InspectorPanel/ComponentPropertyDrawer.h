@@ -1,6 +1,7 @@
 #pragma once
-#include "Panel.h"
-#include "SceneHierarchyPanel.h"
+
+#include "../Panel.h"
+#include "../SceneHierarchyPanel.h"
 #include "CameraComponent.h"
 
 #include <unordered_map>
@@ -14,41 +15,16 @@ using Zephyrus::ActorComponent::ActorState;
 class Component;
 struct PropertyDescriptor;
 
-class InspectorPanel : public Panel
+class ComponentPropertyDrawer
 {
 private:
-	SceneHierarchyPanel* mHierarchy = nullptr;
-	Component* mActiveComponent = nullptr;
 	std::unordered_map<PropertyType, std::function<void(const PropertyDescriptor&, float, float)>> mPropertySetters;
+	Component* mActiveComponent = nullptr;
 public:
-	InspectorPanel(ISceneContext* pSceneContext, const std::string& pName);
-	~InspectorPanel();
-	void Draw() override;
-	void DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor);
-	void DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor);
-	void DrawComponentInfos();
-	void DrawProperty(const PropertyDescriptor& property);
-	void DrawSplitterButton(float& h);
-	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
+	ComponentPropertyDrawer();
+	~ComponentPropertyDrawer() = default;
 
-	inline CameraComponent* GetCurrentCameraComponent() const
-	{
-		if (!mActiveComponent)
-		{
-			return nullptr;
-		}
-		CameraComponent* cameraComp = dynamic_cast<CameraComponent*>(mActiveComponent);
-		if (cameraComp)
-		{
-			return cameraComp;
-		}
-		return nullptr;
-	}
-
-	inline void ResetActiveComponent() 
-	{
-		mActiveComponent = nullptr;
-	}
+	void DrawProperty(const PropertyDescriptor& property, Zephyrus::ActorComponent::Component* activeComponent);
 
 public:
 	void SetPropertyFloat(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);

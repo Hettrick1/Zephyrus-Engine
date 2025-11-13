@@ -8,7 +8,7 @@
 #include "imgui_internal.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
-#include "Panel/InspectorPanel.h"
+#include "Panel/InspectorPanel/InspectorPanel.h"
 #include "Panel/ScenePanel.h"
 #include "Panel/ConsolePanel.h"
 #include "Panel/SceneHierarchyPanel.h"
