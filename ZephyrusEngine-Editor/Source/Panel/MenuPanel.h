@@ -1,14 +1,14 @@
 #pragma once
 #include "Panel.h"
 
-class EditorApplication;
+class ImGuiEditorLayer;
 
 class MenuPanel : public Panel
 {
 private:
-	EditorApplication* mApplication;
+	ImGuiEditorLayer* mApplication;
 public:
-	MenuPanel(ISceneContext* pSceneContext, const std::string& pName, EditorApplication* pApplication);
+	MenuPanel(ISceneContext* pSceneContext, const std::string& pName, ImGuiEditorLayer* pApplication);
 	~MenuPanel();
 	void Draw() override;
 };

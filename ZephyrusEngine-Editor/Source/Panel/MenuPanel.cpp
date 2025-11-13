@@ -1,8 +1,8 @@
 #include "MenuPanel.h"
-#include "EditorApplication/EditorApplication.h"
+#include "EditorApplication/ImGuiEditorLayer.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
 
-MenuPanel::MenuPanel(ISceneContext* pSceneContext, const std::string& pName, EditorApplication* pApplication)
+MenuPanel::MenuPanel(ISceneContext* pSceneContext, const std::string& pName, ImGuiEditorLayer* pApplication)
 	: Panel(pSceneContext, pName), mApplication(pApplication)
 {
 }

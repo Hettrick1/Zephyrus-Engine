@@ -52,6 +52,9 @@ void EditorApplication::Initialize()
     mRenderer = new Zephyrus::Render::RendererOpenGl();
     mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);
     Zephyrus::Assets::AssetsManager::SetContext(mSceneManager);
+
+    mImGuiEditorLayer = std::make_unique<ImGuiEditorLayer>();
+    
     // For now
     InputManager::Instance().SetContext(mSceneManager);
 
@@ -67,67 +70,11 @@ void EditorApplication::Initialize()
         mEditorController = editorController;
         mEditorController->Start();
 
-        InitializeImGui();
-
-        InitializePanels();
+        mImGuiEditorLayer->InitializeImGui(mGameWindow->GetSdlWindow());
+        mImGuiEditorLayer->InitializePanels(this);
 
         Loop();
     }
-}
-
-void EditorApplication::InitializeImGui()
-{
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-
-    ImGui::StyleColorsDark();
-
-    ZP::UI::gFonts.small = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 16.0f);
-    ZP::UI::gFonts.medium = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 24.0f);
-    ZP::UI::gFonts.large = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 32.0f);
-
-    if (!ZP::UI::gFonts.small || !ZP::UI::gFonts.medium || !ZP::UI::gFonts.large)
-    {
-        ZP_EDITOR_ERROR("Font not loaded !");
-    }
-
-    ImGui_ImplSDL2_InitForOpenGL(mGameWindow->GetSdlWindow(), SDL_GL_GetCurrentContext());
-    ImGui_ImplOpenGL3_Init("#version 450");
-}
-
-void EditorApplication::InitializePanels()
-{
-    std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(mSceneManager, prefabPanelName);
-    std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(mSceneManager, consolePanelName);
-    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(mSceneManager, scenePanelName, mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->GetRenderTarget()->GetColorTexture());
-    std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(mSceneManager, inspectorPanelName);
-    std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(mSceneManager, sceneHierarchyName);
-    std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(mSceneManager, contentBrowserName);
-    std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(mSceneManager, menuPanelName, this);
-    std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(mSceneManager, utilsPanelName, topBarHeight);
-
-    ConsolePanel* consolePanelRaw = consolePanel.get();
-    SceneHierarchyPanel* hierarchyPanelRaw = sceneHierarchyPanel.get();
-
-    inspectorPanel->SetSceneHierarchy(hierarchyPanelRaw);
-    contentBrowserPanel->SetSceneHierarchy(hierarchyPanelRaw);
-    contentBrowserPanel->resetfunc = [this]() { this->ResetEditorController(); };
-
-    mAllPanels[inspectorPanelName] = std::move(inspectorPanel);
-    mAllPanels[prefabPanelName] = std::move(prefabPanel);
-    mAllPanels[sceneHierarchyName] = std::move(sceneHierarchyPanel);
-    mAllPanels[consolePanelName] = std::move(consolePanel);
-    mAllPanels[contentBrowserName] = std::move(contentBrowserPanel);
-    mAllPanels[scenePanelName] = std::move(scenePanel);
-    mAllPanels[utilsPanelName] = std::move(utilsPanel);
-    mAllPanels[menuPanelName] = std::move(menuPanel);
-
-    Zephyrus::Debug::Log::AddListener(consolePanelRaw);
 }
 
 void EditorApplication::Loop()
@@ -153,38 +100,7 @@ void EditorApplication::Loop()
 void EditorApplication::Update()
 {
     mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->UpdateMatrices();
-    auto inspector = mAllPanels.find(inspectorPanelName);
-    if (inspector != mAllPanels.end())
-    {
-        if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(inspector->second.get()))
-        {
-            auto cam = inspectorPanel->GetCurrentCameraComponent();
-            if (cam)
-            {
-                cam->UpdateMatrices();
-            }
-        }
-    }
-    auto scene = mAllPanels.find(scenePanelName);
-    if (scene != mAllPanels.end())
-    {
-        if (auto scenePanel = dynamic_cast<ScenePanel*>(scene->second.get()))
-        {
-            mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->SetDimensions(scenePanel->GetDimensions());
-        }
-    }
-    for (auto& panel : mAllPanels)
-    {
-        panel.second->Update();
-    }
-    auto it = mAllPanels.find(scenePanelName);
-    if (it != mAllPanels.end())
-    {
-        if (auto scenePanel = dynamic_cast<ScenePanel*>(it->second.get()))
-        {
-            mEditorController->GetComponentOfType<Zephyrus::ActorComponent::EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
-        }
-    }
+    mImGuiEditorLayer->UpdatePanels(this);
     auto world = mSceneManager->GetPhysicsWorld();
     world->Update(0);
 
@@ -193,68 +109,10 @@ void EditorApplication::Update()
 
 void EditorApplication::Render()
 {
-    auto it = mAllPanels.find(inspectorPanelName);
-    if (it != mAllPanels.end())
-    {
-        if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(it->second.get()))
-        {
-            auto cam = inspectorPanel->GetCurrentCameraComponent();
-            if (cam)
-            {
-                cam->RenderScene();
-            }
-        }
-    }
     mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->RenderScene();
     mSceneManager->GetActiveScene()->EndRender();
 
-    RenderImgui();
-}
-
-void EditorApplication::RenderImgui()
-{
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-
-    SetEditorStyle();
-
-    DrawDockSpace();
-    DrawPanels();
-
-    auto it = mAllPanels.find(inspectorPanelName);
-    if (it != mAllPanels.end())
-    {
-        if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(it->second.get()))
-        {
-            auto cam = inspectorPanel->GetCurrentCameraComponent();
-            if (cam)
-            {
-                if (ImGui::Begin("Camera Preview")) 
-                { 
-                    ImVec2 previewSize = ImGui::GetContentRegionAvail();
-                    ImGui::Image((ImTextureID)(intptr_t)cam->GetRenderTarget()->GetColorTexture(), previewSize, ImVec2(0, 1), ImVec2(1, 0));
-                } 
-                ImGui::End();
-            }
-        }
-    }
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-    ImGuiIO& io = ImGui::GetIO();
-
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
-        SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
-
-        ImGui::UpdatePlatformWindows();
-        ImGui::RenderPlatformWindowsDefault();
-
-        SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
-    }
+    mImGuiEditorLayer->RenderImgui();
 }
 
 void EditorApplication::Input()
@@ -284,129 +142,18 @@ void EditorApplication::Input()
     }
 }
 
-void EditorApplication::DrawDockSpace()
-{
-    static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
-    ImGuiWindowFlags window_flags = 
-        ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
-        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus |
-        ImGuiWindowFlags_NoNavFocus;
-    const ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(ImVec2(viewport->WorkPos.x, viewport->WorkPos.y + topBarHeight));
-    ImGui::SetNextWindowSize(ImVec2(viewport->WorkSize.x, viewport->WorkSize.y - topBarHeight));
-    ImGui::SetNextWindowViewport(viewport->ID);
-
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-
-    ImGui::Begin("MainDockSpace", nullptr, window_flags);
-    ImGui::PopStyleVar(2);
-
-    ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-    ImGui::DockSpace(dockspace_id, ImVec2(0, 0), dockspaceFlags);
-    ImGui::End();
-
-    static bool first_time = true;
-    if (first_time)
-    {
-        first_time = false;
-
-        ImGui::DockBuilderRemoveNode(dockspace_id);
-        ImGui::DockBuilderAddNode(dockspace_id, ImGuiDockNodeFlags_DockSpace);
-        ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
-
-        // creates split dockspaces
-        ImGuiID dock_main_id = dockspace_id;
-        ImGuiID dock_id_right;
-        ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Right, 0.20f, &dock_id_right, &dock_main_id);
-        ImGuiID dock_id_down;
-        ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Down, 0.25f, &dock_id_down, &dock_main_id);
-        ImGuiID dock_id_up;
-        ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Up, 0.1f, &dock_id_up, &dock_main_id);
-        ImGuiID dock_id_left;
-        ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.25f, &dock_id_left, &dock_main_id);
-
-        ImGui::DockBuilderDockWindow(scenePanelName.c_str(), dock_main_id);
-        ImGui::DockBuilderDockWindow(consolePanelName.c_str(), dock_id_down);
-        ImGui::DockBuilderDockWindow(contentBrowserName.c_str(), dock_id_down);
-        ImGui::DockBuilderDockWindow(inspectorPanelName.c_str(), dock_id_right);
-        ImGui::DockBuilderDockWindow(prefabPanelName.c_str(), dock_id_right);
-        ImGui::DockBuilderDockWindow(sceneHierarchyName.c_str(), dock_id_left);
-
-        ImGui::DockBuilderFinish(dockspace_id);
-    }
-}
-
-void EditorApplication::DrawPanels()
-{
-    for (auto& panel : mAllPanels)
-    {
-        panel.second->Draw();
-    }
-}
-
-void EditorApplication::SetEditorStyle()
-{
-    ImGuiStyle& style = ImGui::GetStyle();
-    ImVec4* colors = style.Colors;
-
-    colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-    colors[ImGuiCol_Border] = ImVec4(0.9f, 0.7f, 0.0f, 1.0f);
-
-    colors[ImGuiCol_TitleBg] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
-    colors[ImGuiCol_TitleBgActive] = ImVec4(0.9f, 0.7f, 0.0f, 1.0f);
-    colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.10f, 0.10f, 0.10f, 1.0f);
-
-    colors[ImGuiCol_TabSelected] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_TabSelectedOverline] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_TabHovered] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_TabUnfocused] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-
-    colors[ImGuiCol_Tab] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_TabActive] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-
-    colors[ImGuiCol_DockingPreview] = ImVec4(1.0f, 0.81176f, 0.0f, 0.8f);
-
-    colors[ImGuiCol_Button] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_ButtonHovered] = ImVec4(0.39f, 0.39f, 0.39f, 1.0f);
-    colors[ImGuiCol_ButtonActive] = ImVec4(0.59f, 0.59f, 0.59f, 1.0f);
-}
-
 void EditorApplication::ResetEditorController()
 {
     mEditorController->Start();
-    auto it = mAllPanels.find(inspectorPanelName);
-    if (it != mAllPanels.end())
-    {
-        if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(it->second.get()))
-        {
-            inspectorPanel->ResetActiveComponent();
-        }
-    }
 }
 
 void EditorApplication::Close()
 {
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
-
+    mImGuiEditorLayer->CloseImGui();
     Zephyrus::Debug::Log::Shutdown();
-    mAllPanels.clear();
     mEditorController->Destroy();
     mSceneManager->Unload();
     mGameWindow->Close();
     EventSystem::ClearAllEvents();
 }
 
-Panel* EditorApplication::GetPanelWithName(std::string pPanelName)
-{
-    auto it = mAllPanels.find(pPanelName);
-    if (it != mAllPanels.end())
-    {
-        return it->second.get();
-    }
-}

@@ -7,6 +7,7 @@
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Panel/Panel.h"
+#include "ImGuiEditorLayer.h"
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -35,13 +36,10 @@ private:
 	std::string mStartUpScene;
 	InputManager& mInputManager;
 	bool mIsRunning{true};
-	std::unordered_map<std::string, std::unique_ptr<Panel>> mAllPanels;
 
-	GLuint mFrameBuffer = 0;
-	GLuint mRenderTexture = 0;
-	GLuint mDepthRenderBuffer = 0;
+	Zephyrus::ActorComponent::EditorControllerActor* mEditorController{ nullptr };
 
-	Zephyrus::ActorComponent::EditorControllerActor* mEditorController = nullptr;
+	std::unique_ptr<ImGuiEditorLayer> mImGuiEditorLayer{ nullptr };
 
 public:
 	EditorApplication(const std::string& pTitle, const std::string& pStartupScene);
@@ -49,21 +47,13 @@ public:
 
 	// Initializes the game systems and window
 	void Initialize();
-	void InitializeImGui();
-	void InitializePanels();
 
 	// Main game loop
 	void Loop();
 
 	void Update();
 	void Render();
-	void RenderImgui();
 	void Input();
-
-	void DrawDockSpace();
-	void DrawPanels();
-
-	void SetEditorStyle();
 
 	void ResetEditorController();
 
@@ -71,17 +61,7 @@ public:
 	void Close();
 
 public:
-	Panel* GetPanelWithName(std::string pPanelName);
-
-public:
-	const std::string consolePanelName = "Console";
-	const std::string inspectorPanelName = "Inspector";
-	const std::string scenePanelName = "Scene";
-	const std::string sceneHierarchyName = "Scene Hierarchy";
-	const std::string contentBrowserName = "Content Browser";
-	const std::string menuPanelName = "MenuPanel";
-	const std::string utilsPanelName = "UtilsPanel";
-	const std::string prefabPanelName = "Prefabs";
-	const float topBarHeight = 45.0f;
+	inline Zephyrus::Scenes::SceneManager* GetSceneManager() const { return mSceneManager; }
+	inline Zephyrus::ActorComponent::EditorControllerActor* GetEditorController() const { return mEditorController; }
 };
 

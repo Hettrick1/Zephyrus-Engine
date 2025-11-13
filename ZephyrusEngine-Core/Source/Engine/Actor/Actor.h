@@ -46,7 +46,7 @@ namespace Zephyrus::ActorComponent
 		bool mIsUpdatingComponents{ false };
 	public:
 		Actor(ISceneContext* pSceneContext, Scene& pScene, Vector3D pPosition = 0, Vector3D pSize = 1, Quaternion pRotation = Quaternion(0, 0), std::string pName = "");
-		~Actor();
+		virtual ~Actor();
 
 		virtual void Start();
 		virtual void Update();
