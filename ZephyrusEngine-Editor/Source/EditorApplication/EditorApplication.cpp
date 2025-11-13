@@ -85,7 +85,7 @@ void EditorApplication::Loop()
     mRenderer->GetHud()->Unload();
 
     mSceneManager->GetActiveScene()->GetRenderer()->GetDebugRenderer()->SetDrawSelected(true);
-
+    
     while (mIsRunning) {
         Timer::ComputeDeltaTime();
         Input();

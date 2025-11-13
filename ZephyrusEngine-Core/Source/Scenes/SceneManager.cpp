@@ -72,6 +72,7 @@ namespace Zephyrus::Scenes {
 			ActiveScene->SetFilePath(filepath);
 			mSceneFactory->PopulateSceneFromFile(ActiveScene, filepath);
 			ActiveScene->Start();
+			ActiveScene->GetPhysicWorld()->Update(1);
 			if (pCallPostStart)
 			{
 				ActiveScene->PostStart();
@@ -79,7 +80,7 @@ namespace Zephyrus::Scenes {
 		}
 		else
 		{
-			ZP_CORE_ERROR("No render when loading a scene !");
+			ZP_CORE_ERROR("No renderer when loading a scene !");
 		}
 	}
 

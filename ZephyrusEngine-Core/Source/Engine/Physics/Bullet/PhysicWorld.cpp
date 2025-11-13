@@ -31,7 +31,7 @@ namespace Zephyrus::Physics
 
     void PhysicWorld::Update(float pDetltaTime)
     {
-        if (mWorld)
+        if (mWorld && pDetltaTime > 0.0f)
         {
             for (auto& rigidbody : mRigidbodies)
             {

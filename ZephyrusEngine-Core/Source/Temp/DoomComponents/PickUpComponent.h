@@ -25,7 +25,7 @@ namespace Zephyrus::ActorComponent
 
 	public:
 		PickUpComponent(Actor* pOwner, int updateOder = 0);
-		~PickUpComponent();
+		~PickUpComponent() = default;
 
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;

@@ -52,7 +52,7 @@ namespace Zephyrus::Render {
             GL_TEXTURE_2D, mDepthTexture, 0);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-            ZP_CORE_ERROR("ERROR::RenderTarget:: Framebuffer is not complete!");
+            ZP_CORE_ERROR("RenderTarget : Framebuffer is not complete!");
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

@@ -11,10 +11,6 @@ namespace Zephyrus::ActorComponent
 	{
 	}
 
-	PickUpComponent::~PickUpComponent()
-	{
-	}
-
 	void PickUpComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
 		Component::Deserialize(pReader);
@@ -40,7 +36,6 @@ namespace Zephyrus::ActorComponent
 	void PickUpComponent::Update()
 	{
 		Component::Update();
-		//Vector3D camPos = CameraManager::Instance().GetCurrentCamera()->GetWorldTransform().GetTranslation();
 		Vector3D camPos = mOwner->GetScene().GetCameraManager()->GetActiveCamera()->GetWorldTransform().GetTranslation();
 		Vector3D direction = camPos - mOwner->GetTransformComponent().GetPosition();
 
