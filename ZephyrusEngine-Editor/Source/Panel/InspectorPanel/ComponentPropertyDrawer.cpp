@@ -23,6 +23,8 @@ ComponentPropertyDrawer::ComponentPropertyDrawer()
 	mPropertySetters[PropertyType::String] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyString(p, lw, iw); };
 	mPropertySetters[PropertyType::Vec2] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyVector2D(p, lw, iw); };
 	mPropertySetters[PropertyType::Vec3] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyVector3D(p, lw, iw); };
+	mPropertySetters[PropertyType::Vec4] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyVector4D(p, lw, iw); };
+	mPropertySetters[PropertyType::Color] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyColor(p, lw, iw); };
 	mPropertySetters[PropertyType::Quaternion] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyQuaternion(p, lw, iw); };
 	mPropertySetters[PropertyType::Texture] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyTexture(p, lw, iw); };
 	mPropertySetters[PropertyType::Font] = [this](const PropertyDescriptor& p, float lw, float iw) { SetPropertyFont(p, lw, iw); };
@@ -109,6 +111,56 @@ void ComponentPropertyDrawer::SetPropertyString(const PropertyDescriptor& pPrope
 	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		prop.setter(&buffer);
+	}
+}
+
+void ComponentPropertyDrawer::SetPropertyColor(const PropertyDescriptor& pProperty, const float& pLabelWidth,
+	const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<Vector4D>(pProperty, mActiveComponent);
+	Vector4D colorVar = *static_cast<Vector4D*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+	std::string label = "##" + prop.name;
+	
+	float vec4[4] = { colorVar.x, colorVar.y, colorVar.z, colorVar.w };
+	static float newVec4[4];
+	if (ImGui::ColorButton(label.c_str(), ImVec4(vec4[0], vec4[1], vec4[2], vec4[3]), 0, ImVec2(pInputWidth, 0)))
+	{
+		ImGui::OpenPopup("ColorPopup");
+		newVec4[0] = colorVar.x;
+		newVec4[1] = colorVar.y;
+		newVec4[2] = colorVar.z;
+		newVec4[3] = colorVar.w;
+	}
+	if (ImGui::BeginPopup("ColorPopup", ImGuiWindowFlags_NoMove))
+	{
+		ImGui::ColorPicker4(label.c_str(), newVec4);
+		if (ImGui::Button("Save Color"))
+		{
+			Vector4D newColorVar = Vector4D(newVec4[0], newVec4[1], newVec4[2], newVec4[3]);
+			prop.setter(&newColorVar);
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void ComponentPropertyDrawer::SetPropertyVector4D(const PropertyDescriptor& pProperty, const float& pLabelWidth,
+	const float& pInputWidth)
+{
+	auto prop = MakeUndoableProperty<Vector4D>(pProperty, mActiveComponent);
+	Vector4D vec4Var = *static_cast<Vector4D*>(prop.getter());
+	ImGui::Text(prop.name.c_str());
+	ImGui::SameLine(pLabelWidth);
+	ImGui::SetNextItemWidth(pInputWidth);
+	std::string label = "##" + prop.name;
+	float vec4[4] = { vec4Var.x, vec4Var.y, vec4Var.z, vec4Var.w };
+	if (ImGui::InputFloat4(label.c_str(), vec4, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	{
+		vec4Var = Vector4D(vec4[0], vec4[1], vec4[2], vec4[3]);
+		prop.setter(&vec4Var);
 	}
 }
 

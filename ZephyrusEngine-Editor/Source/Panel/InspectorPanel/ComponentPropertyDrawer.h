@@ -31,6 +31,8 @@ public:
 	void SetPropertyInt(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	void SetPropertyBool(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	void SetPropertyString(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	void SetPropertyColor(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	void SetPropertyVector4D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	void SetPropertyVector3D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	void SetPropertyVector2D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	void SetPropertyQuaternion(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);

@@ -15,6 +15,7 @@
 #include "Material/Material.h"
 #include "CubemapTextureOpenGL.h"
 #include "ShaderOpenGL.h"
+#include "AtmosphereComponent.h"
 #include <algorithm>
 
 using Zephyrus::Assets::AssetsManager;
@@ -66,8 +67,8 @@ namespace Zephyrus::Render {
 		{
 			ZP_CORE_ERROR("Failed to initialize SDL_Image");
 		}
-		mSpriteVertexShader = AssetsManager::LoadShader("Simple.vert", ShaderType::VERTEX, "SimpleVert");
-		mSpriteFragmentShader = AssetsManager::LoadShader("Simple.frag", ShaderType::FRAGMENT, "SimpleFrag");
+		mSpriteVertexShader = AssetsManager::LoadShader("BasicHudImage.vert", ShaderType::VERTEX, "BasicHudImageVert");
+		mSpriteFragmentShader = AssetsManager::LoadShader("BasicHudImage.frag", ShaderType::FRAGMENT, "BasicHudImageFrag");
 		mSpriteShaderProgramTemp = AssetsManager::LoadShaderProgram({ mSpriteVertexShader, mSpriteFragmentShader }, "simpleSpriteSP");
 		SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 
@@ -101,9 +102,9 @@ namespace Zephyrus::Render {
 		mFrameData.screenWidth = mWindow->GetDimensions().x;
 		mFrameData.screenHeight = mWindow->GetDimensions().y;
 		
-		mFrameData.fogStart = 50.0f;
-		mFrameData.fogEnd   = 200.0f;
-		mFrameData.fogColor = Vector3D(0.6f, 0.7f, 0.9f);
+		mFrameData.fogStart = mAtmosphereComponent ? mAtmosphereComponent->GetFogStart() : 50.0f;
+		mFrameData.fogEnd   = mAtmosphereComponent ? mAtmosphereComponent->GetFogEnd() : 200.0f;
+		mFrameData.fogColor = mAtmosphereComponent ? mAtmosphereComponent->GetFogColor() : Vector3D(0.6f, 0.7f, 0.9f);
 		
 		mFrameUBO.UpdateData(mFrameData);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, mFrameUBO.GetBuffer());
@@ -163,6 +164,7 @@ namespace Zephyrus::Render {
 		}
 		mDebugRenderer->Unload();
 		mSkySphereComponent = nullptr;
+		mAtmosphereComponent = nullptr;
 	}
 
 	IMesh* RendererOpenGl::LoadMeshFromData(Assets::MeshData& data)

@@ -100,6 +100,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 			{
 				continue;
 			}
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 			if (ImGui::Button(componentType.c_str()))
 			{
 				Component* c = mContext->GetComponentFactory()->Create(componentType, pActor);
@@ -123,6 +124,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 				pActor->AddComponent(c);
 				ZP_EDITOR_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
 			}
+			ImGui::PopStyleColor();
 		}
 		ImGui::EndPopup();
 	}

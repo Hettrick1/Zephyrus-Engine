@@ -1267,5 +1267,27 @@
                         "relativeRotation": [0.0, 0.0, 0.0]
                     }
                 }]
+        }, {
+            "prefabName": "../Content/Prefabs/AtmosphereActor.prefab",
+            "uuid": "6973574e-ddf8-458b-a194-85acbe27d9bc",
+            "name": "AtmosphereActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "AtmosphereComponent",
+                    "componentId": "AtmosphereComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "fogStart": 10.0,
+                        "fogEnd": 200.0,
+                        "fogColor": [0.224, 0.831, 0.424, 1.0]
+                    }
+                }]
         }]
 }

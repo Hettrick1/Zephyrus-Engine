@@ -7,14 +7,26 @@ namespace Zephyrus::Render
 {
     struct FrameData
     {
-        Vector3D cameraPos; // 12 bytes
+        FrameData():
+        cameraPos(Vector3D(0.0f, 0.0f, 0.0f)),
+        time(0.0f),
+        screenWidth(1920.0f),
+        screenHeight(1920.0f),
+        fogStart(50.0f),
+        fogEnd(200.0f),
+        fogColor(Vector3D(0.0f, 0.0f, 0.0f))
+        {
+            
+        }
+        
+        Vector3D cameraPos;
 
-        float time;         // 4 bytes
+        float time;        
         float screenWidth;
         float screenHeight;
-        float fogStart;     // 4 bytes
-        float fogEnd;       // 4 bytes
+        float fogStart;    
+        float fogEnd;      
 
-        Vector3D fogColor;  // 12 bytes
+        Vector3D fogColor; 
     };
 }

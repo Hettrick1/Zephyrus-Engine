@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Actor.h"
+#include "AtmosphereComponent.h"
 #include "Rectangle.h"
 #include "Window.h"
 #include "Matrix4DRow.h"
@@ -16,6 +17,7 @@ namespace Zephyrus::ActorComponent
 	class MeshComponent;
 	class SkySphereComponent;
 	class CameraComponent;
+	class AtmosphereComponent;
 }
 
 namespace Zephyrus::Assets
@@ -50,6 +52,7 @@ using Zephyrus::ActorComponent::SpriteComponent;
 using Zephyrus::ActorComponent::MeshComponent;
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::CameraComponent;
+using Zephyrus::ActorComponent::AtmosphereComponent;
 using Zephyrus::Application::Window;
 using Zephyrus::UI::HudManager;
 
@@ -131,5 +134,6 @@ namespace Zephyrus::Render {
 		virtual inline bool GetWireFrame() const { return false; }
 
 		virtual void SetCameraPosition(const Vector3D& pPosition) = 0;
+		virtual void SetAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) = 0;
 	};
 }

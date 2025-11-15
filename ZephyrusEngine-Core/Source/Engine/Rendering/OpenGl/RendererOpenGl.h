@@ -55,6 +55,7 @@ namespace Zephyrus::Render {
 		FrameData mFrameData;
 		
 		Vector3D mCameraPosition {0};
+		AtmosphereComponent* mAtmosphereComponent{ nullptr };
 	public:
 		RendererOpenGl();
 		virtual ~RendererOpenGl() override;
@@ -133,5 +134,16 @@ namespace Zephyrus::Render {
 		inline bool GetWireFrame() const override { return mWireFrameMode; }
 
 		inline void SetCameraPosition(const Vector3D& pPosition) override { mCameraPosition = pPosition; }
+		inline void SetAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) override
+		{
+			if (!mAtmosphereComponent)
+			{
+				mAtmosphereComponent = pAtmosphereComponent;
+			}
+			else
+			{
+				ZP_WARN("Atmosphere component is already set");
+			}
+		}
 	};
 }

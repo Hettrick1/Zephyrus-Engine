@@ -1,0 +1,21 @@
+{
+    "name": "AtmosphereActor",
+    "state": "active",
+    "transform": {
+        "position": [0.0, 0.0, 0.0],
+        "rotation": [0.0, 0.0, 0.0],
+        "size": [1.0, 1.0, 1.0]
+    },
+    "components": [{
+            "type": "AtmosphereComponent",
+            "componentId": "AtmosphereComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "fogStart": 50.0,
+                "fogEnd": 200.0,
+                "fogColor": [0.6, 0.699, 0.899, 1.0]
+            }
+        }]
+}
