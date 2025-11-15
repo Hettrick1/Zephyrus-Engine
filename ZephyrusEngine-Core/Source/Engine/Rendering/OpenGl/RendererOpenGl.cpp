@@ -86,6 +86,8 @@ namespace Zephyrus::Render {
 		mDebugRenderer = new DebugRenderer();
 		mDebugRenderer->Initialize(*mWindow);
 
+		mFrameUBO.Initialize();
+		
 		return true;
 	}
 
@@ -93,6 +95,18 @@ namespace Zephyrus::Render {
 	{
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		mFrameData.cameraPos = mCameraPosition;
+
+		mFrameData.time = static_cast<float>(SDL_GetTicks()) / 1000.0f;
+		mFrameData.screenWidth = mWindow->GetDimensions().x;
+		mFrameData.screenHeight = mWindow->GetDimensions().y;
+		
+		mFrameData.fogStart = 50.0f;
+		mFrameData.fogEnd   = 200.0f;
+		mFrameData.fogColor = Vector3D(0.6f, 0.7f, 0.9f);
+		
+		mFrameUBO.UpdateData(mFrameData);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 0, mFrameUBO.GetBuffer());
 		mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(mWindow->GetDimensions().x), static_cast<float>(mWindow->GetDimensions().y), 0.000001f, 100000);
 	}
 
@@ -115,11 +129,11 @@ namespace Zephyrus::Render {
 	}
 
 	void RendererOpenGl::RenderActiveCamera(CameraComponent* cam)
-	{
+	{		
 		if (!cam || !cam->GetRenderTarget()) return;
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0, 0, mWindow->GetDimensions().x, mWindow->GetDimensions().y);
+		glViewport(0, 0, static_cast<int>(mWindow->GetDimensions().x), static_cast<int>(mWindow->GetDimensions().y));
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDisable(GL_DEPTH);
 		mFullscreenQuadVAO->SetActive();
@@ -129,8 +143,7 @@ namespace Zephyrus::Render {
 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glEnable(GL_DEPTH);
-
-
+		
 		EndDraw();
 	}
 

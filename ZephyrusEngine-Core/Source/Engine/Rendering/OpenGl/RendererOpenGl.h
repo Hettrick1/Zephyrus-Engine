@@ -8,6 +8,7 @@
 #include "DebugRenderer.h"
 #include "SkySphereComponent.h"
 #include "Interface/IRenderTarget.h"
+#include "FrameUboOpenGL.h"
 
 namespace Zephyrus::ActorComponent {
 	class Actor;
@@ -32,7 +33,7 @@ namespace Zephyrus::Render {
 		Window* mWindow{ nullptr };
 		VertexArrayOpenGL* mFullscreenQuadVAO{ nullptr };
 		VertexArrayOpenGL* mVAO{ nullptr };
-		SDL_GLContext mContext;
+		SDL_GLContext mContext{ nullptr };
 		std::vector<SpriteComponent*> mSprites;
 		std::vector<MeshComponent*> mMeshes;
 		IShaderProgram* mSpriteShaderProgram{ nullptr };
@@ -49,10 +50,14 @@ namespace Zephyrus::Render {
 		bool mWireFrameMode;
 		SkySphereComponent* mSkySphereComponent{ nullptr };
 		Actor* mSelectedActor{ nullptr };
-
+		
+		FrameUboOpenGL mFrameUBO;
+		FrameData mFrameData;
+		
+		Vector3D mCameraPosition {0};
 	public:
 		RendererOpenGl();
-		virtual ~RendererOpenGl();
+		virtual ~RendererOpenGl() override;
 		RendererOpenGl(const RendererOpenGl&) = delete;
 		RendererOpenGl& operator=(const RendererOpenGl&) = delete;
 
@@ -126,5 +131,7 @@ namespace Zephyrus::Render {
 		// Enables or disables wireframe rendering mode
 		void SetWireFrameMode(bool pWireframe) override;
 		inline bool GetWireFrame() const override { return mWireFrameMode; }
+
+		inline void SetCameraPosition(const Vector3D& pPosition) override { mCameraPosition = pPosition; }
 	};
 }

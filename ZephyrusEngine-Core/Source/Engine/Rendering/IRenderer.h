@@ -129,5 +129,7 @@ namespace Zephyrus::Render {
 
 		virtual void SetWireFrameMode(bool pWireframe) {}
 		virtual inline bool GetWireFrame() const { return false; }
+
+		virtual void SetCameraPosition(const Vector3D& pPosition) = 0;
 	};
 }

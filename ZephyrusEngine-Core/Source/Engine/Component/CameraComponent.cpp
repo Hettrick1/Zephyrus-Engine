@@ -156,6 +156,7 @@ namespace Zephyrus::ActorComponent
 
         mOwner->GetSceneContext()->GetRenderer()->SetProjMatrix(mProjMatrix);
         mOwner->GetSceneContext()->GetRenderer()->SetViewMatrix(mViewMatrix);
+        mOwner->GetSceneContext()->GetRenderer()->SetCameraPosition(GetWorldPosition());
 
         mOwner->GetSceneContext()->GetActiveScene()->BeginRender();
         mOwner->GetSceneContext()->GetActiveScene()->RenderCurrentSceneOnly();

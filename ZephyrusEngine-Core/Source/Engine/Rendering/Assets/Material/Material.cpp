@@ -135,7 +135,7 @@ namespace Zephyrus::Material
 			return;
 
 		mShaderProgram->Use();
-
+		
 		for (auto& [name, value] : mfloatProperties)
 		{
 			mShaderProgram->setFloat(name.c_str(), value);
