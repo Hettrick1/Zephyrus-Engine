@@ -101,7 +101,7 @@ namespace Zephyrus::Render {
 		virtual void RemoveMesh(MeshComponent* pMesh) = 0;
 
 		virtual void AddSkySphere(SkySphereComponent* pSkySphere) = 0;
-		virtual void RemoveSkySphere() = 0;
+		virtual void RemoveSkySphere(SkySphereComponent* pSkySphere) = 0;
 
 		virtual void AddDebugLine(Zephyrus::Debug::DebugLine* pLine) {} // DEBUG PURPOSE ONLY
 		virtual void RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine) {} // DEBUG PURPOSE ONLY
@@ -134,6 +134,8 @@ namespace Zephyrus::Render {
 		virtual inline bool GetWireFrame() const { return false; }
 
 		virtual void SetCameraPosition(const Vector3D& pPosition) = 0;
-		virtual void SetAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) = 0;
+		virtual void AddAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) = 0;
+		virtual void RemoveAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) = 0;
+		
 	};
 }

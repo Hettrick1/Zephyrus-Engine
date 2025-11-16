@@ -24,7 +24,7 @@
 void ImGuiEditorLayer::InitializeImGui(SDL_Window* mSdlWindow)
 {
     IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
+    mEditorContext = ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
@@ -44,6 +44,8 @@ void ImGuiEditorLayer::InitializeImGui(SDL_Window* mSdlWindow)
 
     ImGui_ImplSDL2_InitForOpenGL(mSdlWindow, SDL_GL_GetCurrentContext());
     ImGui_ImplOpenGL3_Init("#version 450");
+
+    mWindowManager = std::make_shared<Zephyrus::Editor::Window::WindowManager>();
 }
 
 void ImGuiEditorLayer::InitializePanels(EditorApplication* editor)
@@ -53,7 +55,7 @@ void ImGuiEditorLayer::InitializePanels(EditorApplication* editor)
     std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(editor->GetSceneManager(), scenePanelName, editor->GetEditorController()->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->GetRenderTarget()->GetColorTexture());
     std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(editor->GetSceneManager(), inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(editor->GetSceneManager(), sceneHierarchyName);
-    std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(editor->GetSceneManager(), contentBrowserName);
+    std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(editor->GetSceneManager(), contentBrowserName, mWindowManager);
     std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(editor->GetSceneManager(), menuPanelName, this);
     std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(editor->GetSceneManager(), utilsPanelName, topBarHeight);
 
@@ -130,10 +132,11 @@ void ImGuiEditorLayer::RenderImgui()
     ImGui::NewFrame();
 
     SetEditorStyle();
-
+    
     DrawDockSpace();
+    mWindowManager->DrawWindows();
     DrawPanels();
-
+    
     auto it = mAllPanels.find(inspectorPanelName);
     if (it != mAllPanels.end())
     {
@@ -274,6 +277,6 @@ void ImGuiEditorLayer::CloseImGui()
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
+    ImGui::DestroyContext(mEditorContext);
     mAllPanels.clear();
 }

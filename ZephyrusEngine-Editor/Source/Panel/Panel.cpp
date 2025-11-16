@@ -1,11 +1,9 @@
 #include "Panel.h"
 
+#include <imgui_internal.h>
+
 Panel::Panel(ISceneContext* pSceneContext, const std::string& pName)
 	: mContext{ pSceneContext }, mName{ pName }
-{
-}
-
-Panel::~Panel()
 {
 }
 

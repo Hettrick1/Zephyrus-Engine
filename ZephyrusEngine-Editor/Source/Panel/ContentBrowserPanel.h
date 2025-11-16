@@ -4,16 +4,24 @@
 #include "SceneHierarchyPanel.h"
 #include <functional>
 
+#include "Window/EditorWindow.h"
+
+namespace Zephyrus::Editor::Window
+{
+	class WindowManager;
+}
+
 class ContentBrowserPanel : public Panel
 {
 private:
 	static std::filesystem::path rootDirectory;
 	static std::filesystem::path currentDirectory;
-	SceneHierarchyPanel* mHierarchy = nullptr;
+	SceneHierarchyPanel* mHierarchy{ nullptr };
 	using ResetEditorController = std::function<void()>;
+	std::shared_ptr<Zephyrus::Editor::Window::WindowManager> mWindowManager{ nullptr };
 public:
-	ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName);
-	~ContentBrowserPanel();
+	ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName, std::shared_ptr<Zephyrus::Editor::Window::WindowManager> pWindowManager);
+	~ContentBrowserPanel() override = default;
 	void Draw() override;
 	void DrawDirectory(const std::string& folderPath);
 	void DrawDirectoryContent(const std::filesystem::path& directory);

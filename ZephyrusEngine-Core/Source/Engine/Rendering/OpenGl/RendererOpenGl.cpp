@@ -21,7 +21,7 @@
 using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::Render {
 	RendererOpenGl::RendererOpenGl()
-		: mVAO(nullptr), mWindow(nullptr), mSpriteShaderProgram(nullptr), mHud(nullptr), mDebugRenderer(nullptr), mWireFrameMode(false), mSkySphereComponent(nullptr), mFullscreenQuadVAO(nullptr)
+		: mWireFrameMode(false)
 	{
 	}
 
@@ -102,9 +102,9 @@ namespace Zephyrus::Render {
 		mFrameData.screenWidth = mWindow->GetDimensions().x;
 		mFrameData.screenHeight = mWindow->GetDimensions().y;
 		
-		mFrameData.fogStart = mAtmosphereComponent ? mAtmosphereComponent->GetFogStart() : 50.0f;
-		mFrameData.fogEnd   = mAtmosphereComponent ? mAtmosphereComponent->GetFogEnd() : 200.0f;
-		mFrameData.fogColor = mAtmosphereComponent ? mAtmosphereComponent->GetFogColor() : Vector3D(0.6f, 0.7f, 0.9f);
+		mFrameData.fogStart = mAtmosphereComponents.empty() ? 50.0f : mAtmosphereComponents[0]->GetFogStart();
+		mFrameData.fogEnd   = mAtmosphereComponents.empty() ? 200.0f : mAtmosphereComponents[0]->GetFogEnd();
+		mFrameData.fogColor = mAtmosphereComponents.empty() ? Vector3D(0.6f, 0.7f, 0.9f) : mAtmosphereComponents[0]->GetFogColor();
 		
 		mFrameUBO.UpdateData(mFrameData);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, mFrameUBO.GetBuffer());
@@ -163,8 +163,8 @@ namespace Zephyrus::Render {
 			mHud->Unload();
 		}
 		mDebugRenderer->Unload();
-		mSkySphereComponent = nullptr;
-		mAtmosphereComponent = nullptr;
+		mSkySphereComponents.clear();
+		mAtmosphereComponents.clear();
 	}
 
 	IMesh* RendererOpenGl::LoadMeshFromData(Assets::MeshData& data)
@@ -248,15 +248,15 @@ namespace Zephyrus::Render {
 
 	void RendererOpenGl::AddSkySphere(SkySphereComponent* pSkySphere)
 	{
-		if (mSkySphereComponent != nullptr) {
-			ZP_CORE_WARN("You had already a skysphere, the old one has been replaced");
+		if (std::find(mSkySphereComponents.begin(), mSkySphereComponents.end(), pSkySphere) == mSkySphereComponents.end())
+		{
+			mSkySphereComponents.push_back(pSkySphere);
 		}
-		mSkySphereComponent = pSkySphere;
 	}
 
-	void RendererOpenGl::RemoveSkySphere()
+	void RendererOpenGl::RemoveSkySphere(SkySphereComponent* pSkySphere)
 	{
-		mSkySphereComponent = nullptr;
+		mSkySphereComponents.erase(std::remove(mSkySphereComponents.begin(), mSkySphereComponents.end(), pSkySphere), mSkySphereComponents.end());
 	}
 
 	void RendererOpenGl::SetSelectedActor(Actor* pSelectedActor)
@@ -313,8 +313,8 @@ namespace Zephyrus::Render {
 		Matrix4DRow skyView = Matrix4DRow::DeleteTranslation(mView);
 		Matrix4DRow viewProj = skyView * mProj;
 		pMaterial.Use(&Matrix4DRow::Identity, &viewProj);
-		mSkySphereComponent->GetMesh()->Bind();
-		glDrawArrays(GL_PATCHES, 0, mSkySphereComponent->GetMesh()->GetVertexCount());
+		mSkySphereComponents[0]->GetMesh()->Bind();
+		glDrawArrays(GL_PATCHES, 0, mSkySphereComponents[0]->GetMesh()->GetVertexCount());
 	}
 
 	void RendererOpenGl::DrawSkySphere(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const
@@ -323,9 +323,9 @@ namespace Zephyrus::Render {
 		Matrix4DRow viewProj = skyView * mProj;
 		pMaterial.Use(&Matrix4DRow::Identity, &viewProj);
 
-		mSkySphereComponent->GetMesh()->Bind();
+		mSkySphereComponents[0]->GetMesh()->Bind();
 
-		glDrawArrays(GL_TRIANGLES, 0, mSkySphereComponent->GetMesh()->GetVertexCount());
+		glDrawArrays(GL_TRIANGLES, 0, mSkySphereComponents[0]->GetMesh()->GetVertexCount());
 	}
 
 	void RendererOpenGl::DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
@@ -351,10 +351,10 @@ namespace Zephyrus::Render {
 
 	void RendererOpenGl::DrawSkySphere()
 	{
-		if (mSkySphereComponent != nullptr) {
+		if (!mSkySphereComponents.empty()) {
 			glEnable(GL_DEPTH_TEST);
 			glDepthMask(GL_FALSE);
-			mSkySphereComponent->Draw(*this);
+			mSkySphereComponents[0]->Draw(*this);
 			glDepthMask(GL_TRUE);
 		}
 	}

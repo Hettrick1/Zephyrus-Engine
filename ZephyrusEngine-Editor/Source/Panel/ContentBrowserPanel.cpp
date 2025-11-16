@@ -4,6 +4,8 @@
 #include "SceneManager.h"
 #include "HudManager.h"
 #include "../EditorApplication/EventSystem/EventSystem.h"
+#include "Window/WindowManager.h"
+#include "Window/MaterialWindow/MaterialWindow.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
@@ -17,12 +19,8 @@ std::filesystem::path selectedEntry;
 
 using Zephyrus::Assets::AssetsManager;
 
-ContentBrowserPanel::ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName)
-    : Panel(pSceneContext, pName)
-{
-}
-
-ContentBrowserPanel::~ContentBrowserPanel()
+ContentBrowserPanel::ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName, std::shared_ptr<Zephyrus::Editor::Window::WindowManager> pWindowManager)
+    : Panel(pSceneContext, pName), mWindowManager(pWindowManager)
 {
 }
 
@@ -225,15 +223,15 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
             currentDirectory = path;
             selectedEntry.clear();
         }
-        else
+        else // TODO : Create a map and function to open files, if the extension is not found then open with shellexecuteA
         {
-            if (entry.path().extension().string() != ".zpmap")
+            if (entry.path().extension().string() != ".zpmap" && entry.path().extension().string() != ".zpmat")
             {
 #ifdef _WIN32
                 ShellExecuteA(nullptr, "open", path.string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 #endif
             }
-            else // load map
+            else if (entry.path().extension().string() == ".zpmap")// load map
             {
                 std::filesystem::path fsPath = path.lexically_normal();
                 std::string normalizedPath = fsPath.generic_string();
@@ -243,6 +241,13 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
                 mHierarchy->ResetSelectedActor();
                 EventSystem::ClearAllEvents();
                 resetfunc();
+            }
+            else if (entry.path().extension().string() == ".zpmat")
+            {
+                std::filesystem::path fsPath = path.lexically_normal();
+                std::string fileName = fsPath.filename().string();
+                std::string normalizedPath = fsPath.generic_string();
+                mWindowManager->OpenWindow<Zephyrus::Editor::Window::MaterialWindow>(normalizedPath, fileName);
             }
         }
     }

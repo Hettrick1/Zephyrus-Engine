@@ -48,14 +48,14 @@ namespace Zephyrus::Render {
 		HudManager* mHud{ nullptr };
 		DebugRenderer* mDebugRenderer{ nullptr };
 		bool mWireFrameMode;
-		SkySphereComponent* mSkySphereComponent{ nullptr };
+		std::vector<SkySphereComponent*> mSkySphereComponents;
 		Actor* mSelectedActor{ nullptr };
 		
 		FrameUboOpenGL mFrameUBO;
 		FrameData mFrameData;
 		
 		Vector3D mCameraPosition {0};
-		AtmosphereComponent* mAtmosphereComponent{ nullptr };
+		std::vector<AtmosphereComponent*> mAtmosphereComponents;
 	public:
 		RendererOpenGl();
 		virtual ~RendererOpenGl() override;
@@ -88,7 +88,7 @@ namespace Zephyrus::Render {
 		void RemoveMesh(MeshComponent* pMesh) override;
 
 		void AddSkySphere(SkySphereComponent* pSkySphere) override;
-		void RemoveSkySphere() override;
+		void RemoveSkySphere(SkySphereComponent* pSkySphere) override;
 
 		void SetSelectedActor(Actor* pSelectedActor) override;
 
@@ -134,16 +134,16 @@ namespace Zephyrus::Render {
 		inline bool GetWireFrame() const override { return mWireFrameMode; }
 
 		inline void SetCameraPosition(const Vector3D& pPosition) override { mCameraPosition = pPosition; }
-		inline void SetAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) override
+		inline void AddAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) override
 		{
-			if (!mAtmosphereComponent)
+			if (std::find(mAtmosphereComponents.begin(), mAtmosphereComponents.end(), pAtmosphereComponent) == mAtmosphereComponents.end())
 			{
-				mAtmosphereComponent = pAtmosphereComponent;
+				mAtmosphereComponents.push_back(pAtmosphereComponent);
 			}
-			else
-			{
-				ZP_WARN("Atmosphere component is already set");
-			}
+		}
+		inline void RemoveAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) override
+		{
+			mAtmosphereComponents.erase(std::remove(mAtmosphereComponents.begin(), mAtmosphereComponents.end(), pAtmosphereComponent), mAtmosphereComponents.end());
 		}
 	};
 }

@@ -14,7 +14,7 @@ protected:
 	ISceneContext* mContext{ nullptr };
 public:
 	Panel(ISceneContext* pSceneContext, const std::string& pName);
-	virtual ~Panel();
+	virtual ~Panel() = default;
 
 	virtual void Update();
 

@@ -39,13 +39,13 @@ namespace Zephyrus::ActorComponent
     void AtmosphereComponent::OnStart()
     {
         Component::OnStart();
-        mOwner->GetSceneContext()->GetRenderer()->SetAtmosphereComponent(this);
+        mOwner->GetSceneContext()->GetRenderer()->AddAtmosphereComponent(this);
     }
 
     void AtmosphereComponent::OnEnd()
     {
         Component::OnEnd();
-        mOwner->GetSceneContext()->GetRenderer()->SetAtmosphereComponent(nullptr);
+        mOwner->GetSceneContext()->GetRenderer()->RemoveAtmosphereComponent(this);
     }
 
     std::vector<PropertyDescriptor> AtmosphereComponent::GetProperties()
