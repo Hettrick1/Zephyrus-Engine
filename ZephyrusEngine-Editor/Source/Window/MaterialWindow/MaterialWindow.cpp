@@ -12,7 +12,7 @@ namespace Zephyrus::Editor::Window
     {
         if (!mIsOpen) return;
         
-        ImGui::Begin(GetTitle().c_str(), &mIsOpen);
+        ImGui::Begin(GetTitle().c_str(), &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing);
         ImGui::Text("Editing material: %s", mFilePath.c_str());
         // TODO: ton UI material ici
         ImGui::End();

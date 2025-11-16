@@ -11,7 +11,9 @@ namespace Zephyrus::Editor::Window
     {
     private:
         std::unordered_map<std::string, std::shared_ptr<EditorWindow>> mWindows;
-        bool mIsOpen = false;
+        bool mIsOpen = true;
+        bool isMaximized = false;
+        ImVec2 savedPos, savedSize;
     public:
         template<typename T, typename... Args>
         void OpenWindow(const std::string& id, Args&&... args)
@@ -25,6 +27,7 @@ namespace Zephyrus::Editor::Window
             
             std::shared_ptr<EditorWindow> window = std::make_shared<T>(id, std::forward<Args>(args)...);
             mWindows[id] = window;
+            mIsOpen = true;
         }
         
         void DrawWindows();
