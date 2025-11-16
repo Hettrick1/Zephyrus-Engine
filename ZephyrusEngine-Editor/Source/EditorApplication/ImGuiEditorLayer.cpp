@@ -134,8 +134,8 @@ void ImGuiEditorLayer::RenderImgui()
     SetEditorStyle();
     
     DrawDockSpace();
-    mWindowManager->DrawWindows();
     DrawPanels();
+    mWindowManager->DrawWindows();
     
     auto it = mAllPanels.find(inspectorPanelName);
     if (it != mAllPanels.end())
@@ -177,8 +177,8 @@ void ImGuiEditorLayer::DrawDockSpace()
     static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
     ImGuiWindowFlags window_flags = 
         ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
-        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoNavFocus;
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(ImVec2(viewport->WorkPos.x, viewport->WorkPos.y + topBarHeight));

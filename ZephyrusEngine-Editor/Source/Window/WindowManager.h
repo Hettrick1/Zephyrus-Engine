@@ -11,6 +11,7 @@ namespace Zephyrus::Editor::Window
     {
     private:
         std::unordered_map<std::string, std::shared_ptr<EditorWindow>> mWindows;
+        bool mIsOpen = false;
     public:
         template<typename T, typename... Args>
         void OpenWindow(const std::string& id, Args&&... args)
@@ -18,6 +19,7 @@ namespace Zephyrus::Editor::Window
             if (mWindows.find(id) != mWindows.end())
             {
                 mWindows[id]->Open();
+                mIsOpen = true;
                 return;
             }
             

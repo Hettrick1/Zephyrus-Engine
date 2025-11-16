@@ -11,7 +11,7 @@ namespace Zephyrus::Editor::Window
     void MaterialWindow::Draw()
     {
         if (!mIsOpen) return;
-
+        
         ImGui::Begin(GetTitle().c_str(), &mIsOpen);
         ImGui::Text("Editing material: %s", mFilePath.c_str());
         // TODO: ton UI material ici
