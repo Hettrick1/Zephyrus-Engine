@@ -19,12 +19,19 @@ namespace Zephyrus::ActorComponent
 	SkySphereComponent::SkySphereComponent(Actor* pOwner)
 		: RenderComponent(pOwner, "SkySphereComponent"), mMesh(nullptr), mIsSphere(false)
 	{
+		
+	}
+
+	void SkySphereComponent::OnStart()
+	{
+		Component::OnStart();
 		mOwner->GetScene().GetRenderer()->AddSkySphere(this);
 	}
 
-	SkySphereComponent::~SkySphereComponent()
+	void SkySphereComponent::OnEnd()
 	{
-		mOwner->GetScene().GetRenderer()->AddSkySphere(nullptr);
+		mOwner->GetScene().GetRenderer()->RemoveSkySphere(this);
+		Component::OnEnd();
 	}
 
 	void SkySphereComponent::Draw(const Zephyrus::Render::IRenderer& pRenderer)

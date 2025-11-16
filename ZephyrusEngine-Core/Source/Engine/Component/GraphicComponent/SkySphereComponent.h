@@ -27,7 +27,10 @@ namespace Zephyrus::ActorComponent
 
 	public:
 		SkySphereComponent(Actor* pOwner);
-		virtual ~SkySphereComponent();
+		virtual ~SkySphereComponent() override = default;
+
+		void OnStart() override;
+		void OnEnd() override;
 
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;
