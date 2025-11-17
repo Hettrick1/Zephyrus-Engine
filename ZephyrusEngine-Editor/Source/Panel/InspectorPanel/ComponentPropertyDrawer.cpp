@@ -29,13 +29,18 @@ ComponentPropertyDrawer::ComponentPropertyDrawer()
 	mPropertySetters[PropertyType::Texture] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyTexture(p, lw, iw); };
 	mPropertySetters[PropertyType::Font] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyFont(p, lw, iw); };
 	mPropertySetters[PropertyType::Mesh] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyMesh(p, lw, iw); };
-	mPropertySetters[PropertyType::VectorTexture] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyVectorTexture(p, lw, iw); };
+	mPropertySetters[PropertyType::VectorTexture] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTexture2D(p, lw, iw); };
 	mPropertySetters[PropertyType::Prefab] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyPrefab(p, lw, iw); };
 	mPropertySetters[PropertyType::CubeMap] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyCubemap(p, lw, iw); };
 	mPropertySetters[PropertyType::Component] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyComponent(p, lw, iw); };
 	mPropertySetters[PropertyType::MaterialInstance] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyMaterialInstance(p, lw, iw); };
 	mPropertySetters[PropertyType::Shader] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShader(p, lw, iw); };
-	
+	mPropertySetters[PropertyType::ArrayFloat] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayFloat(p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayInt] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayInt(p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayVector2D] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector2D(p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayVector3D] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector3D(p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayVector4D] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector4D(p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayTextureBase] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTextureBase(p, lw, iw); };
 }
 
 void ComponentPropertyDrawer::DrawProperty(const PropertyDescriptor& property, Zephyrus::ActorComponent::Component* activeComponent)
@@ -111,7 +116,7 @@ bool ComponentPropertyDrawer::SetPropertyString(const PropertyDescriptor& pPrope
 	ImGui::SetNextItemWidth(pInputWidth);
 
 	char buffer[255];
-	strncpy(buffer, sVar.c_str(), sizeof(buffer));
+	strncpy_s(buffer, sVar.c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
@@ -223,7 +228,7 @@ bool ComponentPropertyDrawer::SetPropertyTexture(const PropertyDescriptor& pProp
 		return false;
 	}
 	char buffer[255];
-	strncpy(buffer, tex->GetFilePath().c_str(), sizeof(buffer));
+	strncpy_s(buffer, tex->GetFilePath().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	ImGui::Text("Texture : ");
@@ -278,7 +283,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(const PropertyDescriptor& pPropert
 		return false;
 	}
 	char buffer[255];
-	strncpy(buffer, mesh->GetFilePath().c_str(), sizeof(buffer));
+	strncpy_s(buffer, mesh->GetFilePath().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	ImGui::Text("Mesh : ");
@@ -339,7 +344,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const PropertyDescriptor& pProp
 		std::string label = "Texture " + std::to_string(i);
 
 		char buffer[128];
-		strncpy(buffer, newFaces[i].c_str(), sizeof(buffer));
+		strncpy_s(buffer, newFaces[i].c_str(), sizeof(buffer));
 		buffer[sizeof(buffer) - 1] = '\0';
 
 		ImGui::PushID((int)i);
@@ -388,7 +393,7 @@ bool ComponentPropertyDrawer::SetPropertyPrefab(const PropertyDescriptor& pPrope
 	ImGui::SetNextItemWidth(pInputWidth);
 
 	char buffer[255];
-	strncpy(buffer, sVar.c_str(), sizeof(buffer));
+	strncpy_s(buffer, sVar.c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	if (ImGui::InputText(("##PrefabName" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
@@ -419,7 +424,7 @@ bool ComponentPropertyDrawer::SetPropertyComponent(const PropertyDescriptor& pPr
 	ImGui::SetNextItemWidth(pInputWidth);
 
 	char buffer[255];
-	strncpy(buffer, componentVar.c_str(), sizeof(buffer));
+	strncpy_s(buffer, componentVar.c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	static int index = 0;
@@ -445,7 +450,7 @@ bool ComponentPropertyDrawer::SetPropertyComponent(const PropertyDescriptor& pPr
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyVectorTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<std::vector<Zephyrus::Assets::ITexture2D*>>(pProperty, mActiveComponent);
 	auto* textures = static_cast<std::vector<Zephyrus::Assets::ITexture2D*>*>(prop.getter());
@@ -463,7 +468,7 @@ bool ComponentPropertyDrawer::SetPropertyVectorTexture(const PropertyDescriptor&
 			char buffer[128];
 			if (tex)
 			{
-				strncpy(buffer, tex->GetFilePath().c_str(), sizeof(buffer));
+				strncpy_s(buffer, tex->GetFilePath().c_str(), sizeof(buffer));
 				buffer[sizeof(buffer) - 1] = '\0';
 			}
 			else
@@ -532,7 +537,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 	auto* instance = static_cast<Zephyrus::Material::MaterialInstance*>(prop.getter());
 	ImGui::Text(prop.name.c_str());
 	char buffer[255];
-	strncpy(buffer, instance->GetBaseMaterial()->GetFilePath().c_str(), sizeof(buffer));
+	strncpy_s(buffer, instance->GetBaseMaterial()->GetFilePath().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	ImGui::Text("Base Material : ");
@@ -573,7 +578,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 				if (auto* tex2D = dynamic_cast<Zephyrus::Assets::ITexture2D*>(tex))
 				{
 					char buffer[256];
-					strncpy(buffer, tex2D->GetFilePath().c_str(), sizeof(buffer));
+					strncpy_s(buffer, tex2D->GetFilePath().c_str(), sizeof(buffer));
 					buffer[sizeof(buffer) - 1] = '\0';
 
 					if (ImGui::InputText(("##" + name).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
@@ -625,7 +630,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 					for (size_t i = 0; i < 6; i++)
 					{
 						char buffer[128];
-						strncpy(buffer, faces[i].c_str(), sizeof(buffer));
+						strncpy_s(buffer, faces[i].c_str(), sizeof(buffer));
 						buffer[sizeof(buffer) - 1] = '\0';
 
 						ImGui::PushID((int)i);
@@ -839,7 +844,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const PropertyDescriptor& pPrope
 		return false;
 	}
 	char buffer[255];
-	strncpy(buffer, shader->GetFilePath().c_str(), sizeof(buffer));
+	strncpy_s(buffer, shader->GetFilePath().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	ImGui::Text(prop.name.c_str());
@@ -878,4 +883,40 @@ bool ComponentPropertyDrawer::SetPropertyShader(const PropertyDescriptor& pPrope
 		ImGui::SetTooltip(buffer);
 	}
 	return true;
+}
+
+bool ComponentPropertyDrawer::SetPropertyArrayFloat(const PropertyDescriptor& property, const float& pLabelWidth,
+	const float& pInputWidth)
+{
+	return false;
+}
+
+bool ComponentPropertyDrawer::SetPropertyArrayInt(const PropertyDescriptor& property, const float& pLabelWidth,
+	const float& pInputWidth)
+{
+	return false;
+}
+
+bool ComponentPropertyDrawer::SetPropertyArrayVector2D(const PropertyDescriptor& property, const float& pLabelWidth,
+	const float& pInputWidth)
+{
+	return false;
+}
+
+bool ComponentPropertyDrawer::SetPropertyArrayVector3D(const PropertyDescriptor& property, const float& pLabelWidth,
+	const float& pInputWidth)
+{
+	return false;
+}
+
+bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const PropertyDescriptor& property, const float& pLabelWidth,
+	const float& pInputWidth)
+{
+	return false;
+}
+
+bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const PropertyDescriptor& property, const float& pLabelWidth,
+	const float& pInputWidth)
+{
+	return false;
 }

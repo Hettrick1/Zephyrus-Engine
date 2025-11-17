@@ -26,8 +26,10 @@ namespace Zephyrus::Editor::Window
         ImVec2 size = ImVec2(800, 500);
         ImGui::SetNextWindowSize(size, ImGuiCond_Appearing);
         ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x - size.x) / 2, (io.DisplaySize.y - size.y) / 2), ImGuiCond_Appearing);
+
+        ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings;
         
-        ImGui::Begin("Zephyrus Engine", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings);
+        ImGui::Begin("Zephyrus Engine", nullptr, flags);
         
         ImGuiID dockspace_id = ImGui::GetID("Windows_Docker");
         ImGui::DockSpace(dockspace_id, ImVec2(0,0), ImGuiDockNodeFlags_NoCloseButton | ImGuiDockNodeFlags_NoWindowMenuButton);

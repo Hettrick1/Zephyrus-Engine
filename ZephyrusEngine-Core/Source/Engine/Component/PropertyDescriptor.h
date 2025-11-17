@@ -21,6 +21,12 @@ enum class PropertyType
     CubeMap,
     Component,
     Shader,
+    ArrayFloat,
+    ArrayInt,
+    ArrayVector2D,
+    ArrayVector3D,
+    ArrayVector4D,
+    ArrayTextureBase,
 };
 
 struct PropertyDescriptor {

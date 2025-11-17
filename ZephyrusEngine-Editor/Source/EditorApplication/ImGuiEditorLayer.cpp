@@ -34,8 +34,8 @@ void ImGuiEditorLayer::InitializeImGui(SDL_Window* mSdlWindow)
     ImGui::StyleColorsDark();
 
     ZP::UI::gFonts.small = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 16.0f);
-    ZP::UI::gFonts.medium = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 24.0f);
-    ZP::UI::gFonts.large = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 32.0f);
+    ZP::UI::gFonts.medium = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 20.0f);
+    ZP::UI::gFonts.large = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 28.0f);
 
     if (!ZP::UI::gFonts.small || !ZP::UI::gFonts.medium || !ZP::UI::gFonts.large)
     {

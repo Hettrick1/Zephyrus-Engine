@@ -42,7 +42,13 @@ public:
 	bool SetPropertyCubemap(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyPrefab(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyComponent(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyVectorTexture(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayTexture2D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyMaterialInstance(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyShader(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayFloat(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayInt(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector2D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector3D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector4D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayTextureBase(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 };
