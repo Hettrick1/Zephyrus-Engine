@@ -38,7 +38,7 @@ public:
 		return true;
 	}
 
-	// Comparaison de différence
+	// difference
 	bool operator!=(const Matrix4DRow& other) const
 	{
 		return !(*this == other);

@@ -100,6 +100,7 @@ void ImGuiEditorLayer::UpdatePanels(EditorApplication* editor)
             if (cam)
             {
                 cam->UpdateMatrices();
+                cam->RenderScene();
             }
         }
     }
