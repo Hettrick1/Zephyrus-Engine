@@ -67,6 +67,8 @@ namespace Zephyrus::Material
 		void Serialize(Serialization::ISerializer& writer) const override;
 		void Deserialize(Serialization::IDeserializer& reader) override;
 
+		std::vector<PropertyDescriptor> GetProperties() override;
+		
 		inline std::string GetFilePath() const override { return mFilePath; }
 		void SetFilePath(const std::string& filePath) override;
 	};

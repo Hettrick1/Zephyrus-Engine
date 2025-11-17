@@ -472,6 +472,19 @@ namespace Zephyrus::Material
 		}
 		RebuildShaderProgram();
 	}
+
+	std::vector<PropertyDescriptor> Material::GetProperties()
+	{
+		return
+		{
+			{"Vertex Shader : ", &mVertShader, PropertyType::Shader},
+			{"Fragment Shader : ", &mFragShader, PropertyType::Shader},
+			{"Tesselation Control Shader : ", &mTescShader, PropertyType::Shader},
+			{"Tesselation Evaluation Shader : ", &mTeseShader, PropertyType::Shader},
+			{"Geometry Shader : ", &mGeomShader, PropertyType::Shader},
+		};
+	}
+
 	void Material::SetFilePath(const std::string& filePath)
 	{
 		mFilePath = filePath;

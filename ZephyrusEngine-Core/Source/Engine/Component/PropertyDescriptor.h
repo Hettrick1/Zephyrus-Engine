@@ -19,7 +19,8 @@ enum class PropertyType
     VectorTexture,
     Prefab,
     CubeMap,
-    Component
+    Component,
+    Shader,
 };
 
 struct PropertyDescriptor {

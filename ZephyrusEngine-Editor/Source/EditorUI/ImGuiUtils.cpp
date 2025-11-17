@@ -64,4 +64,49 @@ namespace ZP::UI
 
         return pressed;
     }
+
+    bool CustomImageButton(const char* id, ImTextureID pTexId, const ImVec2& pButtonSize, const ImVec2& pImageSize)
+    {
+        ImGui::PushID(id);
+
+        bool hovered = false;
+        bool held = false;
+        
+        if (ImGui::InvisibleButton("##btn", pButtonSize)) {
+            ImGui::PopID();
+            return true;
+        }
+
+        hovered = ImGui::IsItemHovered();
+        held = ImGui::IsItemActive();
+
+        ImVec2 p0 = ImGui::GetItemRectMin();
+        ImVec2 p1 = ImGui::GetItemRectMax();
+        
+        ImU32 bg = IM_COL32(64, 64, 64, 255);  // normal
+
+        if (held)
+            bg = IM_COL32(150, 150, 150, 255); // Pressed
+        else if (hovered)
+            bg = IM_COL32(99, 99, 99, 255);    // Hover
+
+        ImGui::GetWindowDrawList()->AddRectFilled(p0, p1, bg, 0.0f);
+        
+        ImVec2 pos(
+            p0.x + (pButtonSize.x - pImageSize.x) * 0.5f,
+            p0.y + (pButtonSize.y - pImageSize.y) * 0.5f
+        );
+
+        ImGui::GetWindowDrawList()->AddImage(
+            pTexId,
+            pos,
+            ImVec2(pos.x + pImageSize.x, pos.y + pImageSize.y),
+            ImVec2(0,0),
+            ImVec2(1,1),
+            IM_COL32_WHITE
+        );
+
+        ImGui::PopID();
+        return false;
+    }
 }
