@@ -66,13 +66,27 @@ void InspectorPanel::Draw()
 		ImGui::BeginChild("child3", ImVec2(0, 0), true);
 		DrawComponentInfos();
 		ImGui::EndChild();
-		ImGui::PopStyleVar();	
+		ImGui::PopStyleVar();
 	}
 	else
 	{
 		ImGui::Text("No selected actor !");
 	}
 	ImGui::End();
+	
+	auto cam = GetCurrentCameraComponent();
+	if (cam)
+	{
+		cam->UpdateMatrices();
+		cam->RenderScene();
+		if (ImGui::Begin("Camera Preview")) 
+		{
+			ImVec2 previewSize = ImGui::GetContentRegionAvail();
+			ImGui::Image((ImTextureID)(intptr_t)cam->GetRenderTarget()->GetColorTexture(), previewSize, ImVec2(0, 1), ImVec2(1, 0));
+		} 
+		ImGui::End();
+	}
+	
 	Panel::EndDraw();
 }
 

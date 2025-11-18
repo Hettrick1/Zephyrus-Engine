@@ -91,19 +91,19 @@ void ImGuiEditorLayer::InitializePanels(EditorApplication* editor)
 
 void ImGuiEditorLayer::UpdatePanels(EditorApplication* editor)
 {
-    auto inspector = mAllPanels.find(inspectorPanelName);
-    if (inspector != mAllPanels.end())
-    {
-        if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(inspector->second.get()))
-        {
-            auto cam = inspectorPanel->GetCurrentCameraComponent();
-            if (cam)
-            {
-                cam->UpdateMatrices();
-                cam->RenderScene();
-            }
-        }
-    }
+    // auto inspector = mAllPanels.find(inspectorPanelName);
+    // if (inspector != mAllPanels.end())
+    // {
+    //     if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(inspector->second.get()))
+    //     {
+    //         auto cam = inspectorPanel->GetCurrentCameraComponent();
+    //         if (cam)
+    //         {
+    //             cam->UpdateMatrices();
+    //             cam->RenderScene();
+    //         }
+    //     }
+    // }
     auto scene = mAllPanels.find(scenePanelName);
     if (scene != mAllPanels.end())
     {
@@ -137,24 +137,6 @@ void ImGuiEditorLayer::RenderImgui()
     DrawDockSpace();
     DrawPanels();
     mWindowManager->DrawWindows();
-    
-    auto it = mAllPanels.find(inspectorPanelName);
-    if (it != mAllPanels.end())
-    {
-        if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(it->second.get()))
-        {
-            auto cam = inspectorPanel->GetCurrentCameraComponent();
-            if (cam)
-            {
-                if (ImGui::Begin("Camera Preview")) 
-                { 
-                    ImVec2 previewSize = ImGui::GetContentRegionAvail();
-                    ImGui::Image((ImTextureID)(intptr_t)cam->GetRenderTarget()->GetColorTexture(), previewSize, ImVec2(0, 1), ImVec2(1, 0));
-                } 
-                ImGui::End();
-            }
-        }
-    }
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -296,18 +296,8 @@ namespace Zephyrus::Scenes {
 	void Scene::RemoveActor(Actor* pActor)
 	{
 		RemoveActorWithID(pActor->GetUUID());
-		std::vector<Actor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), pActor);
-		if (it != mPendingActors.end())
-		{
-			iter_swap(it, mPendingActors.end() - 1);
-			mPendingActors.pop_back();
-		}
-		it = find(mAllActors.begin(), mAllActors.end(), pActor);
-		if (it != mAllActors.end())
-		{
-			iter_swap(it, mAllActors.end() - 1);
-			mAllActors.pop_back();
-		}
+		std::erase(mPendingActors, pActor);
+		std::erase(mAllActors, pActor);
 	}
 
 	void Scene::RemoveActorWithID(const std::string& pId)
