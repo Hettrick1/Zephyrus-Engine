@@ -915,14 +915,19 @@ bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const Prope
 	Property prop;
 	prop = MakeUndoableProperty<Zephyrus::Render::IShader*>(pProperty, mActiveComponent);
 	Zephyrus::Render::IShader* shader = static_cast<Zephyrus::Render::IShader*>(prop.getter());
-	if (!shader)
-	{
-		return false;
-	}
-	char buffer[255];
-	strncpy_s(buffer, shader->GetFilePath().c_str(), sizeof(buffer));
-	buffer[sizeof(buffer) - 1] = '\0';
 
+	char buffer[255];
+	if (shader)
+	{
+		strncpy_s(buffer, shader->GetFilePath().c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+	}
+	else
+	{
+		strncpy_s(buffer, std::string("None").c_str(), sizeof(buffer));
+	}
+	buffer[sizeof(buffer) - 1] = '\0';
+	
 	ImGui::Text(prop.name.c_str());
 
 	ImGui::SameLine(pLabelWidth * 2);
@@ -932,6 +937,12 @@ bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const Prope
 	
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
+		if (buffer[0] == '\0')
+		{
+			strncpy_s(buffer, std::string("None").c_str(), sizeof(buffer));
+			prop.setter(nullptr);
+			return true;
+		}
 		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::LoadShader(buffer, pType ,buffer);
 		if (newShader)
 		{
@@ -961,7 +972,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const Prope
 		ImGui::SetTooltip(buffer);
 	}
 
-	if (std::filesystem::path(buffer).extension() != Zephyrus::Render::ShaderTypeToExtensionStr(pType))
+	if (std::string(buffer) != "None" && std::filesystem::path(buffer).extension() != Zephyrus::Render::ShaderTypeToExtensionStr(pType))
 	{
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 1.0, 0.0, 1.0));
 		ImGui::TextWrapped("Warning : the type of the shader you selected is not the same as the one required");
