@@ -91,19 +91,6 @@ void ImGuiEditorLayer::InitializePanels(EditorApplication* editor)
 
 void ImGuiEditorLayer::UpdatePanels(EditorApplication* editor)
 {
-    // auto inspector = mAllPanels.find(inspectorPanelName);
-    // if (inspector != mAllPanels.end())
-    // {
-    //     if (auto inspectorPanel = dynamic_cast<InspectorPanel*>(inspector->second.get()))
-    //     {
-    //         auto cam = inspectorPanel->GetCurrentCameraComponent();
-    //         if (cam)
-    //         {
-    //             cam->UpdateMatrices();
-    //             cam->RenderScene();
-    //         }
-    //     }
-    // }
     auto scene = mAllPanels.find(scenePanelName);
     if (scene != mAllPanels.end())
     {

@@ -73,20 +73,22 @@ void InspectorPanel::Draw()
 		ImGui::Text("No selected actor !");
 	}
 	ImGui::End();
-	
-	auto cam = GetCurrentCameraComponent();
-	if (cam)
+
+	if (actor)
 	{
-		cam->UpdateMatrices();
-		cam->RenderScene();
-		if (ImGui::Begin("Camera Preview")) 
+		auto cam = GetCurrentCameraComponent();
+		if (cam)
 		{
-			ImVec2 previewSize = ImGui::GetContentRegionAvail();
-			ImGui::Image((ImTextureID)(intptr_t)cam->GetRenderTarget()->GetColorTexture(), previewSize, ImVec2(0, 1), ImVec2(1, 0));
-		} 
-		ImGui::End();
+			cam->UpdateMatrices();
+			cam->RenderScene();
+			if (ImGui::Begin("Camera Preview")) 
+			{
+				ImVec2 previewSize = ImGui::GetContentRegionAvail();
+				ImGui::Image((ImTextureID)(intptr_t)cam->GetRenderTarget()->GetColorTexture(), previewSize, ImVec2(0, 1), ImVec2(1, 0));
+			} 
+			ImGui::End();
+		}
 	}
-	
 	Panel::EndDraw();
 }
 
@@ -561,10 +563,10 @@ void InspectorPanel::DrawComponentInfos()
 		auto properties = mActiveComponent->GetProperties();
 		if (!properties.empty() && ImGui::CollapsingHeader("Properties", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			for (auto property : properties)
+			auto properties = mActiveComponent->GetProperties();
+			for (unsigned int i = 0; i < properties.size(); i++)
 			{
-				mComponentPropertyDrawer->DrawProperty(property, mActiveComponent);
-				//DrawProperty(property);
+				mComponentPropertyDrawer->DrawProperty(i, properties[i], mActiveComponent);
 			}
 		}
 		ImGui::PopStyleVar();

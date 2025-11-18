@@ -59,10 +59,11 @@ namespace Zephyrus::Editor::Window
         ImGui::Spacing();
         ImGui::Separator();
         ImGui::Spacing();
-        
-        for (auto prop : mMaterial->GetProperties())
+
+        auto properties = mMaterial->GetProperties();
+        for (unsigned int i = 0; i < properties.size(); i++)
         {
-            mComponentPropertyDrawer->DrawProperty(prop, nullptr);
+            mComponentPropertyDrawer->DrawProperty(i, properties[i], nullptr);
         }
         
         // TODO: ton UI material ici

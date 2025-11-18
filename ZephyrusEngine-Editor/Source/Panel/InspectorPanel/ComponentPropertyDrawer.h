@@ -18,37 +18,37 @@ struct PropertyDescriptor;
 class ComponentPropertyDrawer
 {
 private:
-	std::unordered_map<PropertyType, std::function<bool(const PropertyDescriptor&, float, float)>> mPropertySetters;
+	std::unordered_map<PropertyType, std::function<bool(unsigned int, const PropertyDescriptor&, float, float)>> mPropertySetters;
 	Component* mActiveComponent = nullptr;
 public:
 	ComponentPropertyDrawer();
 	~ComponentPropertyDrawer() = default;
 
-	void DrawProperty(const PropertyDescriptor& property, Zephyrus::ActorComponent::Component* activeComponent);
+	void DrawProperty(unsigned int pIndex, const PropertyDescriptor& property, Zephyrus::ActorComponent::Component* activeComponent);
 
 public:
-	bool SetPropertyFloat(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyInt(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyBool(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyString(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyColor(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyVector4D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyVector3D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyVector2D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyQuaternion(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyTexture(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyFont(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyMesh(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyCubemap(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyPrefab(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyComponent(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayTexture2D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyMaterialInstance(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyShader(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayFloat(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayInt(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayVector2D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayVector3D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayVector4D(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayTextureBase(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyFloat(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyInt(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyBool(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyString(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyColor(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyVector4D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyVector3D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyVector2D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyQuaternion(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyTexture(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyFont(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyMesh(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyCubemap(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyPrefab(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyComponent(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayTexture2D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyMaterialInstance(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyShader(unsigned int pIndex,const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayFloat(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayInt(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector2D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector3D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector4D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayTextureBase(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth);
 };

@@ -61,6 +61,13 @@ void SceneHierarchyPanel::Draw()
 			delete mSelectedActor;
 			mSelectedActor = nullptr;
 			actors = mContext->GetActiveScene()->GetAllActors();
+			if (actors.size() == 0)
+			{
+				mSelectedActor = nullptr;
+				ImGui::End();
+				Panel::EndDraw();
+				return;
+			}
 			if (selected >= static_cast<int>(actors.size()))
 			{
 				selected = static_cast<int>(actors.size()) - 1;

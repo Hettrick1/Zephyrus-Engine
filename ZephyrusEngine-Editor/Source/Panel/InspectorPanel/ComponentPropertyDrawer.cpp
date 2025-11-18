@@ -17,33 +17,33 @@
 
 ComponentPropertyDrawer::ComponentPropertyDrawer()
 {
-	mPropertySetters[PropertyType::Float] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyFloat(p, lw, iw); };
-	mPropertySetters[PropertyType::Int] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyInt(p, lw, iw); };
-	mPropertySetters[PropertyType::Bool] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyBool(p, lw, iw); };
-	mPropertySetters[PropertyType::String] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyString(p, lw, iw); };
-	mPropertySetters[PropertyType::Vec2] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyVector2D(p, lw, iw); };
-	mPropertySetters[PropertyType::Vec3] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyVector3D(p, lw, iw); };
-	mPropertySetters[PropertyType::Vec4] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyVector4D(p, lw, iw); };
-	mPropertySetters[PropertyType::Color] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyColor(p, lw, iw); };
-	mPropertySetters[PropertyType::Quaternion] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyQuaternion(p, lw, iw); };
-	mPropertySetters[PropertyType::Texture] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyTexture(p, lw, iw); };
-	mPropertySetters[PropertyType::Font] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyFont(p, lw, iw); };
-	mPropertySetters[PropertyType::Mesh] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyMesh(p, lw, iw); };
-	mPropertySetters[PropertyType::VectorTexture] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTexture2D(p, lw, iw); };
-	mPropertySetters[PropertyType::Prefab] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyPrefab(p, lw, iw); };
-	mPropertySetters[PropertyType::CubeMap] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyCubemap(p, lw, iw); };
-	mPropertySetters[PropertyType::Component] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyComponent(p, lw, iw); };
-	mPropertySetters[PropertyType::MaterialInstance] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyMaterialInstance(p, lw, iw); };
-	mPropertySetters[PropertyType::Shader] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShader(p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayFloat] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayFloat(p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayInt] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayInt(p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayVector2D] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector2D(p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayVector3D] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector3D(p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayVector4D] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector4D(p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayTextureBase] = [this](const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTextureBase(p, lw, iw); };
+	mPropertySetters[PropertyType::Float] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyFloat(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Int] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyInt(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Bool] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyBool(i, p, lw, iw); };
+	mPropertySetters[PropertyType::String] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyString(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Vec2] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyVector2D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Vec3] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyVector3D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Vec4] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyVector4D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Color] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyColor(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Quaternion] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyQuaternion(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Texture] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyTexture(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Font] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyFont(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Mesh] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyMesh(i, p, lw, iw); };
+	mPropertySetters[PropertyType::VectorTexture] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTexture2D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Prefab] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyPrefab(i, p, lw, iw); };
+	mPropertySetters[PropertyType::CubeMap] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyCubemap(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Component] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyComponent(i, p, lw, iw); };
+	mPropertySetters[PropertyType::MaterialInstance] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyMaterialInstance(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Shader] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShader(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayFloat] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayFloat(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayInt] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayInt(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayVector2D] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector2D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayVector3D] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector3D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayVector4D] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector4D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayTextureBase] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTextureBase(i, p, lw, iw); };
 }
 
-void ComponentPropertyDrawer::DrawProperty(const PropertyDescriptor& property, Zephyrus::ActorComponent::Component* activeComponent)
+void ComponentPropertyDrawer::DrawProperty(unsigned int pIndex, const PropertyDescriptor& property, Zephyrus::ActorComponent::Component* activeComponent)
 {
 	mActiveComponent = activeComponent;
 	ImGui::AlignTextToFramePadding();
@@ -53,21 +53,21 @@ void ComponentPropertyDrawer::DrawProperty(const PropertyDescriptor& property, Z
 	auto it = mPropertySetters.find(property.type);
 	if (it != mPropertySetters.end())
 	{
-		if (it->second(property, labelWidth, inputWidth))
+		if (it->second(pIndex, property, labelWidth, inputWidth))
 		{
 			ImGui::Separator();
 		}
 	}
 }
 
-bool ComponentPropertyDrawer::SetPropertyFloat(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<float>(pProperty, mActiveComponent);
 	float fVar = *static_cast<float*>(prop.getter());
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
-	std::string label = "##" + prop.name;
+	std::string label = "##" + prop.name + std::to_string(pIndex);
 	ImGui::InputFloat(label.c_str(), &fVar);
 	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 	{
@@ -76,14 +76,14 @@ bool ComponentPropertyDrawer::SetPropertyFloat(const PropertyDescriptor& pProper
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyInt(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyInt(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<int>(pProperty, mActiveComponent);
 	int iVar = *static_cast<int*>(prop.getter());
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
-	std::string label = "##" + prop.name;
+	std::string label = "##" + prop.name + std::to_string(pIndex);
 	ImGui::InputInt(label.c_str(), &iVar);
 	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 	{
@@ -92,13 +92,13 @@ bool ComponentPropertyDrawer::SetPropertyInt(const PropertyDescriptor& pProperty
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyBool(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyBool(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<bool>(pProperty, mActiveComponent);
 	bool bVar = *static_cast<bool*>(prop.getter());
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
-	std::string label = "##" + prop.name;
+	std::string label = "##" + prop.name + std::to_string(pIndex);
 	if (ImGui::Checkbox(label.c_str(), &bVar))
 	{
 		prop.setter(&bVar);
@@ -106,7 +106,7 @@ bool ComponentPropertyDrawer::SetPropertyBool(const PropertyDescriptor& pPropert
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyString(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyString(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<std::string>(pProperty, mActiveComponent);
 	std::string sVar = *static_cast<std::string*>(prop.getter());
@@ -118,15 +118,16 @@ bool ComponentPropertyDrawer::SetPropertyString(const PropertyDescriptor& pPrope
 	char buffer[255];
 	strncpy_s(buffer, sVar.c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
-
-	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	
+	std::string label = "##String" + std::string(buffer) + std::to_string(pIndex);
+	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		prop.setter(&buffer);
 	}
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyColor(const PropertyDescriptor& pProperty, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyColor(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<Vector4D>(pProperty, mActiveComponent);
@@ -134,8 +135,8 @@ bool ComponentPropertyDrawer::SetPropertyColor(const PropertyDescriptor& pProper
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
-	std::string label = "##" + prop.name;
 	
+	std::string label = "##" + prop.name + std::to_string(pIndex);
 	float vec4[4] = { colorVar.x, colorVar.y, colorVar.z, colorVar.w };
 	static float newVec4[4];
 	if (ImGui::ColorButton(label.c_str(), ImVec4(vec4[0], vec4[1], vec4[2], vec4[3]), 0, ImVec2(pInputWidth, 0)))
@@ -160,7 +161,7 @@ bool ComponentPropertyDrawer::SetPropertyColor(const PropertyDescriptor& pProper
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyVector4D(const PropertyDescriptor& pProperty, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyVector4D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<Vector4D>(pProperty, mActiveComponent);
@@ -168,9 +169,10 @@ bool ComponentPropertyDrawer::SetPropertyVector4D(const PropertyDescriptor& pPro
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
-	std::string label = "##" + prop.name;
+	
+	std::string label = "##" + prop.name + std::to_string(pIndex);
 	float vec4[4] = { vec4Var.x, vec4Var.y, vec4Var.z, vec4Var.w };
-	if (ImGui::InputFloat4(label.c_str(), vec4, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	if (ImGui::InputFloat4(label.c_str() + pIndex, vec4, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec4Var = Vector4D(vec4[0], vec4[1], vec4[2], vec4[3]);
 		prop.setter(&vec4Var);
@@ -178,16 +180,17 @@ bool ComponentPropertyDrawer::SetPropertyVector4D(const PropertyDescriptor& pPro
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyVector3D(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyVector3D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<Vector3D>(pProperty, mActiveComponent);
 	Vector3D vec3Var = *static_cast<Vector3D*>(prop.getter());
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
-	std::string label = "##" + prop.name;
+	
+	std::string label = "##" + prop.name + std::to_string(pIndex);
 	float vec3[3] = { vec3Var.x, vec3Var.y, vec3Var.z };
-	if (ImGui::InputFloat3(label.c_str(), vec3, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	if (ImGui::InputFloat3(label.c_str() + pIndex, vec3, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec3Var = Vector3D(vec3[0], vec3[1], vec3[2]);
 		prop.setter(&vec3Var);
@@ -195,16 +198,17 @@ bool ComponentPropertyDrawer::SetPropertyVector3D(const PropertyDescriptor& pPro
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyVector2D(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyVector2D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<Vector2D>(pProperty, mActiveComponent);
 	Vector2D vec2Var = *static_cast<Vector2D*>(prop.getter());
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
-	std::string label = "##" + prop.name;
+	
+	std::string label = "##" + prop.name + std::to_string(pIndex);
 	float vec2[2] = { vec2Var.x, vec2Var.y };
-	if (ImGui::InputFloat2(label.c_str(), vec2, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	if (ImGui::InputFloat2(label.c_str() + pIndex, vec2, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec2Var = Vector2D(vec2[0], vec2[1]);
 		prop.setter(&vec2Var);
@@ -212,13 +216,13 @@ bool ComponentPropertyDrawer::SetPropertyVector2D(const PropertyDescriptor& pPro
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyQuaternion(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyQuaternion(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	// TODO
 	return false;
 }
 
-bool ComponentPropertyDrawer::SetPropertyTexture(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyTexture(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	Property prop;
 	prop = MakeUndoableProperty<Zephyrus::Assets::ITexture2D*>(pProperty, mActiveComponent);
@@ -236,7 +240,8 @@ bool ComponentPropertyDrawer::SetPropertyTexture(const PropertyDescriptor& pProp
 	ImGui::SameLine(pLabelWidth);
 
 	ImGui::SetNextItemWidth(pInputWidth);
-	if (ImGui::InputText(("##Texture" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	std::string label = "##Texture" + std::string(buffer) + std::to_string(pIndex);
+	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(buffer, buffer);
 		if (newTex)
@@ -268,13 +273,13 @@ bool ComponentPropertyDrawer::SetPropertyTexture(const PropertyDescriptor& pProp
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyFont(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyFont(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	// TODO
 	return false;
 }
 
-bool ComponentPropertyDrawer::SetPropertyMesh(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyMesh(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<Zephyrus::Assets::IMesh*>(pProperty, mActiveComponent);
 	Zephyrus::Assets::IMesh* mesh = static_cast<Zephyrus::Assets::IMesh*>(prop.getter());
@@ -291,7 +296,8 @@ bool ComponentPropertyDrawer::SetPropertyMesh(const PropertyDescriptor& pPropert
 	ImGui::SameLine(pLabelWidth);
 
 	ImGui::SetNextItemWidth(pInputWidth);
-	if (ImGui::InputText(("##Mesh" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	std::string label = "##Mesh" + std::string(buffer) + std::to_string(pIndex);
+	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		Zephyrus::Assets::IMesh* newMesh = Zephyrus::Assets::AssetsManager::LoadMesh(buffer, buffer);
 		if (newMesh)
@@ -323,7 +329,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(const PropertyDescriptor& pPropert
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyCubemap(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyCubemap(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<Zephyrus::Assets::ICubeMapTexture*>(pProperty, mActiveComponent);
 	Zephyrus::Assets::ICubeMapTexture* cubemap = static_cast<Zephyrus::Assets::ICubeMapTexture*>(prop.getter());
@@ -383,7 +389,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const PropertyDescriptor& pProp
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyPrefab(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyPrefab(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<std::string>(pProperty, mActiveComponent);
 	std::string sVar = *static_cast<std::string*>(prop.getter());
@@ -395,8 +401,8 @@ bool ComponentPropertyDrawer::SetPropertyPrefab(const PropertyDescriptor& pPrope
 	char buffer[255];
 	strncpy_s(buffer, sVar.c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
-
-	if (ImGui::InputText(("##PrefabName" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	std::string label = "##PrefabName" + std::string(buffer) + std::to_string(pIndex);
+	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		prop.setter(&buffer);
 	}
@@ -412,10 +418,8 @@ bool ComponentPropertyDrawer::SetPropertyPrefab(const PropertyDescriptor& pPrope
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyComponent(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyComponent(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
-	// TODO : test and fix
-	
 	auto prop = MakeUndoableProperty<std::string>(pProperty, mActiveComponent);
 	std::string componentVar = *static_cast<std::string*>(prop.getter());
 	ImGui::Text(prop.name.c_str());
@@ -427,12 +431,10 @@ bool ComponentPropertyDrawer::SetPropertyComponent(const PropertyDescriptor& pPr
 	strncpy_s(buffer, componentVar.c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
-	static int index = 0;
-
-	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	std::string label = "##String" + std::string(buffer) + std::to_string(pIndex);
+	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		prop.setter(&buffer);
-		index++;
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
@@ -450,7 +452,7 @@ bool ComponentPropertyDrawer::SetPropertyComponent(const PropertyDescriptor& pPr
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<std::vector<Zephyrus::Assets::ITexture2D*>>(pProperty, mActiveComponent);
 	auto* textures = static_cast<std::vector<Zephyrus::Assets::ITexture2D*>*>(prop.getter());
@@ -531,7 +533,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(const PropertyDescriptor
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyMaterialInstance(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<Zephyrus::Material::MaterialInstance>(property, mActiveComponent);
 	auto* instance = static_cast<Zephyrus::Material::MaterialInstance*>(prop.getter());
@@ -543,7 +545,8 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 	ImGui::Text("Base Material : ");
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
-	if (ImGui::InputText(("##String" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	std::string label = "##String" + std::string(buffer) + std::to_string(pIndex);
+	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		auto newMaterial = Zephyrus::Assets::AssetsManager::LoadMaterial(buffer, buffer);
 		if (newMaterial == instance->GetBaseMaterial())
@@ -633,7 +636,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 						strncpy_s(buffer, faces[i].c_str(), sizeof(buffer));
 						buffer[sizeof(buffer) - 1] = '\0';
 
-						ImGui::PushID((int)i);
+						ImGui::PushID(static_cast<int>(i));
 						if (ImGui::InputText(("##Face" + std::to_string(i)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 						{
 							faces[i] = buffer;
@@ -686,7 +689,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 		{
 			for (auto& [name, value] : floatOverrides)
 			{
-				ImGui::PushID(name.c_str());
+				ImGui::PushID(name.c_str()  + pIndex);
 				ImGui::Text("%s", name.c_str());
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth);
@@ -715,7 +718,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 		{
 			for (auto& [name, value] : intOverrides)
 			{
-				ImGui::PushID(name.c_str());
+				ImGui::PushID(name.c_str() + pIndex);
 				ImGui::Text("%s", name.c_str());
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth);
@@ -744,7 +747,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 		{
 			for (auto& [name, value] : vec2Overrides)
 			{
-				ImGui::PushID(name.c_str());
+				ImGui::PushID(name.c_str() + pIndex);
 				ImGui::Text("%s", name.c_str());
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth);
@@ -833,7 +836,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const PropertyDescript
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyShader(const PropertyDescriptor& pProperty, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	Property prop;
@@ -852,7 +855,8 @@ bool ComponentPropertyDrawer::SetPropertyShader(const PropertyDescriptor& pPrope
 	ImGui::SameLine(pLabelWidth * 2);
 
 	ImGui::SetNextItemWidth(pInputWidth);
-	if (ImGui::InputText(("##Texture" + std::string(buffer)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	std::string label = "##Texture" + std::string(buffer) + std::to_string(pIndex);
+	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		// TODO : For now I use the same type as the previous shader. Maybe use the extension to know the type
 		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::LoadShader(buffer, shader->GetType() ,buffer);
@@ -885,37 +889,37 @@ bool ComponentPropertyDrawer::SetPropertyShader(const PropertyDescriptor& pPrope
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyArrayFloat(const PropertyDescriptor& property, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyArrayFloat(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	return false;
 }
 
-bool ComponentPropertyDrawer::SetPropertyArrayInt(const PropertyDescriptor& property, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyArrayInt(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	return false;
 }
 
-bool ComponentPropertyDrawer::SetPropertyArrayVector2D(const PropertyDescriptor& property, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyArrayVector2D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	return false;
 }
 
-bool ComponentPropertyDrawer::SetPropertyArrayVector3D(const PropertyDescriptor& property, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyArrayVector3D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	return false;
 }
 
-bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const PropertyDescriptor& property, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyArrayVector4D(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	return false;
 }
 
-bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const PropertyDescriptor& property, const float& pLabelWidth,
+bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
 	return false;
