@@ -1,4 +1,7 @@
 #include "ComponentPropertyDrawer.h"
+
+#include <filesystem>
+
 #include "Actor.h"
 #include "EditorUI/ImGuiUtils.h"
 #include "EditorApplication/EventSystem/Event/RenameActorEvent.h"
@@ -34,7 +37,11 @@ ComponentPropertyDrawer::ComponentPropertyDrawer()
 	mPropertySetters[PropertyType::CubeMap] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyCubemap(i, p, lw, iw); };
 	mPropertySetters[PropertyType::Component] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyComponent(i, p, lw, iw); };
 	mPropertySetters[PropertyType::MaterialInstance] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyMaterialInstance(i, p, lw, iw); };
-	mPropertySetters[PropertyType::Shader] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShader(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ShaderVert] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShaderVert(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ShaderFrag] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShaderFrag(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ShaderTesc] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShaderTesc(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ShaderTese] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShaderTese(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ShaderGeom] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShaderGeom(i, p, lw, iw); };
 	mPropertySetters[PropertyType::ArrayFloat] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayFloat(i, p, lw, iw); };
 	mPropertySetters[PropertyType::ArrayInt] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayInt(i, p, lw, iw); };
 	mPropertySetters[PropertyType::ArrayVector2D] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector2D(i, p, lw, iw); };
@@ -836,57 +843,34 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(unsigned int pIndex, c
 	return true;
 }
 
-bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth,
-	const float& pInputWidth)
+bool ComponentPropertyDrawer::SetPropertyShaderVert(unsigned int pIndex, const PropertyDescriptor& pProperty,
+	const float& pLabelWidth, const float& pInputWidth)
 {
-	Property prop;
-	prop = MakeUndoableProperty<Zephyrus::Render::IShader*>(pProperty, mActiveComponent);
-	Zephyrus::Render::IShader* shader = static_cast<Zephyrus::Render::IShader*>(prop.getter());
-	if (!shader)
-	{
-		return false;
-	}
-	char buffer[255];
-	strncpy_s(buffer, shader->GetFilePath().c_str(), sizeof(buffer));
-	buffer[sizeof(buffer) - 1] = '\0';
+	return SetPropertyShader(pIndex, pProperty, pLabelWidth, pInputWidth, ShaderType::VERTEX);
+}
 
-	ImGui::Text(prop.name.c_str());
+bool ComponentPropertyDrawer::SetPropertyShaderFrag(unsigned int pIndex, const PropertyDescriptor& pProperty,
+	const float& pLabelWidth, const float& pInputWidth)
+{
+	return SetPropertyShader(pIndex, pProperty, pLabelWidth, pInputWidth, ShaderType::FRAGMENT);
+}
 
-	ImGui::SameLine(pLabelWidth * 2);
+bool ComponentPropertyDrawer::SetPropertyShaderTesc(unsigned int pIndex, const PropertyDescriptor& pProperty,
+	const float& pLabelWidth, const float& pInputWidth)
+{
+	return SetPropertyShader(pIndex, pProperty, pLabelWidth, pInputWidth, ShaderType::TESSELLATION_CONTROL);
+}
 
-	ImGui::SetNextItemWidth(pInputWidth);
-	std::string label = "##Texture" + std::string(buffer) + std::to_string(pIndex);
-	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-	{
-		// TODO : For now I use the same type as the previous shader. Maybe use the extension to know the type
-		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::LoadShader(buffer, shader->GetType() ,buffer);
-		if (newShader)
-		{
-			prop.setter(newShader);
-		}
-		else
-		{
-			ZP_EDITOR_ERROR("Failed to load Shader" + std::string(buffer));
-		}
-	}
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SHADER"))
-		{
-			std::string shaderID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Render::IShader* droppedShader = Zephyrus::Assets::AssetsManager::LoadShader(shaderID, shader->GetType(), shaderID);
-			if (droppedShader)
-			{
-				prop.setter(droppedShader);
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
-	if (ImGui::IsItemHovered())
-	{
-		ImGui::SetTooltip(buffer);
-	}
-	return true;
+bool ComponentPropertyDrawer::SetPropertyShaderTese(unsigned int pIndex, const PropertyDescriptor& pProperty,
+	const float& pLabelWidth, const float& pInputWidth)
+{
+	return SetPropertyShader(pIndex, pProperty, pLabelWidth, pInputWidth, ShaderType::TESSELLATION_EVALUATION);
+}
+
+bool ComponentPropertyDrawer::SetPropertyShaderGeom(unsigned int pIndex, const PropertyDescriptor& pProperty,
+	const float& pLabelWidth, const float& pInputWidth)
+{
+	return SetPropertyShader(pIndex, pProperty, pLabelWidth, pInputWidth, ShaderType::GEOMETRY);
 }
 
 bool ComponentPropertyDrawer::SetPropertyArrayFloat(unsigned int pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
@@ -923,4 +907,65 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(unsigned int pIndex, c
 	const float& pInputWidth)
 {
 	return false;
+}
+
+bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const PropertyDescriptor& pProperty,
+	const float& pLabelWidth, const float& pInputWidth, Zephyrus::Render::ShaderType pType)
+{
+	Property prop;
+	prop = MakeUndoableProperty<Zephyrus::Render::IShader*>(pProperty, mActiveComponent);
+	Zephyrus::Render::IShader* shader = static_cast<Zephyrus::Render::IShader*>(prop.getter());
+	if (!shader)
+	{
+		return false;
+	}
+	char buffer[255];
+	strncpy_s(buffer, shader->GetFilePath().c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	ImGui::Text(prop.name.c_str());
+
+	ImGui::SameLine(pLabelWidth * 2);
+
+	ImGui::SetNextItemWidth(pInputWidth);
+	std::string label = "##Texture" + std::string(buffer) + std::to_string(pIndex);
+	
+	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+	{
+		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::LoadShader(buffer, pType ,buffer);
+		if (newShader)
+		{
+			prop.setter(newShader);
+		}
+		else
+		{
+			ZP_EDITOR_ERROR("Failed to load Shader" + std::string(buffer));
+		}
+	}
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SHADER"))
+		{
+			std::string shaderID((const char*)payload->Data, payload->DataSize);
+			Zephyrus::Render::IShader* droppedShader = Zephyrus::Assets::AssetsManager::LoadShader(shaderID, pType, shaderID);
+			if (droppedShader)
+			{
+				prop.setter(droppedShader);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip(buffer);
+	}
+
+	if (std::filesystem::path(buffer).extension() != Zephyrus::Render::ShaderTypeToExtensionStr(pType))
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 1.0, 0.0, 1.0));
+		ImGui::TextWrapped("Warning : the type of the shader you selected is not the same as the one required");
+		ImGui::PopStyleColor();
+	}
+	return true;
 }

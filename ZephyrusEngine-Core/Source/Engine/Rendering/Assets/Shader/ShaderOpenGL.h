@@ -5,7 +5,7 @@
 namespace Zephyrus::Render {
 	/**
 	 * @class Shader
-	 * @brief Classe représentant un shader OpenGL.
+	 * @brief Classe reprï¿½sentant un shader OpenGL.
 	 *
 	 * Permet de charger le code source d'un shader, de stocker son identifiant et son type.
 	 */

@@ -12,6 +12,25 @@ namespace Zephyrus::Render {
 		TESSELLATION_EVALUATION,
 		GEOMETRY
 	};
+
+	inline std::string ShaderTypeToExtensionStr(ShaderType type)
+	{
+		switch (type)
+		{
+			case ShaderType::VERTEX:
+				return ".vert";
+			case ShaderType::FRAGMENT:
+				return ".frag";
+			case ShaderType::TESSELLATION_CONTROL:
+				return ".tesc";
+			case ShaderType::TESSELLATION_EVALUATION:
+				return ".tese";
+			case ShaderType::GEOMETRY:
+				return ".geom";
+		}
+		return "";
+	}
+	
 	class IShader
 	{
 	public:

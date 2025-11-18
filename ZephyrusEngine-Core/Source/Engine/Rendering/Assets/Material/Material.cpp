@@ -477,11 +477,11 @@ namespace Zephyrus::Material
 	{
 		return
 		{
-			{"Vertex Shader : ", &mVertShader, PropertyType::Shader},
-			{"Fragment Shader : ", &mFragShader, PropertyType::Shader},
-			{"Tesselation Control Shader : ", &mTescShader, PropertyType::Shader},
-			{"Tesselation Evaluation Shader : ", &mTeseShader, PropertyType::Shader},
-			{"Geometry Shader : ", &mGeomShader, PropertyType::Shader},
+			{"Vertex Shader : ", &mVertShader, PropertyType::ShaderVert},
+			{"Fragment Shader : ", &mFragShader, PropertyType::ShaderFrag},
+			{"Tesselation Control Shader : ", &mTescShader, PropertyType::ShaderTesc},
+			{"Tesselation Evaluation Shader : ", &mTeseShader, PropertyType::ShaderTese},
+			{"Geometry Shader : ", &mGeomShader, PropertyType::ShaderGeom},
 		};
 	}
 
