@@ -85,7 +85,7 @@ void InspectorPanel::DrawActorComponents(Actor* pActor)
 
 	ImGui::SameLine();
 
-	ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x + 15);
+	ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x);
 
 	if (ImGui::Button("+ Add Component"))
 	{

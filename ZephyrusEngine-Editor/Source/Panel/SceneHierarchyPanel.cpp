@@ -30,7 +30,7 @@ void SceneHierarchyPanel::Draw()
 	{
 		char label[32];
 
-		sprintf(label, (actors[i]->GetName() + "_%i").c_str(), i);
+		sprintf_s(label, (actors[i]->GetName() + "_%i").c_str(), i);
 		ImGui::PushID(label);
 		if (ImGui::Selectable(actors[i]->GetName().c_str(), selected == i))
 		{
@@ -59,10 +59,11 @@ void SceneHierarchyPanel::Draw()
 			mSelectedActor->Destroy();
 			mContext->GetActiveScene()->RemoveActor(mSelectedActor);
 			delete mSelectedActor;
+			mSelectedActor = nullptr;
 			actors = mContext->GetActiveScene()->GetAllActors();
-			if (selected >= actors.size())
+			if (selected >= static_cast<int>(actors.size()))
 			{
-				selected = actors.size() - 1;
+				selected = static_cast<int>(actors.size()) - 1;
 			}
 			mSelectedActor = actors[selected];
 			mSelectedActor->SetSelected(true);
