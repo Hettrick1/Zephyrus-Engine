@@ -932,7 +932,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const Prope
 
 	ImGui::SameLine(pLabelWidth * 2);
 
-	ImGui::SetNextItemWidth(pInputWidth);
+	ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
 	std::string label = "##Texture" + std::string(buffer) + std::to_string(pIndex);
 	
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
@@ -971,6 +971,17 @@ bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const Prope
 	{
 		ImGui::SetTooltip(buffer);
 	}
+	
+	ImGui::SameLine();
+	ImGui::PushID(("Clear" + std::to_string(pIndex)).c_str());
+	if (ImGui::Button("Clear"))
+	{
+		strncpy_s(buffer, std::string("None").c_str(), sizeof(buffer));
+		prop.setter(nullptr);
+		ImGui::PopID();
+		return true;
+	}
+	ImGui::PopID();
 
 	if (std::string(buffer) != "None" && std::filesystem::path(buffer).extension() != Zephyrus::Render::ShaderTypeToExtensionStr(pType))
 	{
