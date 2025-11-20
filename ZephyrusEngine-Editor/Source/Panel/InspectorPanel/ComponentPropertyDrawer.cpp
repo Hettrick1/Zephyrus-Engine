@@ -70,15 +70,68 @@ void ComponentPropertyDrawer::DrawProperty(unsigned int pIndex, const PropertyDe
 bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<float>(pProperty, mActiveComponent);
-	float fVar = *static_cast<float*>(prop.getter());
+	
+	std::string key = prop.name;
+	float fVar = 0.0f;
+	if (mEditingFloats.find(key) == mEditingFloats.end())
+	{
+		fVar = *static_cast<float*>(prop.getter());
+		ZP_EDITOR_LOAD("Using base Value");
+	}
+	else
+	{
+		fVar = mEditingFloats[key];
+	}
+	
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
+	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
+	{
+		ImGui::BeginDisabled();
+	}
 	ImGui::SetNextItemWidth(pInputWidth);
 	std::string label = "##" + prop.name + std::to_string(pIndex);
-	ImGui::InputFloat(label.c_str(), &fVar);
-	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+
+	if (pProperty.metadata.maxFValue > pProperty.metadata.minFValue)
 	{
+		if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags,Zephyrus::PropertyFlags::Range))
+		{
+			ImGui::SliderFloat(label.c_str(), &fVar, pProperty.metadata.minFValue, pProperty.metadata.maxFValue);
+		}
+		else
+		{
+			fVar = std::clamp(fVar, pProperty.metadata.minFValue, pProperty.metadata.maxFValue);
+			ImGui::DragFloat(label.c_str(), &fVar);
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+		}
+	}
+	else
+	{
+		if (ImGui::InputFloat(label.c_str(), &fVar))
+		{
+			mEditingFloats[key] = fVar;
+		}
+	}
+	if (ImGui::IsItemActive())
+	{
+		mEditingFloats[key] = fVar;
+	}
+	if (ImGui::IsItemDeactivatedAfterEdit())
+	{
+		if (pProperty.metadata.hasRange)
+		{
+			fVar = std::clamp(fVar, pProperty.metadata.minFValue, pProperty.metadata.maxFValue);
+		}
 		prop.setter(&fVar);
+		ZP_EDITOR_ERROR(std::to_string(mEditingFloats[key]));
+		mEditingFloats.erase(key);
+	}
+	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
+	{
+		ImGui::EndDisabled();
 	}
 	return true;
 }
@@ -179,7 +232,7 @@ bool ComponentPropertyDrawer::SetPropertyVector4D(unsigned int pIndex, const Pro
 	
 	std::string label = "##" + prop.name + std::to_string(pIndex);
 	float vec4[4] = { vec4Var.x, vec4Var.y, vec4Var.z, vec4Var.w };
-	if (ImGui::InputFloat4(label.c_str() + pIndex, vec4, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	if (ImGui::InputFloat4(label.c_str(), vec4, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec4Var = Vector4D(vec4[0], vec4[1], vec4[2], vec4[3]);
 		prop.setter(&vec4Var);
@@ -197,7 +250,7 @@ bool ComponentPropertyDrawer::SetPropertyVector3D(unsigned int pIndex, const Pro
 	
 	std::string label = "##" + prop.name + std::to_string(pIndex);
 	float vec3[3] = { vec3Var.x, vec3Var.y, vec3Var.z };
-	if (ImGui::InputFloat3(label.c_str() + pIndex, vec3, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	if (ImGui::InputFloat3(label.c_str(), vec3, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec3Var = Vector3D(vec3[0], vec3[1], vec3[2]);
 		prop.setter(&vec3Var);
@@ -215,7 +268,7 @@ bool ComponentPropertyDrawer::SetPropertyVector2D(unsigned int pIndex, const Pro
 	
 	std::string label = "##" + prop.name + std::to_string(pIndex);
 	float vec2[2] = { vec2Var.x, vec2Var.y };
-	if (ImGui::InputFloat2(label.c_str() + pIndex, vec2, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
+	if (ImGui::InputFloat2(label.c_str(), vec2, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec2Var = Vector2D(vec2[0], vec2[1]);
 		prop.setter(&vec2Var);

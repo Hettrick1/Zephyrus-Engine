@@ -23,7 +23,7 @@ namespace Zephyrus
         std::string displayName;
         std::string category;
     };
-
+    
     // Meta data templates
     inline PropertyMetadata Range(float min, float max)
     {

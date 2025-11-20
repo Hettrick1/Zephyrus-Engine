@@ -41,5 +41,11 @@ struct PropertyDescriptor {
     PropertyType type;
 
     bool isPointer = false;
-    Zephyrus::PropertyMetadata metadata;
+    Zephyrus::PropertyMetadata metadata = {};
+    
+    PropertyDescriptor(const std::string& n, void* f, PropertyType t, const Zephyrus::PropertyMetadata& m)
+        : name(n), field(f), type(t), metadata(m) {}
+
+    PropertyDescriptor(const std::string& n, void* f, PropertyType t)
+        : name(n), field(f), type(t), metadata() {}
 };

@@ -52,9 +52,9 @@ namespace Zephyrus::ActorComponent
     {
         return
         {
-			    { "Fog Start : ", &mFogStart, PropertyType::Float },
-                { "Fog End : ", &mFogEnd, PropertyType::Float },
-                { "Fog Color : ", &mFogColor, PropertyType::Color },
+            { "Fog Start : ", &mFogStart, PropertyType::Float, Zephyrus::Range(0.0f, 500.0f) },
+            { "Fog End : ", &mFogEnd, PropertyType::Float, Zephyrus::PropertyMetadata(0, 0.0f, 500.0f) },
+            { "Fog Color : ", &mFogColor, PropertyType::Color },
         };
     }
 }

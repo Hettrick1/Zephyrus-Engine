@@ -32,6 +32,9 @@ public:
 	void DrawProperty(unsigned int pIndex, const PropertyDescriptor& pProperty, Zephyrus::ActorComponent::Component* activeComponent);
 
 private:
+	std::unordered_map<std::string, float> mEditingFloats;
+	
+private:
 	bool SetPropertyFloat(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyInt(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyBool(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);

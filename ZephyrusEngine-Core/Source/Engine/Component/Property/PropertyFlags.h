@@ -23,19 +23,19 @@ namespace Zephyrus::PropertyFlags
     };
 
     // Check if a flag is set
-    constexpr bool Has(uint16_t mask, Flags flag)
+    constexpr bool HasFlag(uint16_t mask, Flags flag)
     {
         return (mask & flag) != 0;
     }
 
     // Add a flag
-    constexpr void Add(uint16_t& mask, Flags flag)
+    constexpr void AddFlag(uint16_t& mask, Flags flag)
     {
         mask |= flag;
     }
 
     // Remove a flag
-    constexpr void Remove(uint16_t& mask, Flags flag)
+    constexpr void RemoveFlag(uint16_t& mask, Flags flag)
     {
         mask &= ~flag;
     }
