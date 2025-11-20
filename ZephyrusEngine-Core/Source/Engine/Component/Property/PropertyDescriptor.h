@@ -1,4 +1,6 @@
 #pragma once
+
+#include "PropertyMetadata.h"
 #include <string>
 
 enum class PropertyType 
@@ -39,4 +41,5 @@ struct PropertyDescriptor {
     PropertyType type;
 
     bool isPointer = false;
+    Zephyrus::PropertyMetadata metadata;
 };

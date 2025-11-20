@@ -4,7 +4,7 @@
 
 #include "Interface/IShaderProgram.h"
 #include "Interface/ITextureBase.h"
-#include "PropertyDescriptor.h"
+#include "Property/PropertyDescriptor.h"
 
 #include "JSONUtils.h"
 #include <unordered_map>

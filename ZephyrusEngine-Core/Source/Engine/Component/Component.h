@@ -7,7 +7,7 @@
 #include <vector>
 #include <string_view>
 #include "JSONUtils.h"
-#include "PropertyDescriptor.h"
+#include "Property/PropertyDescriptor.h"
 
 namespace Zephyrus::ActorComponent
 {

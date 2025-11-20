@@ -1,5 +1,5 @@
 #pragma once
-#include "PropertyDescriptor.h"
+#include "Property/PropertyDescriptor.h"
 
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "../EditorApplication/EventSystem/Event/SetGenericPropertyEvent.h"
