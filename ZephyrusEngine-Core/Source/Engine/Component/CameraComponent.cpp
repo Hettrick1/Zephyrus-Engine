@@ -72,7 +72,7 @@ namespace Zephyrus::ActorComponent
         SetClipping(mNearClip, mFarClip);
         return
         {
-            {"Fov : ", &mFov, PropertyType::Float},
+            {"Fov : ", &mFov, PropertyType::Float, Zephyrus::Range(40, 120)},
             {"Width : ", &mWidth, PropertyType::Float},
             {"Height : ", &mHeight, PropertyType::Float},
             {"NearClip : ", &mNearClip, PropertyType::Float},

@@ -70,39 +70,33 @@ void ComponentPropertyDrawer::DrawProperty(unsigned int pIndex, const PropertyDe
 bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<float>(pProperty, mActiveComponent);
-	
 	std::string key = prop.name;
-	float fVar = 0.0f;
-	if (mEditingFloats.find(key) == mEditingFloats.end())
-	{
-		fVar = *static_cast<float*>(prop.getter());
-		ZP_EDITOR_LOAD("Using base Value");
-	}
-	else
-	{
-		fVar = mEditingFloats[key];
-	}
 	
+	float* realPtr = static_cast<float*>(prop.getter());
+	float fVar = *realPtr;
+
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
+
 	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
 	{
 		ImGui::BeginDisabled();
 	}
+
 	ImGui::SetNextItemWidth(pInputWidth);
 	std::string label = "##" + prop.name + std::to_string(pIndex);
-
+	
 	if (pProperty.metadata.maxFValue > pProperty.metadata.minFValue)
 	{
-		if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags,Zephyrus::PropertyFlags::Range))
+		if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Range))
 		{
-			ImGui::SliderFloat(label.c_str(), &fVar, pProperty.metadata.minFValue, pProperty.metadata.maxFValue);
+			ImGui::SliderFloat(label.c_str(), realPtr,  pProperty.metadata.minFValue, pProperty.metadata.maxFValue);
 		}
 		else
 		{
-			fVar = std::clamp(fVar, pProperty.metadata.minFValue, pProperty.metadata.maxFValue);
-			ImGui::DragFloat(label.c_str(), &fVar);
+			ImGui::DragFloat(label.c_str(), realPtr);
 		}
+
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
@@ -110,29 +104,28 @@ bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const Proper
 	}
 	else
 	{
-		if (ImGui::InputFloat(label.c_str(), &fVar))
-		{
-			mEditingFloats[key] = fVar;
-		}
+		ImGui::InputFloat(label.c_str(), realPtr);
 	}
-	if (ImGui::IsItemActive())
+	
+	if (ImGui::IsItemActivated() && mEditingFloats.find(key) == mEditingFloats.end())
 	{
 		mEditingFloats[key] = fVar;
 	}
-	if (ImGui::IsItemDeactivatedAfterEdit())
+	
+	if (ImGui::IsItemDeactivatedAfterEdit() && mEditingFloats.find(key) != mEditingFloats.end())
 	{
-		if (pProperty.metadata.hasRange)
-		{
-			fVar = std::clamp(fVar, pProperty.metadata.minFValue, pProperty.metadata.maxFValue);
-		}
-		prop.setter(&fVar);
-		ZP_EDITOR_ERROR(std::to_string(mEditingFloats[key]));
+		float oldValue = mEditingFloats[key];
+		float newValue = *realPtr;
+
+		prop.Set(&newValue, &oldValue);
 		mEditingFloats.erase(key);
 	}
+
 	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
 	{
 		ImGui::EndDisabled();
 	}
+
 	return true;
 }
 
@@ -147,7 +140,7 @@ bool ComponentPropertyDrawer::SetPropertyInt(unsigned int pIndex, const Property
 	ImGui::InputInt(label.c_str(), &iVar);
 	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 	{
-		prop.setter(&iVar);
+		prop.Set(&iVar);
 	}
 	return true;
 }
@@ -161,7 +154,7 @@ bool ComponentPropertyDrawer::SetPropertyBool(unsigned int pIndex, const Propert
 	std::string label = "##" + prop.name + std::to_string(pIndex);
 	if (ImGui::Checkbox(label.c_str(), &bVar))
 	{
-		prop.setter(&bVar);
+		prop.Set(&bVar);
 	}
 	return true;
 }
@@ -182,7 +175,7 @@ bool ComponentPropertyDrawer::SetPropertyString(unsigned int pIndex, const Prope
 	std::string label = "##String" + std::string(buffer) + std::to_string(pIndex);
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		prop.setter(&buffer);
+		prop.Set(&buffer);
 	}
 	return true;
 }
@@ -213,7 +206,7 @@ bool ComponentPropertyDrawer::SetPropertyColor(unsigned int pIndex, const Proper
 		if (ImGui::Button("Save Color"))
 		{
 			Vector4D newColorVar = Vector4D(newVec4[0], newVec4[1], newVec4[2], newVec4[3]);
-			prop.setter(&newColorVar);
+			prop.Set(&newColorVar);
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();
@@ -235,7 +228,7 @@ bool ComponentPropertyDrawer::SetPropertyVector4D(unsigned int pIndex, const Pro
 	if (ImGui::InputFloat4(label.c_str(), vec4, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec4Var = Vector4D(vec4[0], vec4[1], vec4[2], vec4[3]);
-		prop.setter(&vec4Var);
+		prop.Set(&vec4Var);
 	}
 	return true;
 }
@@ -253,7 +246,7 @@ bool ComponentPropertyDrawer::SetPropertyVector3D(unsigned int pIndex, const Pro
 	if (ImGui::InputFloat3(label.c_str(), vec3, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec3Var = Vector3D(vec3[0], vec3[1], vec3[2]);
-		prop.setter(&vec3Var);
+		prop.Set(&vec3Var);
 	}
 	return true;
 }
@@ -271,7 +264,7 @@ bool ComponentPropertyDrawer::SetPropertyVector2D(unsigned int pIndex, const Pro
 	if (ImGui::InputFloat2(label.c_str(), vec2, "%.3f", ImGuiInputTextFlags_AutoSelectAll))
 	{
 		vec2Var = Vector2D(vec2[0], vec2[1]);
-		prop.setter(&vec2Var);
+		prop.Set(&vec2Var);
 	}
 	return true;
 }
@@ -306,7 +299,7 @@ bool ComponentPropertyDrawer::SetPropertyTexture(unsigned int pIndex, const Prop
 		Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(buffer, buffer);
 		if (newTex)
 		{
-			prop.setter(newTex);
+			prop.Set(newTex);
 		}
 		else
 		{
@@ -321,7 +314,7 @@ bool ComponentPropertyDrawer::SetPropertyTexture(unsigned int pIndex, const Prop
 			Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::LoadTexture(textureID, textureID);
 			if (droppedTex)
 			{
-				prop.setter(droppedTex);
+				prop.Set(droppedTex);
 			}
 		}
 		ImGui::EndDragDropTarget();
@@ -362,7 +355,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(unsigned int pIndex, const Propert
 		Zephyrus::Assets::IMesh* newMesh = Zephyrus::Assets::AssetsManager::LoadMesh(buffer, buffer);
 		if (newMesh)
 		{
-			prop.setter(newMesh);
+			prop.Set(newMesh);
 		}
 		else
 		{
@@ -377,7 +370,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(unsigned int pIndex, const Propert
 			Zephyrus::Assets::IMesh* droppedMesh = Zephyrus::Assets::AssetsManager::LoadMesh(meshID, meshID);
 			if (droppedMesh)
 			{
-				prop.setter(droppedMesh);
+				prop.Set(droppedMesh);
 			}
 		}
 		ImGui::EndDragDropTarget();
@@ -444,7 +437,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(unsigned int pIndex, const Prop
 			return false;
 		}
 		cubemap->SetTempFilePath(cubemap->GetFaceFilePath());
-		prop.setter(newCubemap);
+		prop.Set(newCubemap);
 	}
 	return true;
 }
@@ -464,14 +457,14 @@ bool ComponentPropertyDrawer::SetPropertyPrefab(unsigned int pIndex, const Prope
 	std::string label = "##PrefabName" + std::string(buffer) + std::to_string(pIndex);
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		prop.setter(&buffer);
+		prop.Set(&buffer);
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB"))
 		{
 			std::string prefabID((const char*)payload->Data, payload->DataSize);
-			prop.setter(&prefabID);
+			prop.Set(&prefabID);
 		}
 		ImGui::EndDragDropTarget();
 	}
@@ -494,14 +487,14 @@ bool ComponentPropertyDrawer::SetPropertyComponent(unsigned int pIndex, const Pr
 	std::string label = "##String" + std::string(buffer) + std::to_string(pIndex);
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		prop.setter(&buffer);
+		prop.Set(&buffer);
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("COMPONENT"))
 		{
 			std::string componentID((const char*)payload->Data, payload->DataSize);
-			prop.setter(&componentID);
+			prop.Set(&componentID);
 		}
 		ImGui::EndDragDropTarget();
 	}
@@ -545,7 +538,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(unsigned int pIndex, con
 				{
 					auto newVec = *textures;
 					newVec[i] = newTex;
-					prop.setter(&newVec);
+					prop.Set(&newVec);
 				}
 			}
 			if (ImGui::BeginDragDropTarget())
@@ -558,7 +551,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(unsigned int pIndex, con
 					{
 						auto newVec = *textures;
 						newVec[i] = droppedTex;
-						prop.setter(&newVec);
+						prop.Set(&newVec);
 					}
 				}
 				ImGui::EndDragDropTarget();
@@ -574,7 +567,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(unsigned int pIndex, con
 				{
 					auto newVec = *textures;
 					newVec.erase(newVec.begin() + i);
-					prop.setter(&newVec);
+					prop.Set(&newVec);
 
 					ImGui::PopID();
 					break;
@@ -586,7 +579,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(unsigned int pIndex, con
 		{
 			auto newVec = *textures;
 			newVec.push_back(nullptr);
-			prop.setter(&newVec);
+			prop.Set(&newVec);
 		}
 		ImGui::TreePop();
 	}
@@ -616,7 +609,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(unsigned int pIndex, c
 
 		auto materialInstance = Zephyrus::Material::MaterialInstance();
 		materialInstance.SetMaterial(newMaterial);
-		prop.setter(&materialInstance);
+		prop.Set(&materialInstance);
 	}
 
 	if (ImGui::IsItemHovered())
@@ -993,13 +986,13 @@ bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const Prope
 		if (buffer[0] == '\0')
 		{
 			strncpy_s(buffer, std::string("None").c_str(), sizeof(buffer));
-			prop.setter(nullptr);
+			prop.Set(nullptr);
 			return true;
 		}
 		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::LoadShader(buffer, pType ,buffer);
 		if (newShader)
 		{
-			prop.setter(newShader);
+			prop.Set(newShader);
 		}
 		else
 		{
@@ -1015,7 +1008,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const Prope
 			Zephyrus::Render::IShader* droppedShader = Zephyrus::Assets::AssetsManager::LoadShader(shaderID, pType, shaderID);
 			if (droppedShader)
 			{
-				prop.setter(droppedShader);
+				prop.Set(droppedShader);
 			}
 		}
 		ImGui::EndDragDropTarget();
@@ -1030,7 +1023,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const Prope
 	if (ImGui::Button("Clear"))
 	{
 		strncpy_s(buffer, std::string("None").c_str(), sizeof(buffer));
-		prop.setter(nullptr);
+		prop.Set(nullptr);
 		ImGui::PopID();
 		return true;
 	}

@@ -12,8 +12,11 @@ struct Property {
     std::string name;
     PropertyType type;
 
-    std::function<void(void*)> setter;
+    std::function<void(void*, void*)> setter;
     std::function<void* ()> getter;
+
+    void Set(void* val) { setter(val, nullptr); }
+    void Set(void* val, void* old) { setter(val, old); }
 };
 
 template<typename T>
@@ -26,9 +29,18 @@ Property MakeUndoableProperty(const PropertyDescriptor& desc, Zephyrus::ActorCom
         return {
             desc.name,
             desc.type,
-            [field, owner](void* val)
+            [field, owner](void* val, void* old)
             {
-                T* oldVal = *field;
+                T* oldVal = nullptr;
+                if (old)
+                {
+                    oldVal = static_cast<T*>(old);
+                }
+                else
+                {
+                    oldVal = *field;
+                }
+
                 T* newVal = static_cast<T*>(val);
 
                 auto* evt = new SetGenericPropertyEvent<T*>(owner, field, oldVal, newVal);
@@ -45,9 +57,13 @@ Property MakeUndoableProperty(const PropertyDescriptor& desc, Zephyrus::ActorCom
         return {
             desc.name,
             desc.type,
-            [field, owner](void* val)
+            [field, owner](void* val, void* old)
             {
                 T oldVal = *field;
+                if (old)
+                {
+                    oldVal = *static_cast<T*>(old);
+                }
                 T newVal = *static_cast<T*>(val);
 
                 auto* evt = new SetGenericPropertyEvent<T>(owner, field, oldVal, newVal);
