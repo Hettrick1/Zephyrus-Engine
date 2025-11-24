@@ -57,10 +57,43 @@ void ComponentPropertyDrawer::DrawProperty(unsigned int pIndex, const PropertyDe
 	float labelWidth = 125;
 	float inputWidth = ImGui::GetContentRegionAvail().x - labelWidth;
 
+	bool disabled = false;
+	
 	auto it = mPropertySetters.find(property.type);
 	if (it != mPropertySetters.end())
 	{
-		if (it->second(pIndex, property, labelWidth, inputWidth))
+		if (Zephyrus::PropertyFlags::HasFlag(property.metadata.flags,Zephyrus::PropertyFlags::Condition))
+		{
+			if (Zephyrus::PropertyFlags::HasFlag(property.metadata.flags,Zephyrus::PropertyFlags::Hidden_In_Editor) && !property.metadata.condition)
+			{
+				return;
+			}
+			if (Zephyrus::PropertyFlags::HasFlag(property.metadata.flags,Zephyrus::PropertyFlags::Disable_In_Editor) && !property.metadata.condition)
+			{
+				ImGui::BeginDisabled();
+				disabled = true;
+			}
+		}
+		else
+		{
+			if (Zephyrus::PropertyFlags::HasFlag(property.metadata.flags,(Zephyrus::PropertyFlags::Hidden_In_Editor)))
+			{
+				return;
+			}
+			if (Zephyrus::PropertyFlags::HasFlag(property.metadata.flags,Zephyrus::PropertyFlags::Disable_In_Editor))
+			{
+				ImGui::BeginDisabled();
+			}
+		}
+
+		
+		bool sep =it->second(pIndex, property, labelWidth, inputWidth);
+		
+		if (disabled)
+		{
+			ImGui::EndDisabled();
+		}
+		if (sep)
 		{
 			ImGui::Separator();
 		}
@@ -77,11 +110,6 @@ bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const Proper
 
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
-
-	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
-	{
-		ImGui::BeginDisabled();
-	}
 
 	ImGui::SetNextItemWidth(pInputWidth);
 	std::string label = "##" + prop.name + std::to_string(pIndex);
@@ -121,11 +149,6 @@ bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const Proper
 		mEditingFloats.erase(key);
 	}
 
-	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
-	{
-		ImGui::EndDisabled();
-	}
-
 	return true;
 }
 
@@ -139,11 +162,6 @@ bool ComponentPropertyDrawer::SetPropertyInt(unsigned int pIndex, const Property
 
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
-
-	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
-	{
-		ImGui::BeginDisabled();
-	}
 
 	ImGui::SetNextItemWidth(pInputWidth);
 	std::string label = "##" + prop.name + std::to_string(pIndex);
@@ -181,11 +199,6 @@ bool ComponentPropertyDrawer::SetPropertyInt(unsigned int pIndex, const Property
 
 		prop.Set(&newValue, &oldValue);
 		mEditingInts.erase(key);
-	}
-
-	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
-	{
-		ImGui::EndDisabled();
 	}
 
 	return true;

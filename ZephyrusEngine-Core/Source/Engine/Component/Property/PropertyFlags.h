@@ -7,22 +7,26 @@ namespace Zephyrus::PropertyFlags
     {
         None                = 0,
         Fixed_Size          = 1 << 0,
-        Read_Only           = 1 << 1,
-        Advanced            = 1 << 2,
-        Condition           = 1 << 3,
-        Clamp               = 1 << 4,
-        Range               = 1 << 5,
-        Tooltip             = 1 << 6,
-        DisplayName         = 1 << 7,
-        Category            = 1 << 8,
-        Hidden_In_Editor    = 1 << 9,
-        Disable_In_Editor   = 1 << 10,
+        Advanced            = 1 << 1,
+        Condition           = 1 << 2,
+        Clamp               = 1 << 3,
+        Range               = 1 << 4,
+        Tooltip             = 1 << 5,
+        DisplayName         = 1 << 6,
+        Category            = 1 << 7,
+        Hidden_In_Editor    = 1 << 8,
+        Disable_In_Editor   = 1 << 9,
     };
 
     // Check if a flag is set
     constexpr bool HasFlag(uint16_t mask, Flags flag)
     {
         return (mask & flag) != 0;
+    }
+    
+    constexpr bool HasNotFlag(uint16_t mask, Flags flag)
+    {
+        return (mask & flag) == 0;
     }
 
     // Add a flag

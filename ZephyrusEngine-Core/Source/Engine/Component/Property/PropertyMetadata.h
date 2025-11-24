@@ -18,8 +18,8 @@ namespace Zephyrus
         bool hasFRange  = false;
         bool hasIRange  = false;
         bool hasStep   = false;
-
-        bool hasCondition = false;
+        
+        bool condition = false;
 
         std::string tooltip;
         std::string displayName;
@@ -46,9 +46,9 @@ namespace Zephyrus
 
         if (b.hasStep)
             a.hasStep = true;
-
-        if (b.hasCondition)
-            a.hasCondition = true;
+        
+        if (b.condition)
+            a.condition = true;
 
         if (!b.tooltip.empty())
             a.tooltip = b.tooltip;
@@ -86,7 +86,7 @@ namespace Zephyrus
     inline PropertyMetadata ReadOnly()
     {
         PropertyMetadata m;
-        m.flags |= PropertyFlags::Read_Only;
+        m.flags |= PropertyFlags::Disable_In_Editor;
         return m;
     }
     
@@ -114,12 +114,12 @@ namespace Zephyrus
         return m;
     }
 
-    inline PropertyMetadata Condition(const std::string& condition, PropertyFlags::Flags showBehavior = PropertyFlags::Disable_In_Editor)
+    inline PropertyMetadata Condition(const bool condition, PropertyFlags::Flags showBehavior = PropertyFlags::Disable_In_Editor)
     {
         PropertyMetadata m;
         m.flags |= PropertyFlags::Condition;
         m.flags |= showBehavior;
-        m.hasCondition = true;
+        m.condition = condition;
         return m;
     }
 

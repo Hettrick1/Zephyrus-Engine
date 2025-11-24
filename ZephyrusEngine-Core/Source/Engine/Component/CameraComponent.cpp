@@ -77,7 +77,6 @@ namespace Zephyrus::ActorComponent
             {"Height : ", &mHeight, PropertyType::Float},
             {"NearClip : ", &mNearClip, PropertyType::Float},
             {"FarClip : ", &mFarClip, PropertyType::Float},
-            {"Test : ", &test, PropertyType::Int, Zephyrus::Range(1, 10)}
         };
     }
 
