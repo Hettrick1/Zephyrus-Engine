@@ -28,6 +28,7 @@ namespace Zephyrus::ActorComponent
         float mOldNear = mNearClip;
         float mFarClip = 10000.0f;
         float mOldFar = mFarClip;
+        int test = 0;
         Zephyrus::Render::IRenderTarget* mRenderTarget = nullptr;
     public:
         CameraComponent(Actor* pOwner, int pWidth = 1920, int pHeight = 1080, CameraUsage pUsage = CameraUsage::Game);

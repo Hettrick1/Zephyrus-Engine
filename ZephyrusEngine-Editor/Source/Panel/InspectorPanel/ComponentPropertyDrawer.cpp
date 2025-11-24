@@ -107,12 +107,12 @@ bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const Proper
 		ImGui::InputFloat(label.c_str(), realPtr);
 	}
 	
-	if (ImGui::IsItemActivated() && mEditingFloats.find(key) == mEditingFloats.end())
+	if (ImGui::IsItemActivated() && !mEditingFloats.contains(key))
 	{
 		mEditingFloats[key] = fVar;
 	}
 	
-	if (ImGui::IsItemDeactivatedAfterEdit() && mEditingFloats.find(key) != mEditingFloats.end())
+	if (ImGui::IsItemDeactivatedAfterEdit() && mEditingFloats.contains(key))
 	{
 		float oldValue = mEditingFloats[key];
 		float newValue = *realPtr;
@@ -132,16 +132,62 @@ bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const Proper
 bool ComponentPropertyDrawer::SetPropertyInt(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
 {
 	auto prop = MakeUndoableProperty<int>(pProperty, mActiveComponent);
-	int iVar = *static_cast<int*>(prop.getter());
+	std::string key = prop.name;
+	
+	int* realPtr = static_cast<int*>(prop.getter());
+	int iVar = *realPtr;
+
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
+
+	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
+	{
+		ImGui::BeginDisabled();
+	}
+
 	ImGui::SetNextItemWidth(pInputWidth);
 	std::string label = "##" + prop.name + std::to_string(pIndex);
-	ImGui::InputInt(label.c_str(), &iVar);
-	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+	
+	if (pProperty.metadata.maxIValue > pProperty.metadata.minIValue)
 	{
-		prop.Set(&iVar);
+		if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Range))
+		{
+			ImGui::SliderInt(label.c_str(), realPtr,  pProperty.metadata.minIValue, pProperty.metadata.maxIValue);
+		}
+		else
+		{
+			ImGui::DragInt(label.c_str(), realPtr);
+		}
+
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+		}
 	}
+	else
+	{
+		ImGui::InputInt(label.c_str(), realPtr);
+	}
+	
+	if (ImGui::IsItemActivated() && !mEditingInts.contains(key))
+	{
+		mEditingInts[key] = iVar;
+	}
+	
+	if (ImGui::IsItemDeactivatedAfterEdit() && mEditingInts.contains(key))
+	{
+		int oldValue = mEditingInts[key];
+		int newValue = *realPtr;
+
+		prop.Set(&newValue, &oldValue);
+		mEditingInts.erase(key);
+	}
+
+	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Read_Only))
+	{
+		ImGui::EndDisabled();
+	}
+
 	return true;
 }
 

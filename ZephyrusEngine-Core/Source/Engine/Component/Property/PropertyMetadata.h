@@ -35,6 +35,16 @@ namespace Zephyrus
         return m;
     }
     
+    inline PropertyMetadata Range(int min, int max)
+    {
+        PropertyMetadata m;
+        m.flags |= PropertyFlags::Range;
+        m.minIValue = min;
+        m.maxIValue = max;
+        m.hasRange = true;
+        return m;
+    }
+    
     inline PropertyMetadata Clamp(float min, float max)
     {
         PropertyMetadata m;
