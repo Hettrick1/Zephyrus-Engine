@@ -83,9 +83,9 @@ void ComponentPropertyDrawer::DrawProperty(unsigned int pIndex, const PropertyDe
 			if (Zephyrus::PropertyFlags::HasFlag(property.metadata.flags,Zephyrus::PropertyFlags::Disable_In_Editor))
 			{
 				ImGui::BeginDisabled();
+				disabled = true;
 			}
 		}
-
 		
 		bool sep =it->second(pIndex, property, labelWidth, inputWidth);
 		
