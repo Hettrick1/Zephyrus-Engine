@@ -8,21 +8,59 @@ namespace Zephyrus
     struct PropertyMetadata
     {
         uint16_t flags = 0;
-
-        // optional metadata
+        
         float minFValue = 0.0f;
         float maxFValue = 0.0f;
 
         int minIValue = 0;
         int maxIValue = 0;
 
-        bool hasRange  = false;
+        bool hasFRange  = false;
+        bool hasIRange  = false;
         bool hasStep   = false;
+
+        bool hasCondition = false;
 
         std::string tooltip;
         std::string displayName;
         std::string category;
     };
+
+    inline PropertyMetadata operator|(PropertyMetadata a, const PropertyMetadata& b) {
+
+        a.flags |= b.flags;
+        
+        if (b.hasFRange)
+        {
+            a.minFValue = b.minFValue;
+            a.maxFValue = b.maxFValue;
+            a.hasFRange  = true;
+        }
+        
+        if (b.hasIRange)
+        {
+            a.minIValue = b.minIValue;
+            a.maxIValue = b.maxIValue;
+            a.hasIRange = true;
+        }
+
+        if (b.hasStep)
+            a.hasStep = true;
+
+        if (b.hasCondition)
+            a.hasCondition = true;
+
+        if (!b.tooltip.empty())
+            a.tooltip = b.tooltip;
+        
+        if (!b.displayName.empty())
+            a.displayName = b.displayName;
+
+        if (!b.category.empty())
+            a.category = b.category;
+
+        return a;
+    }
     
     // Meta data templates
     inline PropertyMetadata Range(float min, float max)
@@ -31,7 +69,7 @@ namespace Zephyrus
         m.flags |= PropertyFlags::Range;
         m.minFValue = min;
         m.maxFValue = max;
-        m.hasRange = true;
+        m.hasFRange = true;
         return m;
     }
     
@@ -41,17 +79,7 @@ namespace Zephyrus
         m.flags |= PropertyFlags::Range;
         m.minIValue = min;
         m.maxIValue = max;
-        m.hasRange = true;
-        return m;
-    }
-    
-    inline PropertyMetadata Clamp(float min, float max)
-    {
-        PropertyMetadata m;
-        m.flags |= PropertyFlags::Clamp;
-        m.minFValue = min;
-        m.maxFValue = max;
-        m.hasRange = true;
+        m.hasIRange = true;
         return m;
     }
     
@@ -83,6 +111,15 @@ namespace Zephyrus
         PropertyMetadata m;
         m.flags |= PropertyFlags::Category;
         m.category = cat;
+        return m;
+    }
+
+    inline PropertyMetadata Condition(const std::string& condition, PropertyFlags::Flags showBehavior = PropertyFlags::Disable_In_Editor)
+    {
+        PropertyMetadata m;
+        m.flags |= PropertyFlags::Condition;
+        m.flags |= showBehavior;
+        m.hasCondition = true;
         return m;
     }
 
