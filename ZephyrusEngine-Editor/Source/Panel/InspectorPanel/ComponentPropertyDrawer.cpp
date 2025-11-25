@@ -211,9 +211,22 @@ bool ComponentPropertyDrawer::SetPropertyBool(unsigned int pIndex, const Propert
 	ImGui::Text(prop.name.c_str());
 	ImGui::SameLine(pLabelWidth);
 	std::string label = "##" + prop.name + std::to_string(pIndex);
-	if (ImGui::Checkbox(label.c_str(), &bVar))
+	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::DropDown))
 	{
-		prop.Set(&bVar);
+		const char* items[]{pProperty.metadata.falseValue.c_str(), pProperty.metadata.trueValue.c_str()};
+		static int SelectedItem = bVar;
+		if (ImGui::Combo("MyCombo", &SelectedItem, items, IM_ARRAYSIZE(items)))
+		{
+			bVar = SelectedItem;
+			prop.Set(&bVar);
+		}
+	}
+	else
+	{
+		if (ImGui::Checkbox(label.c_str(), &bVar))
+		{
+			prop.Set(&bVar);
+		}
 	}
 	return true;
 }

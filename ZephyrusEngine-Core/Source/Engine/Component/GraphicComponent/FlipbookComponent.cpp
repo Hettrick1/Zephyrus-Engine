@@ -48,6 +48,7 @@ namespace Zephyrus::ActorComponent
 		{
 			SetTexture(mAnimationTextures[0]);
 		}
+		
 		return {
 			{ "Textures", &mAnimationTextures, PropertyType::VectorTexture },
 			{ "Is Looping : ", &mIsLooping, PropertyType::Bool},
