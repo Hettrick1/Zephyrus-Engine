@@ -19,6 +19,19 @@ namespace Zephyrus::Material
 
 		std::unordered_map<std::string, Assets::ITextureBase*> mTextures;
 
+		bool mIsAlbedoTexture{ true };
+		Assets::ITextureBase* mAlbedoTexture{ nullptr };
+		Vector4D mAlbedoColor{1.0f, 1.0f, 1.0f, 1.0f};
+		bool mIsMetallicTexture{ false };
+		Assets::ITextureBase* mMetallicTexture{ nullptr };
+		float mMetallic{0.0f};
+		bool mIsRoughnessTexture{ false };
+		Assets::ITextureBase* mRoughnessTexture{ nullptr };
+		float mRoughness{0.0f};
+		bool mIsSpecularTexture{ false };
+		Assets::ITextureBase* mSpecularTexture{ nullptr };
+		float mSpecular{0.0f};
+		
 		std::unordered_map<std::string, int> mIntProperties;
 		std::unordered_map<std::string, float> mfloatProperties;
 		std::unordered_map<std::string, Vector2D> mVec2Properties;

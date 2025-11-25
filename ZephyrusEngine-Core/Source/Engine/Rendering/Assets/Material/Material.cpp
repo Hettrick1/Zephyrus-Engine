@@ -482,6 +482,19 @@ namespace Zephyrus::Material
 			{"Tesselation Control Shader : ", &mTescShader, PropertyType::ShaderTesc},
 			{"Tesselation Evaluation Shader : ", &mTeseShader, PropertyType::ShaderTese},
 			{"Geometry Shader : ", &mGeomShader, PropertyType::ShaderGeom},
+			{"", &mIsAlbedoTexture, PropertyType::Bool, DropDown("Texture","Vector 3D")},
+			{"Albedo : ", &mAlbedoTexture, PropertyType::TextureBase, Condition(mIsAlbedoTexture, PropertyFlags::Hidden_In_Editor)},
+			{"Albedo : ", &mAlbedoColor, PropertyType::Color, Condition(!mIsAlbedoTexture, PropertyFlags::Hidden_In_Editor)},
+			{"", &mIsMetallicTexture, PropertyType::Bool,DropDown("Texture","Float")},
+			{"Metallic : ", &mMetallicTexture, PropertyType::TextureBase, Condition(mIsMetallicTexture, PropertyFlags::Hidden_In_Editor)},
+			{"Metallic : ", &mMetallic, PropertyType::Float, Condition(!mIsMetallicTexture, PropertyFlags::Hidden_In_Editor) | Range(0.0f, 1.0f)},
+			{"", &mIsRoughnessTexture, PropertyType::Bool, DropDown("Texture","Float")},
+			{"Roughness : ", &mRoughnessTexture, PropertyType::TextureBase, Condition(mIsRoughnessTexture, PropertyFlags::Hidden_In_Editor)},
+			{"Roughness : ", &mRoughness, PropertyType::Float, Condition(!mIsRoughnessTexture, PropertyFlags::Hidden_In_Editor)| Range(0.0f, 1.0f)},
+			{"", &mIsSpecularTexture, PropertyType::Bool, DropDown("Texture","Float")},
+			{"Specular : ", &mSpecularTexture, PropertyType::TextureBase, Condition(mIsSpecularTexture, PropertyFlags::Hidden_In_Editor)},
+			{"Specular : ", &mSpecular, PropertyType::Float, Condition(!mIsSpecularTexture, PropertyFlags::Hidden_In_Editor)| Range(0.0f, 1.0f)},
+			
 		};
 	}
 

@@ -5,11 +5,11 @@ namespace Zephyrus::Render {
     RenderTargetOpenGL::RenderTargetOpenGL(int pWidth, int pHeight)
         : mWidth(pWidth), mHeight(pHeight)
     {
-        Init();
+        RenderTargetOpenGL::Init();
     }
     RenderTargetOpenGL::~RenderTargetOpenGL()
     {
-        Destroy();
+        RenderTargetOpenGL::Destroy();
     }
 
     void RenderTargetOpenGL::Bind()

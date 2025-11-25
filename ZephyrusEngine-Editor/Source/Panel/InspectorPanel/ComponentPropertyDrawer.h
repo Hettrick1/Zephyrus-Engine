@@ -64,6 +64,7 @@ private:
 	bool SetPropertyArrayVector3D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyArrayVector4D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyArrayTextureBase(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyTextureBase(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 
 private:
 	bool SetPropertyShader(unsigned int pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth, Zephyrus::Render::ShaderType pType);

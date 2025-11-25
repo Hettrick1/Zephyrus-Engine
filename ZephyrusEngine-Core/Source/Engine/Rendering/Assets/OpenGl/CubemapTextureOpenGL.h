@@ -11,6 +11,7 @@ namespace Zephyrus::Assets {
 		unsigned int mTextureId{ 0 };
 		std::vector<std::string> mCubeFacePaths;
 		std::vector<std::string> mTempFacePaths;
+		TextureType mType{TextureType::Cubemap};
 	public:
 		CubemapTextureOpenGL() = default;
 		// Loads and creates a cube texture map from the provided file paths for each face.
@@ -19,11 +20,14 @@ namespace Zephyrus::Assets {
 		void Bind(unsigned int slot = 0) const override;
 		void Unbind(unsigned int slot = 0) const override;
 
-		inline int GetWidth() const override { return mWidth; }
-		inline int GetHeight() const override { return mHeight; }
+		int GetWidth() const override { return mWidth; }
+		int GetHeight() const override { return mHeight; }
 
-		inline std::vector<std::string> GetFaceFilePath() const override { return mCubeFacePaths; }
-		inline void SetTempFilePath(const std::vector<std::string>& pFilePath) override { mTempFacePaths = pFilePath; }
-		inline std::vector<std::string> GetTempFilePath() const override { return mTempFacePaths; }
+		std::vector<std::string> GetFaceFilePath() const override { return mCubeFacePaths; }
+		void SetTempFilePath(const std::vector<std::string>& pFilePath) override { mTempFacePaths = pFilePath; }
+		std::vector<std::string> GetTempFilePath() const override { return mTempFacePaths; }
+
+		TextureType GetType() const override { return mType; }
+		void SetType(TextureType newType) override { mType = newType;}
 	};
 }

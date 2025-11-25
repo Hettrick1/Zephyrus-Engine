@@ -29,10 +29,10 @@ ComponentPropertyDrawer::ComponentPropertyDrawer()
 	mPropertySetters[PropertyType::Vec4] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyVector4D(i, p, lw, iw); };
 	mPropertySetters[PropertyType::Color] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyColor(i, p, lw, iw); };
 	mPropertySetters[PropertyType::Quaternion] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyQuaternion(i, p, lw, iw); };
-	mPropertySetters[PropertyType::Texture] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyTexture(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Texture2D] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyTexture(i, p, lw, iw); };
 	mPropertySetters[PropertyType::Font] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyFont(i, p, lw, iw); };
 	mPropertySetters[PropertyType::Mesh] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyMesh(i, p, lw, iw); };
-	mPropertySetters[PropertyType::VectorTexture] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTexture2D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::VectorTexture2D] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTexture2D(i, p, lw, iw); };
 	mPropertySetters[PropertyType::Prefab] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyPrefab(i, p, lw, iw); };
 	mPropertySetters[PropertyType::CubeMap] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyCubemap(i, p, lw, iw); };
 	mPropertySetters[PropertyType::Component] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyComponent(i, p, lw, iw); };
@@ -48,6 +48,7 @@ ComponentPropertyDrawer::ComponentPropertyDrawer()
 	mPropertySetters[PropertyType::ArrayVector3D] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector3D(i, p, lw, iw); };
 	mPropertySetters[PropertyType::ArrayVector4D] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector4D(i, p, lw, iw); };
 	mPropertySetters[PropertyType::ArrayTextureBase] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTextureBase(i, p, lw, iw); };
+	mPropertySetters[PropertyType::TextureBase] = [this](unsigned int i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyTextureBase(i, p, lw, iw); };
 }
 
 void ComponentPropertyDrawer::DrawProperty(unsigned int pIndex, const PropertyDescriptor& property, Zephyrus::ActorComponent::Component* activeComponent)
@@ -214,8 +215,8 @@ bool ComponentPropertyDrawer::SetPropertyBool(unsigned int pIndex, const Propert
 	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::DropDown))
 	{
 		const char* items[]{pProperty.metadata.falseValue.c_str(), pProperty.metadata.trueValue.c_str()};
-		static int SelectedItem = bVar;
-		if (ImGui::Combo("MyCombo", &SelectedItem, items, IM_ARRAYSIZE(items)))
+		int SelectedItem = bVar;
+		if (ImGui::Combo(label.c_str(), &SelectedItem, items, IM_ARRAYSIZE(items)))
 		{
 			bVar = SelectedItem;
 			prop.Set(&bVar);
@@ -1027,8 +1028,35 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(unsigned int pIndex, c
 	return false;
 }
 
+bool ComponentPropertyDrawer::SetPropertyTextureBase(unsigned int pIndex, const PropertyDescriptor& pProperty,
+	const float& pLabelWidth, const float& pInputWidth)
+{
+	// auto prop = MakeUndoableProperty<Zephyrus::Assets::ITextureBase*>(pProperty, mActiveComponent);
+	// Zephyrus::Assets::ITextureBase* texVar = static_cast<Zephyrus::Assets::ITextureBase*>(prop.getter());
+	//
+	// const char* items[]{"Texture 2D", "Cubemap"};
+	// int SelectedItem = 0;
+	// if ()
+	// SelectedItem = static_cast<int>(texVar->GetType());
+	// if (ImGui::Combo("Type", &SelectedItem, items, IM_ARRAYSIZE(items)))
+	// {
+	// 	texVar->SetType(static_cast<Zephyrus::Assets::TextureType>(SelectedItem));
+	// }
+	//
+	// ImGui::SameLine();
+	//
+	// switch (texVar->GetType())
+	// {
+	// case Zephyrus::Assets::TextureType::Texture2D :
+	// 	return SetPropertyTexture(pIndex, pProperty, pLabelWidth, pInputWidth);
+	// case Zephyrus::Assets::TextureType::Cubemap :
+	// 	return SetPropertyCubemap(pIndex, pProperty, pLabelWidth, pInputWidth);
+	// }
+	return false;
+}
+
 bool ComponentPropertyDrawer::SetPropertyShader(unsigned int pIndex, const PropertyDescriptor& pProperty,
-	const float& pLabelWidth, const float& pInputWidth, Zephyrus::Render::ShaderType pType)
+                                                const float& pLabelWidth, const float& pInputWidth, Zephyrus::Render::ShaderType pType)
 {
 	Property prop;
 	prop = MakeUndoableProperty<Zephyrus::Render::IShader*>(pProperty, mActiveComponent);

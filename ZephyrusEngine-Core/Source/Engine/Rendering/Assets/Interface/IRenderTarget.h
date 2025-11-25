@@ -19,5 +19,6 @@ namespace Zephyrus::Render {
 
         virtual Vector2D GetDimensions() const = 0;
         virtual unsigned int GetColorTexture() const = 0;
+		virtual unsigned int GetDepthTexture() const = 0;
 	};
 }

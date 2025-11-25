@@ -14,11 +14,11 @@ enum class PropertyType
     Vec3, 
     Vec2, 
     Quaternion, 
-    Texture, 
+    Texture2D, 
     Font, 
     Mesh,
     MaterialInstance,
-    VectorTexture,
+    VectorTexture2D,
     Prefab,
     CubeMap,
     Component,
@@ -33,6 +33,7 @@ enum class PropertyType
     ArrayVector3D,
     ArrayVector4D,
     ArrayTextureBase,
+    TextureBase,
 };
 
 struct PropertyDescriptor {
