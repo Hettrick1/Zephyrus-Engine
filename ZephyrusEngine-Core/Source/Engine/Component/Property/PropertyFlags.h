@@ -16,6 +16,7 @@ namespace Zephyrus::PropertyFlags
         Category            = 1 << 7,
         Hidden_In_Editor    = 1 << 8,
         Disable_In_Editor   = 1 << 9,
+        DropDown            = 1 << 10,
     };
 
     // Check if a flag is set

@@ -108,7 +108,7 @@ bool ComponentPropertyDrawer::SetPropertyFloat(unsigned int pIndex, const Proper
 	float* realPtr = static_cast<float*>(prop.getter());
 	float fVar = *realPtr;
 
-	ImGui::Text(prop.name.c_str());
+	ImGui::Text(key.c_str());
 	ImGui::SameLine(pLabelWidth);
 
 	ImGui::SetNextItemWidth(pInputWidth);
@@ -160,7 +160,7 @@ bool ComponentPropertyDrawer::SetPropertyInt(unsigned int pIndex, const Property
 	int* realPtr = static_cast<int*>(prop.getter());
 	int iVar = *realPtr;
 
-	ImGui::Text(prop.name.c_str());
+	ImGui::Text(key.c_str());
 	ImGui::SameLine(pLabelWidth);
 
 	ImGui::SetNextItemWidth(pInputWidth);

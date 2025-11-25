@@ -24,6 +24,9 @@ namespace Zephyrus
         std::string tooltip;
         std::string displayName;
         std::string category;
+
+        std::string trueValue;
+        std::string falseValue;
     };
 
     inline PropertyMetadata operator|(PropertyMetadata a, const PropertyMetadata& b) {
@@ -59,6 +62,12 @@ namespace Zephyrus
         if (!b.category.empty())
             a.category = b.category;
 
+        if (!b.trueValue.empty())
+            a.trueValue = b.trueValue;
+
+        if (!b.falseValue.empty())
+            a.falseValue = b.falseValue;
+
         return a;
     }
     
@@ -80,6 +89,15 @@ namespace Zephyrus
         m.minIValue = min;
         m.maxIValue = max;
         m.hasIRange = true;
+        return m;
+    }
+
+    inline PropertyMetadata DropDown(const std::string& trueLabel, const std::string& falseLabel)
+    {
+        PropertyMetadata m;
+        m.flags |= PropertyFlags::DropDown;
+        m.trueValue = trueLabel;
+        m.falseValue = falseLabel;
         return m;
     }
     

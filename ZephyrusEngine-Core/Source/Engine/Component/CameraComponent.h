@@ -31,7 +31,7 @@ namespace Zephyrus::ActorComponent
         Zephyrus::Render::IRenderTarget* mRenderTarget = nullptr;
     public:
         CameraComponent(Actor* pOwner, int pWidth = 1920, int pHeight = 1080, CameraUsage pUsage = CameraUsage::Game);
-        ~CameraComponent();
+        ~CameraComponent() override;
 
         void Deserialize(Serialization::IDeserializer& pReader) override;
         void Serialize(Serialization::ISerializer& pWriter) override;
