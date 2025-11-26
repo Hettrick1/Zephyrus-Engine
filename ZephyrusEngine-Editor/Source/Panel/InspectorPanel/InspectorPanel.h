@@ -3,6 +3,7 @@
 #include "../SceneHierarchyPanel.h"
 #include "CameraComponent.h"
 #include "ComponentPropertyDrawer.h"
+#include "ActorDrawer.h"
 
 #include <unordered_map>
 #include <functional>
@@ -21,6 +22,7 @@ private:
 	SceneHierarchyPanel* mHierarchy{ nullptr };
 	Component* mActiveComponent{ nullptr };
 	ComponentPropertyDrawer* mComponentPropertyDrawer{ nullptr };
+	ActorDrawer* mActorDrawer{ nullptr };
 public:
 	InspectorPanel(ISceneContext* pSceneContext, const std::string& pName);
 	~InspectorPanel();

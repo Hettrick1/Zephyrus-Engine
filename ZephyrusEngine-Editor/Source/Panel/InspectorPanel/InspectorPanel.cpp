@@ -17,10 +17,13 @@
 
 using Zephyrus::Assets::AssetsManager;
 
+Vector3D testLocation = 0;
+
 InspectorPanel::InspectorPanel(ISceneContext* pSceneContext, const std::string& pName)
 	: Panel(pSceneContext, pName)
 {
 	mComponentPropertyDrawer = new ComponentPropertyDrawer();
+	mActorDrawer = new ActorDrawer();
 }
 
 InspectorPanel::~InspectorPanel()
@@ -28,6 +31,8 @@ InspectorPanel::~InspectorPanel()
 	mHierarchy = nullptr;
 	delete mComponentPropertyDrawer;
 	mComponentPropertyDrawer = nullptr;
+	delete mActorDrawer;
+	mActorDrawer = nullptr;
 }
 
 void InspectorPanel::Draw()
@@ -47,7 +52,7 @@ void InspectorPanel::Draw()
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(3.0f, 8.0f));
 		ImGui::BeginChild("child1", ImVec2(0, 150), true);
 
-		DrawActorInfos(actor);
+		mActorDrawer->DrawActorInfos(actor);
 		
 		ImGui::PopStyleVar();
 		ImGui::EndChild();
@@ -308,10 +313,21 @@ void InspectorPanel::DrawActorInfos(Actor* pActor)
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Position");
 	ImGui::SameLine(labelWidth);
-	ImGui::InputFloat3("##Position", position, "%.3f");
-	if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+	if (ImGui::DragFloat3("##Position", position, 1.0f, 0.0f, 0.0f, "%.3f"))
 	{
-		SetPositionEvent* posEvent = new SetPositionEvent(pActor, pActor->GetPosition(), Vector3D(position[0], position[1], position[2]));
+		pActor->SetPosition(Vector3D(position[0], position[1], position[2]));
+	}
+	if (ImGui::IsItemActivated())
+	{
+		testLocation = pActor->GetPosition();
+	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+	}
+	if (ImGui::IsItemDeactivatedAfterEdit() && !ImGui::IsItemActive())
+	{
+		SetPositionEvent* posEvent = new SetPositionEvent(pActor, testLocation, Vector3D(position[0], position[1], position[2]));
 		EventSystem::DoEvent(posEvent);
 	}
 
