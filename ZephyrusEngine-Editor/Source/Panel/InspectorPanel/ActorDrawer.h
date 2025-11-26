@@ -28,6 +28,7 @@ private:
 	float labelWidth{ 80.0f };
 
 	unsigned int selected{ 0 };
+	bool mSelfSelected{ true };
 	Zephyrus::ActorComponent::Component* activeComponent{nullptr};
 public:
 	ActorDrawer() = default;
