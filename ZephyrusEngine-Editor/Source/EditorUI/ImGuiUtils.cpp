@@ -109,4 +109,64 @@ namespace ZP::UI
         ImGui::PopID();
         return false;
     }
+
+    void DrawVerticalSplitterButton(float& v)
+    {
+        const float splitterWidth = 16.0f;
+
+        ImGui::InvisibleButton("vsplitter", ImVec2(splitterWidth, -1));
+
+        bool active = ImGui::IsItemActive();
+        bool hovered = ImGui::IsItemHovered();
+
+        if (active)
+            v += ImGui::GetIO().MouseDelta.x;
+
+        if (hovered)
+            ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+
+        ImVec2 min = ImGui::GetItemRectMin();
+        ImVec2 max = ImGui::GetItemRectMax();
+    
+        ImDrawList* draw = ImGui::GetWindowDrawList();
+	
+        float centerX = (min.x + max.x) * 0.5f;
+
+        draw->AddLine(
+            ImVec2(centerX, min.y),
+            ImVec2(centerX, max.y),
+            IM_COL32(250, 194, 0, 155),
+            1.5f
+        );
+    }
+
+    void DrawSplitterButton(float& h)
+    {
+        const float splitterHeight = 16.0f;
+
+        ImGui::InvisibleButton("hsplitter", ImVec2(-1, splitterHeight));
+
+        bool active = ImGui::IsItemActive();
+        bool hovered = ImGui::IsItemHovered();
+
+        if (active)
+            h += ImGui::GetIO().MouseDelta.y;
+
+        if (hovered)
+            ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+
+        ImVec2 min = ImGui::GetItemRectMin();
+        ImVec2 max = ImGui::GetItemRectMax();
+    
+        ImDrawList* draw = ImGui::GetWindowDrawList();
+	
+        float centerY = (min.y + max.y) * 0.5f;
+
+        draw->AddLine(
+            ImVec2(min.x, centerY),
+            ImVec2(max.x, centerY),
+            IM_COL32(250, 194, 0, 155),
+            1.5f
+        );
+    }
 }

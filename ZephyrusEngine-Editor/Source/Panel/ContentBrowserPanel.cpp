@@ -6,6 +6,7 @@
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "Window/WindowManager.h"
 #include "Window/MaterialWindow/MaterialWindow.h"
+#include "../EditorUI/ImGuiUtils.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
@@ -34,23 +35,17 @@ void ContentBrowserPanel::Draw()
     Panel::BeginDraw();
     if (ImGui::Begin("Content Browser"))
     {
+        ImGui::Text(currentDirectory.string().c_str());
         static float width = 200.0f;
-        float height = ImGui::GetContentRegionAvail().y - ImGui::CalcTextSize(currentDirectory.string().c_str()).y;
+        float height = ImGui::GetContentRegionAvail().y;
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
         ImGui::BeginChild("child1", ImVec2(width, height), true);
         DrawDirectory("../Content");
         ImGui::EndChild();
 
         ImGui::SameLine();
-        ImGui::InvisibleButton("vsplitter", ImVec2(8.0f, height));
-        if (ImGui::IsItemActive())
-        {
-            width += ImGui::GetIO().MouseDelta.x;
-        }
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
-        }
+
+        ZP::UI::DrawVerticalSplitterButton(width);
 
         ImGui::SameLine();
 
@@ -104,8 +99,6 @@ void ContentBrowserPanel::Draw()
         }
 
         CreatePrefabFile(currentDirectory.string());
-
-        ImGui::Text(currentDirectory.string().c_str());
     }
     ImGui::End();
     Panel::EndDraw();

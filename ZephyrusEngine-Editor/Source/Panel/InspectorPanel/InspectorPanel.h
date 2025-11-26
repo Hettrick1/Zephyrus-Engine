@@ -25,12 +25,10 @@ private:
 	ActorDrawer* mActorDrawer{ nullptr };
 public:
 	InspectorPanel(ISceneContext* pSceneContext, const std::string& pName);
-	~InspectorPanel();
+	~InspectorPanel() override;
 	void Draw() override;
-	void DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor);
-	void DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor);
-	void DrawComponentInfos();
-	void DrawSplitterButton(float& h);
+	
+	void DrawComponentInfos(Actor* pActor);
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
 
 	inline CameraComponent* GetCurrentCameraComponent() const
