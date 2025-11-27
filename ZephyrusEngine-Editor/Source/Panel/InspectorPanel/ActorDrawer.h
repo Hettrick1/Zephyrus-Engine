@@ -38,10 +38,12 @@ public:
 	void SetTransform(Zephyrus::ActorComponent::Actor* pActor, const std::string& label, float step, const Vector3D& initialValue, const std::function<void(const Vector3D&)>& realTimeSetter, const std::function<void(Zephyrus::ActorComponent::Actor*, const Vector3D&, const Vector3D&)>& eventSetter);
 
 	Zephyrus::ActorComponent::Component* DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor, Zephyrus::Factory::ComponentFactory* compFactory);
-	bool DrawComponent(Zephyrus::ActorComponent::Component* pComponent);
-	
+
 private:
 	void CreateSetLocation(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition);
 	void CreateSetRotation(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition);
 	void CreateSetSize(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition);
+
+	bool DrawComponentTree(Zephyrus::ActorComponent::Component* pComponent);
+	void DeleteComponentRootAndChildren(Zephyrus::ActorComponent::Actor* actor, Zephyrus::ActorComponent::Component* comp);
 };

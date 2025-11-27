@@ -1,18 +1,18 @@
 #include "RenderComponent.h"
+
+#include "ISerializationFactory.h"
 #include "Material/MaterialInstance.h"
 #include "Assets/Assets.h"
 
 namespace Zephyrus::ActorComponent
 {
-	RenderComponent::RenderComponent(Actor* pOwner, const std::string& pName)
+	RenderComponent::RenderComponent(Actor* pOwner, const std::string& pName, const std::string& pDefaultMat)
 		: Component(pOwner, pName)
 	{
 		mMaterial = Material::MaterialInstance();
-	}
-
-	RenderComponent::~RenderComponent()
-	{
-
+		auto mat = Assets::AssetsManager::LoadMaterial(pDefaultMat, pDefaultMat);
+		SetMaterial(mat);
+		auto reader = mOwner->GetSceneContext()->GetSerializationFactory()->CreateDeserializer();
 	}
 
 	void RenderComponent::Deserialize(Serialization::IDeserializer& pReader)

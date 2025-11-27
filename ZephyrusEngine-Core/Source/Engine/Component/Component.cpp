@@ -161,14 +161,11 @@ namespace Zephyrus::ActorComponent
         {
             return  mRelativeTransform * mParent->GetWorldTransform();
         }
-        else if (mOwner)
+        if (mOwner)
         {
             return mRelativeTransform * mOwner->GetTransformComponent().GetWorldTransform();
         }
-        else
-        {
-            return mRelativeTransform;
-        }
+        return mRelativeTransform;
     }
 
     void Component::ComputeRelativeTransform()

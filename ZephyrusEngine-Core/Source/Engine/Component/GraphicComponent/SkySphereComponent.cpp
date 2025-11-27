@@ -17,7 +17,7 @@ namespace Zephyrus::ActorComponent
 	int SkySphereComponent::index = 0;
 
 	SkySphereComponent::SkySphereComponent(Actor* pOwner)
-		: RenderComponent(pOwner, "SkySphereComponent"), mMesh(nullptr), mIsSphere(false)
+		: RenderComponent(pOwner, "SkySphereComponent", "../Content/Material/SkySphere.zpmat"), mMesh(nullptr), mIsSphere(false)
 	{
 		
 	}

@@ -295,6 +295,19 @@ Zephyrus::ActorComponent::Component* ActorDrawer::DrawActorComponents(Zephyrus::
 		mSelfSelected = true;
 		mActiveComponent = nullptr;
 	}
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("COMPONENT"))
+		{
+			std::string componentID((const char*)payload->Data, payload->DataSize);
+			if (auto draggedComp = pActor->GetComponentWithId(componentID))
+			{
+				draggedComp->SetParent(nullptr);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
 	
 	if (!components.empty())
 	{
@@ -302,11 +315,9 @@ Zephyrus::ActorComponent::Component* ActorDrawer::DrawActorComponents(Zephyrus::
 		{
 			if (comp->GetParent() == nullptr)
 			{
-				if (DrawComponent(comp))
+				if (DrawComponentTree(comp))
 				{
-					// suppression d’un root
-					pActor->RemoveComponent(comp);
-					delete comp;
+					DeleteComponentRootAndChildren(pActor, comp);
 					break;
 				}
 			}
@@ -321,20 +332,29 @@ Zephyrus::ActorComponent::Component* ActorDrawer::DrawActorComponents(Zephyrus::
 	return mActiveComponent;
 }
 
-bool ActorDrawer::DrawComponent(Zephyrus::ActorComponent::Component* pComponent)
-{
+bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pComponent)
+{	
 	ImGuiTreeNodeFlags flags =
 		ImGuiTreeNodeFlags_FramePadding |
 		ImGuiTreeNodeFlags_SpanAvailWidth |
-		ImGuiTreeNodeFlags_OpenOnArrow;
+		ImGuiTreeNodeFlags_OpenOnArrow |
+		ImGuiTreeNodeFlags_DefaultOpen;
 
 	if (pComponent == mActiveComponent)
 		flags |= ImGuiTreeNodeFlags_Selected;
 
 	if (pComponent->GetChildren().empty())
-		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
-
+		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet;
+	
+	ImGuiContext& g = *GImGui;
+	ImGuiWindow* window = g.CurrentWindow;
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 40);
+	float backup_work_max_x = window->WorkRect.Max.x;
+	window->WorkRect.Max.x = window->DC.CursorPos.x + ImGui::CalcItemWidth();
+	
 	bool opened = ImGui::TreeNodeEx(pComponent->GetId().c_str(), flags);
+
+	window->WorkRect.Max.x = backup_work_max_x;
 	
 	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left) && !ImGui::IsMouseDragging(ImGuiMouseButton_Left))
 	{
@@ -347,30 +367,71 @@ bool ActorDrawer::DrawComponent(Zephyrus::ActorComponent::Component* pComponent)
 		ImGui::Text("%s", pComponent->GetName().c_str());
 		ImGui::EndDragDropSource();
 	}
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("COMPONENT"))
+		{
+			std::string componentID((const char*)payload->Data, payload->DataSize);
+			if (auto draggedComp = pComponent->GetOwner()->GetComponentWithId(componentID))
+			{
+				if (draggedComp->GetParent() == pComponent)
+				{
+					pComponent->RemoveChild(draggedComp);
+				}
+				else
+				{
+					pComponent->AddChild(draggedComp);
+				}
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::SameLine();
 	
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 20);
-	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+	auto windowSize = ImGui::GetContentRegionAvail();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
 	bool deleteMe = ImGui::SmallButton(("X##" + pComponent->GetId()).c_str());
 	ImGui::PopStyleColor();
-
-	if (deleteMe)
-	{
-		return true;
-	}
 	
-	if (opened && !pComponent->GetChildren().empty())
+	if (opened)
 	{
-		for (auto* child : pComponent->GetChildren())
+		if (!pComponent->GetChildren().empty())
 		{
-			if (DrawComponent(child))
+			for (auto* child : pComponent->GetChildren())
 			{
-				pComponent->RemoveChild(child);
-				delete child;
-				break;
+				if (DrawComponentTree(child))
+				{
+					pComponent->RemoveChild(child);
+					child->GetOwner()->RemoveComponent(child);
+					child->OnEnd();
+					delete child;
+					break;
+				}
 			}
 		}
 		ImGui::TreePop();
 	}
 
 	return deleteMe;
+}
+
+void ActorDrawer::DeleteComponentRootAndChildren(Actor* actor, Component* comp)
+{
+	auto children = comp->GetChildren();
+	for (auto child : children)
+	{
+		DeleteComponentRootAndChildren(actor, child);
+	}
+	
+	comp->OnEnd();
+	if (comp->GetParent())
+	{
+		comp->GetParent()->RemoveChild(comp);
+	}
+	actor->RemoveComponent(comp);
+
+	delete comp;
 }

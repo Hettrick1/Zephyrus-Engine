@@ -11,7 +11,7 @@ using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::ActorComponent
 {
 	SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
-		: RenderComponent(pOwner, pName), mTexture(), mDrawOrder(100), mFlipMethode(Zephyrus::Render::IRenderer::Flip::None)
+		: RenderComponent(pOwner, pName, "../Content/Material/BasicSprite.zpmat"), mTexture(), mDrawOrder(100), mFlipMethode(Zephyrus::Render::IRenderer::Flip::None)
 	{
 		mOwner->GetScene().GetRenderer()->AddSprite(this);
 		mTexture = AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");

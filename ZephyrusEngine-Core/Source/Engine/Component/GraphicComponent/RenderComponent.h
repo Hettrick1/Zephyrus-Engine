@@ -12,8 +12,8 @@ namespace Zephyrus::ActorComponent
 	protected:
 		Material::MaterialInstance mMaterial;
 	public:
-		RenderComponent(Actor* pOwner, const std::string& pName);
-		virtual ~RenderComponent();
+		RenderComponent(Actor* pOwner, const std::string& pName, const std::string& pDefaultMat);
+		virtual ~RenderComponent() override = default;
 
 		virtual void Deserialize(Serialization::IDeserializer& pReader) override;
 		virtual void Serialize(Serialization::ISerializer& pWriter) override;

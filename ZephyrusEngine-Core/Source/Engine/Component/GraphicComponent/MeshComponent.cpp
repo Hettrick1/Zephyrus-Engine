@@ -14,7 +14,7 @@ using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::ActorComponent
 {
 	MeshComponent::MeshComponent(Actor* pOwner)
-		: RenderComponent(pOwner, "MeshComponent"), mMesh(nullptr)
+		: RenderComponent(pOwner, "MeshComponent", "../Content/Material/BasicMesh.zpmat"), mMesh(nullptr)
 	{
 		mOwner->GetScene().GetRenderer()->AddMesh(this);
 

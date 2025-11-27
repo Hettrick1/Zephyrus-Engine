@@ -120,7 +120,6 @@ namespace Zephyrus::ActorComponent
 		{
 			if (!child) return;
 			child->SetParent(this);
-			mChildren.push_back(child);
 		}
 
 		void RemoveChild(Component* child)
@@ -130,7 +129,7 @@ namespace Zephyrus::ActorComponent
 			std::erase(mChildren, child);
 		}
 
-		const Component* GetParent() const { return mParent; }
+		Component* GetParent() const { return mParent; }
 		const std::vector<Component*>& GetChildren() const { return mChildren; }
 	};
 }

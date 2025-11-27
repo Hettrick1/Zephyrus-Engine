@@ -34,11 +34,11 @@ namespace Zephyrus::ActorComponent
 		int mGunAmo;
 		int mHealth;
 		int mArmor;
-		Weapons mWeapon;
+		Weapons mWeapon{Weapons::Gun};
 		float mDamageIndicatorAlpha;
 	public:
 		DoomPlayerComponent(Actor* pOwner, int updateOder = 0);
-		~DoomPlayerComponent();
+		~DoomPlayerComponent() override;
 
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;
