@@ -258,7 +258,7 @@ void InspectorPanel::DrawComponentInfos(Actor* pActor)
 		{
 			for (unsigned int i = 0; i < properties.size(); i++)
 			{
-				mComponentPropertyDrawer->DrawProperty(i, properties[i], mActiveComponent);
+				mComponentPropertyDrawer->DrawProperty(std::to_string(i), properties[i], mActiveComponent);
 			}
 		}
 		ImGui::PopStyleVar();
@@ -275,13 +275,16 @@ void InspectorPanel::DrawComponentInfos(Actor* pActor)
 		for (auto& component : components)
 		{
 			auto properties = component->GetProperties();
+			ImGui::PushID(("CH_Component" + component->GetId()).c_str());
 			if (!properties.empty() && ImGui::CollapsingHeader(component->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 			{
 				for (unsigned int i = 0; i < properties.size(); i++)
 				{
-					mComponentPropertyDrawer->DrawProperty(i, properties[i], component);
+					std::string index = std::to_string(i) + component->GetId();
+					mComponentPropertyDrawer->DrawProperty(index, properties[i], component);
 				}
 			}
+			ImGui::PopID();
 		}
 		ImGui::PopStyleVar();
 	}

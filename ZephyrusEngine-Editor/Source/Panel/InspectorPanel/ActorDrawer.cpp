@@ -274,6 +274,7 @@ Zephyrus::ActorComponent::Component* ActorDrawer::DrawActorComponents(Zephyrus::
 
 				pActor->AddComponent(c);
 				ZP_EDITOR_LOAD("Component " + componentType + " loaded and attached to " + pActor->GetName());
+				ImGui::CloseCurrentPopup();
 			}
 			ImGui::PopStyleColor();
 		}
@@ -288,7 +289,7 @@ Zephyrus::ActorComponent::Component* ActorDrawer::DrawActorComponents(Zephyrus::
 	{
 		selfFlags |= ImGuiTreeNodeFlags_Selected;
 	}
-	bool selfTree = ImGui::TreeNodeEx("Self", selfFlags);
+	bool selfTree = ImGui::TreeNodeEx("Root", selfFlags);
 
 	if (ImGui::IsItemClicked())
 	{
@@ -351,9 +352,11 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 40);
 	float backup_work_max_x = window->WorkRect.Max.x;
 	window->WorkRect.Max.x = window->DC.CursorPos.x + ImGui::CalcItemWidth();
-	
-	bool opened = ImGui::TreeNodeEx(pComponent->GetId().c_str(), flags);
 
+	ImGui::PushID(("CH_Component" + pComponent->GetId()).c_str());
+	bool opened = ImGui::TreeNodeEx(pComponent->GetName().c_str(), flags);
+	ImGui::PopID();
+	
 	window->WorkRect.Max.x = backup_work_max_x;
 	
 	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left) && !ImGui::IsMouseDragging(ImGuiMouseButton_Left))
@@ -393,7 +396,7 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 	auto windowSize = ImGui::GetContentRegionAvail();
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
-	bool deleteMe = ImGui::SmallButton(("X##" + pComponent->GetId()).c_str());
+	bool deleteMe = ImGui::SmallButton(("X##BTN_DeleteComp" + pComponent->GetId()).c_str());
 	ImGui::PopStyleColor();
 	
 	if (opened)
@@ -404,10 +407,7 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 			{
 				if (DrawComponentTree(child))
 				{
-					pComponent->RemoveChild(child);
-					child->GetOwner()->RemoveComponent(child);
-					child->OnEnd();
-					delete child;
+					DeleteComponentRootAndChildren(child->GetOwner(), child);
 					break;
 				}
 			}
@@ -433,5 +433,12 @@ void ActorDrawer::DeleteComponentRootAndChildren(Actor* actor, Component* comp)
 	}
 	actor->RemoveComponent(comp);
 
+	if (mActiveComponent == comp)
+	{
+		mSelfSelected = true;
+		mActiveComponent = nullptr;
+	}
+
 	delete comp;
+	comp = nullptr;
 }

@@ -63,7 +63,7 @@ namespace Zephyrus::Editor::Window
         auto properties = mMaterial->GetProperties();
         for (unsigned int i = 0; i < properties.size(); i++)
         {
-            mComponentPropertyDrawer->DrawProperty(i, properties[i], nullptr);
+            mComponentPropertyDrawer->DrawProperty(std::to_string(i), properties[i], nullptr);
         }
         
         // TODO: ton UI material ici

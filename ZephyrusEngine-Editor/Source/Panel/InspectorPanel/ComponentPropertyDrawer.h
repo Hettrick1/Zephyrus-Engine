@@ -23,49 +23,49 @@ struct PropertyDescriptor;
 class ComponentPropertyDrawer
 {
 private:
-	std::unordered_map<PropertyType, std::function<bool(unsigned int, const PropertyDescriptor&, float, float)>> mPropertySetters;
+	std::unordered_map<PropertyType, std::function<bool(const std::string&, const PropertyDescriptor&, float, float)>> mPropertySetters;
 	Component* mActiveComponent = nullptr;
 public:
 	ComponentPropertyDrawer();
 	~ComponentPropertyDrawer() = default;
 
-	void DrawProperty(unsigned int pIndex, const PropertyDescriptor& pProperty, Zephyrus::ActorComponent::Component* activeComponent);
+	void DrawProperty(const std::string& pIndex, const PropertyDescriptor& pProperty, Zephyrus::ActorComponent::Component* activeComponent);
 
 private:
 	std::unordered_map<std::string, float> mEditingFloats;
 	std::unordered_map<std::string, int> mEditingInts;
 	
 private:
-	bool SetPropertyFloat(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyInt(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyBool(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyString(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyColor(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyVector4D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyVector3D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyVector2D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyQuaternion(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyTexture(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyFont(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyMesh(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyCubemap(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyPrefab(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyComponent(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayTexture2D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyMaterialInstance(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyShaderVert(unsigned int pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyShaderFrag(unsigned int pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyShaderTesc(unsigned int pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyShaderTese(unsigned int pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyShaderGeom(unsigned int pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayFloat(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayInt(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayVector2D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayVector3D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayVector4D(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyArrayTextureBase(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
-	bool SetPropertyTextureBase(unsigned int pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyFloat(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyInt(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyBool(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyString(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyColor(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyVector4D(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyVector3D(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyVector2D(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyQuaternion(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyTexture(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyFont(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyMesh(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyCubemap(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyPrefab(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyComponent(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayTexture2D(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyMaterialInstance(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyShaderVert(const std::string& pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyShaderFrag(const std::string& pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyShaderTesc(const std::string& pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyShaderTese(const std::string& pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyShaderGeom(const std::string& pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayFloat(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayInt(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector2D(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector3D(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayVector4D(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyArrayTextureBase(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyTextureBase(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 
 private:
-	bool SetPropertyShader(unsigned int pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth, Zephyrus::Render::ShaderType pType);
+	bool SetPropertyShader(const std::string& pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth, Zephyrus::Render::ShaderType pType);
 };
