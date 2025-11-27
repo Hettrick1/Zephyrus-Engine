@@ -280,6 +280,7 @@ void InspectorPanel::DrawComponentInfos(Actor* pActor)
 				}
 			}
 			ImGui::PopID();
+			ImGui::Dummy(ImVec2(0, 10));
 		}
 		ImGui::PopStyleVar();
 	}
