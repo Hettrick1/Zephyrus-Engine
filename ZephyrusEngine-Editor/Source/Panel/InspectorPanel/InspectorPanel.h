@@ -5,9 +5,6 @@
 #include "ComponentPropertyDrawer.h"
 #include "ActorDrawer.h"
 
-#include <unordered_map>
-#include <functional>
-
 using Zephyrus::ActorComponent::Actor;
 using Zephyrus::ActorComponent::Component;
 using Zephyrus::ActorComponent::CameraComponent;

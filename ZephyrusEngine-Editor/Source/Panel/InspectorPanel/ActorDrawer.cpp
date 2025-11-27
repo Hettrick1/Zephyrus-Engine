@@ -135,7 +135,7 @@ void ActorDrawer::DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor)
 			Vector3D prevSize = pActor->GetSize();
 			Vector3D newSize = newPos;
 
-			if (keepRatio)
+			if (mKeepRatio)
 			{
 				Vector3D delta = newSize - prevSize;
 				int editedAxis = 0;
@@ -165,11 +165,11 @@ void ActorDrawer::DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor)
 	);
 
 	ImGui::SameLine();
-	if (ImGui::Checkbox("##KeepRatio", &keepRatio))
+	if (ImGui::Checkbox("##KeepRatio", &mKeepRatio))
 	{
-		if (keepRatio)
+		if (mKeepRatio)
 		{
-			originalSize = pActor->GetSize();
+			mOriginalSize = pActor->GetSize();
 		}
 	}
 	if (ImGui::IsItemHovered())
@@ -209,14 +209,14 @@ void ActorDrawer::SetTransform(Zephyrus::ActorComponent::Actor* pActor, const st
 
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text(label.c_str());
-	ImGui::SameLine(labelWidth);
+	ImGui::SameLine(mLabelWidth);
 	if (ImGui::DragFloat3(("##" + label).c_str(), transform, step, 0.0f, 0.0f, "%.3f"))
 	{
 		realTimeSetter(Vector3D(transform[0], transform[1], transform[2]));
 	}
 	if (ImGui::IsItemActivated())
 	{
-		oldActorTransform = Vector3D(transform[0], transform[1], transform[2]);
+		mOldActorTransform = Vector3D(transform[0], transform[1], transform[2]);
 	}
 	if (ImGui::IsItemHovered())
 	{
@@ -224,7 +224,7 @@ void ActorDrawer::SetTransform(Zephyrus::ActorComponent::Actor* pActor, const st
 	}
 	if (ImGui::IsItemDeactivatedAfterEdit() && !ImGui::IsItemActive())
 	{
-		eventSetter(pActor, oldActorTransform, Vector3D(transform[0], transform[1], transform[2]));
+		eventSetter(pActor, mOldActorTransform, Vector3D(transform[0], transform[1], transform[2]));
 	}
 }
 
@@ -283,106 +283,94 @@ Zephyrus::ActorComponent::Component* ActorDrawer::DrawActorComponents(Zephyrus::
 	ImGui::Separator();
 
 	auto components = pActor->GetComponents();
+	ImGuiTreeNodeFlags selfFlags = ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_DrawLinesFull | ImGuiTreeNodeFlags_Leaf;
+	if (mSelfSelected)
+	{
+		selfFlags |= ImGuiTreeNodeFlags_Selected;
+	}
+	bool selfTree = ImGui::TreeNodeEx("Self", selfFlags);
 
+	if (ImGui::IsItemClicked())
+	{
+		mSelfSelected = true;
+		mActiveComponent = nullptr;
+	}
+	
 	if (!components.empty())
 	{
-		ImGuiTreeNodeFlags selfFlags = ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_DrawLinesFull | ImGuiTreeNodeFlags_Leaf;
-		if (mSelfSelected)
+		for (Component* comp : pActor->GetComponents())
 		{
-			selfFlags |= ImGuiTreeNodeFlags_Selected;
-		}
-		ImGui::TreeNodeEx("Self", selfFlags);
-
-		if (ImGui::IsItemClicked())
-		{
-			mSelfSelected = true;
-		}
-		
-		for (size_t i = 0; i < components.size(); i++)
-		{
-			if (selected >= components.size())
+			if (comp->GetParent() == nullptr)
 			{
-				selected = 0;
-			}
-
-			char label[32];
-
-			sprintf_s(label, (components[i]->GetName() + "_%i").c_str(), i);
-			ImGui::PushID(label);
-			auto pos = ImGui::GetCursorPos();
-			ImGui::SetCursorPos(ImVec2(pos.x + 10, pos.y + 5));
-			
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
-			if (selected == i && !mSelfSelected)
-			{
-				flags |= ImGuiTreeNodeFlags_Selected;
-			}
-			ImGuiContext& g = *GImGui;
-			ImGuiWindow* window = g.CurrentWindow;
-			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 40);
-			float backup_work_max_x = window->WorkRect.Max.x;
-			window->WorkRect.Max.x = window->DC.CursorPos.x + ImGui::CalcItemWidth();
-			if (ImGui::TreeNodeEx(components[i]->GetName().c_str(), flags))
-			{
-				ImGui::TreePop();
-			}
-			window->WorkRect.Max.x = backup_work_max_x;
-			if (ImGui::IsItemClicked())
-			{
-				selected = i;
-				mSelfSelected = false;
-			}
-			// if (ImGui::Selectable(components[i]->GetName().c_str(), selected == i, 0, ImVec2(ImGui::GetContentRegionAvail().x - 10 - 25, 0)))
-			// {
-			// 	selected = i;
-			// }
-			activeComponent = components[selected];
-			ImGui::PopID();
-			ImGui::SameLine();
-
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-				ImGui::SetDragDropPayload("COMPONENT", components[i]->GetId().c_str(), components[i]->GetId().size());
-				ImGui::Text(components[i]->GetId().c_str());
-				ImGui::EndDragDropSource();
-			}
-
-			auto windowSize = ImGui::GetContentRegionAvail();
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + windowSize.x - 25);
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 0.0, 0.0, 1.0));
-			bool pressed = ImGui::SmallButton(("X##" + std::to_string(i)).c_str()); // delete a specific component
-			ImGui::PopStyleColor();
-			if (pressed)
-			{
-				//TODO Event to destroy component
-				pActor->GetComponentWithId(components[i]->GetId())->OnEnd();
-				pActor->RemoveComponent(pActor->GetComponentWithId(components[i]->GetId()));
-				delete components[i];
-				std::erase(components, components[i]);
-				int newSelected = pActor->GetComponents().size() - 1;
-				selected = newSelected >= 0 ? newSelected : 0; 
-				if (activeComponent != components[selected] && !mSelfSelected)
+				if (DrawComponent(comp))
 				{
-					activeComponent = components[selected];
-					ImGui::TreePop();
-					return activeComponent;
+					// suppression d’un root
+					pActor->RemoveComponent(comp);
+					delete comp;
+					break;
 				}
-				break;
 			}
-			if (ImGui::IsItemHovered())
+		}
+	}
+
+	if (selfTree)
+	{
+		ImGui::TreePop();
+	}
+	
+	return mActiveComponent;
+}
+
+bool ActorDrawer::DrawComponent(Zephyrus::ActorComponent::Component* pComponent)
+{
+	ImGuiTreeNodeFlags flags =
+		ImGuiTreeNodeFlags_FramePadding |
+		ImGuiTreeNodeFlags_SpanAvailWidth |
+		ImGuiTreeNodeFlags_OpenOnArrow;
+
+	if (pComponent == mActiveComponent)
+		flags |= ImGuiTreeNodeFlags_Selected;
+
+	if (pComponent->GetChildren().empty())
+		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+
+	bool opened = ImGui::TreeNodeEx(pComponent->GetId().c_str(), flags);
+	
+	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left) && !ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+	{
+		mSelfSelected = false;
+		mActiveComponent = pComponent;
+	}
+
+	if (ImGui::BeginDragDropSource()) {
+		ImGui::SetDragDropPayload("COMPONENT", pComponent->GetId().c_str(), pComponent->GetId().size());
+		ImGui::Text("%s", pComponent->GetName().c_str());
+		ImGui::EndDragDropSource();
+	}
+	
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 20);
+	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+	bool deleteMe = ImGui::SmallButton(("X##" + pComponent->GetId()).c_str());
+	ImGui::PopStyleColor();
+
+	if (deleteMe)
+	{
+		return true;
+	}
+	
+	if (opened && !pComponent->GetChildren().empty())
+	{
+		for (auto* child : pComponent->GetChildren())
+		{
+			if (DrawComponent(child))
 			{
-				ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-				ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-				ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-				ImGui::SetTooltip(("Delete " + components[i]->GetName()).c_str());
-				ImGui::PopStyleVar(2);
-				ImGui::PopStyleColor();
+				pComponent->RemoveChild(child);
+				delete child;
+				break;
 			}
 		}
 		ImGui::TreePop();
-		if (mSelfSelected)
-		{
-			return nullptr;
-		}
-		return activeComponent;
 	}
+
+	return deleteMe;
 }

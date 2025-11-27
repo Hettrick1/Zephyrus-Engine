@@ -105,7 +105,7 @@ namespace Zephyrus::ActorComponent
 			if (mParent)
 			{
 				auto& siblings = mParent->mChildren;
-				siblings.erase(std::remove(siblings.begin(), siblings.end(), this), siblings.end());
+				std::erase(siblings, this);
 			}
 
 			mParent = parent;
@@ -120,6 +120,14 @@ namespace Zephyrus::ActorComponent
 		{
 			if (!child) return;
 			child->SetParent(this);
+			mChildren.push_back(child);
+		}
+
+		void RemoveChild(Component* child)
+		{
+			if (!child) return;
+			child->SetParent(nullptr);
+			std::erase(mChildren, child);
 		}
 
 		const Component* GetParent() const { return mParent; }
