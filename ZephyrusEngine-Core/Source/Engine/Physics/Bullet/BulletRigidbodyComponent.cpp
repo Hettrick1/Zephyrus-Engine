@@ -85,6 +85,7 @@ namespace Zephyrus::ActorComponent {
         {
             mLockAxes = *lockAxes;
         }
+        ForceSyncFromActor();
     }
 
     void BulletRigidbodyComponent::Serialize(Serialization::ISerializer& pWriter)

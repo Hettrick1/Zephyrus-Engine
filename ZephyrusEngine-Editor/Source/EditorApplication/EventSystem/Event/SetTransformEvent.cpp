@@ -2,17 +2,17 @@
 #include "Actor.h"
 #include "Bullet/BulletRigidbodyComponent.h"
 
-SetPositionEvent::SetPositionEvent(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
+SetActorPositionEvent::SetActorPositionEvent(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
 	: Event("Move Actor"), mActor(pActor), mNextPosition(pNextPosition), mLastPosition(pCurrentPosition)
 {
 }
 
-SetPositionEvent::~SetPositionEvent()
+SetActorPositionEvent::~SetActorPositionEvent()
 {
 	mActor = nullptr;
 }
 
-void SetPositionEvent::Execute()
+void SetActorPositionEvent::Execute()
 {
 	if (mActor)
 	{
@@ -25,10 +25,18 @@ void SetPositionEvent::Execute()
 				rb->ForceSyncFromActor();
 			}
 		}
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = mActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
 	}
 }
 
-void SetPositionEvent::Undo()
+void SetActorPositionEvent::Undo()
 {
 	if (mActor)
 	{
@@ -41,20 +49,28 @@ void SetPositionEvent::Undo()
 				rb->ForceSyncFromActor();
 			}
 		}
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = mActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
 	}
 }
 
-SetRotationEvent::SetRotationEvent(Zephyrus::ActorComponent::Actor* pActor, const Quaternion& pCurrentRotation, const Quaternion& pNextRotation)
+SetActorRotationEvent::SetActorRotationEvent(Zephyrus::ActorComponent::Actor* pActor, const Quaternion& pCurrentRotation, const Quaternion& pNextRotation)
 	: Event("Rotate Actor"), mActor(pActor), mNextRotation(pNextRotation), mLastRotation(pCurrentRotation)
 {
 }
 
-SetRotationEvent::~SetRotationEvent()
+SetActorRotationEvent::~SetActorRotationEvent()
 {
 	mActor = nullptr;
 }
 
-void SetRotationEvent::Execute()
+void SetActorRotationEvent::Execute()
 {
 	if (mActor)
 	{
@@ -67,10 +83,18 @@ void SetRotationEvent::Execute()
 				rb->ForceSyncFromActor();
 			}
 		}
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = mActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
 	}
 }
 
-void SetRotationEvent::Undo()
+void SetActorRotationEvent::Undo()
 {
 	if (mActor)
 	{
@@ -83,20 +107,28 @@ void SetRotationEvent::Undo()
 				rb->ForceSyncFromActor();
 			}
 		}
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = mActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
 	}
 }
 
-SetSizeEvent::SetSizeEvent(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentSize, const Vector3D& pNextSize)
+SetActorSizeEvent::SetActorSizeEvent(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentSize, const Vector3D& pNextSize)
 	: Event("Resize Actor"), mActor(pActor), mNextSize(pNextSize), mLastSize(pCurrentSize)
 {
 }
 
-SetSizeEvent::~SetSizeEvent()
+SetActorSizeEvent::~SetActorSizeEvent()
 {
 	mActor = nullptr;
 }
 
-void SetSizeEvent::Execute()
+void SetActorSizeEvent::Execute()
 {
 	if (mActor)
 	{
@@ -104,10 +136,158 @@ void SetSizeEvent::Execute()
 	}
 }
 
-void SetSizeEvent::Undo()
+void SetActorSizeEvent::Undo()
 {
 	if (mActor)
 	{
 		mActor->SetSize(mLastSize);
 	}
 }
+
+
+// COMPONENT POSITION
+SetComponentPositionEvent::SetComponentPositionEvent(Zephyrus::ActorComponent::Component* pComponent, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
+	: Event("Move Component"), mComponent(pComponent), mNextPosition(pNextPosition), mLastPosition(pCurrentPosition)
+{
+}
+
+SetComponentPositionEvent::~SetComponentPositionEvent()
+{
+	mComponent = nullptr;
+}
+
+void SetComponentPositionEvent::Execute()
+{
+	if (mComponent)
+	{
+		mComponent->SetRelativePosition(mNextPosition);
+		std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> rigidbodies = mComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletRigidbodyComponent>();
+		if (!rigidbodies.empty())
+		{
+			for (auto rb : rigidbodies)
+			{
+				rb->ForceSyncFromActor();
+			}
+		}
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = mComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
+	}
+}
+
+void SetComponentPositionEvent::Undo()
+{
+	if (mComponent)
+	{
+		mComponent->SetRelativePosition(mLastPosition);
+		std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> rigidbodies = mComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletRigidbodyComponent>();
+		if (!rigidbodies.empty())
+		{
+			for (auto rb : rigidbodies)
+			{
+				rb->ForceSyncFromActor();
+			}
+		}
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = mComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
+	}
+}
+
+
+// COMPONENT ROTATION
+SetComponentRotationEvent::SetComponentRotationEvent(Zephyrus::ActorComponent::Component* pComponent, const Quaternion& pCurrentRotation, const Quaternion& pNextRotation)
+	: Event("Rotate Component"), mComponent(pComponent), mNextRotation(pNextRotation), mLastRotation(pCurrentRotation)
+{
+}
+
+SetComponentRotationEvent::~SetComponentRotationEvent()
+{
+	mComponent = nullptr;
+}
+
+void SetComponentRotationEvent::Execute()
+{
+	if (mComponent)
+	{
+		mComponent->SetRelativeRotation(mNextRotation);
+		std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> rigidbodies = mComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletRigidbodyComponent>();
+		if (!rigidbodies.empty())
+		{
+			for (auto rb : rigidbodies)
+			{
+				rb->ForceSyncFromActor();
+			}
+		}
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = mComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
+	}
+}
+
+void SetComponentRotationEvent::Undo()
+{
+	if (mComponent)
+	{
+		mComponent->SetRelativeRotation(mLastRotation);
+		std::vector<Zephyrus::ActorComponent::BulletRigidbodyComponent*> rigidbodies = mComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletRigidbodyComponent>();
+		if (!rigidbodies.empty())
+		{
+			for (auto rb : rigidbodies)
+			{
+				rb->ForceSyncFromActor();
+			}
+		}
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = mComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
+	}
+}
+
+// COMPONENT SIZE
+SetComponentSizeEvent::SetComponentSizeEvent(Zephyrus::ActorComponent::Component* pComponent, const Vector3D& pCurrentSize, const Vector3D& pNextSize)
+	: Event("Resize Component"), mComponent(pComponent), mNextSize(pNextSize), mLastSize(pCurrentSize)
+{
+}
+
+SetComponentSizeEvent::~SetComponentSizeEvent()
+{
+	mComponent = nullptr;
+}
+
+void SetComponentSizeEvent::Execute()
+{
+	if (mComponent)
+	{
+		mComponent->SetRelativeSize(mNextSize);
+	}
+}
+
+void SetComponentSizeEvent::Undo()
+{
+	if (mComponent)
+	{
+		mComponent->SetRelativeSize(mLastSize);
+	}
+}
+

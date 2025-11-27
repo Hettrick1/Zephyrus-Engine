@@ -29,14 +29,16 @@ private:
 
 	unsigned int mSelected{ 0 };
 	bool mSelfSelected{ true };
+	Zephyrus::ActorComponent::Actor* mCurrentActor{nullptr};
 	Zephyrus::ActorComponent::Component* mActiveComponent{nullptr};
 public:
 	ActorDrawer() = default;
 	~ActorDrawer() = default;
 
 	void DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor);
-	void SetTransform(Zephyrus::ActorComponent::Actor* pActor, const std::string& label, float step, const Vector3D& initialValue, const std::function<void(const Vector3D&)>& realTimeSetter, const std::function<void(Zephyrus::ActorComponent::Actor*, const Vector3D&, const Vector3D&)>& eventSetter);
-
+	void SetActorTransform(Zephyrus::ActorComponent::Actor* pActor, const std::string& label, float step, const Vector3D& initialValue, const std::function<void(const Vector3D&)>& realTimeSetter, const std::function<void(Zephyrus::ActorComponent::Actor*, const Vector3D&, const Vector3D&)>& eventSetter);
+	void SetComponentTransform(Zephyrus::ActorComponent::Component* pComponent, const std::string& label, float step, const Vector3D& initialValue, const std::function<void(const Vector3D&)>& realTimeSetter, const std::function<void(Zephyrus::ActorComponent::Component*, const Vector3D&, const Vector3D&)>& eventSetter);
+	
 	Zephyrus::ActorComponent::Component* DrawActorComponents(Zephyrus::ActorComponent::Actor* pActor, Zephyrus::Factory::ComponentFactory* compFactory);
 
 private:

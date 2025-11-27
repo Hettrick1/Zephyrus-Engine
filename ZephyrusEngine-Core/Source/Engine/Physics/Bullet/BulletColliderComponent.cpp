@@ -46,6 +46,7 @@ namespace Zephyrus::ActorComponent {
         {
             mIgnoreSelf = *ignoreSelf;
         }
+        UpdateWorldTransform();
     }
 
     void BulletColliderComponent::BeginSerialize(Serialization::ISerializer& pWriter)

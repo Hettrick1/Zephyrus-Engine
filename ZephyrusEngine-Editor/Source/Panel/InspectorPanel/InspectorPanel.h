@@ -20,6 +20,8 @@ private:
 	Component* mActiveComponent{ nullptr };
 	ComponentPropertyDrawer* mComponentPropertyDrawer{ nullptr };
 	ActorDrawer* mActorDrawer{ nullptr };
+	bool mKeepRatio{ true };
+	Vector3D mOriginalSize{ 0.0f, 0.0f, 0.0f };
 public:
 	InspectorPanel(ISceneContext* pSceneContext, const std::string& pName);
 	~InspectorPanel() override;
@@ -28,6 +30,10 @@ public:
 	void DrawComponentInfos(Actor* pActor);
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
 
+	void CreateSetComponentLocation(Zephyrus::ActorComponent::Component* pComponent, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition);
+	void CreateSetComponentRotation(Zephyrus::ActorComponent::Component* pComponent, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition);
+	void CreateSetComponentSize(Zephyrus::ActorComponent::Component* pComponent, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition);
+	
 	inline CameraComponent* GetCurrentCameraComponent() const
 	{
 		if (!mActiveComponent)

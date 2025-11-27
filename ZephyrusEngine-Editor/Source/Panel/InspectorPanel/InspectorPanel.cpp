@@ -154,90 +154,85 @@ void InspectorPanel::DrawComponentInfos(Actor* pActor)
 
 		if (ImGui::CollapsingHeader("Relative Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			float labelWidth = 70.0f;
-
-			float position[3] = {
-				mActiveComponent->GetRelativePosition().x, mActiveComponent->GetRelativePosition().y, mActiveComponent->GetRelativePosition().z
-			};
 
 			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Position");
-			ImGui::SameLine(labelWidth);
-			ImGui::InputFloat3("##RelativePosition", position, "%.3f");
-			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
-			{
-				//TODO Event to set relative pos
-				auto pos = Vector3D(position[0], position[1], position[2]);
-				mActiveComponent->SetRelativePosition(pos);
-			}
 
-			float rotation[3] = {
-				mActiveComponent->GetRelativeRotationEuler().x, mActiveComponent->GetRelativeRotationEuler().y, mActiveComponent->GetRelativeRotationEuler().z
-			};
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Rotation");
-			ImGui::SameLine(labelWidth);
-			ImGui::InputFloat3("##RelativeRotation", rotation, "%.3f");
-			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
-			{
-				auto euler = Vector3D(rotation[0], rotation[1], rotation[2]);
+			mActorDrawer->SetComponentTransform(
+				mActiveComponent,
+				"Position",
+				0.2f,
+				mActiveComponent->GetRelativePosition(),
 
-				//TODO Event to set relative rot
-				mActiveComponent->SetRelativeRotation(Quaternion(euler));
-			}
+				[this](const Vector3D& newPos) {
+					mActiveComponent->SetRelativePosition(newPos);
+				},
 
-			static bool keepRatio = true;
-			static Vector3D originalSize;
-
-			float size[3] = {
-				mActiveComponent->GetRelativeSize().x, mActiveComponent->GetRelativeSize().y, mActiveComponent->GetRelativeSize().z
-			};
-
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Size");
-			ImGui::SameLine(labelWidth);
-			ImGui::InputFloat3("##RelativeSize", size, "%.3f");
-			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
-			{
-				Vector3D prevSize = mActiveComponent->GetRelativeSize();
-				Vector3D newSize(size[0], size[1], size[2]);
-
-				if (keepRatio)
-				{
-					Vector3D delta = newSize - prevSize;
-					int editedAxis = 0;
-
-					if (fabs(delta.y) > fabs(delta.x) && fabs(delta.y) > fabs(delta.z))
-					{
-						editedAxis = 1;
-					}
-					else if (fabs(delta.z) > fabs(delta.x) && fabs(delta.z) > fabs(delta.y))
-					{
-						editedAxis = 2;
-					}
-
-					float prevVal = (editedAxis == 0 ? prevSize.x : editedAxis == 1 ? prevSize.y : prevSize.z);
-					float newVal = (editedAxis == 0 ? newSize.x : editedAxis == 1 ? newSize.y : newSize.z);
-
-					float factor = (prevVal != 0.0f) ? newVal / prevVal : 1.0f;
-
-					newSize = prevSize * factor;
+				[this](Zephyrus::ActorComponent::Component* component, const Vector3D& oldV, const Vector3D& newV) {
+					CreateSetComponentLocation(component, oldV, newV);
 				}
+			);
 
-				//TODO Event to set relative size
-				mActiveComponent->SetRelativeSize(newSize);
+			mActorDrawer->SetComponentTransform(
+				mActiveComponent,
+				"Rotation",
+				1.0f,
+				mActiveComponent->GetRelativeRotationEuler(),
 
-				if (keepRatio)
-				{
-					originalSize = newSize;
+				[this](const Vector3D& newPos) {
+					mActiveComponent->SetRelativeRotation(Quaternion(newPos));
+				},
+
+				[this](Zephyrus::ActorComponent::Component* component, const Vector3D& oldV, const Vector3D& newV) {
+					CreateSetComponentRotation(component, oldV, newV);
 				}
-			}
+			);
+
+			mActorDrawer->SetComponentTransform(
+				mActiveComponent,
+				"Size",
+				0.1f,
+				mActiveComponent->GetRelativeSize(),
+
+				[this](const Vector3D& newPos) {
+
+					Vector3D prevSize = mActiveComponent->GetRelativeSize();
+					Vector3D newSize = newPos;
+
+					if (mKeepRatio)
+					{
+						Vector3D delta = newSize - prevSize;
+						int editedAxis = 0;
+
+						if (fabs(delta.y) > fabs(delta.x) && fabs(delta.y) > fabs(delta.z))
+						{
+							editedAxis = 1;
+						}
+						else if (fabs(delta.z) > fabs(delta.x) && fabs(delta.z) > fabs(delta.y))
+						{
+							editedAxis = 2;
+						}
+
+						float prevVal = (editedAxis == 0 ? prevSize.x : editedAxis == 1 ? prevSize.y : prevSize.z);
+						float newVal = (editedAxis == 0 ? newSize.x : editedAxis == 1 ? newSize.y : newSize.z);
+
+						float factor = (prevVal != 0.0f) ? newVal / prevVal : 1.0f;
+
+						newSize = prevSize * factor;
+					}
+					mActiveComponent->SetRelativeSize(newSize);
+				},
+
+				[this](Zephyrus::ActorComponent::Component* component, const Vector3D& oldV, const Vector3D& newV) {
+					CreateSetComponentSize(component, oldV, newV);
+				}
+			);
+
 			ImGui::SameLine();
-			if (ImGui::Checkbox("##RelativeKeepRatio", &keepRatio))
+			if (ImGui::Checkbox("##KeepRatioComponent", &mKeepRatio))
 			{
-				if (keepRatio)
+				if (mKeepRatio)
 				{
-					originalSize = mActiveComponent->GetRelativeSize();
+					mOriginalSize = pActor->GetSize();
 				}
 			}
 			if (ImGui::IsItemHovered())
@@ -293,4 +288,25 @@ void InspectorPanel::DrawComponentInfos(Actor* pActor)
 void InspectorPanel::SetSceneHierarchy(SceneHierarchyPanel* pHierarchy)
 {
 	mHierarchy = pHierarchy;
+}
+
+void InspectorPanel::CreateSetComponentLocation(Zephyrus::ActorComponent::Component* pComponent,
+	const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
+{
+	SetComponentPositionEvent* posEvent = new SetComponentPositionEvent(pComponent, pCurrentPosition, pNextPosition);
+	EventSystem::DoEvent(posEvent);
+}
+
+void InspectorPanel::CreateSetComponentRotation(Zephyrus::ActorComponent::Component* pComponent,
+	const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
+{
+	SetComponentRotationEvent* rotEvent = new SetComponentRotationEvent(pComponent, Quaternion(pCurrentPosition), Quaternion(pNextPosition));
+	EventSystem::DoEvent(rotEvent);
+}
+
+void InspectorPanel::CreateSetComponentSize(Zephyrus::ActorComponent::Component* pComponent,
+	const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
+{
+	SetComponentSizeEvent* sizeEvent = new SetComponentSizeEvent(pComponent, pCurrentPosition, pNextPosition);
+	EventSystem::DoEvent(sizeEvent);
 }

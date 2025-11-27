@@ -94,7 +94,7 @@ void ActorDrawer::DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor)
 
 	ImGui::AlignTextToFramePadding();
 
-	SetTransform(
+	SetActorTransform(
 		pActor,
 		"Position",
 		0.2f,
@@ -109,7 +109,7 @@ void ActorDrawer::DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor)
 		}
 	);
 
-	SetTransform(
+	SetActorTransform(
 		pActor,
 		"Rotation",
 		1.0f,
@@ -124,7 +124,7 @@ void ActorDrawer::DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor)
 		}
 	);
 
-	SetTransform(
+	SetActorTransform(
 		pActor,
 		"Size",
 		0.1f,
@@ -185,23 +185,23 @@ void ActorDrawer::DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor)
 
 void ActorDrawer::CreateSetLocation(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
 {
-	SetPositionEvent* posEvent = new SetPositionEvent(pActor, pCurrentPosition, pNextPosition);
+	SetActorPositionEvent* posEvent = new SetActorPositionEvent(pActor, pCurrentPosition, pNextPosition);
 	EventSystem::DoEvent(posEvent);
 }
 
 void ActorDrawer::CreateSetRotation(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
 {
-	SetRotationEvent* rotEvent = new SetRotationEvent(pActor, Quaternion(pCurrentPosition), Quaternion(pNextPosition));
+	SetActorRotationEvent* rotEvent = new SetActorRotationEvent(pActor, Quaternion(pCurrentPosition), Quaternion(pNextPosition));
 	EventSystem::DoEvent(rotEvent);
 }
 
 void ActorDrawer::CreateSetSize(Zephyrus::ActorComponent::Actor* pActor, const Vector3D& pCurrentPosition, const Vector3D& pNextPosition)
 {
-	SetSizeEvent* sizeEvent = new SetSizeEvent(pActor, pCurrentPosition, pNextPosition);
+	SetActorSizeEvent* sizeEvent = new SetActorSizeEvent(pActor, pCurrentPosition, pNextPosition);
 	EventSystem::DoEvent(sizeEvent);
 }
 
-void ActorDrawer::SetTransform(Zephyrus::ActorComponent::Actor* pActor, const std::string& label, float step, const Vector3D& initialValue, const std::function<void(const Vector3D&)>& realTimeSetter, const std::function<void(Zephyrus::ActorComponent::Actor*, const Vector3D&, const Vector3D&)>& eventSetter)
+void ActorDrawer::SetActorTransform(Zephyrus::ActorComponent::Actor* pActor, const std::string& label, float step, const Vector3D& initialValue, const std::function<void(const Vector3D&)>& realTimeSetter, const std::function<void(Zephyrus::ActorComponent::Actor*, const Vector3D&, const Vector3D&)>& eventSetter)
 {
 	float transform[3] = {
 		initialValue.x, initialValue.y, initialValue.z
@@ -213,6 +213,14 @@ void ActorDrawer::SetTransform(Zephyrus::ActorComponent::Actor* pActor, const st
 	if (ImGui::DragFloat3(("##" + label).c_str(), transform, step, 0.0f, 0.0f, "%.3f"))
 	{
 		realTimeSetter(Vector3D(transform[0], transform[1], transform[2]));
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = pActor->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
 	}
 	if (ImGui::IsItemActivated())
 	{
@@ -225,6 +233,43 @@ void ActorDrawer::SetTransform(Zephyrus::ActorComponent::Actor* pActor, const st
 	if (ImGui::IsItemDeactivatedAfterEdit() && !ImGui::IsItemActive())
 	{
 		eventSetter(pActor, mOldActorTransform, Vector3D(transform[0], transform[1], transform[2]));
+	}
+}
+
+void ActorDrawer::SetComponentTransform(Zephyrus::ActorComponent::Component* pComponent, const std::string& label,
+	float step, const Vector3D& initialValue, const std::function<void(const Vector3D&)>& realTimeSetter,
+	const std::function<void(Zephyrus::ActorComponent::Component*, const Vector3D&, const Vector3D&)>& eventSetter)
+{
+	float transform[3] = {
+		initialValue.x, initialValue.y, initialValue.z
+	};
+
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text(label.c_str());
+	ImGui::SameLine(mLabelWidth);
+	if (ImGui::DragFloat3(("##" + label).c_str(), transform, step, 0.0f, 0.0f, "%.3f"))
+	{
+		realTimeSetter(Vector3D(transform[0], transform[1], transform[2]));
+		std::vector<Zephyrus::ActorComponent::BulletColliderComponent*> colliders = pComponent->GetOwner()->GetAllComponentOfType<Zephyrus::ActorComponent::BulletColliderComponent>();
+		if (!colliders.empty())
+		{
+			for (auto col : colliders)
+			{
+				col->UpdateWorldTransform();
+			}
+		}
+	}
+	if (ImGui::IsItemActivated())
+	{
+		mOldActorTransform = Vector3D(transform[0], transform[1], transform[2]);
+	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+	}
+	if (ImGui::IsItemDeactivatedAfterEdit() && !ImGui::IsItemActive())
+	{
+		eventSetter(pComponent, mOldActorTransform, Vector3D(transform[0], transform[1], transform[2]));
 	}
 }
 
@@ -328,6 +373,13 @@ Zephyrus::ActorComponent::Component* ActorDrawer::DrawActorComponents(Zephyrus::
 	if (selfTree)
 	{
 		ImGui::TreePop();
+	}
+	
+	if (mCurrentActor != pActor)
+	{
+		mActiveComponent = nullptr;
+		mSelfSelected = true;
+		mCurrentActor = pActor;
 	}
 	
 	return mActiveComponent;
