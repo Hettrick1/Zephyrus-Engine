@@ -419,9 +419,12 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 	}
 
 	float width = ImGui::GetItemRectSize().x;
-	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+	if (ImGui::IsItemActive() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !ImGui::IsMouseDragging(ImGuiMouseButton_Left))
 	{
-		ImGui::OpenPopup("RenameComponent");
+		if (pComponent)
+		{
+			ImGui::OpenPopup("RenameComponent");
+		}
 	}
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
@@ -432,7 +435,7 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 		const char* renameLabel = "##RenameComponent";
 		
 		char buffer[64];
-		strncpy_s(buffer, mActiveComponent->GetName().c_str(), sizeof(buffer));
+		strncpy_s(buffer, pComponent->GetName().c_str(), sizeof(buffer));
 		buffer[sizeof(buffer) - 1] = '\0';
 
 		ImGui::SetNextItemWidth(width);
@@ -447,7 +450,7 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 		
 		if (ImGui::InputText(renameLabel, buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 		{
-			RenameComponentEvent* event = new RenameComponentEvent(mActiveComponent, std::string(buffer));
+			RenameComponentEvent* event = new RenameComponentEvent(pComponent, std::string(buffer));
 			EventSystem::DoEvent(event);
 		}
 
