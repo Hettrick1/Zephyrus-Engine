@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "Component.h"
 #include "SceneManager.h"
+#include "EditorApplication/EventSystem/Event/RenameComponentEvent.h"
 #include "Interface/IMesh.h"
 
 using Zephyrus::Assets::AssetsManager;
@@ -101,8 +102,8 @@ void InspectorPanel::DrawComponentInfos(Actor* pActor)
 
 		if (ImGui::InputText("##Name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 		{
-			/*RenameActorEvent* event = new RenameActorEvent(mActiveComponent, std::string(buffer));
-			EventSystem::DoEvent(event);*/
+			RenameComponentEvent* event = new RenameComponentEvent(mActiveComponent, std::string(buffer));
+			EventSystem::DoEvent(event);
 		}
 
 		ImGui::SameLine();

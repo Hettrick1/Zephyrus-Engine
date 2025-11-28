@@ -6,6 +6,7 @@
 #include "EditorApplication/EventSystem/Event/SetTransformEvent.h"
 #include "Actor.h"
 #include "ComponentFactory.h"
+#include "EditorApplication/EventSystem/Event/RenameComponentEvent.h"
 
 using Zephyrus::ActorComponent::ActorState;
 
@@ -417,6 +418,49 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 		mActiveComponent = pComponent;
 	}
 
+	float width = ImGui::GetItemRectSize().x;
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+	{
+		ImGui::OpenPopup("RenameComponent");
+	}
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+	ImGui::SetNextWindowPos(ImGui::GetItemRectMin(), ImGuiCond_Always);
+
+	if (ImGui::BeginPopup("RenameComponent", ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
+	{
+		const char* renameLabel = "##RenameComponent";
+		
+		char buffer[64];
+		strncpy_s(buffer, mActiveComponent->GetName().c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		ImGui::SetNextItemWidth(width);
+		ImGui::PushStyleColor(ImGuiCol_FrameBg,        IM_COL32(0.9f * 255, 0.7f * 255, 0.0f, 150));
+		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, IM_COL32(66, 150, 250, 255));
+		ImGui::PushStyleColor(ImGuiCol_FrameBgActive,  IM_COL32(66, 150, 250, 255));
+		
+		if (ImGui::IsWindowAppearing())
+		{
+			ImGui::SetKeyboardFocusHere();
+		}
+		
+		if (ImGui::InputText(renameLabel, buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+		{
+			RenameComponentEvent* event = new RenameComponentEvent(mActiveComponent, std::string(buffer));
+			EventSystem::DoEvent(event);
+		}
+
+		if (ImGui::IsItemDeactivated())
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		
+		ImGui::PopStyleColor(3);
+		ImGui::EndPopup();
+	}
+	ImGui::PopStyleVar();
+	
 	if (ImGui::BeginDragDropSource()) {
 		ImGui::SetDragDropPayload("COMPONENT", pComponent->GetId().c_str(), pComponent->GetId().size());
 		ImGui::Text("%s", pComponent->GetName().c_str());
@@ -430,13 +474,16 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 			std::string componentID((const char*)payload->Data, payload->DataSize);
 			if (auto draggedComp = pComponent->GetOwner()->GetComponentWithId(componentID))
 			{
-				if (draggedComp->GetParent() == pComponent)
+				if (pComponent->GetParent() != draggedComp)
 				{
-					pComponent->RemoveChild(draggedComp);
-				}
-				else
-				{
-					pComponent->AddChild(draggedComp);
+					if (draggedComp->GetParent() == pComponent)
+					{
+						pComponent->RemoveChild(draggedComp);
+					}
+					else
+					{
+						pComponent->AddChild(draggedComp);
+					}
 				}
 			}
 		}

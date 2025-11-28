@@ -11,7 +11,7 @@ private:
 	std::string mPrefabToSpawn;
 public:
 	SpawnPrefabEvent(ISceneContext* pContext, const std::string& pPrefabToSpawn);
-	~SpawnPrefabEvent();
+	~SpawnPrefabEvent() override;
 
 	void Execute() override;
 	void Undo() override;

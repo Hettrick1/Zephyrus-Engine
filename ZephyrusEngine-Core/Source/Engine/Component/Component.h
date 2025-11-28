@@ -97,6 +97,7 @@ namespace Zephyrus::ActorComponent
 		inline Vector3D GetRelativeRotationEuler() const { return mRelativeRotation.ToEuler(); }
 		Actor* GetOwner() const;
 		Vector3D GetWorldPosition() const;
+		void SetName(const std::string& pName) {mComponentName = pName;}
 		inline std::string GetName() const { return mComponentName; }
 		inline std::vector<std::string> GetTag() const { return mComponentTags; }
 
