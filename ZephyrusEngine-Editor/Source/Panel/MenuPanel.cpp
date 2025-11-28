@@ -107,7 +107,7 @@ void MenuPanel::Draw()
         ImVec2 menuBarPos = ImGui::GetWindowPos();
         ImVec2 menuBarSize = ImGui::GetWindowSize();
 
-        ImVec2 textSize = ImGui::CalcTextSize("ZephyrusEngine - v.0.0.1");
+        ImVec2 textSize = ImGui::CalcTextSize("ZephyrusEngine - v.0.0.2");
         ImVec2 versionTextPos = ImVec2(menuBarPos.x + menuBarSize.x - textSize.x - 15, menuBarPos.y);
 
         ImGui::SetCursorScreenPos(versionTextPos);

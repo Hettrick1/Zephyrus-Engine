@@ -439,7 +439,7 @@ bool ActorDrawer::DrawComponentTree(Zephyrus::ActorComponent::Component* pCompon
 		buffer[sizeof(buffer) - 1] = '\0';
 
 		ImGui::SetNextItemWidth(width);
-		ImGui::PushStyleColor(ImGuiCol_FrameBg,        IM_COL32(0.9f * 255, 0.7f * 255, 0.0f, 150));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg,        IM_COL32(229, 178, 0, 150));
 		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, IM_COL32(66, 150, 250, 255));
 		ImGui::PushStyleColor(ImGuiCol_FrameBgActive,  IM_COL32(66, 150, 250, 255));
 		
