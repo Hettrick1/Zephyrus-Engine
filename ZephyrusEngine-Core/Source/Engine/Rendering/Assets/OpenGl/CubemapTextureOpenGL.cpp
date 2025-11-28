@@ -1,6 +1,6 @@
 #include "CubemapTextureOpenGL.h"
 #include "RendererOpenGl.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 
 namespace Zephyrus::Assets {
 	bool CubemapTextureOpenGL::Load(const std::vector<std::string>& pCubePaths)

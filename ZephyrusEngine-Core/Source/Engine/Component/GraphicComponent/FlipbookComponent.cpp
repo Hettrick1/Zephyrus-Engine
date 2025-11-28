@@ -1,7 +1,7 @@
 #include "FlipbookComponent.h"
 
 #include "Timer.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "Interface/ITexture2D.h"
 
 using Zephyrus::Assets::AssetsManager;

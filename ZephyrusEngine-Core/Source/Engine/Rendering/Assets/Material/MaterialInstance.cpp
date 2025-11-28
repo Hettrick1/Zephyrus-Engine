@@ -1,7 +1,7 @@
 #include "MaterialInstance.h"
 #include "Interface/ITexture2D.h"
 #include "Interface/ICubeMapTexture.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 
 namespace Zephyrus::Material
 {

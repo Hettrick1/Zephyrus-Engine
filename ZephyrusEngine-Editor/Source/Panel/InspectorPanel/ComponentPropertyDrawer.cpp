@@ -7,7 +7,7 @@
 #include "EditorApplication/EventSystem/Event/RenameActorEvent.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
 #include "EditorApplication/EventSystem/Event/SetTransformEvent.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "ComponentFactory.h"
 #include "Log.h"
 #include "Component.h"
@@ -1077,7 +1077,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 	Property prop;
 	prop = MakeUndoableProperty<Zephyrus::Render::IShader*>(pProperty, mActiveComponent);
 	Zephyrus::Render::IShader* shader = static_cast<Zephyrus::Render::IShader*>(prop.getter());
-
+	
 	char buffer[255];
 	if (shader)
 	{

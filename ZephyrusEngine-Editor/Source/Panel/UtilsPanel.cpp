@@ -1,5 +1,5 @@
 #include "UtilsPanel.h"
-#include "Assets/Assets.h"
+#include "Assets/AssetsManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Interface/ITexture2D.h"

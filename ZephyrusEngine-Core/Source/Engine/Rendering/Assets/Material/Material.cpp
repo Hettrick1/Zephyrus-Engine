@@ -1,6 +1,6 @@
 #include "Material.h"
 
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "Interface/ICubeMapTexture.h"
 #include "Interface/ITexture2D.h"
 

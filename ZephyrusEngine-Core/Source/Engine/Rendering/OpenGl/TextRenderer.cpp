@@ -5,7 +5,7 @@
 #include FT_FREETYPE_H
 #include "Log.h"
 #include "Timer.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "Interface/IFont.h"
 #include <iostream>
 #include <string>

@@ -1,5 +1,5 @@
 #include "DebugRenderer.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 
 using Zephyrus::Assets::AssetsManager;
 

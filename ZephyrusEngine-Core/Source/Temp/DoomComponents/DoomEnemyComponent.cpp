@@ -1,5 +1,5 @@
 #include "DoomEnemyComponent.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "Scene.h"
 #include "Timer.h"
 #include "DebugRenderer.h"

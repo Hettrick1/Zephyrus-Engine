@@ -1,6 +1,6 @@
 #include "PrefabPanel.h"
 #include "EditorUI/ImGuiUtils.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "SceneManager.h"
 #include "PrefabFactory.h"
 #include "../EditorApplication/EventSystem/EventSystem.h"

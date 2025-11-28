@@ -1,7 +1,7 @@
 #pragma once
-#include "Panel.h"
+#include "../Panel.h"
 #include <filesystem>
-#include "SceneHierarchyPanel.h"
+#include "../SceneHierarchyPanel.h"
 #include <functional>
 
 #include "Window/EditorWindow.h"
