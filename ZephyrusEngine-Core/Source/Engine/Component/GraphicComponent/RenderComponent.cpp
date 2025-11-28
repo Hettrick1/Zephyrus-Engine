@@ -2,7 +2,7 @@
 
 #include "ISerializationFactory.h"
 #include "Material/MaterialInstance.h"
-#include "Assets/Assets.h"
+#include "Assets/AssetsManager.h"
 
 namespace Zephyrus::ActorComponent
 {

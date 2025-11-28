@@ -1,6 +1,6 @@
 #include "SplashScreen.h"
 #include "MeshComponent.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "HudElement.h"
 #include "Timer.h"
 #include "TextRenderer.h"

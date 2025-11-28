@@ -2,7 +2,7 @@
 #include "IRenderer.h"
 #include <vector>
 #include <unordered_map>
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "Physics/Bullet/PhysicWorld.h"
 #include "Physics/Bullet/PhysicsDebugRenderer.h"
 #include "CameraManager.h"

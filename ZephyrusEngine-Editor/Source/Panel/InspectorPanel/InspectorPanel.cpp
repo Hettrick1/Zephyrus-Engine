@@ -3,7 +3,7 @@
 #include "EditorUI/ImGuiUtils.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
 #include "EditorApplication/EventSystem/Event/SetTransformEvent.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "Log.h"
 #include "Component.h"
 #include "SceneManager.h"

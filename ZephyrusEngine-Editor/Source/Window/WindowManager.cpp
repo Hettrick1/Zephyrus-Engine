@@ -1,6 +1,6 @@
 #include "WindowManager.h"
 #include "Interface/ITexture2D.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "../EditorUI/ImGuiUtils.h"
 #include <imgui.h>
 #include <imgui_internal.h>

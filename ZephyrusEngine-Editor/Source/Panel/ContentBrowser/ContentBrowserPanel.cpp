@@ -1,12 +1,12 @@
 #include "ContentBrowserPanel.h"
 #include "Interface/ITexture2D.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "SceneManager.h"
 #include "HudManager.h"
-#include "../EditorApplication/EventSystem/EventSystem.h"
+#include "../../EditorApplication/EventSystem/EventSystem.h"
 #include "Window/WindowManager.h"
 #include "Window/MaterialWindow/MaterialWindow.h"
-#include "../EditorUI/ImGuiUtils.h"
+#include "../../EditorUI/ImGuiUtils.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>

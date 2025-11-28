@@ -7,7 +7,7 @@
 #include "glew.h"
 #include "HudManager.h"
 #include "TextRenderer.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "CameraComponent.h"
 #include "../MeshOpenGL.h"
 #include "../FontOpenGL.h"

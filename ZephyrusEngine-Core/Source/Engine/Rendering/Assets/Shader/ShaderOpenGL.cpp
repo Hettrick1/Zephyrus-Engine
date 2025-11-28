@@ -4,7 +4,7 @@
 
 namespace Zephyrus::Render {
 	ShaderOpenGL::ShaderOpenGL(int pId, const std::string& pCode, ShaderType pShaderType)
-		: mId(pId), mCode(pCode), mType(pShaderType)
+		: AssetData(""), mId(pId), mCode(pCode), mType(pShaderType)
 	{
 
 	}
@@ -25,6 +25,9 @@ namespace Zephyrus::Render {
 
 		}
 		mFilePath = pFileName;
+		
+		mFileEntity->SetPath(pFileName);
+		
 		std::string fileText = "";
 		std::string line = "";
 		while (getline(myFile, line))

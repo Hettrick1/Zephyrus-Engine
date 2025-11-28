@@ -12,7 +12,7 @@
 #include "Panel/ScenePanel.h"
 #include "Panel/ConsolePanel.h"
 #include "Panel/SceneHierarchyPanel.h"
-#include "Panel/ContentBrowserPanel.h"
+#include "Panel/ContentBrowser/ContentBrowserPanel.h"
 #include "EditorControllerActor.h"
 #include "EditorControllerComponent.h"
 #include "Panel/MenuPanel.h"

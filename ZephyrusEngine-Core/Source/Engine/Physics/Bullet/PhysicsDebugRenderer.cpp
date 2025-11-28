@@ -1,5 +1,5 @@
 #include "PhysicsDebugRenderer.h"
-#include "Assets.h"
+#include "AssetsManager.h"
 #include "SceneManager.h"
 #include "ISceneContext.h"
 
