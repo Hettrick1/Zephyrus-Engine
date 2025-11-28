@@ -48,21 +48,21 @@ namespace Zephyrus::Factory {
                         {
                             id = *componentId;
                         }
-                        if (reader.BeginObject("properties"))
+                        auto c = actorPrefab->GetComponentWithId(id);
+                        if (c)
                         {
-                            auto c = actorPrefab->GetComponentWithId(id);
-                            if (c)
+                            if (reader.BeginObject("properties"))
                             {
                                 // if found = component is still there
                                 c->Deserialize(reader);
                                 ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
+                                reader.EndObject();
                             }
-                            else
-                            {
-                                // if the id is not found (component has been added)
-                                mSceneContext->GetPrefabFactory()->CreateAndAttachComponent(reader, actorPrefab);
-                            }
-                            reader.EndObject();
+                        }
+                        else
+                        {
+                            // if the id is not found (component has been added)
+                            mSceneContext->GetPrefabFactory()->CreateAndAttachComponent(reader, actorPrefab);
                         }
                     }
 
