@@ -35,6 +35,7 @@ project "ZephyrusEngine-Editor"
       "../Vendor/freetype-2.6.1/include/freetype",
       "../Vendor/rapidjson-1.1.0/include",
       "../Vendor/TinyObjLoader",
+      "../Vendor/stb-image",
       "../Vendor/imgui-1.92.2b",
       "../Vendor/imgui-1.92.2b/backends",
       "../Vendor/bullet3-3.25/src",
