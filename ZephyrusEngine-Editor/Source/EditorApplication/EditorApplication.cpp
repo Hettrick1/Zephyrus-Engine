@@ -62,9 +62,9 @@ void EditorApplication::Initialize()
     {
         SDL_MaximizeWindow(mGameWindow->GetSdlWindow());
 
-        SDL_Surface* icon = IMG_Load("../Content/Sprites/Icons/ZephyrusLogo.png");
-        SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
-        SDL_FreeSurface(icon);
+        // SDL_Surface* icon = IMG_Load("../Content/Sprites/Icons/ZephyrusLogo.png");
+        // SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
+        // SDL_FreeSurface(icon);
 
         auto editorController = new Zephyrus::ActorComponent::EditorControllerActor(mSceneManager, *mSceneManager->GetActiveScene());
         mEditorController = editorController;

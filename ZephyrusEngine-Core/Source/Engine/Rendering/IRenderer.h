@@ -5,7 +5,6 @@
 #include "Rectangle.h"
 #include "Window.h"
 #include "Matrix4DRow.h"
-#include "SDL_image.h"
 #include "Vector4D.h"
 #include "../Interface/IShader.h"
 #include "../Interface/IShaderProgram.h"

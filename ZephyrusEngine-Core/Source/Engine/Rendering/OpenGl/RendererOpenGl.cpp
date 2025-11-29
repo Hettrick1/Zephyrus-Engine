@@ -63,10 +63,10 @@ namespace Zephyrus::Render {
 		}
 		glGetError();
 
-		if (IMG_Init(IMG_INIT_PNG) == 0)
-		{
-			ZP_CORE_ERROR("Failed to initialize SDL_Image");
-		}
+		// if (IMG_Init(IMG_INIT_PNG) == 0)
+		// {
+		// 	ZP_CORE_ERROR("Failed to initialize SDL_Image");
+		// }
 		mSpriteVertexShader = AssetsManager::LoadShader("BasicHudImage.vert", ShaderType::VERTEX, "BasicHudImageVert");
 		mSpriteFragmentShader = AssetsManager::LoadShader("BasicHudImage.frag", ShaderType::FRAGMENT, "BasicHudImageFrag");
 		mSpriteShaderProgramTemp = AssetsManager::LoadShaderProgram({ mSpriteVertexShader, mSpriteFragmentShader }, "simpleSpriteSP");

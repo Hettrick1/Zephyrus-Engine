@@ -30,7 +30,6 @@ project "ZephyrusEngine-Editor"
 
       "../Vendor/glew-2.2.0-win32/glew-2.2.0/include/GL",
       "../Vendor/GL/SDL/include",
-      "../Vendor/SDL2_image-2.8.2/include",
       "../Vendor/freetype-2.6.1/include",
       "../Vendor/freetype-2.6.1/include/freetype",
       "../Vendor/rapidjson-1.1.0/include",
@@ -87,8 +86,7 @@ project "ZephyrusEngine-Editor"
    postbuildcommands
    {
     "{COPY} ../Vendor/GL/SDL/lib/x64/SDL2.dll %{cfg.targetdir}",
-    "{COPY} ../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/x64/glew32.dll %{cfg.targetdir}",
-    "{COPY} ../Vendor/SDL2_image-2.8.2/lib/x64/SDL2_image.dll %{cfg.targetdir}",
+    "{COPY} ../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/x64/glew32.dll %{cfg.targetdir}"
    }
 
    filter "system:windows"

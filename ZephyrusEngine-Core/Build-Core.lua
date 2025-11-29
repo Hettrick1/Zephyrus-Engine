@@ -15,7 +15,6 @@ project "ZephyrusEngine-Core"
 
       "../Vendor/glew-2.2.0-win32/glew-2.2.0/include/GL",
       "../Vendor/GL/SDL/include",
-      "../Vendor/SDL2_image-2.8.2/include",
       "../Vendor/freetype-2.6.1/include",
       "../Vendor/freetype-2.6.1/include/freetype",
       "../Vendor/rapidjson-1.1.0/include",
@@ -60,8 +59,7 @@ project "ZephyrusEngine-Core"
    {  
     "../Vendor/GL/SDL/lib/x64",
     "../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/x64",
-    "../Vendor/glew-2.2.0-win32/glew-2.2.0/lib/Release/x64",
-    "../Vendor/SDL2_image-2.8.2/lib/x64",
+    "../Vendor/glew-2.2.0-win32/glew-2.2.0/lib/Release/x64", -- THAT IS NOT THE SAME FILE
     "../Vendor/freetype-2.6.1/objs/vc2010/x64",
     "../Vendor/bullet3-3.25/lib/Release",
    }
@@ -73,7 +71,6 @@ project "ZephyrusEngine-Core"
       "glew32",
       "opengl32",
       "SDL2",
-      "SDL2_image",
       "SDL2main",
       "freetype261"
    }

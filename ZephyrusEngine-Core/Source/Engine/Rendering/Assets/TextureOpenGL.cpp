@@ -1,6 +1,5 @@
 #include "TextureOpenGL.h"
-#include "SDL.h"
-#include "SDL_image.h"
+#include "stb_image.h"
 #include "Log.h"
 
 Zephyrus::Assets::TextureOpenGL::~TextureOpenGL()
@@ -11,26 +10,33 @@ Zephyrus::Assets::TextureOpenGL::~TextureOpenGL()
 bool Zephyrus::Assets::TextureOpenGL::Load(const std::string& pFilename)
 {
 	mFilePath = pFilename;
-	SDL_Surface* surface = IMG_Load(mFilePath.c_str());
-	if (!surface)
+
+	int width, height, channels;
+
+	//stbi_set_flip_vertically_on_load(true);
+
+	unsigned  char* data = stbi_load(pFilename.c_str(), &width, &height, &channels, 0);
+
+	if (!data)
 	{
-		ZP_CORE_ERROR("Failed to load texture file :" + mFilePath);
+		ZP_CORE_ERROR("Failed to load texture file: " + pFilename);
 		return false;
 	}
-	mWidth = surface->w;
-	mHeight = surface->h;
+	
+	mWidth = width;
+	mHeight = height;
 
-	SDL_Surface* converted = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_ABGR8888, 0);
-	SDL_FreeSurface(surface);
+	GLenum format = GL_RGB;
+	GLenum internalFormat = GL_RGB;
 
-	mWidth = converted->w;
-	mHeight = converted->h;
+	if (channels == 4) { format = GL_RGBA; internalFormat = GL_RGBA; }
+	else if (channels == 3) { format = GL_RGB; internalFormat = GL_RGB; }
+	else if (channels == 1) { format = GL_RED; internalFormat = GL_RED; }
 
 	glGenTextures(1, &mTextureID);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, converted->pixels);
-	SDL_FreeSurface(converted);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, data);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1.0f);
@@ -40,9 +46,12 @@ bool Zephyrus::Assets::TextureOpenGL::Load(const std::string& pFilename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+	stbi_image_free(data);
+	
 	if (mTextureID == 0)
 	{
 		ZP_INFO("Texture load failed");
+		return false;
 	}
 
 	return true;

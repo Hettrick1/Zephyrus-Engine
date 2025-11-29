@@ -4,7 +4,8 @@
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
-#include "SceneManager.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include "Scene.h"
 #include "ISceneContext.h"
 #include "Data/MeshData.h"
@@ -12,7 +13,6 @@
 #include "Interface/IFont.h"
 #include "Interface/ITexture2D.h"
 #include "Material/IMaterial.h"
-#include "Material/Material.h"
 #include "ISerializationFactory.h"
 #include <filesystem>
 
