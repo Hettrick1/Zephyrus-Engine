@@ -18,6 +18,7 @@ namespace Zephyrus::Inputs {
 
         Vector2D mMousePos;
         Vector2D mMouseDelta;
+        Vector2D mLastCenter;
 
         bool mMouseWasActive{ false };
     public:

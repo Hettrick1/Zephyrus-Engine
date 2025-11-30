@@ -199,6 +199,16 @@ namespace Zephyrus::Scenes {
 		}
 		return nullptr;
 	}
+
+	Zephyrus::Inputs::InputManager* SceneManager::GetInputManager()
+	{
+		if (ActiveScene)
+		{
+			return ActiveScene->GetInputManager();
+		}
+		return nullptr;
+	}
+
 	void SceneManager::SetSceneLoaded(bool pSceneLoaded)
 	{
 		mIsSceneLoaded = pSceneLoaded;

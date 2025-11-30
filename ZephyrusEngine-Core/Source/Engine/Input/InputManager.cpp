@@ -123,7 +123,11 @@ namespace Zephyrus::Inputs
                         auto* a = static_cast<InputActionAxis1D*>(act.get());
                         if (a->keyValues.contains(key))
                             {
-                            if (action == GLFW_PRESS) { a->IsDown = true; a->TriggerStarted(); }
+                            if (action == GLFW_PRESS) {
+                                a->IsDown = true;
+                                a->TriggerStarted();
+                                a->TriggerTriggered(a->keyValues[key]);
+                            }
                             if (action == GLFW_REPEAT) { a->TriggerTriggered(a->keyValues[key]); }
                             if (action == GLFW_RELEASE){ a->IsDown = false; a->TriggerReleased(); }
                         }
@@ -134,7 +138,11 @@ namespace Zephyrus::Inputs
                     {
                         auto* a = static_cast<InputActionAxis2D*>(act.get());
                         if (a->keyValues.contains(key)) {
-                            if (action == GLFW_PRESS) { a->IsDown = true; a->TriggerStarted(); }
+                            if (action == GLFW_PRESS) {
+                                a->IsDown = true;
+                                a->TriggerStarted();
+                                a->TriggerTriggered(a->keyValues[key]);
+                            }
                             if (action == GLFW_REPEAT) { a->TriggerTriggered(a->keyValues[key]); }
                             if (action == GLFW_RELEASE){ a->IsDown = false; a->TriggerReleased(); }
                         }
@@ -194,47 +202,32 @@ namespace Zephyrus::Inputs
 
     void InputManager::OnMouseMove(double xpos, double ypos)
    {
-       Vector2D newPos = { (float)xpos, (float)ypos };
-       Vector2D delta = newPos - mMousePos;
-       mMousePos = newPos;
+       Vector2D delta = { (float)xpos - mLastCenter.x, (float)ypos - mLastCenter.y };
+    
+       // Update mouse pos
+       mMousePos += delta;
 
-       // Si delta non nul → souris active
-       bool isActive = (delta.x != 0 || delta.y != 0);
+       // Recenter the cursor
+       glfwSetCursorPos(mWindow, mLastCenter.x, mLastCenter.y);
 
-       // Started
-       if (!mMouseWasActive && isActive)
+       // Send delta to all mouse axes
+       for (auto& [name, act] : mActions)
        {
-           mMouseWasActive = true;
-           for (auto& [name, act] : mActions)
+           if (act->GetType() == ActionType::Axis2D && act->IsMouseAxis)
            {
-               if (act->GetType() == ActionType::Axis2D && act->IsMouseAxis)
+               auto* axis = static_cast<InputActionAxis2D*>(act.get());
+            
+               if (!mMouseWasActive && (delta.x != 0 || delta.y != 0))
                {
-                   auto* axis = static_cast<InputActionAxis2D*>(act.get());
+                   mMouseWasActive = true;
                    axis->TriggerStarted();
                }
-           }
-       }
-       // Triggered
-       else if (isActive)
-       {
-           for (auto& [name, act] : mActions)
-           {
-               if (act->GetType() == ActionType::Axis2D && act->IsMouseAxis)
-               {
-                   auto* axis = static_cast<InputActionAxis2D*>(act.get());
+
+               if (delta.x != 0 || delta.y != 0)
                    axis->TriggerTriggered(delta);
-               }
-           }
-       }
-       // Released
-       else if (mMouseWasActive && !isActive)
-       {
-           mMouseWasActive = false;
-           for (auto& [name, act] : mActions)
-           {
-               if (act->GetType() == ActionType::Axis2D && act->IsMouseAxis)
+               else if (mMouseWasActive)
                {
-                   auto* axis = static_cast<InputActionAxis2D*>(act.get());
+                   mMouseWasActive = false;
                    axis->TriggerReleased();
                }
            }

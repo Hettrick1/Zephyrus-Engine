@@ -28,12 +28,29 @@ namespace Zephyrus::Inputs {
         void BindMouseValue(int key, const Vector2D& v)
         {
             mouseValues[key] = v;
-            IsMouseAxis = true;
+        }
+
+        bool IsBoundToKey(int key) const override
+        {
+            if (keyValues.contains(key))
+            {
+                return true;
+            }
+            return false;
+        }
+        
+        bool IsBoundToMouse(int button) const override
+        {
+            if (mouseValues.contains(button))
+            {
+                return true;
+            }
+            return false;
         }
 
         void TriggerStarted() const { if (OnStarted)   OnStarted(); }
         void TriggerTriggered(const Vector2D& v) {
-            value += v;
+            value = v;
             if (OnTriggered) OnTriggered(value);
         }
         void TriggerReleased() const { if (OnReleased)  OnReleased(); }

@@ -59,6 +59,7 @@ namespace Zephyrus::Scenes
 		Zephyrus::Factory::ISceneFactory* GetSceneFactory() override;
 		Zephyrus::Scenes::Scene* GetActiveScene() override;
 		Zephyrus::Factory::ISerializationFactory* GetSerializationFactory() override;
+		Zephyrus::Inputs::InputManager* GetInputManager() override;
 		void SetSceneLoaded(bool pSceneLoaded) override;
 	};
 }

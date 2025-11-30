@@ -34,6 +34,11 @@ namespace Zephyrus::ActorComponent
 
 		static Component* Create(Actor* pOwner) { return new DoomPC(pOwner); }
 	public:
+
+		void Move(Vector2D axis);
+		void Rotate(Vector2D axis);
+		void Shoot();
+		
 		void OnActionStarted(InputAction* action) override;
 		void OnActionTriggered(InputAction* action) override;
 		void OnActionEnded(InputAction* action) override;

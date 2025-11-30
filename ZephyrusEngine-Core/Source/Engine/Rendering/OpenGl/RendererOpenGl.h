@@ -145,5 +145,7 @@ namespace Zephyrus::Render {
 		{
 			mAtmosphereComponents.erase(std::remove(mAtmosphereComponents.begin(), mAtmosphereComponents.end(), pAtmosphereComponent), mAtmosphereComponents.end());
 		}
+
+		Window* GetWindow() const override {return mWindow; }
 	};
 }

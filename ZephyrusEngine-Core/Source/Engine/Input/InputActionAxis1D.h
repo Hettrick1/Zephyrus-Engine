@@ -28,10 +28,28 @@ namespace Zephyrus::Inputs {
             mouseValues[key] = v;
         }
 
+        bool IsBoundToKey(int key) const override
+        {
+            if (keyValues.contains(key))
+            {
+                return true;
+            }
+            return false;
+        }
+        
+        bool IsBoundToMouse(int button) const override
+        {
+            if (mouseValues.contains(button))
+            {
+                return true;
+            }
+            return false;
+        }
+
         void TriggerStarted() const { if (OnStarted)   OnStarted(); }
         void TriggerTriggered(float delta)
         {
-            value += delta;
+            value = delta;
             if (OnTriggered) OnTriggered(value);
         }
         void TriggerReleased() const { if (OnReleased)  OnReleased(); }

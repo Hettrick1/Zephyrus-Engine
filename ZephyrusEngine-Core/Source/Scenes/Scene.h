@@ -6,6 +6,8 @@
 #include "Physics/Bullet/PhysicWorld.h"
 #include "Physics/Bullet/PhysicsDebugRenderer.h"
 #include "CameraManager.h"
+#include "InputManager.h"
+#include "Temp/DoomComponents/DoomMenuPC.h"
 
 namespace Zephyrus::ActorComponent
 {
@@ -33,7 +35,7 @@ namespace Zephyrus::Scenes {
 		std::string mTitle;
 		std::string mFilePath;
 		std::string mPlayerPrefabName;
-		Zephyrus::Render::IRenderer* mRenderer;
+		Render::IRenderer* mRenderer;
 		std::unordered_map<std::string, Actor*> mActors;
 		std::vector<Actor*> mAllActors;
 		std::vector<Actor*> mPendingActors;
@@ -45,14 +47,17 @@ namespace Zephyrus::Scenes {
 		PhysicWorld* mPhysicWorld{ nullptr };
 		PhysicsDebugRenderer* mDebugRenderer{ nullptr };
 		CameraManager* mCameraManager{ nullptr };
+		Inputs::InputManager* mInputManager{ nullptr };
+		
 	public:
 		Scene(ISceneContext* pContext, std::string pTitle = "Scene");
+		virtual ~Scene() = default;
 		virtual void Start(); // Initializes the scene with the given renderer
 		virtual void PostStart();
 		virtual void Update(float pDetltaTime); // Updates the scene and its actors
 		virtual void Render();
 		void SetSceneLoaded(bool pSceneLoaded);
-		void SetRenderer(Zephyrus::Render::IRenderer* pRenderer);
+		void SetRenderer(Render::IRenderer* pRenderer);
 		void BeginRender();
 		void RenderCurrentSceneOnly();
 		void EndRender();
@@ -82,6 +87,7 @@ namespace Zephyrus::Scenes {
 		inline PhysicsDebugRenderer* GetPhysicDebugRenderer() const { return mDebugRenderer; }
 		inline CameraManager* GetCameraManager() const { return mCameraManager; }
 		inline bool GetSceneLoaded() const { return mIsSceneLoaded; }
+		inline InputManager* GetInputManager() const { return mInputManager; }
 	public:
 		inline Zephyrus::Render::IRenderer* GetRenderer() const { return mRenderer; }
 	};

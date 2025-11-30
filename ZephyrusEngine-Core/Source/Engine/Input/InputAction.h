@@ -10,8 +10,6 @@ namespace Zephyrus::Inputs {
 	protected:
 		std::string mName;
 		ActionType mType;
-		std::vector<int> mKeys;
-		std::vector<int> mMouseButtons;
 		
 	public:
 		bool IsDown = false;
@@ -26,10 +24,7 @@ namespace Zephyrus::Inputs {
 		const std::string& GetName() const { return mName; }
 		ActionType GetType() const { return mType; }
 		
-		void BindKey(int key) { mKeys.push_back(key); }
-		bool IsBoundToKey(int key) const;
-
-		void BindMouseButton(int button) { mMouseButtons.push_back(button); }
-		bool IsBoundToMouse(int button) const;
+		virtual bool IsBoundToKey(int key) const = 0;
+		virtual bool IsBoundToMouse(int button) const = 0;
 	};
 }

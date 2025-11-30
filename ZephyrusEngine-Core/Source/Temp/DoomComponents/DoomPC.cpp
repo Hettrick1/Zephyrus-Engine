@@ -17,11 +17,18 @@ namespace Zephyrus::ActorComponent
 	DoomPC::DoomPC(Actor* pOwner, int pUpdateOrder)
 		: Component(pOwner, "DoomPC", pUpdateOrder), goRight(true), goLeft(true), goForward(true), goBackward(true)
 	{
-		// InputManager& inputManager = InputManager::Instance();
-		// inputManager.CreateNewAxis2DBinding(this, "Movement", SDLK_d, SDLK_a, SDLK_w, SDLK_s);
-		// inputManager.CreateNewBooleanBtnBinding(this, "Shoot", SDL_BUTTON_LEFT);
-		// inputManager.CreateNewBooleanKeyBinding(this, "ChangeWeapon", SDLK_TAB);
-		// inputManager.CreateNewAxis2DBinding(this, "Mouse");
+
+		auto& mouseAxis = mOwner->GetSceneContext()->GetInputManager()->CreateAxis2D("Mouse");
+		mouseAxis.IsMouseAxis = true;
+		mouseAxis.OnTriggered = [this](Vector2D delta){ Rotate(delta); };
+		mOwner->GetSceneContext()->GetInputManager()->SetCursorRelative(true);
+
+		auto& moveAxis = mOwner->GetSceneContext()->GetInputManager()->CreateAxis2D("Movement");
+		moveAxis.BindKeyValue(GLFW_KEY_W, {0.0f, 1.0f});
+		moveAxis.BindKeyValue(GLFW_KEY_S, {0.0f, -1.0f});
+		moveAxis.BindKeyValue(GLFW_KEY_A, {-1.0f, 0.0f});
+		moveAxis.BindKeyValue(GLFW_KEY_D, {1.0f, 0.0f});
+		moveAxis.OnTriggered = [this](Vector2D delta){ Move(delta); };
 	}
 
 	DoomPC::~DoomPC()
@@ -37,6 +44,55 @@ namespace Zephyrus::ActorComponent
 	void DoomPC::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::Serialize(pWriter);
+	}
+
+	void DoomPC::Move(Vector2D axis)
+	{
+		// REWORK MOVEMENTS
+		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
+		Vector3D forward = cam->GetWorldTransform().GetYAxis();
+		Vector3D right = cam->GetWorldTransform().GetXAxis();
+		Vector3D moveDir = forward * axis.y + right * -axis.x;
+		
+		if (moveDir.LengthSq() > 0.0f)
+		{
+			moveDir.Normalize();
+		
+			float moveForce = 1000.0f;
+			Vector3D forceToApply = moveDir * moveForce;
+		
+			auto rb = mOwner->GetRigidBody();
+			if (rb && rb->GetRigidBody())
+			{
+				btVector3 bulletForce(forceToApply.x, forceToApply.y, 0.0f);
+				rb->GetRigidBody()->applyCentralForce(bulletForce);
+				rb->GetRigidBody()->activate(true);
+				btVector3 vel = rb->GetRigidBody()->getLinearVelocity();
+				btVector3 horizontalVel(vel.x(), vel.y(), 0);
+				float maxSpeed = 2.0f;
+		
+				if (horizontalVel.length() > maxSpeed)
+				{
+					horizontalVel = horizontalVel.normalized() * maxSpeed;
+					vel.setX(horizontalVel.x());
+					vel.setY(horizontalVel.y());
+					rb->GetRigidBody()->setLinearVelocity(vel);
+				}
+			}
+		}
+	}
+
+	void DoomPC::Rotate(Vector2D axis)
+	{
+		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
+		
+		float sensitivity = 5.0f;
+		axis.x *= sensitivity * Timer::deltaTime;
+		cam->RelativeRotateZ(axis.x);
+	}
+
+	void DoomPC::Shoot()
+	{
 	}
 
 	void DoomPC::OnActionStarted(InputAction* action)

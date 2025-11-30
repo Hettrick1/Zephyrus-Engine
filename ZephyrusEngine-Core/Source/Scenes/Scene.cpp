@@ -18,7 +18,7 @@ namespace Zephyrus::Scenes {
 	Scene::Scene(ISceneContext* pContext, std::string pTitle)
 		: mContext{ pContext }, mTitle{ pTitle }, mIsUpdatingActor{ false }, 
 		mRenderer{ nullptr }, mPhysicWorld{ new PhysicWorld() }, mDebugRenderer{ new PhysicsDebugRenderer(pContext) },
-		mCameraManager{ new CameraManager(pContext) }
+		mCameraManager{ new CameraManager(pContext) }, mInputManager{ new InputManager(pContext->GetRenderer()->GetWindow()->GetGlfwWindow()) }
 	{
 		mDebugRenderer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 		mPhysicWorld->GetWorld()->setDebugDrawer(mDebugRenderer);
@@ -152,6 +152,8 @@ namespace Zephyrus::Scenes {
 		mDebugRenderer = nullptr;
 		delete mPhysicWorld;
 		mPhysicWorld = nullptr;
+		delete mInputManager;
+		mInputManager = nullptr;
 	}
 
 	void Scene::Close()
@@ -176,6 +178,8 @@ namespace Zephyrus::Scenes {
 		mDebugRenderer = nullptr;
 		delete mPhysicWorld;
 		mPhysicWorld = nullptr;
+		delete mInputManager;
+		mInputManager = nullptr;
 	}
 
 	void Scene::SaveTo(const std::string& pFilePath)

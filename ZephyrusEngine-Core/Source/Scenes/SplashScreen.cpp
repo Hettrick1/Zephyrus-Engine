@@ -21,8 +21,6 @@ namespace Zephyrus::Scenes {
 
 	SplashScreen::~SplashScreen()
 	{
-		delete mZephyrusText;
-		delete mStudioText;
 	}
 
 	void SplashScreen::Start()
@@ -38,6 +36,8 @@ namespace Zephyrus::Scenes {
 		mZephyrusText->SetShaderProgram(AssetsManager::LoadShaderProgram({ vert, frag }, "splashScreenSP"));
 
 		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
+
+		mInputManager->SetCursorVisible(false);
 		//SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
 

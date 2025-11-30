@@ -128,6 +128,8 @@ namespace Zephyrus::Render {
 		virtual void SetCameraPosition(const Vector3D& pPosition) = 0;
 		virtual void AddAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) = 0;
 		virtual void RemoveAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) = 0;
+
+		virtual Window* GetWindow() const = 0;
 		
 	};
 }
