@@ -67,7 +67,7 @@ namespace Zephyrus::Render {
         shaderProgram->Use();
         shaderProgram->setMatrix4Row("projection", mProjection);
         shaderProgram->setVector4f("textColor", pColor);
-        shaderProgram->setFloat("time", static_cast<float>(glfwGetTime()));
+        shaderProgram->setFloat("time", static_cast<float>(glfwGetTime() * 1000)); // miliseconds
         shaderProgram->setFloat("screenWidth", mWindow->GetDimensions().x);
         shaderProgram->setFloat("screenHeight", mWindow->GetDimensions().y);
         glActiveTexture(GL_TEXTURE0);
