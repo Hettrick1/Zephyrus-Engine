@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EditorControllerComponent.h"
-#include "BooleanActions.h"
-#include "Axis2DAction.h"
+#include "InputActionBool.h"
+#include "InputActionAxis2D.h"
 #include "InputManager.h"
 #include "Log.h"
 #include "Timer.h"
@@ -13,7 +13,7 @@ namespace Zephyrus::ActorComponent {
 	{
 	}
 
-	void EditorControllerComponent::OnActionStarted(InputActions* pAction)
+	void EditorControllerComponent::OnActionStarted(InputAction* pAction)
 	{
 		if (!mInCapture) return;
 		if (pAction->GetType() == ActionType::Boolean)
@@ -28,7 +28,7 @@ namespace Zephyrus::ActorComponent {
 			}
 		}
 	}
-	void EditorControllerComponent::OnActionTriggered(InputActions* pAction)
+	void EditorControllerComponent::OnActionTriggered(InputAction* pAction)
 	{
 		if (!mCanMove) return;
 
@@ -89,7 +89,7 @@ namespace Zephyrus::ActorComponent {
 			// mOwner->GetTransformComponent().SetRotation(finalRot);
 		}
 	}
-	void EditorControllerComponent::OnActionEnded(InputActions* pAction)
+	void EditorControllerComponent::OnActionEnded(InputAction* pAction)
 	{
 		if (pAction->GetType() == ActionType::Boolean)
 		{

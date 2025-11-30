@@ -1,6 +1,8 @@
 #pragma once
-#include "InputActions.h"
-#include "IActionListener.h"
+#include "InputAction.h"
+#include "InputActionBool.h"
+#include "InputActionAxis1D.h"
+#include "InputActionAxis2D.h"
 #include <unordered_map>
 
 class ISceneContext;
@@ -9,37 +11,48 @@ class ISceneContext;
 namespace Zephyrus::Inputs {
     class InputManager
     {
+    private:
+        GLFWwindow* mWindow;
+
+        std::unordered_map<std::string, std::unique_ptr<InputAction>> mActions;
+
+        Vector2D mMousePos;
+        Vector2D mMouseDelta;
+
+        bool mMouseWasActive{ false };
     public:
-        static InputManager& Instance();
-        ~InputManager() = default;
-    // private:
-    //     ISceneContext* mContext;
-    //
-    //     // Binds an action to a set of keyboard keys.
-    //     void BindActionToKeys(InputActions* pAction, const std::vector<SDL_Keycode>& pKeys);
-    //
-    //     // Binds an action to mouse buttons.
-    //     void BindActionToMouse(InputActions* pAction);
-    //
-    //     std::unordered_map<SDL_Keycode, std::vector<InputActions*>> mActionKeyBindings;
-    //     std::vector<InputActions*> mActionMouseBindings;
-    //
-    // public:
-    //     static InputManager& Instance();
-    //     ~InputManager();
-    //
-    //     // Creates a new boolean key binding for a listener.
-    //     void CreateNewBooleanKeyBinding(IActionListener* pListener, const std::string& pName, SDL_Keycode pKey);
-    //
-    //     // Creates a new boolean mouse button binding for a listener.
-    //     void CreateNewBooleanBtnBinding(IActionListener* pListener, const std::string& pName, Uint8 pMouseButton);
-    //
-    //     // Creates a new 2D axis binding for a listener.
-    //     void CreateNewAxis2DBinding(IActionListener* pListener, const std::string& pName, SDL_Keycode pPositiveX = SDLK_UNKNOWN, SDL_Keycode pNegativeX = SDLK_UNKNOWN, SDL_Keycode pPositiveY = SDLK_UNKNOWN, SDL_Keycode pNegativeY = SDLK_UNKNOWN);
-    //
-    //     void Update();
-    //     void Unload();
-    //
-    //     void SetContext(ISceneContext* pContext);
-    };
+        InputManager(GLFWwindow* window);
+        ~InputManager();
+
+        void NewFrame();        // resets axis values
+        void UpdateGamepad();   // poll gamepad
+
+        void SetCursorVisible(bool visible)
+        {
+            if (visible)
+                glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            else
+                glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        }
+
+        void SetCursorRelative(bool relative)
+        {
+            if (relative)
+                glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            else
+                glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+        
+        InputActionBool& CreateBool(const std::string& name);
+        InputActionAxis1D& CreateAxis1D(const std::string& name);
+        InputActionAxis2D& CreateAxis2D(const std::string& name);
+
+        InputAction* GetAction(const std::string& name);
+
+        void OnKeyEvent(int key, int action);
+        void OnMouseButtonEvent(int button, int action);
+        void OnMouseMove(double xpos, double ypos);
+        void OnScroll(double xoffset, double yoffset);
+};
+
 }

@@ -20,7 +20,7 @@
 
 namespace Zephyrus::Application {
     Game::Game(const std::string& pTitle, const std::string& pStartupScene)
-        : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
+        : mIsRunning(true), mStartUpScene(pStartupScene), mTitle(pTitle)
     {
         Zephyrus::Debug::Log::Init();
         

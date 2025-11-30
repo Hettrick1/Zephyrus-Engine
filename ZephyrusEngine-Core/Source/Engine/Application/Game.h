@@ -26,7 +26,6 @@ namespace Zephyrus::Application {
 		Zephyrus::Scenes::SceneManager* mSceneManager{ nullptr };
 		Zephyrus::Render::IRenderer* mRenderer{ nullptr };
 		std::string mStartUpScene;
-		InputManager& mInputManager;
 		bool mIsRunning = true;
 	public:
 		Game(const std::string& pTitle, const std::string& pStartupScene);

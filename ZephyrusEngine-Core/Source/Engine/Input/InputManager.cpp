@@ -1,138 +1,248 @@
 #include "pch.h"
 #include "InputManager.h"
-#include "BooleanActions.h"
-#include "Axis2DAction.h"
-#include "Scene.h"
-#include "ISceneContext.h"
 
-namespace Zephyrus::Inputs {
-    InputManager& InputManager::Instance()
+namespace Zephyrus::Inputs
+{
+   static void KeyCallback(GLFWwindow* win, int key, int sc, int action, int mods)
     {
-        static InputManager instance;
-        return instance;
+        auto* input = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+        if (input) input->OnKeyEvent(key, action);
     }
 
-    // InputManager::~InputManager()
-    // {
-    //     for (auto it = mActionKeyBindings.begin(); it != mActionKeyBindings.end(); ++it) {
-    //         auto& key = it->first;
-    //         auto& actions = it->second;
-    //         for (auto& action : actions)
-    //         {
-    //             if (action != nullptr)
-    //             {
-    //                 action = nullptr;
-    //             }
-    //         }
-    //         actions.clear();
-    //     }
-    //     mActionKeyBindings.clear();
-    // }
-    //
-    // void InputManager::CreateNewBooleanKeyBinding(IActionListener* pListener, const std::string& pName, SDL_Keycode pKey)
-    // {
-    //     if (mActionKeyBindings.find(pKey) != mActionKeyBindings.end()) {
-    //         std::vector<InputActions*> actionsToBind = mActionKeyBindings[pKey];
-    //         for (InputActions* action : actionsToBind) {
-    //             action->AddListener(pListener);
-    //         }
-    //     }
-    //     else {
-    //         BooleanActions* newAction = new BooleanActions(pKey, pName);
-    //         newAction->AddListener(pListener);
-    //         BindActionToKeys(newAction, { pKey });
-    //     }
-    // }
-    //
-    // void InputManager::CreateNewBooleanBtnBinding(IActionListener* pListener, const std::string& pName, Uint8 pMouseButton)
-    // {
-    //     BooleanActions* newAction = new BooleanActions(pMouseButton, pName);
-    //     newAction->AddListener(pListener);
-    //     mActionMouseBindings.push_back(newAction);
-    // }
-    //
-    // void InputManager::CreateNewAxis2DBinding(IActionListener* pListener, const std::string& pName, SDL_Keycode pPositiveX, SDL_Keycode pNegativeX, SDL_Keycode pPositiveY, SDL_Keycode pNegativeY)
-    // {
-    //     bool hasKeyboardBinding = (pPositiveX != SDLK_UNKNOWN && pNegativeX != SDLK_UNKNOWN && pPositiveY != SDLK_UNKNOWN && pNegativeY != SDLK_UNKNOWN);
-    //
-    //     if (hasKeyboardBinding) {
-    //         Axis2DAction* newAction = new Axis2DAction(pPositiveX, pNegativeX, pPositiveY, pNegativeY, pName);
-    //         newAction->AddListener(pListener);
-    //         BindActionToKeys(newAction, { pPositiveX, pNegativeX, pPositiveY, pNegativeY });
-    //     }
-    //     else {
-    //         Axis2DAction* newAction = new Axis2DAction(pName);
-    //         newAction->AddListener(pListener);
-    //         BindActionToMouse(newAction);
-    //     }
-    // }
-    //
-    // void InputManager::BindActionToKeys(InputActions* pAction, const std::vector<SDL_Keycode>& pKeys)
-    // {
-    //     for (auto& key : pKeys) {
-    //         mActionKeyBindings[key].push_back(pAction);
-    //     }
-    // }
-    //
-    // void InputManager::BindActionToMouse(InputActions* pAction)
-    // {
-    //     mActionMouseBindings.push_back(pAction);
-    // }
-    //
-    // void InputManager::Update()
-    // {
-    //     if (mActionKeyBindings.empty() && mActionMouseBindings.empty())
-    //     {
-    //         return;
-    //     }
-    //     for (auto action : mActionKeyBindings)
-    //     {
-    //         if (!mContext->GetActiveScene()->GetSceneLoaded())
-    //         {
-    //             return;
-    //         }
-    //         auto& key = action.first;
-    //         auto& actions = action.second;
-    //         for (auto* action : actions)
-    //         {
-    //             action->Update();
-    //             if (!mContext->GetActiveScene()->GetSceneLoaded())
-    //             {
-    //                 return;
-    //             }
-    //         }
-    //     }
-    //     for (InputActions* action : mActionMouseBindings)
-    //     {
-    //         action->Update();
-    //         if (!mContext->GetActiveScene()->GetSceneLoaded())
-    //         {
-    //             return;
-    //         }
-    //     }
-    // }
-    //
-    // void InputManager::Unload()
-    // {
-    //     for (auto it = mActionKeyBindings.begin(); it != mActionKeyBindings.end(); ++it)
-    //     {
-    //         auto& key = it->first;
-    //         auto& actions = it->second;
-    //         for (auto* action : actions)
-    //         {
-    //             action->ClearListeners();
-    //         }
-    //     }
-    //     mActionKeyBindings.clear();
-    //     for (InputActions* action : mActionMouseBindings)
-    //     {
-    //         action->ClearListeners();
-    //     }
-    //     mActionMouseBindings.clear();
-    // }
-    //
-    // void InputManager::SetContext(ISceneContext* pContext)
-    // {
-    //     mContext = pContext;
-    // }
+    static void MouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
+    {
+        auto* input = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+        if (input) input->OnMouseButtonEvent(button, action);
+    }
+
+    static void CursorPosCallback(GLFWwindow* win, double x, double y)
+    {
+        auto* input = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+        if (input) input->OnMouseMove(x, y);
+    }
+
+    static void ScrollCallback(GLFWwindow* win, double xoff, double yoff)
+    {
+        auto* input = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
+        if (input) input->OnScroll(xoff, yoff);
+    }
+
+    // ---- Constructor ---- //
+
+    InputManager::InputManager(GLFWwindow* window)
+        : mWindow(window)
+    {
+        glfwSetWindowUserPointer(window, this);
+
+        glfwSetKeyCallback(window, KeyCallback);
+        glfwSetMouseButtonCallback(window, MouseButtonCallback);
+        glfwSetCursorPosCallback(window, CursorPosCallback);
+        glfwSetScrollCallback(window, ScrollCallback);
+    }
+
+    InputManager::~InputManager()
+   {
+       mActions.clear();
+   }
+
+
+    // ---- Create actions ---- //
+
+    InputActionBool& InputManager::CreateBool(const std::string& name)
+    {
+        mActions[name] = std::make_unique<InputActionBool>(name);
+        return *static_cast<InputActionBool*>(mActions[name].get());
+    }
+
+    InputActionAxis1D& InputManager::CreateAxis1D(const std::string& name)
+    {
+        mActions[name] = std::make_unique<InputActionAxis1D>(name);
+        return *static_cast<InputActionAxis1D*>(mActions[name].get());
+    }
+
+    InputActionAxis2D& InputManager::CreateAxis2D(const std::string& name)
+    {
+        mActions[name] = std::make_unique<InputActionAxis2D>(name);
+        return *static_cast<InputActionAxis2D*>(mActions[name].get());
+    }
+
+    InputAction* InputManager::GetAction(const std::string& name)
+    {
+        auto it = mActions.find(name);
+        return (it != mActions.end()) ? it->second.get() : nullptr;
+    }
+
+
+    // ---- Frame update ---- //
+
+    void InputManager::NewFrame()
+    {
+        // reset all axis
+        for (auto& [name, action] : mActions)
+            {
+            if (action->GetType() == ActionType::Axis1D)
+            {
+                static_cast<InputActionAxis1D*>(action.get())->Reset();
+            }
+
+            if (action->GetType() == ActionType::Axis2D)
+            {
+                static_cast<InputActionAxis2D*>(action.get())->Reset();
+            }
+        }
+    }
+
+    void InputManager::UpdateGamepad()
+    {
+        // Optional: implement later
+    }
+
+
+    // ---- Callbacks ---- //
+
+    void InputManager::OnKeyEvent(int key, int action)
+    {
+        for (auto& [name, act] : mActions)
+            {
+
+            if (act->IsBoundToKey(key))
+                {
+                switch (act->GetType())
+                {
+                    case ActionType::Boolean:
+                    {
+                        auto* b = static_cast<InputActionBool*>(act.get());
+                        if (action == GLFW_PRESS) { b->IsDown = true; b->TriggerStarted(); }
+                        if (action == GLFW_REPEAT) { b->TriggerTriggered(); }
+                        if (action == GLFW_RELEASE){ b->IsDown = false; b->TriggerReleased(); }
+                    }
+                    break;
+
+                    case ActionType::Axis1D:
+                    {
+                        auto* a = static_cast<InputActionAxis1D*>(act.get());
+                        if (a->keyValues.contains(key))
+                            {
+                            if (action == GLFW_PRESS) { a->IsDown = true; a->TriggerStarted(); }
+                            if (action == GLFW_REPEAT) { a->TriggerTriggered(a->keyValues[key]); }
+                            if (action == GLFW_RELEASE){ a->IsDown = false; a->TriggerReleased(); }
+                        }
+                    }
+                    break;
+
+                    case ActionType::Axis2D:
+                    {
+                        auto* a = static_cast<InputActionAxis2D*>(act.get());
+                        if (a->keyValues.contains(key)) {
+                            if (action == GLFW_PRESS) { a->IsDown = true; a->TriggerStarted(); }
+                            if (action == GLFW_REPEAT) { a->TriggerTriggered(a->keyValues[key]); }
+                            if (action == GLFW_RELEASE){ a->IsDown = false; a->TriggerReleased(); }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    void InputManager::OnMouseButtonEvent(int button, int action)
+    {
+       for (auto& [name, act] : mActions)
+       {
+           if (!act->IsBoundToMouse(button))
+               continue;
+
+           switch (act->GetType())
+           {
+           case ActionType::Boolean:
+               {
+                   auto* b = static_cast<InputActionBool*>(act.get());
+                   if (action == GLFW_PRESS)    { b->IsDown = true;  b->TriggerStarted(); }
+                   if (action == GLFW_REPEAT)   { b->TriggerTriggered(); }
+                   if (action == GLFW_RELEASE)  { b->IsDown = false; b->TriggerReleased(); }
+               }
+               break;
+
+           case ActionType::Axis1D:
+               {
+                   auto* a = static_cast<InputActionAxis1D*>(act.get());
+                   if (a->mouseValues.contains(button)) {
+                       float v = a->mouseValues[button];
+
+                       if (action == GLFW_PRESS)    { a->IsDown = true;  a->TriggerStarted(); }
+                       if (action == GLFW_REPEAT)   { a->TriggerTriggered(v); }
+                       if (action == GLFW_RELEASE)  { a->IsDown = false; a->TriggerReleased(); }
+                   }
+               }
+               break;
+
+           case ActionType::Axis2D:
+               {
+                   auto* a = static_cast<InputActionAxis2D*>(act.get());
+                   if (a->mouseValues.contains(button)) {
+                       Vector2D v = a->mouseValues[button];
+
+                       if (action == GLFW_PRESS)    { a->IsDown = true;  a->TriggerStarted(); }
+                       if (action == GLFW_REPEAT)   { a->TriggerTriggered(v); }
+                       if (action == GLFW_RELEASE)  { a->IsDown = false; a->TriggerReleased(); }
+                   }
+               }
+               break;
+           }
+       }
+    }
+
+    void InputManager::OnMouseMove(double xpos, double ypos)
+   {
+       Vector2D newPos = { (float)xpos, (float)ypos };
+       Vector2D delta = newPos - mMousePos;
+       mMousePos = newPos;
+
+       // Si delta non nul → souris active
+       bool isActive = (delta.x != 0 || delta.y != 0);
+
+       // Started
+       if (!mMouseWasActive && isActive)
+       {
+           mMouseWasActive = true;
+           for (auto& [name, act] : mActions)
+           {
+               if (act->GetType() == ActionType::Axis2D && act->IsMouseAxis)
+               {
+                   auto* axis = static_cast<InputActionAxis2D*>(act.get());
+                   axis->TriggerStarted();
+               }
+           }
+       }
+       // Triggered
+       else if (isActive)
+       {
+           for (auto& [name, act] : mActions)
+           {
+               if (act->GetType() == ActionType::Axis2D && act->IsMouseAxis)
+               {
+                   auto* axis = static_cast<InputActionAxis2D*>(act.get());
+                   axis->TriggerTriggered(delta);
+               }
+           }
+       }
+       // Released
+       else if (mMouseWasActive && !isActive)
+       {
+           mMouseWasActive = false;
+           for (auto& [name, act] : mActions)
+           {
+               if (act->GetType() == ActionType::Axis2D && act->IsMouseAxis)
+               {
+                   auto* axis = static_cast<InputActionAxis2D*>(act.get());
+                   axis->TriggerReleased();
+               }
+           }
+       }
+    }
+
+    void InputManager::OnScroll(double xoffset, double yoffset)
+    {
+        // You can emit a scroll action if needed
+    }
 }

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "PlayerController2D.h"
-#include "BooleanActions.h"
+#include "InputActionBool.h"
 #include "FlipbookComponent.h"
 #include "InputManager.h"
 #include "Actor.h"
@@ -19,21 +19,16 @@ namespace Zephyrus::ActorComponent
 		// inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
 	}
 
-	void PlayerController2D::OnActionStarted(InputActions* pAction)
+	void PlayerController2D::OnActionStarted(InputAction* pAction)
 	{
-		if (pAction->GetType() == ActionType::Boolean) {
-			auto* Triggeredaction = dynamic_cast<BooleanActions*>(pAction);
-			if (Triggeredaction && Triggeredaction->GetName() == "jump") {
-				std::cout << "JUMP!\n";
-			}
-		}
+		
 	}
 
-	void PlayerController2D::OnActionTriggered(InputActions* pAction)
+	void PlayerController2D::OnActionTriggered(InputAction* pAction)
 	{
 	}
 
-	void PlayerController2D::OnActionEnded(InputActions* pAction)
+	void PlayerController2D::OnActionEnded(InputAction* pAction)
 	{
 	}
 

@@ -4,7 +4,7 @@
 #include "Component/Component.h"
 
 using Zephyrus::Inputs::IActionListener;
-using Zephyrus::Inputs::InputActions;
+using Zephyrus::Inputs::InputAction;
 using Zephyrus::Inputs::ActionType;
 
 namespace Zephyrus::Inputs
@@ -34,9 +34,9 @@ namespace Zephyrus::ActorComponent
 		PlayerController3D(const PlayerController3D&) = delete;
 		PlayerController3D& operator=(const PlayerController3D&) = delete;
 
-		void OnActionStarted(InputActions* pAction) override;
-		void OnActionTriggered(InputActions* pAction) override;
-		void OnActionEnded(InputActions* pAction) override;
+		void OnActionStarted(InputAction* pAction) override;
+		void OnActionTriggered(InputAction* pAction) override;
+		void OnActionEnded(InputAction* pAction) override;
 
 		void Update() override;
 

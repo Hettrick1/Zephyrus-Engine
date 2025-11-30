@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "DoomMenuPC.h"
-#include "BooleanActions.h"
-#include "Axis2DAction.h"
+#include "InputActionBool.h"
+#include "InputActionAxis2D.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "ComponentFactory.h"
@@ -45,23 +45,23 @@ namespace Zephyrus::ActorComponent
 		//SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
 
-	void DoomMenuPC::OnActionStarted(InputActions* action)
+	void DoomMenuPC::OnActionStarted(InputAction* action)
 	{
-		if (action->GetType() == ActionType::Boolean)
-		{
-			BooleanActions* Triggeredaction = static_cast<BooleanActions*>(action);
-			if (Triggeredaction && Triggeredaction->GetName() == "Play")
-			{
-				mOwner->GetSceneContext()->LoadSceneWithFile("../Content/Maps/LevelDoom.zpmap");
-			}
-		}
+		// if (action->GetType() == ActionType::Boolean)
+		// {
+		// 	BooleanActions* Triggeredaction = static_cast<BooleanActions*>(action);
+		// 	if (Triggeredaction && Triggeredaction->GetName() == "Play")
+		// 	{
+		// 		mOwner->GetSceneContext()->LoadSceneWithFile("../Content/Maps/LevelDoom.zpmap");
+		// 	}
+		// }
 	}
 
-	void DoomMenuPC::OnActionTriggered(InputActions* action)
+	void DoomMenuPC::OnActionTriggered(InputAction* action)
 	{
 	}
 
-	void DoomMenuPC::OnActionEnded(InputActions* action)
+	void DoomMenuPC::OnActionEnded(InputAction* action)
 	{
 	}
 

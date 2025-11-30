@@ -16,6 +16,10 @@ struct Vector2D
 		x += right.x;
 		y += right.y;
 	}
+	inline void operator += (const Vector2D& right) {
+		x += right.x;
+		y += right.y;
+	}
 	inline void operator -= (Vector2D& right) {
 		x -= right.x;
 		y -= right.y;

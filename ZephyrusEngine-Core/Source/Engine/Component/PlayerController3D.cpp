@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "PlayerController3D.h"
-#include "BooleanActions.h"
-#include "Axis2DAction.h"
+#include "InputActionBool.h"
+#include "InputActionAxis2D.h"
 #include "InputManager.h"
 #include "Actor.h"
 #include "Log.h"
@@ -24,12 +24,12 @@ namespace Zephyrus::ActorComponent
 		// inputManager.CreateNewAxis2DBinding(this, "Mouse");
 	}
 
-	void PlayerController3D::OnActionStarted(InputActions* pAction)
+	void PlayerController3D::OnActionStarted(InputAction* pAction)
 	{
 
 	}
 
-	void PlayerController3D::OnActionTriggered(InputActions* pAction)
+	void PlayerController3D::OnActionTriggered(InputAction* pAction)
 	{
 		if (pAction->GetType() == ActionType::Axis2D)
 		{
@@ -45,7 +45,7 @@ namespace Zephyrus::ActorComponent
 		}
 	}
 
-	void PlayerController3D::OnActionEnded(InputActions* pAction)
+	void PlayerController3D::OnActionEnded(InputAction* pAction)
 	{
 	}
 

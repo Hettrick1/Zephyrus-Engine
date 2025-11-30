@@ -4,7 +4,7 @@
 #include "IActionListener.h"
 
 using Zephyrus::Inputs::IActionListener;
-using Zephyrus::Inputs::InputActions;
+using Zephyrus::Inputs::InputAction;
 using Zephyrus::Inputs::ActionType;
 
 namespace Zephyrus::Inputs
@@ -31,9 +31,9 @@ namespace Zephyrus::ActorComponent {
 	public:
 		EditorControllerComponent(Actor* pOwner, int pUpdateOrder = 100);
 
-		void OnActionStarted(InputActions* pAction) override;
-		void OnActionTriggered(InputActions* pAction) override;
-		void OnActionEnded(InputActions* pAction) override;
+		void OnActionStarted(InputAction* pAction) override;
+		void OnActionTriggered(InputAction* pAction) override;
+		void OnActionEnded(InputAction* pAction) override;
 
 		void OnStart() override;
 

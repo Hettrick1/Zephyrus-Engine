@@ -1,12 +1,12 @@
 #pragma once
-#include "InputActions.h"
+#include "InputAction.h"
 
 namespace Zephyrus::Inputs {
 	class IActionListener {
 	public:
 		virtual ~IActionListener() = default;
-		virtual void OnActionStarted(InputActions* pAction) {}
-		virtual void OnActionTriggered(InputActions* pAction) {}
-		virtual void OnActionEnded(InputActions* pAction) {}
+		virtual void OnActionStarted(InputAction* pAction) {}
+		virtual void OnActionTriggered(InputAction* pAction) {}
+		virtual void OnActionEnded(InputAction* pAction) {}
 	};
 }

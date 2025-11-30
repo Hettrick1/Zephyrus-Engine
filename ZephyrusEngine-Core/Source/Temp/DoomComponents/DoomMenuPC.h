@@ -6,7 +6,7 @@
 #include "HudImage.h"
 
 using Zephyrus::Inputs::IActionListener;
-using Zephyrus::Inputs::InputActions;
+using Zephyrus::Inputs::InputAction;
 using Zephyrus::Inputs::ActionType;
 
 namespace Zephyrus::Inputs
@@ -43,9 +43,9 @@ namespace Zephyrus::ActorComponent
 		static Component* Create(Actor* pOwner) { return new DoomMenuPC(pOwner); }
 
 	public:
-		void OnActionStarted(InputActions* action) override;
-		void OnActionTriggered(InputActions* action) override;
-		void OnActionEnded(InputActions* action) override;
+		void OnActionStarted(InputAction* action) override;
+		void OnActionTriggered(InputAction* action) override;
+		void OnActionEnded(InputAction* action) override;
 	public:
 		void Update() override;
 	};
