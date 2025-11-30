@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "AssetData.h"
 
 namespace Zephyrus::Assets

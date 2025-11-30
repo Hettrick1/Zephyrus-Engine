@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "EditorApplication.h"
 #include "Log.h"
 #include "RendererOpenGl.h"
@@ -26,15 +27,6 @@ EditorApplication::EditorApplication(const std::string& pTitle, const std::strin
     : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
 {
     Zephyrus::Debug::Log::Init();
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-    {
-        ZP_EDITOR_ERROR(std::string("SDL init failed: ") + SDL_GetError());
-    }
-    else
-    {
-        ZP_EDITOR_INFO("SDL initialization succeeded!");
-    }
-
     Initialize();
 }
 
@@ -56,11 +48,11 @@ void EditorApplication::Initialize()
     mImGuiEditorLayer = std::make_unique<ImGuiEditorLayer>();
     
     // For now
-    InputManager::Instance().SetContext(mSceneManager);
+    //InputManager::Instance().SetContext(mSceneManager);
 
     if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow))
     {
-        SDL_MaximizeWindow(mGameWindow->GetSdlWindow());
+        glfwMaximizeWindow(mGameWindow->GetGlfwWindow());
 
         // SDL_Surface* icon = IMG_Load("../Content/Sprites/Icons/ZephyrusLogo.png");
         // SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
@@ -70,7 +62,7 @@ void EditorApplication::Initialize()
         mEditorController = editorController;
         mEditorController->Start();
 
-        mImGuiEditorLayer->InitializeImGui(mGameWindow->GetSdlWindow());
+        mImGuiEditorLayer->InitializeImGui(mGameWindow->GetGlfwWindow());
         mImGuiEditorLayer->InitializePanels(this);
 
         Loop();
@@ -118,27 +110,32 @@ void EditorApplication::Render()
 void EditorApplication::Input()
 {
     if (mIsRunning) {
-        while (SDL_PollEvent(&mSdlEvent)) {
-            ImGui_ImplSDL2_ProcessEvent(&mSdlEvent);
-            if (mSdlEvent.type == SDL_WINDOWEVENT && mSdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
-            {
-                if (mSdlEvent.window.windowID == SDL_GetWindowID(mGameWindow->GetSdlWindow()))
-                {
-                    mIsRunning = false;
-                }
-            }
-            if (mSdlEvent.type == SDL_KEYDOWN) 
-            {
-                const Uint8* state = SDL_GetKeyboardState(nullptr);
-                bool ctrl = state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL];
+        GLFWwindow* win = mGameWindow->GetGlfwWindow();
+        glfwPollEvents();
 
-                if (ctrl && mSdlEvent.key.keysym.sym == SDLK_z) 
-                {
-                    EventSystem::UndoLastEvent();
-                }
-            }
-        }
-        mInputManager.Update();
+        if (glfwWindowShouldClose(win)) mIsRunning = false;
+        
+        // while (SDL_PollEvent(&mSdlEvent)) {
+        //     ImGui_ImplSDL2_ProcessEvent(&mSdlEvent);
+        //     if (mSdlEvent.type == SDL_WINDOWEVENT && mSdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+        //     {
+        //         if (mSdlEvent.window.windowID == SDL_GetWindowID(mGameWindow->GetGlfwWindow()))
+        //         {
+        //             mIsRunning = false;
+        //         }
+        //     }
+        //     if (mSdlEvent.type == SDL_KEYDOWN) 
+        //     {
+        //         const Uint8* state = SDL_GetKeyboardState(nullptr);
+        //         bool ctrl = state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL];
+        //
+        //         if (ctrl && mSdlEvent.key.keysym.sym == SDLK_z) 
+        //         {
+        //             EventSystem::UndoLastEvent();
+        //         }
+        //     }
+        // }
+        // mInputManager.Update();
     }
 }
 

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MaterialInstance.h"
 #include "Interface/ITexture2D.h"
 #include "Interface/ICubeMapTexture.h"

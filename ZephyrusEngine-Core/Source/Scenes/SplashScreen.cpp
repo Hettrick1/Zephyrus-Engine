@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "SplashScreen.h"
 #include "MeshComponent.h"
 #include "AssetsManager.h"
@@ -37,7 +38,7 @@ namespace Zephyrus::Scenes {
 		mZephyrusText->SetShaderProgram(AssetsManager::LoadShaderProgram({ vert, frag }, "splashScreenSP"));
 
 		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
-		SDL_SetRelativeMouseMode(SDL_TRUE);
+		//SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
 
 	void SplashScreen::Update(float pDetltaTime)

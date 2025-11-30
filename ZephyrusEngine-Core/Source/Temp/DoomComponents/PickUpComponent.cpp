@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PickUpComponent.h"
 #include "Actor/Actor.h"
 #include "DoomPlayerComponent.h"

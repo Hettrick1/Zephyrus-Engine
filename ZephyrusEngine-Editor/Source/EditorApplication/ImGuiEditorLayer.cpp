@@ -1,9 +1,12 @@
+#include "pch.h"
 #include "ImGuiEditorLayer.h"
+
+#include <imgui_impl_glfw.h>
+
 #include "Log.h"
 #include "PrefabFactory.h"
 #include "imgui.h"
 #include "imgui_internal.h"
-#include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "Panel/InspectorPanel/InspectorPanel.h"
 #include "Panel/ScenePanel.h"
@@ -19,7 +22,7 @@
 #include "EditorControllerActor.h"
 #include "EditorControllerComponent.h"
 
-void ImGuiEditorLayer::InitializeImGui(SDL_Window* mSdlWindow)
+void ImGuiEditorLayer::InitializeImGui(GLFWwindow* glfw3Window)
 {
     IMGUI_CHECKVERSION();
     mEditorContext = ImGui::CreateContext();
@@ -40,7 +43,7 @@ void ImGuiEditorLayer::InitializeImGui(SDL_Window* mSdlWindow)
         ZP_EDITOR_ERROR("Font not loaded !");
     }
 
-    ImGui_ImplSDL2_InitForOpenGL(mSdlWindow, SDL_GL_GetCurrentContext());
+    ImGui_ImplGlfw_InitForOpenGL(glfw3Window, true);
     ImGui_ImplOpenGL3_Init("#version 450");
 
     mWindowManager = std::make_shared<Zephyrus::Editor::Window::WindowManager>();
@@ -114,7 +117,7 @@ void ImGuiEditorLayer::UpdatePanels(EditorApplication* editor)
 void ImGuiEditorLayer::RenderImgui()
 {
     ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     SetEditorStyle();
@@ -130,13 +133,10 @@ void ImGuiEditorLayer::RenderImgui()
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
-        SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
-        SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
-
+        GLFWwindow* backup_current_window = glfwGetCurrentContext();
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
-
-        SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+        glfwMakeContextCurrent(backup_current_window);
     }
 }
 
@@ -244,7 +244,7 @@ Panel* ImGuiEditorLayer::GetPanelWithName(std::string pPanelName)
 void ImGuiEditorLayer::CloseImGui()
 {
     ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext(mEditorContext);
     mAllPanels.clear();
 }

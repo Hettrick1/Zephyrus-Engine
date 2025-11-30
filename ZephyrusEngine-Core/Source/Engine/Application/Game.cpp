@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Game.h"
 #include "Log.h"
 #include "RendererOpenGl.h"
@@ -22,15 +23,7 @@ namespace Zephyrus::Application {
         : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
     {
         Zephyrus::Debug::Log::Init();
-        if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-        {
-            std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
-        }
-        else
-        {
-            ZP_CORE_INFO("SDL initialization succeeded!");
-        }
-
+        
         std::string fullPath = "../Config/Game.config";
 
         std::ifstream file(fullPath);
@@ -76,7 +69,7 @@ namespace Zephyrus::Application {
         Assets::AssetsManager::SetContext(mSceneManager);
 
         // For now
-        InputManager::Instance().SetContext(mSceneManager);
+        //InputManager::Instance().SetContext(mSceneManager);
 
         if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow)) {
 #ifdef _DEBUG
@@ -138,21 +131,16 @@ namespace Zephyrus::Application {
 
     void Game::Input()
     {
-        if (mIsRunning) {
-            while (SDL_PollEvent(&mSdlEvent)) {
-                switch (mSdlEvent.type) {
-                case SDL_QUIT:
-                    mIsRunning = false;
-                    break;
-                case SDL_KEYDOWN:
-                    if (mSdlEvent.key.keysym.sym == SDLK_ESCAPE) {
-                        mIsRunning = false;
-                        break;
-                    }
-                }
-            }
-            mInputManager.Update();
-        }
+        GLFWwindow* window = mGameWindow->GetGlfwWindow();
+        glfwPollEvents();
+
+        if (glfwWindowShouldClose(window))
+            mIsRunning = false;
+        
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            mIsRunning = false;
+
+        // For Now just deactivate inputs
     }
 
     void Game::Close()

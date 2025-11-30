@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "RendererOpenGl.h"
 #include "SpriteComponent.h"
 #include "MeshComponent.h"
@@ -31,7 +32,6 @@ namespace Zephyrus::Render {
 			delete mVAO;
 		}
 		if (mWindow) {
-			SDL_GL_DeleteContext(mContext);
 			mWindow = nullptr;
 		}
 		delete mHud;
@@ -41,20 +41,7 @@ namespace Zephyrus::Render {
 	bool RendererOpenGl::Initialize(Window& pWindow)
 	{
 		mWindow = &pWindow;
-
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
-		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-
-		mContext = SDL_GL_CreateContext(mWindow->GetSdlWindow());
-		SDL_GL_MakeCurrent(mWindow->GetSdlWindow(), mContext);
+		
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK)
 		{
@@ -98,7 +85,7 @@ namespace Zephyrus::Render {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		mFrameData.cameraPos = mCameraPosition;
 
-		mFrameData.time = static_cast<float>(SDL_GetTicks()) / 1000.0f;
+		mFrameData.time = static_cast<float>(glfwGetTime());
 		mFrameData.screenWidth = mWindow->GetDimensions().x;
 		mFrameData.screenHeight = mWindow->GetDimensions().y;
 		
@@ -126,7 +113,7 @@ namespace Zephyrus::Render {
 
 	void RendererOpenGl::EndDraw()
 	{
-		SDL_GL_SwapWindow(mWindow->GetSdlWindow());
+		glfwSwapBuffers(mWindow->GetGlfwWindow());
 	}
 
 	void RendererOpenGl::RenderActiveCamera(CameraComponent* cam)
@@ -150,7 +137,6 @@ namespace Zephyrus::Render {
 
 	void RendererOpenGl::Close()
 	{
-		SDL_GL_DeleteContext(mContext);
 		delete mVAO;
 	}
 
@@ -328,16 +314,16 @@ namespace Zephyrus::Render {
 		glDrawArrays(GL_TRIANGLES, 0, mSkySphereComponents[0]->GetMesh()->GetVertexCount());
 	}
 
-	void RendererOpenGl::DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
-	{
-		if (mSpriteShaderProgram == nullptr)
-		{
-			return;
-		}
-		mSpriteShaderProgram->Use();
-		pTexture->Bind();
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	}
+	// void RendererOpenGl::DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
+	// {
+	// 	if (mSpriteShaderProgram == nullptr)
+	// 	{
+	// 		return;
+	// 	}
+	// 	mSpriteShaderProgram->Use();
+	// 	pTexture->Bind();
+	// 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	// }
 
 	void RendererOpenGl::DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform)
 	{

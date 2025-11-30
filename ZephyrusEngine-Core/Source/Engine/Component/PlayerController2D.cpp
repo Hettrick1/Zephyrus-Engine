@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PlayerController2D.h"
 #include "BooleanActions.h"
 #include "FlipbookComponent.h"
@@ -10,12 +11,12 @@ namespace Zephyrus::ActorComponent
 	PlayerController2D::PlayerController2D(Actor* pOwner, int pUpdateOrder)
 		: Component(pOwner, "PlayerController2D", pUpdateOrder), mCanGoRight(true), mCanGoLeft(true), mCanGoUp(true), mCanGoDown(true)
 	{
-		InputManager& inputManager = InputManager::Instance();
-		inputManager.CreateNewBooleanKeyBinding(this, "jump", SDLK_SPACE);
-		inputManager.CreateNewBooleanKeyBinding(this, "up", SDLK_w);
-		inputManager.CreateNewBooleanKeyBinding(this, "left", SDLK_a);
-		inputManager.CreateNewBooleanKeyBinding(this, "down", SDLK_s);
-		inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
+		// InputManager& inputManager = InputManager::Instance();
+		// inputManager.CreateNewBooleanKeyBinding(this, "jump", SDLK_SPACE);
+		// inputManager.CreateNewBooleanKeyBinding(this, "up", SDLK_w);
+		// inputManager.CreateNewBooleanKeyBinding(this, "left", SDLK_a);
+		// inputManager.CreateNewBooleanKeyBinding(this, "down", SDLK_s);
+		// inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
 	}
 
 	void PlayerController2D::OnActionStarted(InputActions* pAction)

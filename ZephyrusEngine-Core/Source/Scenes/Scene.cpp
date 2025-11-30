@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Scene.h"
 
 #include "Actor.h"
@@ -141,7 +142,7 @@ namespace Zephyrus::Scenes {
 			mAllActors.pop_back();
 		}
 		mActors.clear();
-		InputManager::Instance().Unload();
+		//InputManager::Instance().Unload();
 		mRenderer->Unload();
 		AssetsManager::Clear();
 		mCameraManager->Unload();
@@ -166,7 +167,7 @@ namespace Zephyrus::Scenes {
 			mAllActors.pop_back();
 		}
 		mActors.clear();
-		InputManager::Instance().Unload();
+		//InputManager::Instance().Unload();
 		mRenderer->Unload();
 		mCameraManager->Unload();
 		delete mCameraManager;

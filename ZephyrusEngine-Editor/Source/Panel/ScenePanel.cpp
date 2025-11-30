@@ -1,8 +1,9 @@
+#include "pch.h"
 #include "ScenePanel.h"
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
 
-ScenePanel::ScenePanel(ISceneContext* pSceneContext, const std::string& pName, GLuint pSceneRenderTexture)
+ScenePanel::ScenePanel(ISceneContext* pSceneContext, const std::string& pName, unsigned int  pSceneRenderTexture)
 	: Panel(pSceneContext, pName), mSceneRenderTexture(pSceneRenderTexture)
 {
 }

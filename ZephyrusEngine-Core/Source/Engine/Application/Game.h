@@ -1,4 +1,8 @@
 #pragma once
+
+#define GLFW_INCLUDE_NONE
+#include "GLFW/glfw3.h"
+
 #include "Window.h"
 #include "IRenderer.h"
 #include "Scene.h"
@@ -17,7 +21,6 @@ namespace Zephyrus::Application {
 	class Game
 	{
 	private:
-		SDL_Event mSdlEvent;
 		std::string mTitle;
 		Window* mGameWindow{ nullptr };
 		Zephyrus::Scenes::SceneManager* mSceneManager{ nullptr };

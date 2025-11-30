@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "CameraComponent.h"
 #include "SceneManager.h"
 #include "Log.h"

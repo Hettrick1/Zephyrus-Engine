@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "AtmosphereComponent.h"
 
 #include "Actor.h"

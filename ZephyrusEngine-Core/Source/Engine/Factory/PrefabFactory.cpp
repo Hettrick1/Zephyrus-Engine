@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PrefabFactory.h"
 #include "rapidjson/document.h"
 #include "Log.h"

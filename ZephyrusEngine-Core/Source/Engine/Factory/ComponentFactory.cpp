@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ComponentFactory.h"
 
 #include "SkySphereComponent.h"

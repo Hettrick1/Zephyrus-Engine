@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "HudImage.h"
 
 namespace Zephyrus::UI {

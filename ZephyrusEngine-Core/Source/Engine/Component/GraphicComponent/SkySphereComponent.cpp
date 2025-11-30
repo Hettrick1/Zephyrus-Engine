@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "SkySphereComponent.h"
 #include "Scene.h"
 #include "IRenderer.h"

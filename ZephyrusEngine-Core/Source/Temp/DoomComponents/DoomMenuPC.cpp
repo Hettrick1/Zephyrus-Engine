@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DoomMenuPC.h"
 #include "BooleanActions.h"
 #include "Axis2DAction.h"
@@ -14,8 +15,8 @@ namespace Zephyrus::ActorComponent
 	DoomMenuPC::DoomMenuPC(Actor* pOwner, int pUpdateOrder)
 		: Component(pOwner, "DoomMenuPC", pUpdateOrder)
 	{
-		InputManager& inputManager = InputManager::Instance();
-		inputManager.CreateNewBooleanKeyBinding(this, "Play", SDLK_RETURN);
+		// InputManager& inputManager = InputManager::Instance();
+		// inputManager.CreateNewBooleanKeyBinding(this, "Play", SDLK_RETURN);
 	}
 
 	DoomMenuPC::~DoomMenuPC()
@@ -41,7 +42,7 @@ namespace Zephyrus::ActorComponent
 
 		mPressEnter = new Zephyrus::UI::HudText(mOwner->GetSceneContext(), "Press Enter To Begin", Vector2D(0.0f, -800.0f), 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), Zephyrus::UI::TextAlignment::CENTER);
 
-		SDL_SetRelativeMouseMode(SDL_TRUE);
+		//SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
 
 	void DoomMenuPC::OnActionStarted(InputActions* action)

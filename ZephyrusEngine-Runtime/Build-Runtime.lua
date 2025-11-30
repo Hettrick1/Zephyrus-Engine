@@ -14,7 +14,7 @@ project "ZephyrusEngine-Runtime"
       "../Content",
 
       "../Vendor/glew-2.2.0-win32/glew-2.2.0/include/GL",
-      "../Vendor/GL/SDL/include",
+      "../Vendor/glfw-3.4/include",
       "../Vendor/freetype-2.6.1/include",
       "../Vendor/freetype-2.6.1/include/freetype",
       "../Vendor/rapidjson-1.1.0/include",
@@ -68,8 +68,19 @@ project "ZephyrusEngine-Runtime"
 
    postbuildcommands
    {
-    "{COPY} ../Vendor/GL/SDL/lib/x64/SDL2.dll %{cfg.targetdir}",
     "{COPY} ../Vendor/glew-2.2.0-win32/glew-2.2.0/bin/Release/x64/glew32.dll %{cfg.targetdir}",
+   }
+
+      filter "configurations:Debug"
+   postbuildcommands
+   {
+    "{COPY} ../Vendor/glfw-3.4/libs/x64/Debug/glfw3.dll %{cfg.targetdir}"
+   }
+
+   filter "configurations:Release or configurations:Dist"
+   postbuildcommands
+   {
+    "{COPY} ../Vendor/glfw-3.4/libs/x64/Release/glfw3.dll %{cfg.targetdir}"
    }
 
    filter "system:windows"

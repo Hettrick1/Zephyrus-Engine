@@ -33,7 +33,7 @@ namespace Zephyrus::Render {
 		Window* mWindow{ nullptr };
 		VertexArrayOpenGL* mFullscreenQuadVAO{ nullptr };
 		VertexArrayOpenGL* mVAO{ nullptr };
-		SDL_GLContext mContext{ nullptr };
+		//SDL_GLContext mContext{ nullptr };
 		std::vector<SpriteComponent*> mSprites;
 		std::vector<MeshComponent*> mMeshes;
 		IShaderProgram* mSpriteShaderProgram{ nullptr };
@@ -106,7 +106,7 @@ namespace Zephyrus::Render {
 		void DrawSkySphere(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const override;
 
 		// Draws a sprite for the given actor with the specified parameters
-		void DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
+		//void DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
 		// Draws a debug box using min/max points and a world transform
 		void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) override;
 		// Draws a debug line between two points with hit information

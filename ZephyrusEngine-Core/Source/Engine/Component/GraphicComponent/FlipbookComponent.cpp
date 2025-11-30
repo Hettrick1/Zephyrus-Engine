@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "FlipbookComponent.h"
 
 #include "Timer.h"

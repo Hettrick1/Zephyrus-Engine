@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DebugRenderer.h"
 #include "AssetsManager.h"
 

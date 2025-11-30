@@ -1,6 +1,5 @@
 #pragma once
 #include "ActionType.h"
-#include "SDL.h"
 #include "Vector2D.h"
 #include <vector>
 

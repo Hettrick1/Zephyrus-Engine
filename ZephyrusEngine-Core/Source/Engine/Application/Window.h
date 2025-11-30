@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL.h>
+#include <GLFW/glfw3.h>
 #include "Vector2D.h"
 #include "Log.h"
 
@@ -17,13 +17,13 @@ namespace Zephyrus::Application {
 		Vector2D GetDimensions() const; // Returns the current window dimensions.
 		void SetDimensions(const Vector2D& pDimensions);
 
-		SDL_Window* GetSdlWindow() const; // Returns the underlying SDL_Window pointer.
+		GLFWwindow* GetGlfwWindow() const; // Returns the underlying SDL_Window pointer.
 
 		bool Open(const std::string& pTitle); // Opens the SDL window.
 		void Close(); // Closes and destroys the SDL window.
 
 	private:
-		SDL_Window* mSdlWindow = nullptr;
+		GLFWwindow* mGlfwWindow = nullptr;
 		Vector2D mDimensions;
 		bool mResizable = false;
 	};

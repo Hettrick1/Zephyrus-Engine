@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "HudManager.h"
 #include <algorithm>
 

@@ -1,7 +1,8 @@
 #pragma once
 
 #include <algorithm>
-#include <SDL_timer.h>
+#include <chrono>
+#include <algorithm>
 
 class Timer
 {
@@ -26,9 +27,9 @@ private:
 	static unsigned int mLastFPSUpdate;
 
 	//Time when current frame started
-	static unsigned int mFrameStart;
+	static std::chrono::high_resolution_clock::time_point mFrameStart;
 	//Last frame start time 
-	static unsigned int mLastFrame;
+	static std::chrono::high_resolution_clock::time_point mLastFrame;
 	//Time needed to run the loop 
 	static unsigned int mFrameTime;
 };

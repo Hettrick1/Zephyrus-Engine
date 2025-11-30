@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MaterialWindow.h"
 #include "AssetsManager.h"
 #include "../../EditorUI/ImGuiUtils.h"

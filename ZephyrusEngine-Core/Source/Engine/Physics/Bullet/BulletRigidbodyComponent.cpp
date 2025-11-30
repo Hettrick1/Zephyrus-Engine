@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "BulletRigidbodyComponent.h"
 #include "PhysicWorld.h"
 

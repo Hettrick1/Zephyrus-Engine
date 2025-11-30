@@ -17,7 +17,7 @@ namespace Zephyrus::Render {
         void Destroy() override;
     public:
         RenderTargetOpenGL(int pWidth, int pHeight);
-        ~RenderTargetOpenGL();
+        ~RenderTargetOpenGL() override;
 
         void Bind() override;
         void Unbind() override;

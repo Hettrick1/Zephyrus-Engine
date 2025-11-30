@@ -62,12 +62,6 @@ namespace Zephyrus::Render {
 	class IRenderer
 	{
 	public:
-		enum class Flip
-		{
-			None = SDL_FLIP_NONE,
-			Horizontal = SDL_FLIP_HORIZONTAL,
-			Vertical = SDL_FLIP_VERTICAL
-		};
 		enum class RendererType
 		{
 			SDL,
@@ -118,11 +112,10 @@ namespace Zephyrus::Render {
 		virtual void DrawSkyBox(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const = 0;
 		virtual void DrawSkySphere(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const = 0;
 
-		virtual void DrawSprite(Actor& pActor, Assets::ITexture2D* pTex, Rectangle2D pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
+		//virtual void DrawSprite(Actor& pActor, Assets::ITexture2D* pTex, Rectangle2D pSourceRect, Vector2D pOrigin, Flip pFlip = Flip::None) const = 0;
 		virtual void DrawHudImage(Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, Vector4D pTint) = 0;
 		virtual void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) {}
 		virtual void DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit) {}
-		virtual SDL_Renderer* ToSdlRenderer() { return nullptr; }
 
 		virtual void SetHud(HudManager* pHud) {};
 		virtual inline HudManager* GetHud() const { return nullptr; };

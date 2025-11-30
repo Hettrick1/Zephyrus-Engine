@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DoomEnemyComponent.h"
 #include "AssetsManager.h"
 #include "Scene.h"

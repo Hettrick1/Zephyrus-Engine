@@ -3,6 +3,7 @@
 #include "Panel/Panel.h"
 #include <iostream>
 #include "../Window/WindowManager.h"
+#include "GLFW/glfw3.h"
 #include <unordered_map>
 #include <memory>
 #include <imgui_internal.h>
@@ -21,7 +22,7 @@ public:
 
 	void UpdatePanels(EditorApplication* editor);
 	
-	void InitializeImGui(SDL_Window* mSdlWindow);
+	void InitializeImGui(GLFWwindow* glfw3Window);
 	void InitializePanels(EditorApplication* editor);
 
 	void RenderImgui();

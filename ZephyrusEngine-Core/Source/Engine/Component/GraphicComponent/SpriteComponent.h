@@ -18,7 +18,6 @@ namespace Zephyrus::ActorComponent
 		int mTexHeight = 0;
 		int mTexWidthOverride = 0;
 		int mTexHeightOverride = 0;
-		Render::IRenderer::Flip mFlipMethode = Render::IRenderer::Flip::None;
 		bool mCullOff = false;
 		float aspectRatio = 0.0, aspectRatioInv = 0.0;
 	public:
@@ -37,8 +36,6 @@ namespace Zephyrus::ActorComponent
 
 		// Sets the texture used by the sprite
 		virtual void SetTexture(Assets::ITexture2D* pTexture);
-		// Sets the flip method for rendering the sprite
-		void SetFlipMethode(Zephyrus::Render::IRenderer::Flip pFlipMethode);
 
 		virtual void Draw(const Zephyrus::Render::IRenderer& pRenderer) override;
 

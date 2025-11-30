@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ComponentPropertyDrawer.h"
 
 #include <filesystem>

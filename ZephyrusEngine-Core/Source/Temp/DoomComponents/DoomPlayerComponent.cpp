@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DoomPlayerComponent.h"
 #include "Log.h"
 #include "Timer.h"
@@ -203,7 +204,7 @@ namespace Zephyrus::ActorComponent
 				randomAngle = zpMaths::RandomRange(-spreadAngle, spreadAngle);
 				float randomRadians = zpMaths::ToRad(randomAngle);
 
-				// Création d'une matrice de rotation autour de l'axe Z (vertical)
+				// Crï¿½ation d'une matrice de rotation autour de l'axe Z (vertical)
 				Matrix4DRow rotation = Matrix4DRow::CreateRotationZ(randomRadians);
 				Vector3D dir = rotation.TransformVector(baseDirection);
 				dir.Normalize();

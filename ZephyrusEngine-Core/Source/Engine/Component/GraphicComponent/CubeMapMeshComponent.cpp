@@ -1,7 +1,7 @@
+#include "pch.h"
 #include "CubeMapMeshComponent.h"
 #include "VertexArray.h"
 #include "Actor.h"
-#include "SDL.h"
 #include "glew.h"
 
 namespace Zephyrus::ActorComponent

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "SpriteComponent.h"
 
 #include "Actor.h"
@@ -11,7 +12,7 @@ using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::ActorComponent
 {
 	SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
-		: RenderComponent(pOwner, pName, "../Content/Material/BasicSprite.zpmat"), mTexture(), mDrawOrder(100), mFlipMethode(Zephyrus::Render::IRenderer::Flip::None)
+		: RenderComponent(pOwner, pName, "../Content/Material/BasicSprite.zpmat"), mTexture(), mDrawOrder(100)
 	{
 		mOwner->GetScene().GetRenderer()->AddSprite(this);
 		mTexture = AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
@@ -90,11 +91,6 @@ namespace Zephyrus::ActorComponent
 		mMaterial.SetTexture("albedo", mTexture);
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
-	}
-
-	void SpriteComponent::SetFlipMethode(Zephyrus::Render::IRenderer::Flip pFlipMethode)
-	{
-		mFlipMethode = pFlipMethode;
 	}
 
 	void SpriteComponent::Draw(const Zephyrus::Render::IRenderer& pRenderer)

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "EditorControllerComponent.h"
 #include "BooleanActions.h"
 #include "Axis2DAction.h"
@@ -22,8 +23,8 @@ namespace Zephyrus::ActorComponent {
 			if (triggeredaction->GetName() == "rightClick")
 			{
 				mCanMove = true;
-				SDL_WarpMouseGlobal(960, 540);
-				SDL_SetRelativeMouseMode(SDL_TRUE);
+				// SDL_WarpMouseGlobal(960, 540);
+				// SDL_SetRelativeMouseMode(SDL_TRUE);
 			}
 		}
 	}
@@ -68,54 +69,54 @@ namespace Zephyrus::ActorComponent {
 		}
 		else if (pAction->GetType() == ActionType::Axis2D)
 		{
-			Axis2DAction* axisAction = static_cast<Axis2DAction*>(pAction);
-			Vector2D axis = axisAction->GetAxis();
-
-			mYaw += axis.x * mMouseSensitivity;
-			mPitch += axis.y * -mMouseSensitivity;
-
-			if (mPitch > 89.0f)  mPitch = 89.0f;
-			if (mPitch < -89.0f) mPitch = -89.0f;
-
-			float yawRad = zpMaths::ToRad(mYaw);
-			float pitchRad = zpMaths::ToRad(mPitch);
-
-			Quaternion qYaw(Vector3D::unitZ, yawRad);
-			Quaternion qPitch(Vector3D::unitX, pitchRad);
-
-			Quaternion finalRot = Quaternion::Concatenate(qPitch, qYaw);
-
-			mOwner->GetTransformComponent().SetRotation(finalRot);
+			// Axis2DAction* axisAction = static_cast<Axis2DAction*>(pAction);
+			// Vector2D axis = axisAction->GetAxis();
+			//
+			// mYaw += axis.x * mMouseSensitivity;
+			// mPitch += axis.y * -mMouseSensitivity;
+			//
+			// if (mPitch > 89.0f)  mPitch = 89.0f;
+			// if (mPitch < -89.0f) mPitch = -89.0f;
+			//
+			// float yawRad = zpMaths::ToRad(mYaw);
+			// float pitchRad = zpMaths::ToRad(mPitch);
+			//
+			// Quaternion qYaw(Vector3D::unitZ, yawRad);
+			// Quaternion qPitch(Vector3D::unitX, pitchRad);
+			//
+			// Quaternion finalRot = Quaternion::Concatenate(qPitch, qYaw);
+			//
+			// mOwner->GetTransformComponent().SetRotation(finalRot);
 		}
 	}
 	void EditorControllerComponent::OnActionEnded(InputActions* pAction)
 	{
 		if (pAction->GetType() == ActionType::Boolean)
 		{
-			auto* triggeredaction = dynamic_cast<BooleanActions*>(pAction);
-			if (!triggeredaction) return;
-			if (triggeredaction->GetName() == "rightClick")
-			{
-				mCanMove = false;
-				SDL_SetRelativeMouseMode(SDL_FALSE);
-			}
+			// auto* triggeredaction = dynamic_cast<BooleanActions*>(pAction);
+			// if (!triggeredaction) return;
+			// if (triggeredaction->GetName() == "rightClick")
+			// {
+			// 	mCanMove = false;
+			// 	SDL_SetRelativeMouseMode(SDL_FALSE);
+			// }
 		}
 	}
 
 	void EditorControllerComponent::OnStart()
 	{
-		Component::OnStart();
-		InputManager& inputManager = InputManager::Instance();
-		inputManager.CreateNewBooleanKeyBinding(this, "up", SDLK_SPACE);
-		inputManager.CreateNewBooleanKeyBinding(this, "down", SDLK_LSHIFT);
-		inputManager.CreateNewBooleanKeyBinding(this, "forward", SDLK_w);
-		inputManager.CreateNewBooleanKeyBinding(this, "left", SDLK_a);
-		inputManager.CreateNewBooleanKeyBinding(this, "backward", SDLK_s);
-		inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
-		inputManager.CreateNewBooleanKeyBinding(this, "delete", SDLK_DELETE);
-		inputManager.CreateNewBooleanBtnBinding(this, "rightClick", SDL_BUTTON_RIGHT);
-		inputManager.CreateNewAxis2DBinding(this, "Mouse");
-		SDL_SetRelativeMouseMode(SDL_FALSE);
+		// Component::OnStart();
+		// InputManager& inputManager = InputManager::Instance();
+		// inputManager.CreateNewBooleanKeyBinding(this, "up", SDLK_SPACE);
+		// inputManager.CreateNewBooleanKeyBinding(this, "down", SDLK_LSHIFT);
+		// inputManager.CreateNewBooleanKeyBinding(this, "forward", SDLK_w);
+		// inputManager.CreateNewBooleanKeyBinding(this, "left", SDLK_a);
+		// inputManager.CreateNewBooleanKeyBinding(this, "backward", SDLK_s);
+		// inputManager.CreateNewBooleanKeyBinding(this, "right", SDLK_d);
+		// inputManager.CreateNewBooleanKeyBinding(this, "delete", SDLK_DELETE);
+		// inputManager.CreateNewBooleanBtnBinding(this, "rightClick", SDL_BUTTON_RIGHT);
+		// inputManager.CreateNewAxis2DBinding(this, "Mouse");
+		// SDL_SetRelativeMouseMode(SDL_FALSE);
 	}
 
 	void EditorControllerComponent::Update()

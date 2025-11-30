@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "TransformComponent.h"
 #include "Actor.h"
 #include "Log.h"

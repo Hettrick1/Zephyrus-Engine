@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PrefabPanel.h"
 #include "EditorUI/ImGuiUtils.h"
 #include "AssetsManager.h"

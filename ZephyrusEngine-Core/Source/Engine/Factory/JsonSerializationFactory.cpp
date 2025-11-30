@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "JsonSerializationFactory.h"
 
 std::unique_ptr<Serialization::IDeserializer> Zephyrus::Factory::JsonSerializationFactory::CreateDeserializer()

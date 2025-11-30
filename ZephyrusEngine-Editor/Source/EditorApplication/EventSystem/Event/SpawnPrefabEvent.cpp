@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "SpawnPrefabEvent.h"
 #include "ISceneContext.h"
 #include "PrefabFactory.h"

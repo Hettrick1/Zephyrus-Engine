@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "HudElement.h"
 #include "SceneManager.h"
 #include "HudManager.h"

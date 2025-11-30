@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "SceneFactory.h"
 #include "PrefabFactory.h"
 #include "JSONUtils.h"

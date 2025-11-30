@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "RenderTargetOpenGL.h"
 #include "Log.h"
 

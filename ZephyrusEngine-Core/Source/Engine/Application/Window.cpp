@@ -1,7 +1,11 @@
+#include "pch.h"
 #include "Window.h"
+
+#include <glew.h>
+
 namespace Zephyrus::Application {
     Window::Window(int pWidth, int pHeight, bool pIsResizable) :
-        mSdlWindow(nullptr), mDimensions({ (float)pWidth, (float)pHeight }), mResizable(pIsResizable)
+        mGlfwWindow(nullptr), mDimensions({ (float)pWidth, (float)pHeight }), mResizable(pIsResizable)
     {
     }
 
@@ -13,39 +17,66 @@ namespace Zephyrus::Application {
     void Window::SetDimensions(const Vector2D& pDimensions)
     {
         mDimensions = pDimensions;
+        if (mGlfwWindow)
+        {
+            glfwSetWindowSize(mGlfwWindow, (int)pDimensions.x, (int)pDimensions.y);
+        }
     }
 
-    SDL_Window* Window::GetSdlWindow() const
+    GLFWwindow* Window::GetGlfwWindow() const
     {
-        return mSdlWindow;
+        return mGlfwWindow;
     }
 
     bool Window::Open(const std::string& pTitle)
     {
-        if (SDL_Init(SDL_INIT_VIDEO) != 0)
+        if (!glfwInit())
         {
-            ZP_CORE_ERROR("Unable to initialize video");
+            ZP_CORE_ERROR("Failed to initialize GLFW");
             return false;
         }
-        if (mResizable)
+
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_RED_BITS, 8);
+        glfwWindowHint(GLFW_GREEN_BITS, 8);
+        glfwWindowHint(GLFW_BLUE_BITS, 8);
+        glfwWindowHint(GLFW_ALPHA_BITS, 8);
+        glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+        glfwWindowHint(GLFW_RESIZABLE, mResizable ? GLFW_TRUE : GLFW_FALSE);
+
+        mGlfwWindow = glfwCreateWindow(static_cast<int>(mDimensions.x), static_cast<int>(mDimensions.y), pTitle.c_str(), nullptr, nullptr);
+        if (!mGlfwWindow)
         {
-            mSdlWindow = SDL_CreateWindow(pTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, static_cast<int>(mDimensions.x), static_cast<int>(mDimensions.y), SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-        }
-        else
-        {
-            mSdlWindow = SDL_CreateWindow(pTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, static_cast<int>(mDimensions.x), static_cast<int>(mDimensions.y), SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
-        }
-        if (!mSdlWindow)
-        {
-            ZP_CORE_ERROR("Failed to create window");
+            ZP_CORE_ERROR("Failed to create GLFW window");
+            glfwTerminate();
             return false;
         }
+
+        glfwMakeContextCurrent(mGlfwWindow);
+        
+        glewExperimental = GL_TRUE;
+        if (glewInit() != GLEW_OK)
+        {
+            ZP_CORE_ERROR("Failed to initialize GLEW");
+            return false;
+        }
+        glGetError();
+        
+        glfwSwapInterval(1);
+        
         return true;
 
     }
 
     void Window::Close()
     {
-        SDL_DestroyWindow(mSdlWindow);
+        if (mGlfwWindow)
+        {
+            glfwDestroyWindow(mGlfwWindow);
+            mGlfwWindow = nullptr;
+        }
+        glfwTerminate();
     }
 }
