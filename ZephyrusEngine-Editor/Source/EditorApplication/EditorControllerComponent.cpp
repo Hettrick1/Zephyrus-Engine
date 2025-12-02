@@ -15,97 +15,97 @@ namespace Zephyrus::ActorComponent {
 
 	void EditorControllerComponent::OnActionStarted(InputAction* pAction)
 	{
-		if (!mInCapture) return;
-		if (pAction->GetType() == ActionType::Boolean)
-		{
-			auto* triggeredaction = static_cast<BooleanActions*>(pAction);
-			if (!triggeredaction) return;
-			if (triggeredaction->GetName() == "rightClick")
-			{
-				mCanMove = true;
-				// SDL_WarpMouseGlobal(960, 540);
-				// SDL_SetRelativeMouseMode(SDL_TRUE);
-			}
-		}
+		// if (!mInCapture) return;
+		// if (pAction->GetType() == ActionType::Boolean)
+		// {
+		// 	auto* triggeredaction = static_cast<BooleanActions*>(pAction);
+		// 	if (!triggeredaction) return;
+		// 	if (triggeredaction->GetName() == "rightClick")
+		// 	{
+		// 		mCanMove = true;
+		// 		SDL_WarpMouseGlobal(960, 540);
+		// 		SDL_SetRelativeMouseMode(SDL_TRUE);
+		// 	}
+		// }
 	}
 	void EditorControllerComponent::OnActionTriggered(InputAction* pAction)
 	{
-		if (!mCanMove) return;
-
-		if (pAction->GetType() == ActionType::Boolean)
-		{
-			auto* triggeredaction = static_cast<BooleanActions*>(pAction);
-			if (!triggeredaction) return;
-			if (triggeredaction->GetName() == "forward")
-			{
-				auto forward = mOwner->GetTransformComponent().Forward();
-				mOwner->GetTransformComponent().Translate(forward * mSpeed * Timer::deltaTime);
-			}
-			else if (triggeredaction->GetName() == "left")
-			{
-				auto right = mOwner->GetTransformComponent().Right();
-				mOwner->GetTransformComponent().Translate(-right * mSpeed * Timer::deltaTime);
-			}
-			else if (triggeredaction->GetName() == "backward")
-			{
-				auto forward = mOwner->GetTransformComponent().Forward();
-				mOwner->GetTransformComponent().Translate(-forward * mSpeed * Timer::deltaTime);
-			}
-			else if (triggeredaction->GetName() == "right")
-			{
-				auto right = mOwner->GetTransformComponent().Right();
-				mOwner->GetTransformComponent().Translate(right * mSpeed * Timer::deltaTime);
-			}
-			else if (triggeredaction->GetName() == "up")
-			{
-				auto up = Vector3D::unitZ;
-				mOwner->GetTransformComponent().Translate(up * mSpeed * Timer::deltaTime);
-			}
-			else if (triggeredaction->GetName() == "down")
-			{
-				auto up = Vector3D::unitZ;
-				mOwner->GetTransformComponent().Translate(-up * mSpeed * Timer::deltaTime);
-			}
-		}
-		else if (pAction->GetType() == ActionType::Axis2D)
-		{
-			// Axis2DAction* axisAction = static_cast<Axis2DAction*>(pAction);
-			// Vector2D axis = axisAction->GetAxis();
-			//
-			// mYaw += axis.x * mMouseSensitivity;
-			// mPitch += axis.y * -mMouseSensitivity;
-			//
-			// if (mPitch > 89.0f)  mPitch = 89.0f;
-			// if (mPitch < -89.0f) mPitch = -89.0f;
-			//
-			// float yawRad = zpMaths::ToRad(mYaw);
-			// float pitchRad = zpMaths::ToRad(mPitch);
-			//
-			// Quaternion qYaw(Vector3D::unitZ, yawRad);
-			// Quaternion qPitch(Vector3D::unitX, pitchRad);
-			//
-			// Quaternion finalRot = Quaternion::Concatenate(qPitch, qYaw);
-			//
-			// mOwner->GetTransformComponent().SetRotation(finalRot);
-		}
+		// if (!mCanMove) return;
+		//
+		// if (pAction->GetType() == ActionType::Boolean)
+		// {
+		// 	auto* triggeredaction = static_cast<BooleanActions*>(pAction);
+		// 	if (!triggeredaction) return;
+		// 	if (triggeredaction->GetName() == "forward")
+		// 	{
+		// 		auto forward = mOwner->GetTransformComponent().Forward();
+		// 		mOwner->GetTransformComponent().Translate(forward * mSpeed * Timer::deltaTime);
+		// 	}
+		// 	else if (triggeredaction->GetName() == "left")
+		// 	{
+		// 		auto right = mOwner->GetTransformComponent().Right();
+		// 		mOwner->GetTransformComponent().Translate(-right * mSpeed * Timer::deltaTime);
+		// 	}
+		// 	else if (triggeredaction->GetName() == "backward")
+		// 	{
+		// 		auto forward = mOwner->GetTransformComponent().Forward();
+		// 		mOwner->GetTransformComponent().Translate(-forward * mSpeed * Timer::deltaTime);
+		// 	}
+		// 	else if (triggeredaction->GetName() == "right")
+		// 	{
+		// 		auto right = mOwner->GetTransformComponent().Right();
+		// 		mOwner->GetTransformComponent().Translate(right * mSpeed * Timer::deltaTime);
+		// 	}
+		// 	else if (triggeredaction->GetName() == "up")
+		// 	{
+		// 		auto up = Vector3D::unitZ;
+		// 		mOwner->GetTransformComponent().Translate(up * mSpeed * Timer::deltaTime);
+		// 	}
+		// 	else if (triggeredaction->GetName() == "down")
+		// 	{
+		// 		auto up = Vector3D::unitZ;
+		// 		mOwner->GetTransformComponent().Translate(-up * mSpeed * Timer::deltaTime);
+		// 	}
+		// }
+		// else if (pAction->GetType() == ActionType::Axis2D)
+		// {
+		// 	Axis2DAction* axisAction = static_cast<Axis2DAction*>(pAction);
+		// 	Vector2D axis = axisAction->GetAxis();
+		// 	
+		// 	mYaw += axis.x * mMouseSensitivity;
+		// 	mPitch += axis.y * -mMouseSensitivity;
+		// 	
+		// 	if (mPitch > 89.0f)  mPitch = 89.0f;
+		// 	if (mPitch < -89.0f) mPitch = -89.0f;
+		// 	
+		// 	float yawRad = zpMaths::ToRad(mYaw);
+		// 	float pitchRad = zpMaths::ToRad(mPitch);
+		// 	
+		// 	Quaternion qYaw(Vector3D::unitZ, yawRad);
+		// 	Quaternion qPitch(Vector3D::unitX, pitchRad);
+		// 	
+		// 	Quaternion finalRot = Quaternion::Concatenate(qPitch, qYaw);
+		// 	
+		// 	mOwner->GetTransformComponent().SetRotation(finalRot);
+		// }
 	}
 	void EditorControllerComponent::OnActionEnded(InputAction* pAction)
 	{
-		if (pAction->GetType() == ActionType::Boolean)
-		{
-			// auto* triggeredaction = dynamic_cast<BooleanActions*>(pAction);
-			// if (!triggeredaction) return;
-			// if (triggeredaction->GetName() == "rightClick")
-			// {
-			// 	mCanMove = false;
-			// 	SDL_SetRelativeMouseMode(SDL_FALSE);
-			// }
-		}
+		// if (pAction->GetType() == ActionType::Boolean)
+		// {
+		// 	auto* triggeredaction = dynamic_cast<BooleanActions*>(pAction);
+		// 	if (!triggeredaction) return;
+		// 	if (triggeredaction->GetName() == "rightClick")
+		// 	{
+		// 		mCanMove = false;
+		// 		SDL_SetRelativeMouseMode(SDL_FALSE);
+		// 	}
+		// }
 	}
 
 	void EditorControllerComponent::OnStart()
 	{
-		// Component::OnStart();
+		Component::OnStart();
 		// InputManager& inputManager = InputManager::Instance();
 		// inputManager.CreateNewBooleanKeyBinding(this, "up", SDLK_SPACE);
 		// inputManager.CreateNewBooleanKeyBinding(this, "down", SDLK_LSHIFT);
@@ -117,6 +117,26 @@ namespace Zephyrus::ActorComponent {
 		// inputManager.CreateNewBooleanBtnBinding(this, "rightClick", SDL_BUTTON_RIGHT);
 		// inputManager.CreateNewAxis2DBinding(this, "Mouse");
 		// SDL_SetRelativeMouseMode(SDL_FALSE);
+
+		if (mEditorInputManager)
+		{
+			auto& camera = mEditorInputManager->CreateAxis2D("Camera");
+			camera.IsMouseAxis = true;
+			camera.OnTriggered = [this](Vector2D delta){ Rotate(delta); };
+
+			auto& click = mEditorInputManager->CreateBool("Click");
+			click.BindMouseButton(GLFW_MOUSE_BUTTON_2);
+			click.OnStarted = [this]()
+			{
+				mCanMove = true;
+				mOwner->GetSceneContext()->GetInputManager()->SetCursorRelative(true);
+			};
+			click.OnReleased = [this]()
+			{
+				mCanMove = false;
+				mOwner->GetSceneContext()->GetInputManager()->SetCursorRelative(false);
+			};
+		}
 	}
 
 	void EditorControllerComponent::Update()
@@ -132,5 +152,32 @@ namespace Zephyrus::ActorComponent {
 	void EditorControllerComponent::SetIsInSceneCapture(bool pInCapture)
 	{
 		mInCapture = pInCapture;
+	}
+
+	void EditorControllerComponent::SetInputManager(InputManager* pInputManager)
+	{
+		mEditorInputManager = pInputManager;
+	}
+
+	void EditorControllerComponent::Rotate(Vector2D delta)
+	{
+		if (mCanMove)
+		{
+			mYaw += delta.x * mMouseSensitivity;
+			mPitch += delta.y * -mMouseSensitivity;
+			
+			if (mPitch > 89.0f)  mPitch = 89.0f;
+			if (mPitch < -89.0f) mPitch = -89.0f;
+			
+			float yawRad = zpMaths::ToRad(mYaw);
+			float pitchRad = zpMaths::ToRad(mPitch);
+			
+			Quaternion qYaw(Vector3D::unitZ, yawRad);
+			Quaternion qPitch(Vector3D::unitX, pitchRad);
+			
+			Quaternion finalRot = Quaternion::Concatenate(qPitch, qYaw);
+			
+			mOwner->GetTransformComponent().SetRotation(finalRot);
+		}
 	}
 }

@@ -13,11 +13,8 @@
 #include <shellapi.h>
 #endif
 
-std::filesystem::path ContentBrowserPanel::rootDirectory = "../Content";
-std::filesystem::path ContentBrowserPanel::currentDirectory = rootDirectory;
-
-bool isSelected;
-std::filesystem::path selectedEntry;
+std::filesystem::path ContentBrowserPanel::mRootDirectory = "../Content";
+std::filesystem::path ContentBrowserPanel::mCurrentDirectory = mRootDirectory;
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -36,7 +33,7 @@ void ContentBrowserPanel::Draw()
     Panel::BeginDraw();
     if (ImGui::Begin("Content Browser"))
     {
-        ImGui::Text(currentDirectory.string().c_str());
+        ImGui::Text(mCurrentDirectory.string().c_str());
         static float width = 200.0f;
         float height = ImGui::GetContentRegionAvail().y;
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -51,7 +48,7 @@ void ContentBrowserPanel::Draw()
         ImGui::SameLine();
 
         ImGui::BeginChild("child2", ImVec2(0, height), true);
-        DrawDirectoryContent(currentDirectory);
+        DrawDirectoryContent(mCurrentDirectory);
         ImGui::EndChild();
         ImGui::PopStyleVar();
 
@@ -66,12 +63,12 @@ void ContentBrowserPanel::Draw()
             {
                 if (ImGui::MenuItem("New Map"))
                 {
-                    std::filesystem::path newMapPath = currentDirectory / "NewMap.zpmap";
+                    std::filesystem::path newMapPath = mCurrentDirectory / "NewMap.zpmap";
 
                     int counter = 1;
                     while (std::filesystem::exists(newMapPath))
                     {
-                        newMapPath = currentDirectory / ("NewMap" + std::to_string(counter) + ".zpmap");
+                        newMapPath = mCurrentDirectory / ("NewMap" + std::to_string(counter) + ".zpmap");
                         counter++;
                     }
 
@@ -84,7 +81,7 @@ void ContentBrowserPanel::Draw()
                 }
                 ImGui::EndMenu();
             }
-            if (!selectedEntry.empty())
+            if (!mSelectedEntry.empty())
             {
                 if (ImGui::MenuItem("Delete"))
                 {
@@ -94,12 +91,12 @@ void ContentBrowserPanel::Draw()
             ImGui::EndPopup();
         }
 
-        if (!selectedEntry.empty() && ImGui::IsKeyPressed(ImGuiKey_Delete) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
+        if (!mSelectedEntry.empty() && ImGui::IsKeyPressed(ImGuiKey_Delete) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
         {
             DeleteFileOrDirectory();
         }
 
-        CreatePrefabFile(currentDirectory.string());
+        CreatePrefabFile(mCurrentDirectory.string());
     }
     ImGui::End();
     Panel::EndDraw();
@@ -117,11 +114,11 @@ void ContentBrowserPanel::DrawDirectory(const std::string& folderPath)
 
             if (ImGui::IsItemClicked() && nodeOpen)
             {
-                currentDirectory = entry.path();
+                mCurrentDirectory = entry.path();
             }
             else if (ImGui::IsItemClicked() && !nodeOpen)
             {
-                currentDirectory = entry.path().parent_path();
+                mCurrentDirectory = entry.path().parent_path();
             }
             if (nodeOpen)
             {
@@ -138,26 +135,26 @@ void ContentBrowserPanel::DrawDirectoryContent(const std::filesystem::path& dire
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
     ImGui::Columns(columns, 0, false);
 
-    if (currentDirectory != rootDirectory)
+    if (mCurrentDirectory != mRootDirectory)
     {
-        isSelected = (selectedEntry == currentDirectory.parent_path());
-        ImageButton(isSelected, "folder", "folder");
+        mIsSelected = (mSelectedEntry == mCurrentDirectory.parent_path());
+        ImageButton(mIsSelected, "folder", "folder");
         if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
             if (ImGui::IsItemClicked())
             {
-                selectedEntry.clear();
+                mSelectedEntry.clear();
             }
             else if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
             {
-                selectedEntry.clear();
+                mSelectedEntry.clear();
             }
         }
 
         if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
         {
-            currentDirectory = currentDirectory.parent_path();
-            selectedEntry.clear();
+            mCurrentDirectory = mCurrentDirectory.parent_path();
+            mSelectedEntry.clear();
         }
         ImGui::TextWrapped("...");
 
@@ -190,23 +187,23 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
 {
     const auto& path = entry.path();
 
-    isSelected = (selectedEntry == path);
+    mIsSelected = (mSelectedEntry == path);
 
     std::string name = path.filename().string();
 
     ImGui::PushID(name.c_str());
 
-    ImageButton(isSelected, entry.path().string(), entry.path().filename().extension().string());
+    ImageButton(mIsSelected, entry.path().string(), entry.path().filename().extension().string());
 
     if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
         if (ImGui::IsItemClicked())
         {
-            selectedEntry = path;
+            mSelectedEntry = path;
         }
         else if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
         {
-            selectedEntry.clear();
+            mSelectedEntry.clear();
         }
     }
 
@@ -214,8 +211,8 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
     {
         if (entry.is_directory())
         {
-            currentDirectory = path;
-            selectedEntry.clear();
+            mCurrentDirectory = path;
+            mSelectedEntry.clear();
         }
         else // TODO : Create a map and function to open files, if the extension is not found then open with shellexecuteA
         {
@@ -254,7 +251,7 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
 
     ImVec2 textSize = ImGui::CalcTextSize(name.c_str(), nullptr, true, wrapWidth * 1.8);
 
-    if (isSelected)
+    if (mIsSelected)
     {
         ImU32 bgColor = IM_COL32(70, 70, 70, 255);
         ImGui::GetWindowDrawList()->AddRectFilled(
@@ -395,15 +392,15 @@ void ContentBrowserPanel::SetSceneHierarchy(SceneHierarchyPanel* pHierarchy)
 
 void ContentBrowserPanel::DeleteFileOrDirectory()
 {
-    if (std::filesystem::is_directory(selectedEntry))
+    if (std::filesystem::is_directory(mSelectedEntry))
     {
-        std::filesystem::remove_all(selectedEntry);
+        std::filesystem::remove_all(mSelectedEntry);
     }
     else
     {
-        std::filesystem::remove(selectedEntry);
+        std::filesystem::remove(mSelectedEntry);
     }
-    selectedEntry.clear();
+    mSelectedEntry.clear();
 }
 
 void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)
@@ -420,12 +417,12 @@ void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)
             {
                 return;
             }
-            std::filesystem::path newPrefabPath = currentDirectory / (actor->GetName() + ".prefab");
+            std::filesystem::path newPrefabPath = mCurrentDirectory / (actor->GetName() + ".prefab");
 
             int counter = 1;
             while (std::filesystem::exists(newPrefabPath))
             {
-                newPrefabPath = currentDirectory / (actor->GetName() + std::to_string(counter) + ".prefab");
+                newPrefabPath = mCurrentDirectory / (actor->GetName() + std::to_string(counter) + ".prefab");
                 counter++;
             }
 

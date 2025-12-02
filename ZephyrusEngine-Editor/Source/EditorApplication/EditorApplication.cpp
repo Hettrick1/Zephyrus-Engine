@@ -4,27 +4,17 @@
 #include "RendererOpenGl.h"
 #include "TextRenderer.h"
 #include "SplashScreen.h"
-#include "PrefabFactory.h"
 #include "imgui.h"
 #include "imgui_internal.h"
-#include "backends/imgui_impl_sdl2.h"
-#include "backends/imgui_impl_opengl3.h"
 #include "Panel/InspectorPanel/InspectorPanel.h"
-#include "Panel/ScenePanel.h"
-#include "Panel/ConsolePanel.h"
-#include "Panel/SceneHierarchyPanel.h"
 #include "Panel/ContentBrowser/ContentBrowserPanel.h"
 #include "EditorControllerActor.h"
 #include "EditorControllerComponent.h"
-#include "Panel/MenuPanel.h"
-#include "Panel/UtilsPanel.h"
-#include "Panel/PrefabPanel.h"
-#include "EditorUI/ImGuiUtils.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
 #include "HudManager.h"
 
 EditorApplication::EditorApplication(const std::string& pTitle, const std::string& pStartupScene)
-    : mIsRunning(true), mStartUpScene(pStartupScene), mInputManager(InputManager::Instance()), mTitle(pTitle)
+    : mIsRunning(true), mStartUpScene(pStartupScene), mEditorInputManager(nullptr), mTitle(pTitle)
 {
     Zephyrus::Debug::Log::Init();
     Initialize();
@@ -34,13 +24,14 @@ EditorApplication::~EditorApplication()
 {
     delete mRenderer;
     delete mEditorController;
-    delete mGameWindow;
+    delete mEditorWindow;
     delete mSceneManager;
+    delete mEditorInputManager;
 }
 
 void EditorApplication::Initialize()
 {
-    mGameWindow = new Window(1920, 1030, true);
+    mEditorWindow = new Window(1920, 1030, true);
     mRenderer = new Zephyrus::Render::RendererOpenGl();
     mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);
     Zephyrus::Assets::AssetsManager::SetContext(mSceneManager);
@@ -50,19 +41,22 @@ void EditorApplication::Initialize()
     // For now
     //InputManager::Instance().SetContext(mSceneManager);
 
-    if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow))
+    if (mEditorWindow->Open(mTitle) && mRenderer->Initialize(*mEditorWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mEditorWindow))
     {
-        glfwMaximizeWindow(mGameWindow->GetGlfwWindow());
-
+        glfwMaximizeWindow(mEditorWindow->GetGlfwWindow());
+        mEditorInputManager = new InputManager(mEditorWindow->GetGlfwWindow());
+        mEditorInputManager->SetPriority();
+        
         // SDL_Surface* icon = IMG_Load("../Content/Sprites/Icons/ZephyrusLogo.png");
         // SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
         // SDL_FreeSurface(icon);
 
         auto editorController = new Zephyrus::ActorComponent::EditorControllerActor(mSceneManager, *mSceneManager->GetActiveScene());
         mEditorController = editorController;
+        mEditorController->GetComponentOfType<Zephyrus::ActorComponent::EditorControllerComponent>()->SetInputManager(mEditorInputManager);
         mEditorController->Start();
 
-        mImGuiEditorLayer->InitializeImGui(mGameWindow->GetGlfwWindow());
+        mImGuiEditorLayer->InitializeImGui(mEditorWindow->GetGlfwWindow());
         mImGuiEditorLayer->InitializePanels(this);
 
         Loop();
@@ -110,32 +104,10 @@ void EditorApplication::Render()
 void EditorApplication::Input()
 {
     if (mIsRunning) {
-        GLFWwindow* win = mGameWindow->GetGlfwWindow();
+        GLFWwindow* win = mEditorWindow->GetGlfwWindow();
         glfwPollEvents();
 
         if (glfwWindowShouldClose(win)) mIsRunning = false;
-        
-        // while (SDL_PollEvent(&mSdlEvent)) {
-        //     ImGui_ImplSDL2_ProcessEvent(&mSdlEvent);
-        //     if (mSdlEvent.type == SDL_WINDOWEVENT && mSdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
-        //     {
-        //         if (mSdlEvent.window.windowID == SDL_GetWindowID(mGameWindow->GetGlfwWindow()))
-        //         {
-        //             mIsRunning = false;
-        //         }
-        //     }
-        //     if (mSdlEvent.type == SDL_KEYDOWN) 
-        //     {
-        //         const Uint8* state = SDL_GetKeyboardState(nullptr);
-        //         bool ctrl = state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL];
-        //
-        //         if (ctrl && mSdlEvent.key.keysym.sym == SDLK_z) 
-        //         {
-        //             EventSystem::UndoLastEvent();
-        //         }
-        //     }
-        // }
-        // mInputManager.Update();
     }
 }
 
@@ -150,7 +122,7 @@ void EditorApplication::Close()
     Zephyrus::Debug::Log::Shutdown();
     mEditorController->Destroy();
     mSceneManager->Unload();
-    mGameWindow->Close();
+    mEditorWindow->Close();
     EventSystem::ClearAllEvents();
 }
 

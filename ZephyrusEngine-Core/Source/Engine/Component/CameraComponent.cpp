@@ -161,11 +161,11 @@ namespace Zephyrus::ActorComponent
 
         mOwner->GetSceneContext()->GetActiveScene()->BeginRender();
         mOwner->GetSceneContext()->GetActiveScene()->RenderCurrentSceneOnly();
-        // TODO move debug draw for physics
-        auto world = mOwner->GetSceneContext()->GetPhysicsWorld();
-        world->GetWorld()->debugDrawWorld();
-        auto debugRenderer = mOwner->GetSceneContext()->GetActiveScene()->GetPhysicDebugRenderer();
-        debugRenderer->FlushDraw(this);
+        // // TODO move debug draw for physics
+        // auto world = mOwner->GetSceneContext()->GetPhysicsWorld();
+        // world->GetWorld()->debugDrawWorld();
+        // auto debugRenderer = mOwner->GetSceneContext()->GetActiveScene()->GetPhysicDebugRenderer();
+        // debugRenderer->FlushDraw(this);
 
         mRenderTarget->Unbind();
     }

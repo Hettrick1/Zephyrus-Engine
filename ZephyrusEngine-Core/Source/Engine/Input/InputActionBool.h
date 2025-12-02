@@ -42,5 +42,8 @@ namespace Zephyrus::Inputs {
         void TriggerStarted() const { if (OnStarted)   OnStarted(); }
         void TriggerTriggered() const { if (OnTriggered) OnTriggered(); }
         void TriggerReleased() const { if (OnReleased)  OnReleased(); }
+
+        std::vector<int> GetKeys() const { return mKeys; }
+        std::vector<int> GetMouseButtons() const { return mMouseButtons; }
     };
 }

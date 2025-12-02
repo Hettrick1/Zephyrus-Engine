@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "DoomPlayerComponent.h"
+#include "Bullet/CapsuleColliderComponent.h"
 
 namespace Zephyrus::ActorComponent
 {
@@ -58,26 +59,23 @@ namespace Zephyrus::ActorComponent
 		{
 			moveDir.Normalize();
 		
-			float moveForce = 1000.0f;
-			Vector3D forceToApply = moveDir * moveForce;
+			Vector3D forceToApply = moveDir;
 		
 			auto rb = mOwner->GetRigidBody();
 			if (rb && rb->GetRigidBody())
 			{
-				btVector3 bulletForce(forceToApply.x, forceToApply.y, 0.0f);
-				rb->GetRigidBody()->applyCentralForce(bulletForce);
 				rb->GetRigidBody()->activate(true);
+				rb->GetRigidBody()->setActivationState(DISABLE_DEACTIVATION);
 				btVector3 vel = rb->GetRigidBody()->getLinearVelocity();
-				btVector3 horizontalVel(vel.x(), vel.y(), 0);
-				float maxSpeed = 2.0f;
-		
-				if (horizontalVel.length() > maxSpeed)
-				{
-					horizontalVel = horizontalVel.normalized() * maxSpeed;
-					vel.setX(horizontalVel.x());
-					vel.setY(horizontalVel.y());
-					rb->GetRigidBody()->setLinearVelocity(vel);
-				}
+				btVector3 horizontalVel(forceToApply.x, forceToApply.y, 0);
+				float maxSpeed = 10.0f;
+				
+				horizontalVel = horizontalVel.normalized() * maxSpeed;
+				vel.setX(horizontalVel.x());
+				vel.setY(horizontalVel.y());
+				rb->GetRigidBody()->setLinearVelocity(vel);
+
+				ZP_CORE_LOAD(Physics::FromBtVec3(vel).ToString());
 			}
 		}
 	}
@@ -87,8 +85,12 @@ namespace Zephyrus::ActorComponent
 		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
 		
 		float sensitivity = 5.0f;
-		axis.x *= sensitivity * Timer::deltaTime;
-		cam->RelativeRotateZ(axis.x);
+		axis.x *= Timer::deltaTime;
+		mYaw += axis.x * sensitivity;
+		float yawRad = zpMaths::ToRad(mYaw);
+		Quaternion qYaw(Vector3D::unitZ, yawRad);
+		
+		cam->SetRelativeRotation(qYaw);
 	}
 
 	void DoomPC::Shoot()

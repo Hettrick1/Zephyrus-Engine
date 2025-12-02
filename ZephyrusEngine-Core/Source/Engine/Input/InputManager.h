@@ -25,10 +25,11 @@ namespace Zephyrus::Inputs {
         InputManager(GLFWwindow* window);
         ~InputManager();
 
-        void NewFrame();        // resets axis values
+        void NewFrame(); // resets axis values
+        void UpdateKeysAndButtons(); // poll keyboard and mouse for trigger events
         void UpdateGamepad();   // poll gamepad
 
-        void SetCursorVisible(bool visible)
+        void SetCursorVisible(bool visible) const
         {
             if (visible)
                 glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -39,9 +40,17 @@ namespace Zephyrus::Inputs {
         void SetCursorRelative(bool relative)
         {
             if (relative)
+            {
                 glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                double x, y;
+                glfwGetCursorPos(mWindow, &x, &y);
+                mMousePos.x = static_cast<float>(x);
+                mMousePos.y = static_cast<float>(y);
+            }
             else
+            {
                 glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            }
         }
         
         InputActionBool& CreateBool(const std::string& name);
@@ -50,10 +59,18 @@ namespace Zephyrus::Inputs {
 
         InputAction* GetAction(const std::string& name);
 
-        void OnKeyEvent(int key, int action);
-        void OnMouseButtonEvent(int button, int action);
         void OnMouseMove(double xpos, double ypos);
         void OnScroll(double xoffset, double yoffset);
+
+        void SetPriority();
+        bool HasPriority() const
+        {
+            if (glfwGetWindowUserPointer(mWindow) == this)
+            {
+                return true;
+            }
+            return false;
+        }
 };
 
 }

@@ -55,6 +55,9 @@ namespace Zephyrus::Inputs {
         void TriggerReleased() const { if (OnReleased)  OnReleased(); }
         
         void Reset() { value = 0; }
+
+        std::unordered_map<int,float> GetKeyValues() const { return keyValues; }
+        std::unordered_map<int,float> GetMouseValues() const { return mouseValues; }
     };
 
 }

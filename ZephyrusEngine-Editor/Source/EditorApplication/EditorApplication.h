@@ -32,11 +32,11 @@ class EditorApplication
 {
 private:
 	std::string mTitle;
-	Window* mGameWindow{ nullptr };
+	Window* mEditorWindow{ nullptr };
 	Zephyrus::Scenes::SceneManager* mSceneManager{ nullptr };
 	Zephyrus::Render::IRenderer* mRenderer{ nullptr };
 	std::string mStartUpScene;
-	InputManager& mInputManager;
+	InputManager* mEditorInputManager;
 	bool mIsRunning{true};
 
 	Zephyrus::ActorComponent::EditorControllerActor* mEditorController{ nullptr };

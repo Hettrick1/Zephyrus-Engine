@@ -28,6 +28,8 @@ namespace Zephyrus::ActorComponent {
 		float mMouseSensitivity = 0.1f;
 		bool mCanMove = false;
 		bool mInCapture = false;
+
+		InputManager* mEditorInputManager{ nullptr };
 	public:
 		EditorControllerComponent(Actor* pOwner, int pUpdateOrder = 100);
 
@@ -45,5 +47,8 @@ namespace Zephyrus::ActorComponent {
 
 		bool GetInCapture() const { return mInCapture; }
 		bool GetCanMove() const { return mCanMove; }
+		
+		void SetInputManager(InputManager* pInputManager);
+		void Rotate(Vector2D delta);
 	};
 }

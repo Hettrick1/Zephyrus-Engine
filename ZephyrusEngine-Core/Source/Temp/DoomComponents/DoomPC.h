@@ -46,6 +46,8 @@ namespace Zephyrus::ActorComponent
 		void Update() override;
 	private:
 		bool goRight, goLeft, goForward, goBackward;
+		float mYaw{ 0.0f };
+		float mPitch{ 0.0f };
 	};
 }
 

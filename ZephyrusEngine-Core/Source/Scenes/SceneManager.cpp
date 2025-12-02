@@ -121,6 +121,11 @@ namespace Zephyrus::Scenes {
 		ActiveScene->EndRender();
 	}
 
+	void SceneManager::UpdateInput()
+	{
+		ActiveScene->Inputs();
+	}
+
 	bool SceneManager::SceneLoaded()
 	{
 		return mIsSceneLoaded;

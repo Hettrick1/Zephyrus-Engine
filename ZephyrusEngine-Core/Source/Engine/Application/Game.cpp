@@ -140,6 +140,8 @@ namespace Zephyrus::Application {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             mIsRunning = false;
 
+        mSceneManager->UpdateInput();
+
         // For Now just deactivate inputs
     }
 

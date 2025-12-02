@@ -90,6 +90,7 @@ namespace Zephyrus::Scenes {
 		}
 		mPlayerRef->Start();
 		mCameraManager->OnPlay();
+		mInputManager->SetPriority();
 	}
 
 	void Scene::Update(float pDetltaTime)
@@ -102,6 +103,15 @@ namespace Zephyrus::Scenes {
 	{
 		mCameraManager->RenderActiveCamera();
 		mRenderer->RenderActiveCamera(mCameraManager->GetActiveCamera());
+	}
+
+	void Scene::Inputs()
+	{
+		if (!mInputManager->HasPriority())
+		{
+			return;
+		}
+		mInputManager->UpdateKeysAndButtons();
 	}
 
 	void Scene::SetSceneLoaded(bool pSceneLoaded)

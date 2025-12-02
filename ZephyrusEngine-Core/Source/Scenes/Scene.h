@@ -56,6 +56,7 @@ namespace Zephyrus::Scenes {
 		virtual void PostStart();
 		virtual void Update(float pDetltaTime); // Updates the scene and its actors
 		virtual void Render();
+		virtual void Inputs();
 		void SetSceneLoaded(bool pSceneLoaded);
 		void SetRenderer(Render::IRenderer* pRenderer);
 		void BeginRender();

@@ -14,11 +14,14 @@ namespace Zephyrus::Editor::Window
 class ContentBrowserPanel : public Panel
 {
 private:
-	static std::filesystem::path rootDirectory;
-	static std::filesystem::path currentDirectory;
+	static std::filesystem::path mRootDirectory;
+	static std::filesystem::path mCurrentDirectory;
 	SceneHierarchyPanel* mHierarchy{ nullptr };
 	using ResetEditorController = std::function<void()>;
 	std::shared_ptr<Zephyrus::Editor::Window::WindowManager> mWindowManager{ nullptr };
+
+	bool mIsSelected{ false };
+	std::filesystem::path mSelectedEntry;
 public:
 	ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName, std::shared_ptr<Zephyrus::Editor::Window::WindowManager> pWindowManager);
 	~ContentBrowserPanel() override = default;

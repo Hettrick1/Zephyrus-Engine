@@ -45,6 +45,8 @@ namespace Zephyrus::Scenes
 		void RenderScene();
 		void EndRender();
 
+		void UpdateInput();
+
 		// Returns true if a scene is currently loaded
 		bool SceneLoaded();
 
