@@ -3,33 +3,18 @@
 
 namespace Zephyrus::Inputs
 {
-    static void CursorPosCallback(GLFWwindow* win, double x, double y)
-    {
-        auto* input = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-        if (input) input->OnMouseMove(x, y);
-    }
-
-    static void ScrollCallback(GLFWwindow* win, double xoff, double yoff)
-    {
-        auto* input = static_cast<InputManager*>(glfwGetWindowUserPointer(win));
-        if (input) input->OnScroll(xoff, yoff);
-    }
-
     // ---- Constructor ---- //
 
     InputManager::InputManager(GLFWwindow* window)
         : mWindow(window)
     {
-        glfwSetCursorPosCallback(window, CursorPosCallback);
-        glfwSetScrollCallback(window, ScrollCallback);
     }
 
     InputManager::~InputManager()
    {
        mActions.clear();
    }
-
-
+    
     // ---- Create actions ---- //
 
     InputActionBool& InputManager::CreateBool(const std::string& name)
@@ -95,6 +80,14 @@ namespace Zephyrus::Inputs
                             break;
                         }
                     }
+                    for (int key : b->GetMouseButtons())
+                    {
+                        if (glfwGetMouseButton(mWindow, key) == GLFW_PRESS)
+                        {
+                            anyPressed = true;
+                            break;
+                        }
+                    }
 
                     if (anyPressed)
                     {
@@ -115,7 +108,16 @@ namespace Zephyrus::Inputs
                     for (auto& [key, val] : a->GetKeyValues())
                     {
                         if (glfwGetKey(mWindow, key) == GLFW_PRESS)
+                        {
                             total += val;
+                        }
+                    }
+                    for (auto& [key, val] : a->GetMouseValues())
+                    {
+                        if (glfwGetMouseButton(mWindow, key) == GLFW_PRESS)
+                        {
+                            total += val;
+                        }
                     }
 
                     if (total != 0.0f)
@@ -134,10 +136,25 @@ namespace Zephyrus::Inputs
                 {
                     auto* a = static_cast<InputActionAxis2D*>(act);
                     Vector2D total { 0.0f, 0.0f };
+                    if (a->IsMouseAxis)
+                    {
+                        OnMouseMove();
+                    }
+                        
                     for (auto& [key, value] : a->GetKeyValues())
                     {
                         if (glfwGetKey(mWindow, key) == GLFW_PRESS)
+                        {
                             total += value;
+                        }
+                    }
+                        
+                    for (auto& [key, val] : a->GetMouseValues())
+                    {
+                        if (glfwGetMouseButton(mWindow, key) == GLFW_PRESS)
+                        {
+                            total += val;
+                        }
                     }
 
                     if (total.x != 0.0f || total.y != 0.0f)
@@ -163,12 +180,26 @@ namespace Zephyrus::Inputs
 
     // ---- Callbacks ---- //
 
-    void InputManager::OnMouseMove(double xpos, double ypos)
-   {
-       Vector2D delta = { (float)xpos - mMousePos.x, (float)ypos - mMousePos.y };
-       
-       // Update mouse pos
-       mMousePos += delta;
+    void InputManager::OnMouseMove()
+    {
+        double xpos, ypos;
+
+        glfwGetCursorPos(mWindow, &xpos, &ypos);
+        
+        Vector2D delta = { (float)xpos - mMousePos.x, (float)ypos - mMousePos.y };
+        
+        // Update mouse pos
+        mMousePos += delta;
+
+        if (isMouseRelative)
+        {
+            int w, h;
+            glfwGetWindowSize(mWindow, &w, &h);
+            double centerX = w / 2.0;
+            double centerY = h / 2.0;
+            glfwSetCursorPos(mWindow, centerX, centerY);
+            mMousePos = { (float)centerX, (float)centerY };
+        }
 
        // Send delta to all mouse axes
        for (auto& [name, act] : mActions)

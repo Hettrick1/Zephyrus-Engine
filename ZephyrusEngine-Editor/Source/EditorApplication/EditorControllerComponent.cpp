@@ -129,13 +129,25 @@ namespace Zephyrus::ActorComponent {
 			click.OnStarted = [this]()
 			{
 				mCanMove = true;
-				mOwner->GetSceneContext()->GetInputManager()->SetCursorRelative(true);
+				mEditorInputManager->SetCursorRelative(true);
 			};
 			click.OnReleased = [this]()
 			{
 				mCanMove = false;
-				mOwner->GetSceneContext()->GetInputManager()->SetCursorRelative(false);
+				mEditorInputManager->SetCursorRelative(false);
 			};
+			
+			auto& move = mEditorInputManager->CreateAxis2D("Move");
+			move.BindKeyValue(GLFW_KEY_W, Vector2D(1.0f, 0.0f));
+			move.BindKeyValue(GLFW_KEY_S, Vector2D(-1.0f, 0.0f));
+			move.BindKeyValue(GLFW_KEY_A, Vector2D(0.0f, -1.0f));
+			move.BindKeyValue(GLFW_KEY_D, Vector2D(0.0f, 1.0f));
+			move.OnTriggered = [this](Vector2D delta){ Move(delta); };
+			
+			auto& upDown = mEditorInputManager->CreateAxis1D("UpDown");
+			upDown.OnTriggered = [this](float delta){ UpDown(delta); };
+			upDown.BindKeyValue(GLFW_KEY_SPACE, 1.0f);
+			upDown.BindKeyValue(GLFW_KEY_LEFT_SHIFT, -1.0f);
 		}
 	}
 
@@ -179,5 +191,28 @@ namespace Zephyrus::ActorComponent {
 			
 			mOwner->GetTransformComponent().SetRotation(finalRot);
 		}
+	}
+
+	void EditorControllerComponent::Move(Vector2D delta)
+	{
+		if (mCanMove)
+		{
+			if (delta.x != 0)
+			{
+				auto forward = mOwner->GetTransformComponent().Forward();
+				mOwner->GetTransformComponent().Translate(forward * delta.x * mSpeed * Timer::deltaTime);
+			}
+			if (delta.y != 0)
+			{
+				auto right = mOwner->GetTransformComponent().Right();
+				mOwner->GetTransformComponent().Translate(right * delta.y * mSpeed * Timer::deltaTime);
+			}
+		}
+	}
+
+	void EditorControllerComponent::UpDown(float direction)
+	{
+		auto up = Vector3D::unitZ;
+		mOwner->GetTransformComponent().Translate(up * direction * mSpeed * Timer::deltaTime);
 	}
 }

@@ -50,5 +50,7 @@ namespace Zephyrus::ActorComponent {
 		
 		void SetInputManager(InputManager* pInputManager);
 		void Rotate(Vector2D delta);
+		void Move(Vector2D delta);
+		void UpDown(float direction);
 	};
 }

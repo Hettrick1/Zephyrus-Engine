@@ -47,35 +47,45 @@ namespace Zephyrus::ActorComponent
 		Component::Serialize(pWriter);
 	}
 
+	void DoomPC::OnStart()
+	{
+		Component::OnStart();
+		auto rb = mOwner->GetRigidBody();
+		if (rb && rb->GetRigidBody())
+		{
+			rb->GetRigidBody()->setDamping(0.9f, 0.0f);
+			rb->SetFriction(15.0f);
+		}
+	}
+
 	void DoomPC::Move(Vector2D axis)
 	{
 		// REWORK MOVEMENTS
+
+		mIsMoving = true;
 		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
 		Vector3D forward = cam->GetWorldTransform().GetYAxis();
-		Vector3D right = cam->GetWorldTransform().GetXAxis();
+		Vector3D right   = cam->GetWorldTransform().GetXAxis();
+
 		Vector3D moveDir = forward * axis.y + right * -axis.x;
-		
+
 		if (moveDir.LengthSq() > 0.0f)
 		{
-			moveDir.Normalize();
-		
-			Vector3D forceToApply = moveDir;
-		
 			auto rb = mOwner->GetRigidBody();
 			if (rb && rb->GetRigidBody())
 			{
-				rb->GetRigidBody()->activate(true);
-				rb->GetRigidBody()->setActivationState(DISABLE_DEACTIVATION);
-				btVector3 vel = rb->GetRigidBody()->getLinearVelocity();
-				btVector3 horizontalVel(forceToApply.x, forceToApply.y, 0);
-				float maxSpeed = 10.0f;
+				btRigidBody* body = rb->GetRigidBody();
+				body->activate(true);
 				
-				horizontalVel = horizontalVel.normalized() * maxSpeed;
-				vel.setX(horizontalVel.x());
-				vel.setY(horizontalVel.y());
-				rb->GetRigidBody()->setLinearVelocity(vel);
+				btVector3 vel = body->getLinearVelocity();
+				btVector3 target(moveDir.x * moveSpeed, moveDir.y * moveSpeed, vel.z());
+				float factor = 0.3f; // lerp pour lisser
+				btVector3 smoothVel = vel.lerp(target, factor);
+				body->setLinearVelocity(smoothVel);
+			
+				moveDir.Normalize();
 
-				ZP_CORE_LOAD(Physics::FromBtVec3(vel).ToString());
+				ZP_CORE_LOAD(Physics::FromBtVec3(body->getLinearVelocity()).ToString());
 			}
 		}
 	}
@@ -190,5 +200,6 @@ namespace Zephyrus::ActorComponent
 
 	void DoomPC::Update()
 	{
+		Component::Update();
 	}
 }

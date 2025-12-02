@@ -35,6 +35,8 @@ namespace Zephyrus::ActorComponent
 		static Component* Create(Actor* pOwner) { return new DoomPC(pOwner); }
 	public:
 
+		void OnStart() override;
+		
 		void Move(Vector2D axis);
 		void Rotate(Vector2D axis);
 		void Shoot();
@@ -48,6 +50,8 @@ namespace Zephyrus::ActorComponent
 		bool goRight, goLeft, goForward, goBackward;
 		float mYaw{ 0.0f };
 		float mPitch{ 0.0f };
+		float moveSpeed{ 20.0f };
+		bool mIsMoving{ false };
 	};
 }
 

@@ -89,7 +89,6 @@ void EditorApplication::Update()
     mImGuiEditorLayer->UpdatePanels(this);
     auto world = mSceneManager->GetPhysicsWorld();
     world->Update(0);
-
     //EventSystem::Update();
 }
 
@@ -108,6 +107,15 @@ void EditorApplication::Input()
         glfwPollEvents();
 
         if (glfwWindowShouldClose(win)) mIsRunning = false;
+
+        if (mEditorInputManager->HasPriority())
+        {
+            mEditorInputManager->UpdateKeysAndButtons();
+        }
+        else
+        {
+            mSceneManager->UpdateInput();
+        }
     }
 }
 

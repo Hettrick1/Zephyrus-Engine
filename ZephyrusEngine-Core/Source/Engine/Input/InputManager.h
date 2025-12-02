@@ -20,6 +20,8 @@ namespace Zephyrus::Inputs {
         Vector2D mMouseDelta;
         Vector2D mLastCenter;
 
+        bool isMouseRelative{false};
+
         bool mMouseWasActive{ false };
     public:
         InputManager(GLFWwindow* window);
@@ -46,10 +48,12 @@ namespace Zephyrus::Inputs {
                 glfwGetCursorPos(mWindow, &x, &y);
                 mMousePos.x = static_cast<float>(x);
                 mMousePos.y = static_cast<float>(y);
+                isMouseRelative = true;
             }
             else
             {
                 glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                isMouseRelative = false;
             }
         }
         
@@ -59,7 +63,7 @@ namespace Zephyrus::Inputs {
 
         InputAction* GetAction(const std::string& name);
 
-        void OnMouseMove(double xpos, double ypos);
+        void OnMouseMove();
         void OnScroll(double xoffset, double yoffset);
 
         void SetPriority();
