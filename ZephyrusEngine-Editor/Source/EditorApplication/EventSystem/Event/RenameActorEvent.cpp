@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "RenameActorEvent.h"
 #include "Actor.h"
 

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "EditorApplication/EditorApplication.h"
 
 int main(int argc, char** argv) {

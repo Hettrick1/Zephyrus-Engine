@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Window.h"
 
-#include <glew.h>
-
 namespace Zephyrus::Application {
     Window::Window(int pWidth, int pHeight, bool pIsResizable) :
         mGlfwWindow(nullptr), mDimensions({ (float)pWidth, (float)pHeight }), mResizable(pIsResizable)

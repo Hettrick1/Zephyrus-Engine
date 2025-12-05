@@ -1,5 +1,6 @@
 #pragma once
 
+#include "glew.h"
 #include "Panel/Panel.h"
 #include <iostream>
 #include "../Window/WindowManager.h"

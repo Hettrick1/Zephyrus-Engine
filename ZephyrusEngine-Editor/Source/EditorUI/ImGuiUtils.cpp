@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ImGuiUtils.h"
 
 namespace ZP::UI

@@ -7,9 +7,6 @@ project "ZephyrusEngine-Editor"
 
     linkoptions { "/ENTRY:mainCRTStartup" }
 
-    pchheader "pch.h"
-    pchsource "Source/pch.cpp"
-
     files { 
         "Source/**.h", 
         "Source/**.cpp", 

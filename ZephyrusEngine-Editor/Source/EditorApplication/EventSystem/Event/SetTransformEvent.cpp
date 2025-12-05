@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "SetTransformEvent.h"
 #include "Actor.h"
 #include "Bullet/BulletRigidbodyComponent.h"

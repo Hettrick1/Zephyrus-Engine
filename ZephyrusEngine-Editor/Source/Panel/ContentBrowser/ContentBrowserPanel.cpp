@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ContentBrowserPanel.h"
 #include "Interface/ITexture2D.h"
 #include "AssetsManager.h"

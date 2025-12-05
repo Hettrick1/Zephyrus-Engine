@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ScenePanel.h"
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"

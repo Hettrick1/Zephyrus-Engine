@@ -1,8 +1,6 @@
 #pragma once
 
-#define GLFW_INCLUDE_NONE
-#include "GLFW/glfw3.h"
-
+#include "glew.h"
 #include "Window.h"
 #include "IRenderer.h"
 #include "Scene.h"
@@ -15,6 +13,8 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#define GLFW_INCLUDE_NONE
+#include "GLFW/glfw3.h"
 
 namespace Zephyrus::ActorComponent
 {

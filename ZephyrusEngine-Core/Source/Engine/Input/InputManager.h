@@ -3,6 +3,7 @@
 #include "InputActionBool.h"
 #include "InputActionAxis1D.h"
 #include "InputActionAxis2D.h"
+#include "GLFW/glfw3.h"
 #include <unordered_map>
 
 class ISceneContext;

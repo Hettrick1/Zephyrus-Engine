@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "InspectorPanel.h"
 #include "Actor.h"
 #include "EditorUI/ImGuiUtils.h"

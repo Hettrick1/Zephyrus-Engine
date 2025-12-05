@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "UtilsPanel.h"
 #include "Assets/AssetsManager.h"
 #include "SceneManager.h"

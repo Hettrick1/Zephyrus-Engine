@@ -1,4 +1,5 @@
 #pragma once
+#include <glew.h>
 #include <GLFW/glfw3.h>
 #include "Vector2D.h"
 #include "Log.h"

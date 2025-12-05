@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "EditorApplication.h"
 #include "Log.h"
 #include "RendererOpenGl.h"

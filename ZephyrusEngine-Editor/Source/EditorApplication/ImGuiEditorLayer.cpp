@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ImGuiEditorLayer.h"
 
 #include <imgui_impl_glfw.h>

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ConsolePanel.h"
 
 ConsolePanel::ConsolePanel(ISceneContext* pSceneContext, const std::string& pName)

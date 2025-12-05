@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ActorDrawer.h"
 #include "Log.h"
 #include "EditorUI/ImGuiUtils.h"

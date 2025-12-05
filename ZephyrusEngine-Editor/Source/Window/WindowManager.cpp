@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "WindowManager.h"
 #include "Interface/ITexture2D.h"
 #include "AssetsManager.h"
