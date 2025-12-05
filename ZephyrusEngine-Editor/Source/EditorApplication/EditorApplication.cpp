@@ -45,10 +45,6 @@ void EditorApplication::Initialize()
         glfwMaximizeWindow(mEditorWindow->GetGlfwWindow());
         mEditorInputManager = new InputManager(mEditorWindow->GetGlfwWindow());
         mEditorInputManager->SetPriority();
-        
-        // SDL_Surface* icon = IMG_Load("../Content/Sprites/Icons/ZephyrusLogo.png");
-        // SDL_SetWindowIcon(mGameWindow->GetSdlWindow(), icon);
-        // SDL_FreeSurface(icon);
 
         auto editorController = new Zephyrus::ActorComponent::EditorControllerActor(mSceneManager, *mSceneManager->GetActiveScene());
         mEditorController = editorController;

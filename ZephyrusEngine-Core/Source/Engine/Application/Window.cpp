@@ -1,4 +1,13 @@
 #include "pch.h"
+#ifdef _WIN32
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+    #include <dwmapi.h>
+    #pragma comment(lib, "Dwmapi.lib")
+    #define GLFW_EXPOSE_NATIVE_WIN32
+    #include <GLFW/glfw3.h>
+    #include <GLFW/glfw3native.h>
+#endif
 #include "Window.h"
 
 namespace Zephyrus::Application {
@@ -63,6 +72,12 @@ namespace Zephyrus::Application {
         glGetError();
         
         glfwSwapInterval(1);
+
+#ifdef _WIN32
+        HWND hwnd = glfwGetWin32Window(mGlfwWindow);
+        BOOL dark = TRUE;
+        DwmSetWindowAttribute(hwnd, 20, &dark, sizeof(dark));
+#endif
         
         return true;
 
