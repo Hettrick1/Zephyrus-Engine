@@ -9,7 +9,6 @@ SkyBoxPass::SkyBoxPass(const std::string& name)
 void SkyBoxPass::SetUp(PassContext& ctx)
 {
     FramePass::SetUp(ctx);
-
 }
 
 void SkyBoxPass::Execute(PassContext& ctx)
