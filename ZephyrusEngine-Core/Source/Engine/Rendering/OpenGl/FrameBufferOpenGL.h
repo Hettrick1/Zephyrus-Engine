@@ -2,17 +2,33 @@
 
 #include "../IFrameBuffer.h"
 
+namespace Zephyrus::Render
+{
+    class IRenderer;
+}
+
+struct FrameBufferTextureDesc
+{
+    FrameBufferTextureDesc();
+    FrameBufferTextureDesc(const AttachementDesc& pDesc, unsigned int pAttachment);
+    AttachementDesc mDescriptor = AttachementDesc("none", FramebufferTextureFormat::None);;
+    unsigned int mTextureAttachement = 0;
+};
+
 class FrameBufferOpenGL : public IFrameBuffer
 {
 private:
-    std::unordered_map<std::string, std::shared_ptr<TextureHandle>> mColorAttachements;
-    unsigned int mDepthAttachement = 0;
+    std::unordered_map<std::string, FrameBufferTextureDesc> mColorAttachements;
+    FrameBufferTextureDesc mDepthAttachement;
     unsigned int mFboHandle = 0;
 
     int mWidth = 800;
     int mHeight = 600;
+
+    Zephyrus::Render::IRenderer* mRendererRef{nullptr}; // TODO : Give only an interface, not the all renderer as we don't need everything
     
 public:
+    FrameBufferOpenGL(Zephyrus::Render::IRenderer* renderer);
     ~FrameBufferOpenGL() override;
 
     void Bind() override;
@@ -20,17 +36,18 @@ public:
 
     unsigned int GetHandle() const override { return mFboHandle; }
     
-    TextureHandle* GetColorAttachement(const std::string& name) override
+    unsigned int GetColorAttachement(const std::string& name) override
     {
         if (mColorAttachements.contains(name))
         {
-            return mColorAttachements[name].get(); // TODO : Return shared nopt raw
+            return mColorAttachements[name].mTextureAttachement; // TODO : Return shared nopt raw
         }
-        return nullptr;
+        return 0;
     }
-    void AddColorAttachement(const std::string& name) override;
+    void AddColorAttachement(AttachementDesc descriptor) override;
+    void AddDepthAttachement(FramebufferTextureFormat format) override;
     void RemoveColorAttachement(const std::string& name) override;
-    unsigned int GetDepthAttachement() override { return mDepthAttachement; }
+    unsigned int GetDepthAttachement() override { return mDepthAttachement.mTextureAttachement; }
 
     void Init() override;
     void Destroy() override;

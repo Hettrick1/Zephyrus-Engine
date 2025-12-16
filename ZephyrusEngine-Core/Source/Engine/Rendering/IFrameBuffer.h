@@ -2,8 +2,20 @@
 
 #include "TextureHandle.h"
 #include <string>
+#include "AttachementFormat.h"
 #include <unordered_map>
 #include <memory>
+
+struct AttachementDesc
+{
+    AttachementDesc(const std::string& pName, FramebufferTextureFormat pFormat)
+        : mName{ pName }, mFormat{ pFormat }
+    {
+        
+    }
+    std::string mName;
+    FramebufferTextureFormat mFormat {FramebufferTextureFormat::None};
+};
 
 class IFrameBuffer
 {
@@ -15,8 +27,9 @@ public:
 
     virtual unsigned int GetHandle() const = 0;
     
-    virtual TextureHandle* GetColorAttachement(const std::string& name) = 0;
-    virtual void AddColorAttachement(const std::string& name) = 0;
+    virtual unsigned int GetColorAttachement(const std::string& name) = 0;
+    virtual void AddColorAttachement(AttachementDesc descriptor) = 0;
+    virtual void AddDepthAttachement(FramebufferTextureFormat format) = 0;
     virtual void RemoveColorAttachement(const std::string& name) = 0;
     virtual unsigned int GetDepthAttachement() = 0;
     

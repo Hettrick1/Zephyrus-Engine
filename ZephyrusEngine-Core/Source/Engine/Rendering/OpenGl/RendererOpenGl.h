@@ -54,6 +54,8 @@ namespace Zephyrus::Render {
 		FrameData mFrameData;
 		Vector3D mCameraPosition {0};
 		std::vector<AtmosphereComponent*> mAtmosphereComponents;
+		
+		
 	public:
 		RendererOpenGl();
 		virtual ~RendererOpenGl() override;
