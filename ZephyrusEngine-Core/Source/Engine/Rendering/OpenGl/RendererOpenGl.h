@@ -50,10 +50,8 @@ namespace Zephyrus::Render {
 		bool mWireFrameMode;
 		std::vector<SkySphereComponent*> mSkySphereComponents;
 		Actor* mSelectedActor{ nullptr };
-		
 		FrameUboOpenGL mFrameUBO;
 		FrameData mFrameData;
-		
 		Vector3D mCameraPosition {0};
 		std::vector<AtmosphereComponent*> mAtmosphereComponents;
 	public:
@@ -131,17 +129,17 @@ namespace Zephyrus::Render {
 
 		// Enables or disables wireframe rendering mode
 		void SetWireFrameMode(bool pWireframe) override;
-		inline bool GetWireFrame() const override { return mWireFrameMode; }
+		bool GetWireFrame() const override { return mWireFrameMode; }
 
-		inline void SetCameraPosition(const Vector3D& pPosition) override { mCameraPosition = pPosition; }
-		inline void AddAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) override
+		void SetCameraPosition(const Vector3D& pPosition) override { mCameraPosition = pPosition; }
+		void AddAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) override
 		{
 			if (std::find(mAtmosphereComponents.begin(), mAtmosphereComponents.end(), pAtmosphereComponent) == mAtmosphereComponents.end())
 			{
 				mAtmosphereComponents.push_back(pAtmosphereComponent);
 			}
 		}
-		inline void RemoveAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) override
+		void RemoveAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) override
 		{
 			mAtmosphereComponents.erase(std::remove(mAtmosphereComponents.begin(), mAtmosphereComponents.end(), pAtmosphereComponent), mAtmosphereComponents.end());
 		}
