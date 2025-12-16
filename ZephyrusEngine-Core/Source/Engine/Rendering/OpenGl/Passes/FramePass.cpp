@@ -8,8 +8,5 @@ FramePass::FramePass(const std::string& name)
 
 void FramePass::Execute(PassContext& ctx)
 {
-    for (int i = 0; i < mReads.size(); i++)
-    {
-        glBindTexture(mReads[i].mHandle, i);
-    }
+
 }

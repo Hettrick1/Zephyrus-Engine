@@ -6,18 +6,9 @@ SkyBoxPass::SkyBoxPass(const std::string& name)
 {
 }
 
-void SkyBoxPass::SetUp(PassContext& ctx)
-{
-    FramePass::SetUp(ctx);
-}
-
 void SkyBoxPass::Execute(PassContext& ctx)
 {
     FramePass::Execute(ctx);
     
 }
 
-void SkyBoxPass::CleanUp(PassContext& ctx)
-{
-    FramePass::CleanUp(ctx);
-}

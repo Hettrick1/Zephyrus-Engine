@@ -10,10 +10,7 @@ RenderPipeline::RenderPipeline(Zephyrus::Render::IRenderer* renderer)
 
 void RenderPipeline::SetUp()
 {
-    for (auto pass : passes)
-    {
-        pass->SetUp(mContext);
-    }
+
 }
 
 void RenderPipeline::ExecutePasses()

@@ -7,7 +7,5 @@ public:
     GeometryPass(const std::string& name);
     ~GeometryPass() override = default;
     
-    void SetUp(PassContext& ctx) override;
     void Execute(PassContext& ctx) override;
-    void CleanUp(PassContext& ctx) override;
 };
