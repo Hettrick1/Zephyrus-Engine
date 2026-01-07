@@ -1,6 +1,5 @@
 #pragma once
 
-#include "TextureHandle.h"
 #include <string>
 #include "AttachementFormat.h"
 #include <unordered_map>

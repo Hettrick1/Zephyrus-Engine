@@ -11,7 +11,7 @@ struct FrameBufferTextureDesc
 {
     FrameBufferTextureDesc();
     FrameBufferTextureDesc(const AttachementDesc& pDesc, unsigned int pAttachment);
-    AttachementDesc mDescriptor = AttachementDesc("none", FramebufferTextureFormat::None);;
+    AttachementDesc mDescriptor = AttachementDesc("none", FramebufferTextureFormat::None);
     unsigned int mTextureAttachement = 0;
 };
 
