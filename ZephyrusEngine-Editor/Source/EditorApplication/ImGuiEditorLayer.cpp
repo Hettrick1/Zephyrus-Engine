@@ -8,7 +8,7 @@
 #include "imgui_internal.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "Panel/InspectorPanel/InspectorPanel.h"
-#include "Panel/ScenePanel.h"
+#include "Panel/ScenePanel/ScenePanel.h"
 #include "Panel/ConsolePanel.h"
 #include "Panel/SceneHierarchyPanel.h"
 #include "Panel/ContentBrowser/ContentBrowserPanel.h"
@@ -53,9 +53,9 @@ void ImGuiEditorLayer::InitializePanels(EditorApplication* editor)
 {
     std::unique_ptr<PrefabPanel> prefabPanel = std::make_unique<PrefabPanel>(editor->GetSceneManager(), prefabPanelName);
     std::unique_ptr<ConsolePanel> consolePanel = std::make_unique<ConsolePanel>(editor->GetSceneManager(), consolePanelName);
-    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(editor->GetSceneManager(), scenePanelName, editor->GetEditorController()->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->GetRenderTarget()->GetColorTexture());
-    std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(editor->GetSceneManager(), inspectorPanelName);
     std::unique_ptr<SceneHierarchyPanel> sceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(editor->GetSceneManager(), sceneHierarchyName);
+    std::unique_ptr<ScenePanel> scenePanel = std::make_unique<ScenePanel>(editor->GetSceneManager(), scenePanelName, editor->GetEditorController()->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->GetRenderTarget()->GetColorTexture(), sceneHierarchyPanel.get());
+    std::unique_ptr<InspectorPanel> inspectorPanel = std::make_unique<InspectorPanel>(editor->GetSceneManager(), inspectorPanelName);
     std::unique_ptr<ContentBrowserPanel> contentBrowserPanel = std::make_unique<ContentBrowserPanel>(editor->GetSceneManager(), contentBrowserName, mWindowManager);
     std::unique_ptr<MenuPanel> menuPanel = std::make_unique<MenuPanel>(editor->GetSceneManager(), menuPanelName, this);
     std::unique_ptr<UtilsPanel> utilsPanel = std::make_unique<UtilsPanel>(editor->GetSceneManager(), utilsPanelName, topBarHeight);
@@ -112,6 +112,7 @@ void ImGuiEditorLayer::UpdatePanels(EditorApplication* editor)
             editor->GetEditorController()->GetComponentOfType<Zephyrus::ActorComponent::EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
             cameraView = editor->GetEditorController()->GetComponentOfType<CameraComponent>()->GetViewMatrix();
             cameraProjection = editor->GetEditorController()->GetComponentOfType<CameraComponent>()->GetProjMatrix();
+            scenePanel->UpdateMatrices(cameraView, cameraProjection);
         }
     }
 }
@@ -122,27 +123,8 @@ void ImGuiEditorLayer::RenderImgui()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     ImGuizmo::BeginFrame();
-
-
-    // Todo : remove from here
-    auto hierarchy = mAllPanels.find(sceneHierarchyName);
-    if (hierarchy != mAllPanels.end())
-    {
-        if (auto hierarchyPanel = dynamic_cast<SceneHierarchyPanel*>(hierarchy->second.get()))
-        {
-            if (auto actor = hierarchyPanel->GetSelectedActor())
-            {
-                Matrix4DRow transform = actor->GetTransformComponent().GetWorldTransform();
-                float* matrix = transform.GetAsFloatPtr();
-                ImGuizmo::Manipulate(cameraView.GetAsConstFloatPtr(), cameraProjection.GetAsConstFloatPtr(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, matrix, NULL, NULL, NULL, NULL);
-                actor->GetTransformComponent().SetPosition(transform.GetTranslation());
-            }
-        }
-    }
     
     SetEditorStyle();
-    //ImGuizmo::DrawGrid(cameraView.GetAsFloatPtr(), cameraProjection.GetAsFloatPtr(), Matrix4DRow::Identity.GetAsFloatPtr(), 100.f);
-
     
     DrawDockSpace();
     DrawPanels();

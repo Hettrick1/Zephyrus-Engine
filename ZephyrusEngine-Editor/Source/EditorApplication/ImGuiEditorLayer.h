@@ -10,6 +10,11 @@
 
 #include "Matrix4DRow.h"
 
+namespace Zephyrus::ActorComponent
+{
+	class Actor;
+}
+
 class EditorApplication;
 
 class ImGuiEditorLayer

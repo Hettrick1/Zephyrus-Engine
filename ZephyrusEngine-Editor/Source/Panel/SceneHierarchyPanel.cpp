@@ -18,6 +18,8 @@ void SceneHierarchyPanel::Draw()
 {
 	if (!mDrawPanel)
 	{
+		mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(nullptr);
+		mSelectedActor = nullptr;
 		return;
 	}
 
@@ -44,18 +46,14 @@ void SceneHierarchyPanel::Draw()
 		}
 
 		mSelectedActor = actors[selected];
-		mSelectedActor->SetSelected(true);
 		mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(mSelectedActor);
-		if (selected != i)
-		{
-			actors[i]->SetSelected(false);
-		}
 		ImGui::PopID();
 	}
 	if (ImGui::IsWindowFocused())
 	{
 		if (ImGui::IsKeyPressed(ImGuiKey_Delete))
 		{
+			mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(nullptr);
 			mSelectedActor->Destroy();
 			mContext->GetActiveScene()->RemoveActor(mSelectedActor);
 			delete mSelectedActor;
@@ -73,7 +71,6 @@ void SceneHierarchyPanel::Draw()
 				selected = static_cast<int>(actors.size()) - 1;
 			}
 			mSelectedActor = actors[selected];
-			mSelectedActor->SetSelected(true);
 			mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(mSelectedActor);
 		}
 	}
@@ -91,6 +88,7 @@ void SceneHierarchyPanel::ResetSelectedActor()
 	}
 	else
 	{
+		mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(nullptr);
 		mSelectedActor = nullptr;
 	}
 }

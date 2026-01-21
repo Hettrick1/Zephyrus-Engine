@@ -1,10 +1,13 @@
 #include "ScenePanel.h"
-#include "../EditorApplication/EventSystem/EventSystem.h"
-#include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
-#include "ImGuizmo.h"
 
-ScenePanel::ScenePanel(ISceneContext* pSceneContext, const std::string& pName, unsigned int  pSceneRenderTexture)
-	: Panel(pSceneContext, pName), mSceneRenderTexture(pSceneRenderTexture)
+#include "Actor.h"
+#include "Matrix4DRow.h"
+#include "../../EditorApplication/EventSystem/EventSystem.h"
+#include "../../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
+#include "Panel/SelectedActorAccessor.h"
+
+ScenePanel::ScenePanel(ISceneContext* pSceneContext, const std::string& pName, unsigned int  pSceneRenderTexture, SelectedActorAccessor* actorAccessor)
+	: Panel(pSceneContext, pName), mSceneRenderTexture(pSceneRenderTexture), mSelectedActorAccessor(actorAccessor)
 {
 }
 
@@ -18,9 +21,11 @@ void ScenePanel::Draw()
 	{
 		return;
 	}
-
+	
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
+
+	mSettingsBar.DrawGuizmoSettingsBar();
 
 	ImVec2 size = ImGui::GetContentRegionAvail();
 	mDimensions = Vector2D(size.x, size.y);
@@ -49,7 +54,14 @@ void ScenePanel::Draw()
 		}
 		ImGui::EndDragDropTarget();
 	}
-
+	
+	if (auto selectedActor = mSelectedActorAccessor->GetSelectedActor())
+	{
+		Matrix4DRow transform = selectedActor->GetTransformComponent().GetWorldTransform();
+		float* matrix = transform.GetAsFloatPtr();
+		ImGuizmo::Manipulate(cameraView.GetAsConstFloatPtr(), cameraProjection.GetAsConstFloatPtr(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, matrix, NULL, NULL, NULL, NULL);
+	}
+	
 	ImGui::End();
 	Panel::EndDraw();
 }
