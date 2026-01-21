@@ -20,6 +20,7 @@
 #include "EditorApplication.h"
 #include "EditorControllerActor.h"
 #include "EditorControllerComponent.h"
+#include "ImGuizmo.h"
 
 void ImGuiEditorLayer::InitializeImGui(GLFWwindow* glfw3Window)
 {
@@ -109,6 +110,8 @@ void ImGuiEditorLayer::UpdatePanels(EditorApplication* editor)
         if (auto scenePanel = dynamic_cast<ScenePanel*>(it->second.get()))
         {
             editor->GetEditorController()->GetComponentOfType<Zephyrus::ActorComponent::EditorControllerComponent>()->SetIsInSceneCapture(scenePanel->GetIsHover());
+            cameraView = editor->GetEditorController()->GetComponentOfType<CameraComponent>()->GetViewMatrix();
+            cameraProjection = editor->GetEditorController()->GetComponentOfType<CameraComponent>()->GetProjMatrix();
         }
     }
 }
@@ -118,13 +121,33 @@ void ImGuiEditorLayer::RenderImgui()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+    ImGuizmo::BeginFrame();
 
+
+    // Todo : remove from here
+    auto hierarchy = mAllPanels.find(sceneHierarchyName);
+    if (hierarchy != mAllPanels.end())
+    {
+        if (auto hierarchyPanel = dynamic_cast<SceneHierarchyPanel*>(hierarchy->second.get()))
+        {
+            if (auto actor = hierarchyPanel->GetSelectedActor())
+            {
+                Matrix4DRow transform = actor->GetTransformComponent().GetWorldTransform();
+                float* matrix = transform.GetAsFloatPtr();
+                ImGuizmo::Manipulate(cameraView.GetAsConstFloatPtr(), cameraProjection.GetAsConstFloatPtr(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, matrix, NULL, NULL, NULL, NULL);
+                actor->GetTransformComponent().SetPosition(transform.GetTranslation());
+            }
+        }
+    }
+    
     SetEditorStyle();
+    //ImGuizmo::DrawGrid(cameraView.GetAsFloatPtr(), cameraProjection.GetAsFloatPtr(), Matrix4DRow::Identity.GetAsFloatPtr(), 100.f);
+
     
     DrawDockSpace();
     DrawPanels();
     mWindowManager->DrawWindows();
-
+    
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

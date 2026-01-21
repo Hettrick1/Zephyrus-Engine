@@ -7,7 +7,8 @@
 #include "GLFW/glfw3.h"
 #include <unordered_map>
 #include <memory>
-#include <imgui_internal.h>
+
+#include "Matrix4DRow.h"
 
 class EditorApplication;
 
@@ -17,6 +18,8 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<Panel>> mAllPanels;
 	std::shared_ptr<Zephyrus::Editor::Window::WindowManager> mWindowManager {nullptr};
 	ImGuiContext* mEditorContext{ nullptr };
+	Matrix4DRow cameraView;
+	Matrix4DRow cameraProjection;
 public:
 	ImGuiEditorLayer() = default;
 	~ImGuiEditorLayer() = default;

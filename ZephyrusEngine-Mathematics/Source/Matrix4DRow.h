@@ -45,9 +45,15 @@ public:
 	}
 
 	// Cast to a const float pointer
-	const float* GetAsFloatPtr() const
+	const float* GetAsConstFloatPtr() const
 	{
 		auto retu = reinterpret_cast<const float*>(&mat[0][0]);
+		return retu;
+	}
+
+	float* GetAsFloatPtr()
+	{
+		float* retu = &mat[0][0];
 		return retu;
 	}
 

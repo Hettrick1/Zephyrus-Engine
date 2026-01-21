@@ -1,6 +1,7 @@
 #include "ScenePanel.h"
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
+#include "ImGuizmo.h"
 
 ScenePanel::ScenePanel(ISceneContext* pSceneContext, const std::string& pName, unsigned int  pSceneRenderTexture)
 	: Panel(pSceneContext, pName), mSceneRenderTexture(pSceneRenderTexture)
@@ -24,6 +25,11 @@ void ScenePanel::Draw()
 	ImVec2 size = ImGui::GetContentRegionAvail();
 	mDimensions = Vector2D(size.x, size.y);
 
+	ImGuizmo::SetDrawlist();
+	float windowWidth = (float)ImGui::GetWindowWidth();
+	float windowHeight = (float)ImGui::GetWindowHeight();
+	ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+	
 	ImGui::Image(
 		(ImTextureID)(intptr_t)mSceneRenderTexture,
 		size,

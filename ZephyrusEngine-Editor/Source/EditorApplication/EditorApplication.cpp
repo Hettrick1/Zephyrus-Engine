@@ -3,10 +3,6 @@
 #include "RendererOpenGl.h"
 #include "TextRenderer.h"
 #include "SplashScreen.h"
-#include "imgui.h"
-#include "imgui_internal.h"
-#include "Panel/InspectorPanel/InspectorPanel.h"
-#include "Panel/ContentBrowser/ContentBrowserPanel.h"
 #include "EditorControllerActor.h"
 #include "EditorControllerComponent.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
@@ -91,7 +87,6 @@ void EditorApplication::Render()
 {
     mEditorController->GetComponentOfType<Zephyrus::ActorComponent::CameraComponent>()->RenderScene();
     mSceneManager->GetActiveScene()->EndRender();
-
     mImGuiEditorLayer->RenderImgui();
 }
 

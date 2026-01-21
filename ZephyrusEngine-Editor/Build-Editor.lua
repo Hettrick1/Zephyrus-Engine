@@ -11,7 +11,7 @@ project "ZephyrusEngine-Editor"
         "Source/**.h", 
         "Source/**.cpp", 
         "Source/**.rc",
-        
+
         -- ImGui core
         "../Vendor/imgui-1.92.2b/imgui.cpp",
         "../Vendor/imgui-1.92.2b/imgui_draw.cpp",
@@ -22,6 +22,11 @@ project "ZephyrusEngine-Editor"
         -- ImGui backends
         "../Vendor/imgui-1.92.2b/backends/imgui_impl_glfw.cpp",
         "../Vendor/imgui-1.92.2b/backends/imgui_impl_opengl3.cpp",
+
+        -- ImGuizmo
+        "../Vendor/ImGuizmo-1.83/ImGuizmo.cpp",
+        "../Vendor/ImGuizmo-1.83/ImCurveEdit.cpp",
+        "../Vendor/ImGuizmo-1.83/ImSequencer.cpp",
         }
 
     includedirs
@@ -40,6 +45,7 @@ project "ZephyrusEngine-Editor"
         "../Vendor/imgui-1.92.2b",
         "../Vendor/imgui-1.92.2b/backends",
         "../Vendor/bullet3-3.25/src",
+        "../Vendor/ImGuizmo-1.83",
 
         "../ZephyrusEngine-Mathematics/Source",
 

@@ -87,6 +87,6 @@ namespace Zephyrus::Render {
 	}
 	void ShaderProgram::setMatrix4Row(const GLchar* name, const Matrix4DRow& matrix)
 	{
-		glUniformMatrix4fv(glGetUniformLocation(mId, name), 1, GL_TRUE, matrix.GetAsFloatPtr());
+		glUniformMatrix4fv(glGetUniformLocation(mId, name), 1, GL_TRUE, matrix.GetAsConstFloatPtr());
 	}
 }
