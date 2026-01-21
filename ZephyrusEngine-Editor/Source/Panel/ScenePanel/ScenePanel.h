@@ -23,6 +23,9 @@ private:
 	Matrix4DRow cameraProjection;
 
 	SelectedActorAccessor* mSelectedActorAccessor = nullptr;
+
+	bool mDeactivatedAfterEdit = false;
+	Matrix4DRow oldTransform = Matrix4DRow::Identity;
 	
 public:
 	ScenePanel(ISceneContext* pSceneContext, const std::string& pName, unsigned int pSceneRenderTexture, SelectedActorAccessor* actorAccessor);
