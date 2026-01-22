@@ -53,6 +53,14 @@ namespace Zephyrus::ActorComponent
 
         inline Zephyrus::Render::IRenderTarget* GetRenderTarget() const { return mRenderTarget; }
 
+        float GetFOV() const { return mFov; }
+
+        float GetAspectRatio()const { return mWidth / mHeight; }
+
+        float GetNearClip() const { return mNearClip; }
+
+        float GetFarClip() const { return mFarClip; }
+
         CameraUsage usage;
     };
 }

@@ -28,9 +28,8 @@ void GuizmoSettingsBar::DrawGuizmoSettingsBar()
 
     ImGui::SameLine();
     ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical, 5);
-    ImGui::SameLine();
     
-    if (mGuizmoOperation != ImGuizmo::SCALE)
+    if (mGuizmoOperation != 2) // not equal to scale
     {
         ImGui::SameLine();
         if (ImGui::RadioButton("Local", mGuizmoMode == ImGuizmo::LOCAL))
@@ -39,5 +38,8 @@ void GuizmoSettingsBar::DrawGuizmoSettingsBar()
         if (ImGui::RadioButton("World", mGuizmoMode == ImGuizmo::WORLD))
             mGuizmoMode = ImGuizmo::WORLD;
     }
-    
+    else
+    {
+        mGuizmoMode = ImGuizmo::LOCAL;
+    }
 }

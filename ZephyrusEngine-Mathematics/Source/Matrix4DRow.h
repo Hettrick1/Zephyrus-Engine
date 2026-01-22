@@ -472,5 +472,18 @@ public:
 		return q;
 	}
 
+	static Matrix4DRow Transposed(const Matrix4DRow& matrix)
+	{
+		float temp[4][4];
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				temp[i][j] = matrix.mat[j][i];
+			}
+		}
+		return Matrix4DRow(temp);
+	}
+
 	static const Matrix4DRow Identity;
 };
