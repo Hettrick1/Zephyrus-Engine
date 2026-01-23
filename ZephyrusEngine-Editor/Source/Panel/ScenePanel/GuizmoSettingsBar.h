@@ -8,6 +8,7 @@ class GuizmoSettingsBar
 {
 private:
     ImGuizmo::MODE mGuizmoMode = ImGuizmo::MODE::WORLD;
+    ImGuizmo::MODE mOldGuizmoMode = ImGuizmo::MODE::WORLD;
     int mGuizmoOperation = 0;
     Vector3D mSnap = { 1.0f, 1.0f, 1.0f };
     bool mUseSnap = false;

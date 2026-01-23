@@ -28,13 +28,15 @@ void ScenePanel::Draw()
 
 	mSettingsBar.DrawGuizmoSettingsBar();
 
+	float heigth = ImGui::GetItemRectSize().y;
+
 	ImVec2 size = ImGui::GetContentRegionAvail();
 	mDimensions = Vector2D(size.x, size.y);
 
 	ImGuizmo::SetDrawlist();
 	float windowWidth = (float)ImGui::GetWindowWidth();
 	float windowHeight = (float)ImGui::GetWindowHeight();
-	ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+	ImGuizmo::SetRect(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y, mDimensions.x, mDimensions.y);
 	
 	ImGui::Image(
 		(ImTextureID)(intptr_t)mSceneRenderTexture,
@@ -43,8 +45,8 @@ void ScenePanel::Draw()
 		ImVec2(1, 0)
 	);
 
-	mIsHover = ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows);
-
+	mIsHover = ImGui::IsWindowHovered();
+	
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB"))
@@ -64,6 +66,7 @@ void ScenePanel::Draw()
 		
 		Matrix4DRow transform = selectedActor->GetTransformComponent().GetWorldTransform();
 		float* matrix = transform.GetAsFloatPtr();
+		
 		ImGuizmo::Manipulate(cameraView.GetAsConstFloatPtr(), cameraProjection.GetAsConstFloatPtr(), guizmoOperation, guizmoMode, matrix, NULL, NULL, NULL, NULL);
 
 		if (!ImGuizmo::IsUsing() && !mDeactivatedAfterEdit)

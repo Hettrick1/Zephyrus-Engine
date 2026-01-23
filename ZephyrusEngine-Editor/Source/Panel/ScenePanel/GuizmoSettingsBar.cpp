@@ -31,12 +31,22 @@ void GuizmoSettingsBar::DrawGuizmoSettingsBar()
     
     if (mGuizmoOperation != 2) // not equal to scale
     {
+        if (mGuizmoMode != mOldGuizmoMode)
+        {
+            mGuizmoMode = mOldGuizmoMode;
+        }
         ImGui::SameLine();
         if (ImGui::RadioButton("Local", mGuizmoMode == ImGuizmo::LOCAL))
+        {
             mGuizmoMode = ImGuizmo::LOCAL;
+            mOldGuizmoMode = mGuizmoMode;
+        }
         ImGui::SameLine();
         if (ImGui::RadioButton("World", mGuizmoMode == ImGuizmo::WORLD))
+        {
             mGuizmoMode = ImGuizmo::WORLD;
+            mOldGuizmoMode = mGuizmoMode;
+        }
     }
     else
     {
