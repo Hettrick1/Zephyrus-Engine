@@ -134,7 +134,7 @@ namespace Zephyrus::Render {
 
 	void DebugRenderer::DrawSelectedBox(const Matrix4DRow& pWorldTransform)
 	{
-		glDisable(GL_DEPTH_TEST);
+		//glDisable(GL_DEPTH_TEST);
 		glLineWidth(2);
 		glBindVertexArray(mDebugBoxVao);
 
@@ -152,7 +152,7 @@ namespace Zephyrus::Render {
 
 		glDrawArrays(GL_LINES, 0, 24);
 		glLineWidth(4);
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 	}
 
 	void DebugRenderer::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit)

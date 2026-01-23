@@ -146,7 +146,7 @@ void ImGuiEditorLayer::RenderImgui()
 
 void ImGuiEditorLayer::DrawDockSpace()
 {
-    static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
+    static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_NoCloseButton | ImGuiDockNodeFlags_NoWindowMenuButton;
     ImGuiWindowFlags window_flags = 
         ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |

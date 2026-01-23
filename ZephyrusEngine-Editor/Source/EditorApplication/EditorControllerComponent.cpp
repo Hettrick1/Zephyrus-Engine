@@ -172,7 +172,7 @@ namespace Zephyrus::ActorComponent {
 
 	void EditorControllerComponent::Rotate(Vector2D delta)
 	{
-		if (mCanMove)
+		if (mCanMove && mInCapture)
 		{
 			mYaw += delta.x * mMouseSensitivity;
 			mPitch += delta.y * -mMouseSensitivity;
@@ -194,7 +194,7 @@ namespace Zephyrus::ActorComponent {
 
 	void EditorControllerComponent::Move(Vector2D delta)
 	{
-		if (mCanMove)
+		if (mCanMove && mInCapture)
 		{
 			if (delta.x != 0)
 			{
@@ -211,7 +211,10 @@ namespace Zephyrus::ActorComponent {
 
 	void EditorControllerComponent::UpDown(float direction)
 	{
-		auto up = Vector3D::unitZ;
-		mOwner->GetTransformComponent().Translate(up * direction * mSpeed * Timer::deltaTime);
+		if (mCanMove && mInCapture)
+		{
+			auto up = Vector3D::unitZ;
+			mOwner->GetTransformComponent().Translate(up * direction * mSpeed * Timer::deltaTime);
+		}
 	}
 }

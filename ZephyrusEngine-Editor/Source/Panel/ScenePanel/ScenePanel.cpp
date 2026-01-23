@@ -24,7 +24,7 @@ void ScenePanel::Draw()
 	}
 	
 	Panel::BeginDraw();
-	ImGui::Begin(mName.c_str());
+	ImGui::Begin(mName.c_str(), 0, ImGuiWindowFlags_NoMove);
 
 	mSettingsBar.DrawGuizmoSettingsBar();
 
