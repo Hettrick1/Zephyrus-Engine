@@ -4,18 +4,19 @@
 #include "ImGuizmo.h"
 #include "Vector3D.h"
 
-class GuizmoSettingsBar
+class GizmoSettingsBar
 {
 private:
     ImGuizmo::MODE mGuizmoMode = ImGuizmo::MODE::WORLD;
     ImGuizmo::MODE mOldGuizmoMode = ImGuizmo::MODE::WORLD;
     int mGuizmoOperation = 0;
     bool mUseSnap = false;
-
-    Vector3D mSnap = { 1.0f, 1.0f, 1.0f };
+    
+    Vector3D mSnap = { 0.0f, 45.0f, 1.0f };
     
 public:
-    void DrawGuizmoSettingsBar();
+    void DrawGizmoSettingsBar();
+    void DrawSnap();
 
     ImGuizmo::MODE GetGuizmoMode() const { return mGuizmoMode; }
     ImGuizmo::OPERATION GetGuizmoOperation() const
@@ -32,7 +33,7 @@ public:
             return ImGuizmo::TRANSLATE;
         }
     }
-    float* GetSnap();
+    Vector3D GetSnap() const;
     void SetSnap(float value);
     bool GetUseSnap() const { return mUseSnap; }
 };

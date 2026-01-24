@@ -1,7 +1,7 @@
 #pragma once
 #include "../Panel.h"
 #include "Vector2D.h"
-#include "GuizmoSettingsBar.h"
+#include "GizmoSettingsBar.h"
 #include "Matrix4DRow.h"
 
 class SelectedActorAccessor;
@@ -17,7 +17,7 @@ private:
 	unsigned int  mSceneRenderTexture = 0;
 	bool mIsHover = false;
 	Vector2D mDimensions;
-	GuizmoSettingsBar mSettingsBar;
+	GizmoSettingsBar mSettingsBar;
 
 	Matrix4DRow cameraView;
 	Matrix4DRow cameraProjection;

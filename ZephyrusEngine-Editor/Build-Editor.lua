@@ -25,7 +25,6 @@ project "ZephyrusEngine-Editor"
 
         -- ImGuizmo
         "../Vendor/ImGuizmo-1.83/ImGuizmo.cpp",
-        "../Vendor/ImGuizmo-1.83/ImCurveEdit.cpp",
         "../Vendor/ImGuizmo-1.83/ImSequencer.cpp",
         }
 
