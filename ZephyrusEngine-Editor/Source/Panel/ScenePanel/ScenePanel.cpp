@@ -69,9 +69,9 @@ void ScenePanel::Draw()
 		Matrix4DRow transform = selectedActor->GetTransformComponent().GetWorldTransform();
 		float* matrix = transform.GetAsFloatPtr();
 
-		float snap = mSettingsBar.GetSnap();
+		float* snap = mSettingsBar.GetSnap();
 		
-		ImGuizmo::Manipulate(cameraView.GetAsConstFloatPtr(), cameraProjection.GetAsConstFloatPtr(), guizmoOperation, guizmoMode, matrix, NULL, NULL, NULL, NULL);
+		ImGuizmo::Manipulate(cameraView.GetAsConstFloatPtr(), cameraProjection.GetAsConstFloatPtr(), guizmoOperation, guizmoMode, matrix, NULL, snap, NULL, NULL);
 
 		if (!ImGuizmo::IsUsing() && !mDeactivatedAfterEdit)
 		{

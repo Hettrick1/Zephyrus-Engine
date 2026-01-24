@@ -16,9 +16,9 @@ struct Vector3D
 	float Length() const;
 	void Normalize();
 
-	const float* GetAsFloatPtr() const
+	float* GetAsFloatPtr()
 	{
-		return reinterpret_cast<const float*>(&x);
+		return &x;
 	}
 
 	/*btVector3 ToBulletVec3() const

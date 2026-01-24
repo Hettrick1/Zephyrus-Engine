@@ -32,7 +32,7 @@ public:
             return ImGuizmo::TRANSLATE;
         }
     }
-    float GetSnap() const;
+    float* GetSnap();
     void SetSnap(float value);
     bool GetUseSnap() const { return mUseSnap; }
 };
