@@ -52,4 +52,47 @@ void GuizmoSettingsBar::DrawGuizmoSettingsBar()
     {
         mGuizmoMode = ImGuizmo::LOCAL;
     }
+
+    ImGui::SameLine();
+
+    float snap = GetSnap();
+    
+    if (ImGui::SliderFloat("Snap", &snap, 0.0f, 10.0f, "%.3f"))
+    {
+        SetSnap(snap);
+    }
+    
+}
+
+float GuizmoSettingsBar::GetSnap() const
+{
+    switch (mGuizmoOperation)
+    {
+    case 0 :
+        return mSnap.x;
+    case 1 :
+        return mSnap.y;
+    case 2 :
+        return mSnap.z;
+    default:
+        return 0.0f;
+    }
+}
+
+void GuizmoSettingsBar::SetSnap(float value)
+{
+    switch (mGuizmoOperation)
+    {
+    case 0 :
+        mSnap.x = value;
+        break;
+    case 1 :
+        mSnap.y = value;
+        break;
+    case 2 :
+        mSnap.z = value;
+        break;
+    default:
+        break;
+    }
 }

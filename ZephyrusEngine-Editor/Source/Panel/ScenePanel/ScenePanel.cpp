@@ -24,7 +24,7 @@ void ScenePanel::Draw()
 	}
 	
 	Panel::BeginDraw();
-	ImGui::Begin(mName.c_str(), 0, ImGuiWindowFlags_NoMove);
+	ImGui::Begin(mName.c_str(), nullptr, ImGuiWindowFlags_NoMove);
 	
 	mSettingsBar.DrawGuizmoSettingsBar();
 	
@@ -63,12 +63,13 @@ void ScenePanel::Draw()
 	
 	if (auto selectedActor = mSelectedActorAccessor->GetSelectedActor())
 	{
-
 		auto guizmoMode = mSettingsBar.GetGuizmoMode();
 		auto guizmoOperation = mSettingsBar.GetGuizmoOperation();
 		
 		Matrix4DRow transform = selectedActor->GetTransformComponent().GetWorldTransform();
 		float* matrix = transform.GetAsFloatPtr();
+
+		float snap = mSettingsBar.GetSnap();
 		
 		ImGuizmo::Manipulate(cameraView.GetAsConstFloatPtr(), cameraProjection.GetAsConstFloatPtr(), guizmoOperation, guizmoMode, matrix, NULL, NULL, NULL, NULL);
 
