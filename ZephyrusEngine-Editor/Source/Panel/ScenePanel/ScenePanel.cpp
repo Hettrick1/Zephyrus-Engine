@@ -25,18 +25,21 @@ void ScenePanel::Draw()
 	
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str(), 0, ImGuiWindowFlags_NoMove);
-
+	
 	mSettingsBar.DrawGuizmoSettingsBar();
-
-	float heigth = ImGui::GetItemRectSize().y;
-
+	
 	ImVec2 size = ImGui::GetContentRegionAvail();
 	mDimensions = Vector2D(size.x, size.y);
 
-	ImGuizmo::SetDrawlist();
-	float windowWidth = (float)ImGui::GetWindowWidth();
-	float windowHeight = (float)ImGui::GetWindowHeight();
+	auto sceneDrawList = ImGui::GetWindowDrawList();
+
+	ImGuizmo::SetDrawlist(ImGui::GetWindowDrawList());
 	ImGuizmo::SetRect(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y, mDimensions.x, mDimensions.y);
+
+	sceneDrawList->PushClipRect(
+		 { ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y },
+		 { ImGui::GetCursorScreenPos().x + mDimensions.x, ImGui::GetCursorScreenPos().y + mDimensions.y }
+	);
 	
 	ImGui::Image(
 		(ImTextureID)(intptr_t)mSceneRenderTexture,
