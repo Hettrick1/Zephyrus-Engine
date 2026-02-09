@@ -27,7 +27,7 @@ namespace Zephyrus::ActorComponent
 		DoomPC() = delete;
 		DoomPC(const DoomPC&) = delete;
 		DoomPC& operator=(const DoomPC&) = delete;
-		~DoomPC();
+		~DoomPC() override;
 
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;

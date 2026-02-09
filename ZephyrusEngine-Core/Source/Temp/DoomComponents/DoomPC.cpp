@@ -85,7 +85,7 @@ namespace Zephyrus::ActorComponent
 			
 				moveDir.Normalize();
 
-				ZP_CORE_LOAD(Physics::FromBtVec3(body->getLinearVelocity()).ToString());
+				//ZP_CORE_LOAD(Physics::FromBtVec3(body->getLinearVelocity()).ToString());
 			}
 		}
 	}

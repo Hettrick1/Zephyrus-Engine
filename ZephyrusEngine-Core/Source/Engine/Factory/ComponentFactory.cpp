@@ -17,6 +17,7 @@
 #include "Physics/Bullet/CapsuleColliderComponent.h"
 #include "CameraComponent.h"
 #include "AtmosphereComponent.h"
+#include "Temp/TheDescentComponents/TheDescentPC.h"
 
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::DoomMenuPC;
@@ -34,6 +35,7 @@ using Zephyrus::ActorComponent::SphereColliderComponent;
 using Zephyrus::ActorComponent::CapsuleColliderComponent;
 using Zephyrus::ActorComponent::CameraComponent;
 using Zephyrus::ActorComponent::AtmosphereComponent;
+using Zephyrus::ActorComponent::TheDescentPC;
 
 namespace Zephyrus::Factory {
 	ComponentFactory::ComponentFactory()
@@ -65,6 +67,7 @@ namespace Zephyrus::Factory {
 		Register("CapsuleColliderComponent", CapsuleColliderComponent::Create);
 		Register("CameraComponent", CameraComponent::Create);
 		Register("AtmosphereComponent", AtmosphereComponent::Create);
+		Register("TheDescentPC", TheDescentPC::Create);
     }
 
     Component* ComponentFactory::Create(const std::string& pName, Actor* pOwner)

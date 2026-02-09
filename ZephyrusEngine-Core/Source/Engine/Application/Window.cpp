@@ -11,8 +11,8 @@
 #include "Window.h"
 
 namespace Zephyrus::Application {
-    Window::Window(int pWidth, int pHeight, bool pIsResizable) :
-        mGlfwWindow(nullptr), mDimensions({ (float)pWidth, (float)pHeight }), mResizable(pIsResizable)
+    Window::Window(int pWidth, int pHeight, bool pIsResizable, bool pFullscreen) :
+        mGlfwWindow(nullptr), mDimensions({ (float)pWidth, (float)pHeight }), mResizable(pIsResizable), mFullscreen(pFullscreen)
     {
     }
 
@@ -53,7 +53,7 @@ namespace Zephyrus::Application {
         glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, mResizable ? GLFW_TRUE : GLFW_FALSE);
 
-        mGlfwWindow = glfwCreateWindow(static_cast<int>(mDimensions.x), static_cast<int>(mDimensions.y), pTitle.c_str(), nullptr, nullptr);
+        mGlfwWindow = glfwCreateWindow(static_cast<int>(mDimensions.x), static_cast<int>(mDimensions.y), pTitle.c_str(), mFullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
         if (!mGlfwWindow)
         {
             ZP_CORE_ERROR("Failed to create GLFW window");

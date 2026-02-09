@@ -11,7 +11,7 @@ namespace Zephyrus::Application {
 	class Window
 	{
 	public:
-		Window(int pWidth = 800, int pHseight = 700, bool pIsResizable = false); // Constructs a window with the given width and height.
+		Window(int pWidth = 800, int pHseight = 700, bool pIsResizable = false, bool pFullscreen = false); // Constructs a window with the given width and height.
 		Window(const Window&) = delete;
 		void operator = (const Window&) = delete;
 
@@ -27,5 +27,6 @@ namespace Zephyrus::Application {
 		GLFWwindow* mGlfwWindow = nullptr;
 		Vector2D mDimensions;
 		bool mResizable = false;
+		bool mFullscreen = false;
 	};
 }
