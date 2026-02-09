@@ -1,0 +1,39 @@
+{
+    "name": "TheDescentPlayer",
+    "state": "active",
+    "transform": {
+        "position": [0.0, 0.0, 0.0],
+        "rotation": [0.0, 0.0, 0.0],
+        "size": [1.0, 1.0, 1.0]
+    },
+    "components": [{
+            "type": "TheDescentPlayer",
+            "componentId": "TheDescentPlayer1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0]
+            }
+        }, {
+            "type": "TheDescentPC",
+            "componentId": "TheDescentPC1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0]
+            }
+        }, {
+            "type": "CameraComponent",
+            "componentId": "CameraComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "fov": 70.0,
+                "width": 1920.0,
+                "height": 1080.0,
+                "nearClip": 0.1,
+                "farClip": 10000.0
+            }
+        }]
+}

@@ -1,0 +1,174 @@
+{
+    "player": "../Content/Prefabs/TheDescent/TheDescentPlayer.prefab",
+    "actors": [{
+            "prefabName": "PlayerStart",
+            "uuid": "8c9fa016-f234-481a-b8c7-73d97ae06875",
+            "name": "PlayerStart",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/sphere.obj",
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [1.0, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "PlayerStartComponent",
+                    "componentId": "PlayerStartComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "playerPrefab": "../Content/Prefabs/TheDescent/TheDescentPlayer.prefab"
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "uuid": "463e4362-fef6-46e8-b601-347a7dfe8552",
+            "name": "CubeActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 18.583, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/cube.obj",
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [1.0, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "uuid": "9f965659-ca4b-4062-b94a-f703488867fc",
+            "name": "CubeActor",
+            "state": "active",
+            "transform": {
+                "position": [-14.247, 0.0, 6.959],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/cube.obj",
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [1.0, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }]
+        }, {
+            "prefabName": "CubeActor",
+            "uuid": "9935f687-bb36-4a7c-b44d-ba46ed8a4ef2",
+            "name": "CubeActor",
+            "state": "active",
+            "transform": {
+                "position": [9.169, 0.0, -3.859],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/cube.obj",
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [1.0, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }]
+        }]
+}

@@ -88,7 +88,6 @@ void SceneHierarchyPanel::ResetSelectedActor()
 	}
 	else
 	{
-		mSelectedActor->GetScene().GetRenderer()->SetSelectedActor(nullptr);
 		mSelectedActor = nullptr;
 	}
 }

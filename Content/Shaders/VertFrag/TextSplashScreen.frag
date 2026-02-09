@@ -16,7 +16,7 @@ void main()
     if (sampledAlpha < 0.2)
         discard;
 
-    if(time > 2000 && time < 2700)
+    if(time > 7000 && time < 7700)
     {
         float speed = 2.0;
         float width = 100.0;

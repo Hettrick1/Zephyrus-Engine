@@ -27,7 +27,7 @@ namespace Zephyrus::Scenes {
 	{
 		Scene::Start();
 
-		mTime = 0;
+		mTime = -5.0f;
 
 		Render::IShader* vert = AssetsManager::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
 		Render::IShader* frag = AssetsManager::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
