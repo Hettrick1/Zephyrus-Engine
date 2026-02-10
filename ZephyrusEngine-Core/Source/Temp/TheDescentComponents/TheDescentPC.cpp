@@ -62,12 +62,33 @@ namespace Zephyrus::ActorComponent {
 			upDown.OnTriggered = [this](float delta){ UpDown(delta); };
 			upDown.BindKeyValue(GLFW_KEY_SPACE, 1.0f);
 			upDown.BindKeyValue(GLFW_KEY_LEFT_SHIFT, -1.0f);
+
+			auto& tilt = mInputManager->CreateAxis1D("Tilt");
+			tilt.OnTriggered = [this](float delta){ Tilt(delta); };
+			tilt.BindKeyValue(GLFW_KEY_E, 1.0f);
+			tilt.BindKeyValue(GLFW_KEY_Q, -1.0f);
 		}
 	}
 
 	void TheDescentPC::Update()
 	{
+		Component::Update();
+		float yawRad = zpMaths::ToRad(mYaw);
+		float pitchRad = zpMaths::ToRad(mPitch);
+		float rollRad = zpMaths::ToRad(mRoll);
+		
+		Quaternion qYaw(Vector3D::unitZ, yawRad);
+		Quaternion qPitch(Vector3D::unitX, pitchRad);
+		Quaternion qRoll(Vector3D::unitY, rollRad);
 
+		//Quaternion finalRot = qPitch * qRoll * qYaw;
+
+		Quaternion finalRot = qRoll;
+		
+		// Quaternion TempRot = Quaternion::Concatenate(qYaw, qRoll);
+		// Quaternion finalRot = Quaternion::Concatenate(TempRot, qPitch);
+			
+		mOwner->GetTransformComponent().SetRotation(finalRot);
 	}
 
 	void TheDescentPC::SetMovementSpeed(float pSpeed)
@@ -77,21 +98,11 @@ namespace Zephyrus::ActorComponent {
 	
 	void TheDescentPC::Rotate(Vector2D delta)
 	{
-			mYaw += delta.x * mMouseSensitivity;
-			mPitch += delta.y * -mMouseSensitivity;
-			
-			if (mPitch > 89.0f)  mPitch = 89.0f;
-			if (mPitch < -89.0f) mPitch = -89.0f;
-			
-			float yawRad = zpMaths::ToRad(mYaw);
-			float pitchRad = zpMaths::ToRad(mPitch);
-			
-			Quaternion qYaw(Vector3D::unitZ, yawRad);
-			Quaternion qPitch(Vector3D::unitX, pitchRad);
-			
-			Quaternion finalRot = Quaternion::Concatenate(qPitch, qYaw);
-			
-			mOwner->GetTransformComponent().SetRotation(finalRot);
+		mYaw += delta.x * mMouseSensitivity;
+		mPitch += delta.y * -mMouseSensitivity;
+		
+		if (mPitch > 89.0f)  mPitch = 89.0f;
+		if (mPitch < -89.0f) mPitch = -89.0f;
 	}
 
 	void TheDescentPC::Move(Vector2D delta)
@@ -112,5 +123,11 @@ namespace Zephyrus::ActorComponent {
 	{
 		auto up = Vector3D::unitZ;
 		mOwner->GetTransformComponent().Translate(up * direction * mSpeed * Timer::deltaTime);
+	}
+
+	void TheDescentPC::Tilt(float direction)
+	{
+		mYaw += direction * 5.0f * Timer::deltaTime;
+		ZP_CORE_LOAD(std::to_string(mYaw));
 	}
 }

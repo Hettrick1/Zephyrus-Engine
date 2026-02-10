@@ -33,27 +33,22 @@ public:
 
 	friend Vector3D operator*(const Quaternion& q, const Vector3D& v)
 	{
-		// Calculer la rotation d'un vecteur v par un quaternion q
-		Quaternion qv(0, v.x, v.y, v.z);  // Créer un quaternion avec le vecteur v comme composante imaginaire
-		Quaternion qr = q;                // La rotation q (quaternion)
+		Quaternion qv(0, v.x, v.y, v.z); 
+		Quaternion qr = q;
 		qr.Normalize();
-
-		// Appliquer la rotation via q * v * conj(q)
+		
 		Quaternion qvRotated = qr * qv * qr.ConjugateQuat();
-
-		// Extraire la partie vectorielle de qvRotated
+		
 		return Vector3D(qvRotated.x, qvRotated.y, qvRotated.z);
 	}
 
 	friend Quaternion operator*(const Quaternion& q, const Quaternion& p)
 	{
-		// Calcul de la multiplication de deux quaternions
 		float w = q.w * p.w - q.x * p.x - q.y * p.y - q.z * p.z;
 		float x = q.w * p.x + q.x * p.w + q.y * p.z - q.z * p.y;
 		float y = q.w * p.y - q.x * p.z + q.y * p.w + q.z * p.x;
 		float z = q.w * p.z + q.x * p.y - q.y * p.x + q.z * p.w;
-
-		// Retourner le résultat sous forme de quaternion
+		
 		return Quaternion(x, y, z, w);
 	}
 

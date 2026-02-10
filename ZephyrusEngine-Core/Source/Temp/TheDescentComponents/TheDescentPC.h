@@ -25,6 +25,8 @@ namespace Zephyrus::ActorComponent {
         float mSpeed = 10.0;
         float mYaw = 0.0;
         float mPitch = 0.0;
+        float mRoll = 0.0;
+        
         float mMouseSensitivity = 0.1f;
         
         InputManager* mInputManager{ nullptr };
@@ -51,6 +53,7 @@ namespace Zephyrus::ActorComponent {
         void Rotate(Vector2D delta);
         void Move(Vector2D delta);
         void UpDown(float direction);
+        void Tilt(float direction);
     };
 }
 
