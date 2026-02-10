@@ -65,8 +65,8 @@ namespace Zephyrus::ActorComponent {
 
 			auto& tilt = mInputManager->CreateAxis1D("Tilt");
 			tilt.OnTriggered = [this](float delta){ Tilt(delta); };
-			tilt.BindKeyValue(GLFW_KEY_E, 1.0f);
-			tilt.BindKeyValue(GLFW_KEY_Q, -1.0f);
+			tilt.BindKeyValue(GLFW_KEY_E, -1.0f);
+			tilt.BindKeyValue(GLFW_KEY_Q, 1.0f);
 		}
 	}
 
@@ -81,13 +81,9 @@ namespace Zephyrus::ActorComponent {
 		Quaternion qPitch(Vector3D::unitX, pitchRad);
 		Quaternion qRoll(Vector3D::unitY, rollRad);
 
-		//Quaternion finalRot = qPitch * qRoll * qYaw;
-
-		Quaternion finalRot = qRoll;
-		
-		// Quaternion TempRot = Quaternion::Concatenate(qYaw, qRoll);
-		// Quaternion finalRot = Quaternion::Concatenate(TempRot, qPitch);
-			
+		Quaternion finalRot = qYaw * qPitch * qRoll;
+		//Quaternion finalRot = qRoll * qYaw * qPitch;
+	
 		mOwner->GetTransformComponent().SetRotation(finalRot);
 	}
 
@@ -127,7 +123,6 @@ namespace Zephyrus::ActorComponent {
 
 	void TheDescentPC::Tilt(float direction)
 	{
-		mYaw += direction * 5.0f * Timer::deltaTime;
-		ZP_CORE_LOAD(std::to_string(mYaw));
+		mRoll += direction * mTiltSpeed * Timer::deltaTime;
 	}
 }
