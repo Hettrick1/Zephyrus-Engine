@@ -7,7 +7,6 @@
 #include "Log.h"
 #include "Timer.h"
 #include "Actor.h"
-#include "CameraComponent.h"
 
 namespace Zephyrus::ActorComponent {
 	TheDescentPCNoPhysics::TheDescentPCNoPhysics(Actor* pOwner, int pUpdateOrder)
@@ -53,10 +52,10 @@ namespace Zephyrus::ActorComponent {
 			};
 			
 			auto& move = mInputManager->CreateAxis2D("Move");
-			move.BindKeyValue(GLFW_KEY_W, Vector2D(0.0f, 1.0f));
-			move.BindKeyValue(GLFW_KEY_S, Vector2D(0.0f, -1.0f));
-			move.BindKeyValue(GLFW_KEY_A, Vector2D(-1.0f, 0.0f));
-			move.BindKeyValue(GLFW_KEY_D, Vector2D(1.0f, 0.0f));
+			move.BindKeyValue(GLFW_KEY_W, Vector2D(1.0f, 0.0f));
+			move.BindKeyValue(GLFW_KEY_S, Vector2D(-1.0f, 0.0f));
+			move.BindKeyValue(GLFW_KEY_A, Vector2D(0.0f, -1.0f));
+			move.BindKeyValue(GLFW_KEY_D, Vector2D(0.0f, 1.0f));
 			move.OnTriggered = [this](Vector2D delta){ Move(delta); };
 			
 			auto& upDown = mInputManager->CreateAxis1D("UpDown");

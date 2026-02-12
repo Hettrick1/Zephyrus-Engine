@@ -22,7 +22,7 @@ namespace Zephyrus::ActorComponent {
     class TheDescentPCNoPhysics : public Component
     {
     private:
-        float mSpeed = 0.001f;
+        float mSpeed = 10.0f;
         float mYaw = 0.0f;
         float mPitch = 0.0f;
         float mRoll = 0.0f;

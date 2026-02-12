@@ -15,8 +15,8 @@
                 "relativeRotation": [0.0, 0.0, 0.0]
             }
         }, {
-            "type": "TheDescentPC",
-            "componentId": "TheDescentPC1",
+            "type": "TheDescentPCNoPhysics",
+            "componentId": "TheDescentPCNoPhysics1",
             "properties": {
                 "relativePosition": [0.0, 0.0, 0.0],
                 "relativeSize": [1.0, 1.0, 1.0],

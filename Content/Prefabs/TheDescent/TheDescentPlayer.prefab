@@ -15,8 +15,8 @@
                 "relativeRotation": [0.0, 0.0, 0.0]
             }
         }, {
-            "type": "TheDescentPCNoPhysics",
-            "componentId": "TheDescentPCNoPhysics1",
+            "type": "TheDescentPC",
+            "componentId": "TheDescentPC1",
             "properties": {
                 "relativePosition": [0.0, 0.0, 0.0],
                 "relativeSize": [1.0, 1.0, 1.0],
@@ -59,7 +59,8 @@
                 "friction": 0.8,
                 "restitution": 0.5,
                 "lockAngles": [0.0, 0.0, 0.0],
-                "lockAxes": [1.0, 1.0, 1.0]
+                "lockAxes": [1.0, 1.0, 1.0],
+                "useGravity": false
             }
         }]
 }

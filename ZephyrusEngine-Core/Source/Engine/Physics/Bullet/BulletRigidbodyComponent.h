@@ -20,17 +20,18 @@ namespace Zephyrus::ActorComponent {
         btRigidBody* mRigidBody = nullptr;
         btCompoundShape* mCompound = nullptr;
         std::vector<BulletColliderComponent*> mColliders;
-        float mMass;
-        float mFriction;
-        float mRestitution;
+        float mMass = 0.0f;
+        float mFriction = 0.0f;
+        float mRestitution = 0.0f;
 
+        bool mUseGravity = true;
         Vector3D mLockAxes;
         Vector3D mLockAngles;
 
         BodyType mType;
     public:
         BulletRigidbodyComponent(Actor* pOwner);
-        ~BulletRigidbodyComponent();
+        ~BulletRigidbodyComponent() override;
 
         void Deserialize(Serialization::IDeserializer& pReader) override;
         void Serialize(Serialization::ISerializer& pWriter) override;
@@ -40,7 +41,7 @@ namespace Zephyrus::ActorComponent {
 
         static Component* Create(Actor* pOwner) { return new BulletRigidbodyComponent(pOwner); }
 
-        std::vector<PropertyDescriptor> GetProperties();
+        std::vector<PropertyDescriptor> GetProperties() override;
 
         void AddCollider(BulletColliderComponent* pCollider);
         void RemoveCollider(BulletColliderComponent* pCollider);
@@ -49,6 +50,8 @@ namespace Zephyrus::ActorComponent {
 
         void SetMass(float pMass);
 
+        void SetUseGravity(bool pUseGravity);
+        
         void ApplyForce(const Vector3D& pForce);
         void ApplyImpulse(const Vector3D& pImpulse);
         void ApplyTorque(const Vector3D& pTorque);

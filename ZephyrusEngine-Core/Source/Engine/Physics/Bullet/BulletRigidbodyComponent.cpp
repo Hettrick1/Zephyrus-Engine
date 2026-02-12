@@ -86,6 +86,10 @@ namespace Zephyrus::ActorComponent {
         {
             mLockAxes = *lockAxes;
         }
+        if (auto useGravity = pReader.ReadBool("useGravity"))
+        {
+            mUseGravity = *useGravity;
+        }
         Rebuild();
         ForceSyncFromActor();
     }
@@ -99,6 +103,7 @@ namespace Zephyrus::ActorComponent {
         pWriter.WriteFloat("restitution", mRestitution);
         pWriter.WriteVector3D("lockAngles", mLockAngles);
         pWriter.WriteVector3D("lockAxes", mLockAxes);
+        pWriter.WriteBool("useGravity", mUseGravity);
         Component::EndSerialize(pWriter);
     }
 
@@ -118,6 +123,7 @@ namespace Zephyrus::ActorComponent {
         SetRestitution(mRestitution);
         LockAngle(mLockAngles);
         LockAxes(mLockAxes);
+        SetUseGravity(mUseGravity);
         return
         {
             //TODO bodytype enum
@@ -125,7 +131,8 @@ namespace Zephyrus::ActorComponent {
             {"Friction : ", &mFriction, PropertyType::Float},
             {"Restitution : ", &mRestitution, PropertyType::Float},
             {"Lock Angles : ", &mLockAngles, PropertyType::Vec3},
-            {"Lock Axes : ", &mLockAxes, PropertyType::Vec3}
+            {"Lock Axes : ", &mLockAxes, PropertyType::Vec3},
+            {"Use Gravity : ", &mUseGravity, PropertyType::Bool}
         };
     }
 
@@ -200,6 +207,21 @@ namespace Zephyrus::ActorComponent {
             mMass = pMass;
             Rebuild();
         }
+    }
+
+    void BulletRigidbodyComponent::SetUseGravity(bool pUseGravity)
+    {
+        if (!mIsActive)
+        {
+            return;
+        }
+        mUseGravity = pUseGravity;
+        if (mUseGravity)
+        {
+            mRigidBody->setGravity(mOwner->GetSceneContext()->GetPhysicsWorld()->GetWorld()->getGravity());
+            return;
+        }
+        mRigidBody->setGravity(btVector3(0.0f, 0.0f, 0.0f));
     }
 
     void BulletRigidbodyComponent::ApplyForce(const Vector3D& force)
@@ -358,6 +380,7 @@ namespace Zephyrus::ActorComponent {
         mRigidBody->setUserPointer(mOwner);
 
         mOwner->GetScene().GetPhysicWorld()->AddRigidbody(this);
+        SetUseGravity(mUseGravity);
     }
 
     void BulletRigidbodyComponent::UpdateColliderShape(BulletColliderComponent* collider, btCollisionShape* oldShape)

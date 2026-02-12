@@ -1,5 +1,5 @@
 {
-    "player": "../Content/Prefabs/TheDescent/TheDescentPlayerNoPhysics.prefab",
+    "player": "../Content/Prefabs/TheDescent/TheDescentPlayer.prefab",
     "actors": [{
             "prefabName": "PlayerStart",
             "uuid": "8c9fa016-f234-481a-b8c7-73d97ae06875",
@@ -38,7 +38,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "playerPrefab": "../Content/Prefabs/TheDescent/TheDescentPlayerNoPhysics.prefab"
+                        "playerPrefab": "../Content/Prefabs/TheDescent/TheDescentPlayer.prefab"
                     }
                 }]
         }, {
@@ -239,6 +239,73 @@
                                     "paths": ["../Content/Sprites/SkyBox/DAY_CLOUDS_S.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_N.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_T.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_B.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_W.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_E.jpg"]
                                 }]
                         }
+                    }
+                }]
+        }, {
+            "prefabName": "../Content/Prefabs/TheDescent/TheDescentPlayer.prefab",
+            "uuid": "d78c7c67-1d72-4a52-bad1-9dae85d4849f",
+            "name": "TheDescentPlayer",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "TheDescentPlayer",
+                    "componentId": "TheDescentPlayer1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "TheDescentPC",
+                    "componentId": "TheDescentPC1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }, {
+                    "type": "CameraComponent",
+                    "componentId": "CameraComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "fov": 70.0,
+                        "width": 1920.0,
+                        "height": 1080.0,
+                        "nearClip": 0.1,
+                        "farClip": 10000.0
+                    }
+                }, {
+                    "type": "CapsuleColliderComponent",
+                    "componentId": "CapsuleColliderComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "radius": 1.0,
+                        "height": 2.0
+                    }
+                }, {
+                    "type": "RigidbodyComponent",
+                    "componentId": "RigidbodyComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "bodyType": "dynamic",
+                        "mass": 1.0,
+                        "friction": 0.8,
+                        "restitution": 0.5,
+                        "lockAngles": [0.0, 0.0, 0.0],
+                        "lockAxes": [1.0, 1.0, 1.0],
+                        "useGravity": false
                     }
                 }]
         }]
