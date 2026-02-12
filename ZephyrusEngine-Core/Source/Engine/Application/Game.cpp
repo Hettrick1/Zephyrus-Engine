@@ -62,7 +62,7 @@ namespace Zephyrus::Application {
 
     void Game::Initialize()
     {
-        mGameWindow = new Window(1920, 1080, false, true);
+        mGameWindow = new Window(1920, 1080, false, false);
         mRenderer = new Zephyrus::Render::RendererOpenGl();
 
         mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);

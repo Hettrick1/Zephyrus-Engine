@@ -18,6 +18,7 @@
 #include "CameraComponent.h"
 #include "AtmosphereComponent.h"
 #include "Temp/TheDescentComponents/TheDescentPC.h"
+#include "Temp/TheDescentComponents/TheDescentPCNoPhysics.h"
 #include "Temp/TheDescentComponents/TheDescentPlayer.h"
 
 using Zephyrus::ActorComponent::SkySphereComponent;
@@ -38,6 +39,7 @@ using Zephyrus::ActorComponent::CameraComponent;
 using Zephyrus::ActorComponent::AtmosphereComponent;
 using Zephyrus::ActorComponent::TheDescentPC;
 using Zephyrus::ActorComponent::TheDescentPlayer;
+using Zephyrus::ActorComponent::TheDescentPCNoPhysics;
 
 namespace Zephyrus::Factory {
 	ComponentFactory::ComponentFactory()
@@ -71,6 +73,7 @@ namespace Zephyrus::Factory {
 		Register("AtmosphereComponent", AtmosphereComponent::Create);
 		Register("TheDescentPC", TheDescentPC::Create);
 		Register("TheDescentPlayer", TheDescentPlayer::Create);
+		Register("TheDescentPCNoPhysics", TheDescentPCNoPhysics::Create);
     }
 
     Component* ComponentFactory::Create(const std::string& pName, Actor* pOwner)

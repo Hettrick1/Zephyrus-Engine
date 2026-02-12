@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "TheDescentPC.h"
+#include "TheDescentPCNoPhysics.h"
 
 #include "InputActionBool.h"
 #include "InputActionAxis2D.h"
@@ -10,27 +10,27 @@
 #include "CameraComponent.h"
 
 namespace Zephyrus::ActorComponent {
-	TheDescentPC::TheDescentPC(Actor* pOwner, int pUpdateOrder)
-		: Component(pOwner, "TheDescentPC", pUpdateOrder)
+	TheDescentPCNoPhysics::TheDescentPCNoPhysics(Actor* pOwner, int pUpdateOrder)
+		: Component(pOwner, "TheDescentPCNoPhysics", pUpdateOrder)
 	{
 	}
 
-	TheDescentPC::~TheDescentPC()
+	TheDescentPCNoPhysics::~TheDescentPCNoPhysics()
 	{
 		mInputManager = nullptr;
 	}
 
-	void TheDescentPC::Deserialize(Serialization::IDeserializer& pReader)
+	void TheDescentPCNoPhysics::Deserialize(Serialization::IDeserializer& pReader)
 	{
 		Component::Deserialize(pReader);
 	}
 
-	void TheDescentPC::Serialize(Serialization::ISerializer& pWriter)
+	void TheDescentPCNoPhysics::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::Serialize(pWriter);
 	}
 
-	void TheDescentPC::OnStart()
+	void TheDescentPCNoPhysics::OnStart()
 	{
 		Component::OnStart();
 		mInputManager = mOwner->GetSceneContext()->GetInputManager();
@@ -71,7 +71,7 @@ namespace Zephyrus::ActorComponent {
 		}
 	}
 
-	void TheDescentPC::Update()
+	void TheDescentPCNoPhysics::Update()
 	{
 		Component::Update();
 		float yawRad = zpMaths::ToRad(mYaw);
@@ -94,51 +94,38 @@ namespace Zephyrus::ActorComponent {
 		mRoll = 0.0f;
 	}
 
-	void TheDescentPC::SetMovementSpeed(float pSpeed)
+	void TheDescentPCNoPhysics::SetMovementSpeed(float pSpeed)
 	{
 		mSpeed = pSpeed;
 	}
 	
-	void TheDescentPC::Rotate(Vector2D delta)
+	void TheDescentPCNoPhysics::Rotate(Vector2D delta)
 	{
 		mYaw = delta.x * mMouseSensitivity;
 		mPitch = delta.y * -mMouseSensitivity;
 	}
 
-	void TheDescentPC::Move(Vector2D delta)
+	void TheDescentPCNoPhysics::Move(Vector2D delta)
 	{
-		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
-		Vector3D forward = cam->GetWorldTransform().GetYAxis();
-		Vector3D right = cam->GetWorldTransform().GetXAxis();
-
-		Vector3D moveDir = forward * delta.y + right * -delta.x;
-
-		if (moveDir.LengthSq() > 0.0f)
+		if (delta.x != 0)
 		{
-			auto rb = mOwner->GetRigidBody();
-			if (rb && rb->GetRigidBody())
-			{
-				btRigidBody* body = rb->GetRigidBody();
-				body->activate(true);
-				
-				btVector3 vel = body->getLinearVelocity();
-				btVector3 target(moveDir.x * mSpeed * Timer::deltaTime, moveDir.y * mSpeed* Timer::deltaTime, 0);
-				target.safeNormalize();
-
-				body->applyCentralImpulse(target);
-			
-				moveDir.Normalize();
-			}
+			auto forward = mOwner->GetTransformComponent().Forward();
+			mOwner->GetTransformComponent().Translate(forward * delta.x * mSpeed * Timer::deltaTime);
+		}
+		if (delta.y != 0)
+		{
+			auto right = mOwner->GetTransformComponent().Right();
+			mOwner->GetTransformComponent().Translate(right * delta.y * mSpeed * Timer::deltaTime);
 		}
 	}
 
-	void TheDescentPC::UpDown(float direction)
+	void TheDescentPCNoPhysics::UpDown(float direction)
 	{
 		auto up = Vector3D::unitZ;
 		mOwner->GetTransformComponent().Translate(up * direction * mSpeed * Timer::deltaTime);
 	}
 
-	void TheDescentPC::Tilt(float direction)
+	void TheDescentPCNoPhysics::Tilt(float direction)
 	{
 		mRoll = direction * mTiltSpeed * Timer::deltaTime;
 	}
