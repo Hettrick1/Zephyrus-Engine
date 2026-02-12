@@ -472,7 +472,7 @@
             "state": "active",
             "actorTags": ["Wall"],
             "transform": {
-                "position": [-30.0, 0.0, 0.899],
+                "position": [-30.0, 0.0, 0.898],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },

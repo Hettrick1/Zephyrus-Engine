@@ -35,5 +35,31 @@
                 "nearClip": 0.1,
                 "farClip": 10000.0
             }
+        }, {
+            "type": "CapsuleColliderComponent",
+            "componentId": "CapsuleColliderComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "isQuery": false,
+                "ignoreSelf": true,
+                "radius": 1.0,
+                "height": 2.0
+            }
+        }, {
+            "type": "RigidbodyComponent",
+            "componentId": "RigidbodyComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "bodyType": "dynamic",
+                "mass": 1.0,
+                "friction": 0.8,
+                "restitution": 0.5,
+                "lockAngles": [0.0, 0.0, 0.0],
+                "lockAxes": [1.0, 1.0, 1.0]
+            }
         }]
 }

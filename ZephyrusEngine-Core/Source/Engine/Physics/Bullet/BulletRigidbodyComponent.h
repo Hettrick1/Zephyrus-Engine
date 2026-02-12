@@ -158,9 +158,9 @@ namespace Zephyrus::ActorComponent {
         void SetActive(bool pActive) override;
 
         inline BodyType StringToBodyType(const std::string& str) {
-            if (str == "active") return BodyType::Dynamic;
-            if (str == "paused") return BodyType::Kinematic;
-            if (str == "dead") return BodyType::Static;
+            if (str == "dynamic") return BodyType::Dynamic;
+            if (str == "kinematic") return BodyType::Kinematic;
+            if (str == "static") return BodyType::Static;
             return BodyType::Dynamic;
         }
 

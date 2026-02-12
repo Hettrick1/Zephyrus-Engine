@@ -113,7 +113,7 @@ namespace Zephyrus::Application {
             Input();
             Update();
             Render();
-            Timer::DelayTime();
+            //Timer::DelayTime();
         }
 
         Close();

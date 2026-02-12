@@ -126,4 +126,12 @@ void MenuPanel::Draw()
     ImGui::PopStyleVar();
     ImGui::PopStyleColor(4);
 
+    if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_Z))
+    {
+        EventSystem::UndoLastEvent();
+    }
+    if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_Y))
+    {
+        EventSystem::RedoLastUndo();
+    }
 }

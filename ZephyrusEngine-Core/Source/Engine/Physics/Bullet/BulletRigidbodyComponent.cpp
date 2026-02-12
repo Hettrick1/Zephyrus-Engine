@@ -86,6 +86,7 @@ namespace Zephyrus::ActorComponent {
         {
             mLockAxes = *lockAxes;
         }
+        Rebuild();
         ForceSyncFromActor();
     }
 

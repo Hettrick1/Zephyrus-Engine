@@ -32,7 +32,7 @@ namespace Zephyrus::Physics
 
     void PhysicWorld::Update(float pDetltaTime)
     {
-        if (mWorld && pDetltaTime > 0.0f)
+        if (mWorld && pDetltaTime > 0.000001f)
         {
             for (auto& rigidbody : mRigidbodies)
             {
@@ -42,7 +42,7 @@ namespace Zephyrus::Physics
             {
                 collider->UpdateWorldTransform();
             }
-            mWorld->stepSimulation(pDetltaTime);
+            mWorld->stepSimulation(pDetltaTime, 10);
             for (auto& rigidbody : mRigidbodies)
             {
                 rigidbody->SyncTransformFromPhysics();

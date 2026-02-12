@@ -6,7 +6,7 @@
             "name": "PlayerStart",
             "state": "active",
             "transform": {
-                "position": [0.0, 0.0, 1.43],
+                "position": [0.0, 0.0, 14.02],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -210,7 +210,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "isQuery": false,
                         "ignoreSelf": true,
-                        "halfExtents": [1.0, 1.0, 1.0]
+                        "halfExtents": [70.0, 70.0, 1.0]
                     }
                 }]
         }, {

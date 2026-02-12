@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "Timer.h"
 #include "Actor.h"
+#include "CameraComponent.h"
 
 namespace Zephyrus::ActorComponent {
 	TheDescentPC::TheDescentPC(Actor* pOwner, int pUpdateOrder)
@@ -52,10 +53,10 @@ namespace Zephyrus::ActorComponent {
 			};
 			
 			auto& move = mInputManager->CreateAxis2D("Move");
-			move.BindKeyValue(GLFW_KEY_W, Vector2D(1.0f, 0.0f));
-			move.BindKeyValue(GLFW_KEY_S, Vector2D(-1.0f, 0.0f));
-			move.BindKeyValue(GLFW_KEY_A, Vector2D(0.0f, -1.0f));
-			move.BindKeyValue(GLFW_KEY_D, Vector2D(0.0f, 1.0f));
+			move.BindKeyValue(GLFW_KEY_W, Vector2D(0.0f, 1.0f));
+			move.BindKeyValue(GLFW_KEY_S, Vector2D(0.0f, -1.0f));
+			move.BindKeyValue(GLFW_KEY_A, Vector2D(-1.0f, 0.0f));
+			move.BindKeyValue(GLFW_KEY_D, Vector2D(1.0f, 0.0f));
 			move.OnTriggered = [this](Vector2D delta){ Move(delta); };
 			
 			auto& upDown = mInputManager->CreateAxis1D("UpDown");
@@ -75,16 +76,22 @@ namespace Zephyrus::ActorComponent {
 		Component::Update();
 		float yawRad = zpMaths::ToRad(mYaw);
 		float pitchRad = zpMaths::ToRad(mPitch);
-		float rollRad = zpMaths::ToRad(mRoll);
+
+		Quaternion actualRotation = mOwner->GetTransformComponent().GetRotation();
 		
 		Quaternion qYaw(Vector3D::unitZ, yawRad);
-		Quaternion qPitch(Vector3D::unitX, pitchRad);
-		Quaternion qRoll(Vector3D::unitY, rollRad);
+		Quaternion qPitch(-mOwner->GetTransformComponent().Right(), pitchRad);
 
-		Quaternion finalRot = qYaw * qPitch * qRoll;
-		//Quaternion finalRot = qRoll * qYaw * qPitch;
-	
+		Quaternion finalRot = qYaw * qPitch * actualRotation;
+
+		finalRot.Normalize();
 		mOwner->GetTransformComponent().SetRotation(finalRot);
+
+		mOwner->RotateY(mRoll);
+		
+		mYaw = 0.0f;
+		mPitch = 0.0f;
+		mRoll = 0.0f;
 	}
 
 	void TheDescentPC::SetMovementSpeed(float pSpeed)
@@ -94,24 +101,36 @@ namespace Zephyrus::ActorComponent {
 	
 	void TheDescentPC::Rotate(Vector2D delta)
 	{
-		mYaw += delta.x * mMouseSensitivity;
-		mPitch += delta.y * -mMouseSensitivity;
-		
-		if (mPitch > 89.0f)  mPitch = 89.0f;
-		if (mPitch < -89.0f) mPitch = -89.0f;
+		mYaw = delta.x * mMouseSensitivity;
+		mPitch = delta.y * -mMouseSensitivity;
 	}
 
 	void TheDescentPC::Move(Vector2D delta)
 	{
-		if (delta.x != 0)
+		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
+		Vector3D forward = cam->GetWorldTransform().GetYAxis();
+		Vector3D right   = cam->GetWorldTransform().GetXAxis();
+
+		Vector3D moveDir = forward * delta.y + right * -delta.x;
+
+		if (moveDir.LengthSq() > 0.0f)
 		{
-			auto forward = mOwner->GetTransformComponent().Forward();
-			mOwner->GetTransformComponent().Translate(forward * delta.x * mSpeed * Timer::deltaTime);
-		}
-		if (delta.y != 0)
-		{
-			auto right = mOwner->GetTransformComponent().Right();
-			mOwner->GetTransformComponent().Translate(right * delta.y * mSpeed * Timer::deltaTime);
+			auto rb = mOwner->GetRigidBody();
+			if (rb && rb->GetRigidBody())
+			{
+				btRigidBody* body = rb->GetRigidBody();
+				body->activate(true);
+				//body->setLinearVelocity(btVector3(0.0f, 0.0f, 0.0f));
+				
+				btVector3 vel = body->getLinearVelocity();
+				btVector3 target(moveDir.x * mSpeed * Timer::deltaTime, moveDir.y * mSpeed* Timer::deltaTime, 0);
+				target.safeNormalize();
+				// float factor = 0.3f;
+				// btVector3 smoothVel = vel.lerp(target, factor);
+				body->applyCentralImpulse(target);
+			
+				moveDir.Normalize();
+			}
 		}
 	}
 
@@ -123,6 +142,6 @@ namespace Zephyrus::ActorComponent {
 
 	void TheDescentPC::Tilt(float direction)
 	{
-		mRoll += direction * mTiltSpeed * Timer::deltaTime;
+		mRoll = direction * mTiltSpeed * Timer::deltaTime;
 	}
 }
