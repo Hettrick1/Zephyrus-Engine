@@ -84,10 +84,27 @@ namespace Zephyrus::ActorComponent {
 
 		Quaternion finalRot = qYaw * qPitch * actualRotation;
 
-		finalRot.Normalize();
-		mOwner->GetTransformComponent().SetRotation(finalRot);
+		// finalRot.Normalize();
+		// mOwner->GetTransformComponent().SetRotation(finalRot);
+		//
+		// mOwner->RotateY(mRoll);
 
-		mOwner->RotateY(mRoll);
+		auto rb = mOwner->GetRigidBody();
+		if (rb && rb->GetRigidBody() && (mYaw != 0 | mPitch != 0 | mRoll != 0))
+		{
+			btRigidBody* body = rb->GetRigidBody();
+			body->activate(true);
+			body->setAngularFactor(5.0f);
+			//body->setLinearVelocity(btVector3(0.0f, 0.0f, 0.0f));
+				
+			btVector3 vel = body->getLinearVelocity();
+			btVector3 target(mPitch * 1.0 * Timer::deltaTime, mRoll * 1.0 * Timer::deltaTime, mYaw * 1.0 * Timer::deltaTime);
+			target.normalize();
+			// float factor = 0.3f;
+			// btVector3 smoothVel = vel.lerp(target, factor);
+			body->applyTorque(target);
+			ZP_CORE_INFO(Physics::FromBtVec3(target).ToString());
+		}
 		
 		mYaw = 0.0f;
 		mPitch = 0.0f;
@@ -109,7 +126,7 @@ namespace Zephyrus::ActorComponent {
 	{
 		CameraComponent* cam = mOwner->GetComponentOfType<CameraComponent>();
 		Vector3D forward = cam->GetWorldTransform().GetYAxis();
-		Vector3D right = cam->GetWorldTransform().GetXAxis();
+		Vector3D right   = cam->GetWorldTransform().GetXAxis();
 
 		Vector3D moveDir = forward * delta.y + right * -delta.x;
 
@@ -120,11 +137,13 @@ namespace Zephyrus::ActorComponent {
 			{
 				btRigidBody* body = rb->GetRigidBody();
 				body->activate(true);
+				//body->setLinearVelocity(btVector3(0.0f, 0.0f, 0.0f));
 				
 				btVector3 vel = body->getLinearVelocity();
 				btVector3 target(moveDir.x * mSpeed * Timer::deltaTime, moveDir.y * mSpeed* Timer::deltaTime, 0);
 				target.safeNormalize();
-
+				// float factor = 0.3f;
+				// btVector3 smoothVel = vel.lerp(target, factor);
 				body->applyCentralImpulse(target);
 			
 				moveDir.Normalize();

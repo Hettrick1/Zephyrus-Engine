@@ -58,7 +58,7 @@
                 "mass": 1.0,
                 "friction": 0.8,
                 "restitution": 0.5,
-                "lockAngles": [0.0, 0.0, 0.0],
+                "lockAngles": [1.0, 1.0, 1.0],
                 "lockAxes": [1.0, 1.0, 1.0],
                 "useGravity": false
             }
