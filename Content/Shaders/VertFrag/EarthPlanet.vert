@@ -5,7 +5,6 @@ layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 texCoord;
 
 uniform vec2 uTiling;
-uniform float uTime;
 
 out VS_OUT{
    vec4 color;

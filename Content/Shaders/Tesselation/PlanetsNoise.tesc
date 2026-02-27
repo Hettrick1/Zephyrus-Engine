@@ -19,10 +19,10 @@ void main(void)
 {
    if (gl_InvocationID == 0)
    {
-       gl_TessLevelInner[0] = uLod;
-       gl_TessLevelOuter[0] = uLod;
-       gl_TessLevelOuter[1] = uLod;
-       gl_TessLevelOuter[2] = uLod;
+      gl_TessLevelInner[0] = 16.0f;
+      gl_TessLevelOuter[0] = 16.0f;
+      gl_TessLevelOuter[1] = 16.0f;
+      gl_TessLevelOuter[2] = 16.0f;
    }
    gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
    tesc_out[gl_InvocationID].color = tesc_in[gl_InvocationID].color;

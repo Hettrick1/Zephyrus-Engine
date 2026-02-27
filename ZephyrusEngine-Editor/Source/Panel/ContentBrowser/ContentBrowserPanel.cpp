@@ -311,6 +311,14 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
             ImGui::EndDragDropSource();
         }
     }
+    else if (extension == ".zpmat")
+    {
+        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+            ImGui::SetDragDropPayload("MATERIAL", cleanPath.c_str(), cleanPath.size() + 1);
+            ImGui::Text(cleanPath.c_str());
+            ImGui::EndDragDropSource();
+        }
+    }
 
     ImU32 bgColor;
 

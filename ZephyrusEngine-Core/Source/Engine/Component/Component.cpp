@@ -73,6 +73,10 @@ namespace Zephyrus::ActorComponent
         pWriter.BeginObject();
         pWriter.WriteString("type", mComponentName);
         pWriter.WriteString("componentId", mComponentId);
+        if (mParent)
+        {
+            pWriter.WriteString("parentID", mParent->GetId());
+        }
         pWriter.BeginObject("properties");
         pWriter.WriteVector3D("relativePosition", mRelativePosition);
         pWriter.WriteVector3D("relativeSize", mRelativeSize);

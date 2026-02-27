@@ -1,0 +1,14 @@
+{
+    "shaders": {
+        "vertex": "../Content/Shaders/VertFrag/EarthPlanet.vert",
+        "fragment": "../Content/Shaders/VertFrag/EarthPlanetTree.frag",
+        "control": "../Content/Shaders/Tesselation/EarthPlanet.tesc",
+        "eval": "../Content/Shaders/Tesselation/EarthPlanet.tese",
+        "geometry": "../Content/Shaders/Geometry/EarthPlanet.geom"
+    },
+    "textures": [{
+            "name": "albedo",
+            "type": "Cubemap",
+            "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+        }]
+}

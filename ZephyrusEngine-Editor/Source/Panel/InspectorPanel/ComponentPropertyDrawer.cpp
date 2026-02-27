@@ -685,6 +685,24 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 		prop.Set(&materialInstance);
 	}
 
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MATERIAL"))
+		{
+			std::string materialID((const char*)payload->Data, payload->DataSize);
+			auto droppedMat = Zephyrus::Assets::AssetsManager::LoadMaterial(materialID, materialID);
+			if (droppedMat == instance->GetBaseMaterial())
+			{
+				return true;
+			}
+
+			auto materialInstance = Zephyrus::Material::MaterialInstance();
+			materialInstance.SetMaterial(droppedMat);
+			prop.Set(&materialInstance);
+		}
+		ImGui::EndDragDropTarget();
+	}
+	
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::SetTooltip(buffer);

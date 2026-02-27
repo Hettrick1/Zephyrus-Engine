@@ -176,6 +176,7 @@ namespace Zephyrus::Material
 		{
 			mShaderProgram->setMatrix4Row("uViewProj", *viewproj);
 		}
+		mShaderProgram->setFloat("uLod", 0);
 	}
 
 	void Material::Serialize(Serialization::ISerializer& writer) const

@@ -22,11 +22,13 @@ namespace Zephyrus::Factory {
 	class IPrefabFactory
 	{
 	public:
-		~IPrefabFactory() = default;
+		virtual ~IPrefabFactory() = default;
 
 		virtual Actor* SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabName, const Vector3D& pInitialPos = 0, const Vector3D& pInitialRot = 0, const Vector3D& pInitialSize = 1) = 0;
 		virtual Actor* InitPrefab(Scene* pScene, const std::string& pPrefabName) = 0;
 		virtual std::vector<std::string> GetPrefabFiles(const std::string& folderPath) = 0;
 		virtual Component* CreateAndAttachComponent(Serialization::IDeserializer& reader, Actor* actor, bool doDeserialize = true) = 0;
+		virtual void AddParentToAttach(Component* comp, const std::string& id) = 0;
+		virtual void AttachComponentToParent(Actor* actor) = 0;
 	};
 }

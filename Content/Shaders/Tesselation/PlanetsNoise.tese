@@ -2,7 +2,6 @@
 
 layout(triangles, fractional_even_spacing, cw) in;
 
-uniform float uTimer;
 uniform mat4 uWorldTransform;
 uniform mat4 uViewProj;
 

@@ -49,9 +49,15 @@ namespace Zephyrus::Factory {
                         {
                             id = *componentId;
                         }
+                        
                         auto c = actorPrefab->GetComponentWithId(id);
                         if (c)
                         {
+                            if (auto parentId = reader.ReadString("parentID"))
+                            {
+                                mSceneContext->GetPrefabFactory()->AddParentToAttach(c, *parentId);
+                            }
+                        
                             if (reader.BeginObject("properties"))
                             {
                                 // if found = component is still there
@@ -63,7 +69,7 @@ namespace Zephyrus::Factory {
                         else
                         {
                             // if the id is not found (component has been added)
-                            mSceneContext->GetPrefabFactory()->CreateAndAttachComponent(reader, actorPrefab);
+                            c = mSceneContext->GetPrefabFactory()->CreateAndAttachComponent(reader, actorPrefab);
                         }
                     }
 
@@ -87,7 +93,7 @@ namespace Zephyrus::Factory {
                 {
                     pSceneRef->SetPlayerStart(actorPrefab);
                 }
-                //pSceneRef->AddActor(actorPrefab);
+                mSceneContext->GetPrefabFactory()->AttachComponentToParent(actorPrefab);
             }
         }
 

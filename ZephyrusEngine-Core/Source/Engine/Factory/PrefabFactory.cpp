@@ -48,6 +48,8 @@ namespace Zephyrus::Factory {
             reader->EndObjectArray();
         }
 
+        AttachComponentToParent(actor);
+        
         ZP_LOAD("Prefab " + actor->GetName() + " loaded");
 
         actor->SetPosition(pInitialPos);
@@ -92,6 +94,8 @@ namespace Zephyrus::Factory {
             reader->EndObjectArray();
         }
 
+        //AttachComponentToParent(actor);
+        
         ZP_LOAD("Prefab " + actor->GetName() + " loaded");
 
         pScene->AddActor(actor);
@@ -137,6 +141,11 @@ namespace Zephyrus::Factory {
             c->SetId(*id);
         }
 
+        if (auto parent = reader.ReadString("parentID"))
+        {
+            mParentMapTemp[c] = *parent;
+        }
+        
         if (doDeserialize && reader.BeginObject("properties"))
         {
             c->Deserialize(reader);
@@ -147,5 +156,19 @@ namespace Zephyrus::Factory {
         ZP_CORE_LOAD("Component " + type + " loaded and attached to " + actor->GetName());
 
         return c;
+    }
+
+    void PrefabFactory::AddParentToAttach(Component* comp, const std::string& id)
+    {
+        mParentMapTemp[comp] = id;
+    }
+    
+    void PrefabFactory::AttachComponentToParent(Actor* actor)
+    {
+        for (auto [comp, id] : mParentMapTemp)
+        {
+            comp->SetParent(actor->GetComponentWithId(id));
+        }
+        mParentMapTemp.clear();
     }
 }

@@ -6,7 +6,7 @@
             "name": "PlayerStart",
             "state": "active",
             "transform": {
-                "position": [0.0, 0.0, 7.731],
+                "position": [0.0, 0.0, 7.73],
                 "rotation": [-89.999, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -42,33 +42,58 @@
                     }
                 }]
         }, {
+            "prefabName": "SkyBoxActor",
+            "uuid": "8ed57745-f613-4778-8406-f6054df518f3",
+            "name": "SkyBoxActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "SkySphereComponent",
+                    "componentId": "SkySphereComponent1",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [20.0, 0.0, 0.0],
+                        "isSphere": false,
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/Skybox.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Cubemap",
+                                    "paths": ["Sprites/Doom/skybox/front.png", "Sprites/Doom/skybox/back.png", "Sprites/Doom/skybox/top.png", "Sprites/Doom/skybox/bottom.png", "Sprites/Doom/skybox/left.png", "Sprites/Doom/skybox/right.png"]
+                                }]
+                        }
+                    }
+                }]
+        }, {
             "prefabName": "CubeActor",
             "uuid": "463e4362-fef6-46e8-b601-347a7dfe8552",
             "name": "CubeActor",
             "state": "active",
             "transform": {
-                "position": [0.0, 18.583, 0.0],
+                "position": [0.0, 18.583, 2.569],
                 "rotation": [0.0, 0.0, 0.0],
-                "size": [1.0, 1.0, 1.0]
+                "size": [2.0, 2.0, 2.0]
             },
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "parentID": "MeshComponent2",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "../Content/Material/EarthPlanets.zpmat",
                             "textures": [{
                                     "name": "albedo",
-                                    "type": "Texture2D",
-                                    "path": "../Content/Sprites/uv_mapper.jpg"
-                                }],
-                            "vec2Properties": [{
-                                    "name": "uTiling",
-                                    "value": [1.0, 1.0]
+                                    "type": "Cubemap",
+                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
                                 }]
                         }
                     }
@@ -82,6 +107,23 @@
                         "isQuery": false,
                         "ignoreSelf": true,
                         "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }, {
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent2",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/cube.obj",
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/EarthPlanetsTree.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Cubemap",
+                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+                                }]
+                        }
                     }
                 }]
         }, {
@@ -172,82 +214,11 @@
                 }]
         }, {
             "prefabName": "CubeActor",
-            "uuid": "100d12e7-1ca5-4063-98b0-22a82799535c",
-            "name": "CubeActor",
-            "state": "active",
-            "transform": {
-                "position": [0.0, 0.0, -2.815],
-                "rotation": [0.0, 0.0, 0.0],
-                "size": [70.0, 70.0, 1.0]
-            },
-            "components": [{
-                    "type": "MeshComponent",
-                    "componentId": "MeshComponent1",
-                    "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
-                        "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
-                        "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
-                            "textures": [{
-                                    "name": "albedo",
-                                    "type": "Texture2D",
-                                    "path": "../Content/Sprites/gray.png"
-                                }],
-                            "vec2Properties": [{
-                                    "name": "uTiling",
-                                    "value": [1.0, 1.0]
-                                }]
-                        }
-                    }
-                }, {
-                    "type": "CubeColliderComponent",
-                    "componentId": "CubeColliderComponent1",
-                    "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
-                        "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuery": false,
-                        "ignoreSelf": true,
-                        "halfExtents": [70.0, 70.0, 1.0]
-                    }
-                }]
-        }, {
-            "prefabName": "SkyBoxActor",
-            "uuid": "5514b50e-044b-4296-82f8-9bd98e2adf80",
-            "name": "SkyBoxActor",
-            "state": "active",
-            "transform": {
-                "position": [0.0, 0.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "size": [1.0, 1.0, 1.0]
-            },
-            "components": [{
-                    "type": "SkySphereComponent",
-                    "componentId": "SkySphereComponent1",
-                    "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
-                        "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [20.0, 0.0, 0.0],
-                        "isSphere": false,
-                        "materialInstance": {
-                            "baseMaterial": "../Content/Material/Skybox.zpmat",
-                            "textures": [{
-                                    "name": "albedo",
-                                    "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/SkyBox/DAY_CLOUDS_S.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_N.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_T.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_B.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_W.jpg", "../Content/Sprites/SkyBox/DAY_CLOUDS_E.jpg"]
-                                }]
-                        }
-                    }
-                }]
-        }, {
-            "prefabName": "CubeActor",
             "uuid": "fce7a027-d3c7-4f70-a3de-8838e227fc9e",
             "name": "CubeActor",
             "state": "active",
             "transform": {
-                "position": [0.0, -26.568, 7.72],
+                "position": [0.0, -26.568, 7.717],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [4.0, 4.0, 4.0]
             },

@@ -44,7 +44,7 @@ namespace Zephyrus::Material
 	public:
 
 		Material();
-		~Material();
+		~Material() override;
 
 		void SetVertexShader(Render::IShader* s) override;
 		void SetFragmentShader(Render::IShader* s) override;
