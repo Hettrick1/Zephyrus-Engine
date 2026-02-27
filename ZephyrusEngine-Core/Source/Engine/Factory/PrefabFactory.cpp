@@ -158,6 +158,9 @@ namespace Zephyrus::Factory {
         return c;
     }
 
+    // TODO : Remove parent when destroying component
+    // TODO : Save parent in prefabs
+    
     void PrefabFactory::AddParentToAttach(Component* comp, const std::string& id)
     {
         mParentMapTemp[comp] = id;
