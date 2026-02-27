@@ -1,0 +1,13 @@
+{
+    "shaders": {
+        "vertex": "../Content/Shaders/VertFrag/PlanetsNoise.vert",
+        "fragment": "../Content/Shaders/VertFrag/PlanetsNoise.frag",
+        "control": "../Content/Shaders/Tesselation/PlanetsNoise.tesc",
+        "eval": "../Content/Shaders/Tesselation/PlanetsNoise.tese"
+    },
+    "textures": [{
+            "name": "albedo",
+            "type": "Cubemap",
+            "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+        }]
+}

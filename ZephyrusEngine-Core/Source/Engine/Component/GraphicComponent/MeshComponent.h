@@ -17,17 +17,17 @@ namespace Zephyrus::ActorComponent
 	protected:
 		IMesh* mMesh{ nullptr };
 	public:
-		MeshComponent(Actor* pOwner);
-		virtual ~MeshComponent();
+		MeshComponent(Actor* pOwner, const std::string& pName);
+		virtual ~MeshComponent() override;
 
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;
 
-		static Component* Create(Actor* pOwner) { return new MeshComponent(pOwner); }
+		static Component* Create(Actor* pOwner) { return new MeshComponent(pOwner, "MeshComponent"); }
 
 		void OnStart() override;
 		void OnEnd() override;
-		std::vector<PropertyDescriptor> GetProperties() override;
+		virtual std::vector<PropertyDescriptor> GetProperties() override;
 
 		virtual void Draw(const Zephyrus::Render::IRenderer& pRenderer) override;
 

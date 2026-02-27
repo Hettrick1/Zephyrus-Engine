@@ -6,10 +6,24 @@
 
 namespace Zephyrus::ActorComponent
 {
-	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner, Assets::IMesh* pMesh, Assets::ICubeMapTexture* pCubeMap, Render::IShaderProgram* pProgram)
-		:MeshComponent(pOwner), mCubeMapTexture(pCubeMap)
+	CubeMapMeshComponent::CubeMapMeshComponent(Actor* pOwner)
+		: MeshComponent(pOwner)
 	{
-		MeshComponent::SetMesh(pMesh);
+	}
+
+	std::vector<PropertyDescriptor> CubeMapMeshComponent::GetProperties()
+	{
+		return MeshComponent::GetProperties();
+	}
+
+	void CubeMapMeshComponent::Deserialize(Serialization::IDeserializer& pReader)
+	{
+		MeshComponent::Deserialize(pReader);
+	}
+
+	void CubeMapMeshComponent::Serialize(Serialization::ISerializer& pWriter)
+	{
+		MeshComponent::Serialize(pWriter);
 	}
 
 	CubeMapMeshComponent::~CubeMapMeshComponent()
@@ -18,26 +32,26 @@ namespace Zephyrus::ActorComponent
 
 	void CubeMapMeshComponent::Draw(const Zephyrus::Render::IRenderer& pRenderer)
 	{
-		//if (mMesh)
-		//{
-		//	Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
-		//	mShaderProgram->Use();
-		//	mShaderProgram->setMatrix4Row("uViewProj", viewProj);
-		//	mShaderProgram->setMatrix4Row("uWorldTransform", wt);
-		//	mShaderProgram->setVector2f("uTiling", mTiling);
-		//	mShaderProgram->setFloat("uLod", mOwner->GetLod());
-		//	mShaderProgram->setFloat("uTime", SDL_GetTicks());
-		//	mCubeMapTexture->Bind();
-		//	mMesh->Bind();
-		//	if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
-		//	{
-		//		//glPatchParameteri(GL_PATCH_VERTICES, 3);
-		//		glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
-		//	}
-		//	else
-		//	{
-		//		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
-		//	}
-		//}
+		// if (mMesh)
+		// {
+		// 	Matrix4DRow wt = mOwner->GetTransformComponent().GetWorldTransform();
+		// 	mShaderProgram->Use();
+		// 	mShaderProgram->setMatrix4Row("uViewProj", viewProj);
+		// 	mShaderProgram->setMatrix4Row("uWorldTransform", wt);
+		// 	mShaderProgram->setVector2f("uTiling", mTiling);
+		// 	mShaderProgram->setFloat("uLod", mOwner->GetLod());
+		// 	mShaderProgram->setFloat("uTime", SDL_GetTicks());
+		// 	mCubeMapTexture->Bind();
+		// 	mMesh->Bind();
+		// 	if ((mShaderProgram->GetType() & ShaderProgramType::TESSELLATION_CONTROL) != 0)
+		// 	{
+		// 		//glPatchParameteri(GL_PATCH_VERTICES, 3);
+		// 		glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexCount());
+		// 	}
+		// 	else
+		// 	{
+		// 		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexCount());
+		// 	}
+		// }
 	}
 }

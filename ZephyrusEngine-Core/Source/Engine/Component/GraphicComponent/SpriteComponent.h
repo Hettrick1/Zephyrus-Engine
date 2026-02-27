@@ -12,7 +12,7 @@ namespace Zephyrus::ActorComponent
 	class SpriteComponent : public RenderComponent
 	{
 	protected:
-		Assets::ITexture2D* mTexture;
+		Assets::ITexture2D* mTexture{nullptr};
 		int mDrawOrder = 0;
 		int mTexWidth = 0;
 		int mTexHeight = 0;
@@ -22,7 +22,7 @@ namespace Zephyrus::ActorComponent
 		float aspectRatio = 0.0, aspectRatioInv = 0.0;
 	public:
 		SpriteComponent(Actor* pOwner, const std::string& pName);
-		virtual ~SpriteComponent();
+		virtual ~SpriteComponent() override;
 
 		virtual void Update() override;
 		virtual void OnEnd() override;
