@@ -22,7 +22,7 @@ L’objectif de Zephyrus est de servir à la fois de **bac à sable technique** 
 ## 📌 À propos
 
 - **Type** : Projet personnel & scolaire  
-- **Technos** : C++, OpenGL, SDL2, Bullet, ImGui  
+- **Technos** : C++, OpenGL, GLFW3, Bullet, ImGui  
 - **Participants** : Solo  
 - **Début** : Février 2025 — *En cours de développement*
 
@@ -31,14 +31,14 @@ L’objectif de Zephyrus est de servir à la fois de **bac à sable technique** 
 ## ✨ Fonctionnalités principales
 
 - 🎥 **OpenGL Renderer** : Utilise le pipeline de rendu OpenGL moderne
-- ⌨️ **Input System** : Géré avec SDL2
+- ⌨️ **Input System** : Géré avec GLFW3
 - 🧾 **HUD System & Text Renderer** : Rendu de texte et interface utilisateur intégrés
 - 🪐 **3D Physics** : Basé sur Bullet Physics 3.2
 - 🧩 **Architecture Actor-Component**
 - 🛠️ **Simple Editor** : Permet de créer et modifier des scènes
-- 💾 **Load / Save** : Sauvegarde des maps et prefabs d’actor en JSON
+- 💾 **Load / Save** : Sauvegarde des maps, prefabs d’actor et materials en JSON
 
-> ❌ **Pas inclus** : Audio / Physique 2D / Materials / Vulkan
+> ❌ **Pas inclus** : Audio / Physique 2D / Vulkan
 
 ---
 
@@ -53,6 +53,7 @@ L’objectif de Zephyrus est de servir à la fois de **bac à sable technique** 
 - 🎳 **Bowling** : Simulation simple d’un jeu de bowling
 - 🔫 **Doom** : Reproduction du gameplay du premier Doom
 - 🌍 **Planets** : Génération de petites planètes via des *tessellation* et *geometry shaders*
+- 🚀 **The Descent** : Mouvements en 6DOF utilisant les quaternions
 
 ---
 
@@ -61,10 +62,10 @@ L’objectif de Zephyrus est de servir à la fois de **bac à sable technique** 
 Voici les évolutions prévues du moteur :
 
 - ⚡ Refonte de l’architecture interne (en cours)
-  - Remplacement des singletons
-  - Utilisation de `smart_ptr`
-  - Amélioration de l'abstraction
-- 🌟 Ajout de systèmes de **lumières**
+  - Repartir d'une base saine
+  - Utilisation de pool allocators si possible
+  - intégrer des outils de debug
+- 🌟 Modification du renderer (passer à vulkan ou Nvidia NVRHI)
 - 🛠️ Développement continu de l’éditeur
 
 ---
