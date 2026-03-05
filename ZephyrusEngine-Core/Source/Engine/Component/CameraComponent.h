@@ -61,6 +61,10 @@ namespace Zephyrus::ActorComponent
 
         float GetFarClip() const { return mFarClip; }
 
+        float GetWidth() const { return mWidth; }
+
+        float GetHeight() const { return mHeight; }
+
         CameraUsage usage;
     };
 }

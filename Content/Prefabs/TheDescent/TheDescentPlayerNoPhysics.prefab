@@ -35,5 +35,28 @@
                 "nearClip": 0.1,
                 "farClip": 10000.0
             }
+        }, {
+            "type": "SpriteComponent",
+            "componentId": "SpriteComponent1",
+            "parentID": "CameraComponent1",
+            "properties": {
+                "relativePosition": [0.0, 0.5, 0.0],
+                "relativeSize": [1.777, 1.0, 1.0],
+                "relativeRotation": [89.999, 0.0, 0.0],
+                "texture": "../Content/Sprites/TheDescent/spaceship.png",
+                "cullOff": false,
+                "materialInstance": {
+                    "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                    "textures": [{
+                            "name": "albedo",
+                            "type": "Texture2D",
+                            "path": "../Content/Sprites/TheDescent/spaceship.png"
+                        }],
+                    "vec4Properties": [{
+                            "name": "uTint",
+                            "value": [1.0, 1.0, 1.0, 1.0]
+                        }]
+                }
+            }
         }]
 }

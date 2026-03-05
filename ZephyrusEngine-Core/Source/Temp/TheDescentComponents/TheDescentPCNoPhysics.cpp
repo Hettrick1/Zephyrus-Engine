@@ -73,24 +73,11 @@ namespace Zephyrus::ActorComponent {
 	void TheDescentPCNoPhysics::Update()
 	{
 		Component::Update();
-		float yawRad = zpMaths::ToRad(mYaw);
-		float pitchRad = zpMaths::ToRad(mPitch);
 
-		Quaternion actualRotation = mOwner->GetTransformComponent().GetRotation();
-		
-		Quaternion qYaw(Vector3D::unitZ, yawRad);
-		Quaternion qPitch(-mOwner->GetTransformComponent().Right(), pitchRad);
-
-		Quaternion finalRot = qYaw * qPitch * actualRotation;
-
+		Quaternion finalRot = Quaternion(Vector3D(mPitch, mRoll, mYaw));
 		finalRot.Normalize();
-		mOwner->GetTransformComponent().SetRotation(finalRot);
 
-		mOwner->RotateY(mRoll);
-		
-		mYaw = 0.0f;
-		mPitch = 0.0f;
-		mRoll = 0.0f;
+		mOwner->GetTransformComponent().SetRotation(finalRot);
 	}
 
 	void TheDescentPCNoPhysics::SetMovementSpeed(float pSpeed)
@@ -100,8 +87,11 @@ namespace Zephyrus::ActorComponent {
 	
 	void TheDescentPCNoPhysics::Rotate(Vector2D delta)
 	{
-		mYaw = delta.x * mMouseSensitivity;
-		mPitch = delta.y * -mMouseSensitivity;
+		mYaw += delta.x * mMouseSensitivity;
+		mPitch += delta.y * -mMouseSensitivity;
+
+		float yawRad = zpMaths::ToRad(mYaw);
+		float pitchRad = zpMaths::ToRad(mPitch);
 	}
 
 	void TheDescentPCNoPhysics::Move(Vector2D delta)
@@ -126,6 +116,6 @@ namespace Zephyrus::ActorComponent {
 
 	void TheDescentPCNoPhysics::Tilt(float direction)
 	{
-		mRoll = direction * mTiltSpeed * Timer::deltaTime;
+		mRoll += direction * mTiltSpeed * Timer::deltaTime;
 	}
 }

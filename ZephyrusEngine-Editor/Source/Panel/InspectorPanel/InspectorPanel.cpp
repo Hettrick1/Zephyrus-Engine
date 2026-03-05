@@ -72,15 +72,16 @@ void InspectorPanel::Draw()
 	}
 	ImGui::End();
 
+	// TODO : Move it elsewhere
 	if (actor)
 	{
-		if (auto cam= GetCurrentCameraComponent())
+		if (auto cam= actor->GetComponentOfType<CameraComponent>())
 		{
 			cam->UpdateMatrices();
 			cam->RenderScene();
-			if (ImGui::Begin("Camera Preview")) 
+			if (ImGui::Begin("Camera Preview", 0, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoDocking))
 			{
-				ImVec2 previewSize = ImGui::GetContentRegionAvail();
+				ImVec2 previewSize = ImVec2(cam->GetWidth() * 0.25, cam->GetHeight() * 0.25);
 				ImGui::Image((ImTextureID)(intptr_t)cam->GetRenderTarget()->GetColorTexture(), previewSize, ImVec2(0, 1), ImVec2(1, 0));
 			} 
 			ImGui::End();

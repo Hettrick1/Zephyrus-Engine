@@ -7,7 +7,7 @@
             "state": "active",
             "transform": {
                 "position": [0.0, 0.0, 7.73],
-                "rotation": [-89.999, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
             "components": [{
@@ -72,7 +72,7 @@
         }, {
             "prefabName": "CubeActor",
             "uuid": "463e4362-fef6-46e8-b601-347a7dfe8552",
-            "name": "CubeActor",
+            "name": "Earth",
             "state": "active",
             "transform": {
                 "position": [0.0, 18.583, 2.569],

@@ -62,14 +62,11 @@ namespace Zephyrus::Application {
 
     void Game::Initialize()
     {
-        mGameWindow = new Window(1920, 1080, false, false);
+        mGameWindow = new Window(1920, 1080, false, true);
         mRenderer = new Zephyrus::Render::RendererOpenGl();
 
         mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);
         Assets::AssetsManager::SetContext(mSceneManager);
-
-        // For now
-        //InputManager::Instance().SetContext(mSceneManager);
 
         if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow)) {
 #ifdef _DEBUG

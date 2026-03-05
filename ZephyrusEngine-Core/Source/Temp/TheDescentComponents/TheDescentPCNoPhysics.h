@@ -27,7 +27,7 @@ namespace Zephyrus::ActorComponent {
         float mPitch = 0.0f;
         float mRoll = 0.0f;
 
-        float mTiltSpeed = 25.0f;
+        float mTiltSpeed = 35.0f;
         
         float mMouseSensitivity = 0.1f;
         
