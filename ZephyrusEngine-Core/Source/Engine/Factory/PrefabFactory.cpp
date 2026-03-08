@@ -141,6 +141,11 @@ namespace Zephyrus::Factory {
             c->SetId(*id);
         }
 
+        if (auto name = reader.ReadString("componentName"))
+        {
+            c->SetName(*name);
+        }
+
         if (auto parent = reader.ReadString("parentID"))
         {
             mParentMapTemp[c] = *parent;

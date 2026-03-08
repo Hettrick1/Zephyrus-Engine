@@ -13,6 +13,7 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -34,6 +35,7 @@
                 }, {
                     "type": "PlayerStartComponent",
                     "componentId": "PlayerStartComponent1",
+                    "componentName": "PlayerStartComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -54,6 +56,7 @@
             "components": [{
                     "type": "SkySphereComponent",
                     "componentId": "SkySphereComponent1",
+                    "componentName": "SkySphereComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -75,13 +78,14 @@
             "name": "Earth",
             "state": "active",
             "transform": {
-                "position": [0.0, 18.583, 2.569],
+                "position": [0.0, 32.693, 2.569],
                 "rotation": [0.0, 0.0, 0.0],
-                "size": [2.0, 2.0, 2.0]
+                "size": [6.0, 6.0, 6.0]
             },
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "parentID": "MeshComponent2",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
@@ -100,6 +104,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -111,6 +116,7 @@
                 }, {
                     "type": "MeshComponent",
                     "componentId": "MeshComponent2",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -139,6 +145,7 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -160,6 +167,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -172,37 +180,35 @@
         }, {
             "prefabName": "CubeActor",
             "uuid": "9935f687-bb36-4a7c-b44d-ba46ed8a4ef2",
-            "name": "CubeActor",
+            "name": "FirePlanet",
             "state": "active",
             "transform": {
-                "position": [9.168, 0.0, -1.574],
+                "position": [19.896, 0.0, -6.608],
                 "rotation": [0.0, 0.0, 0.0],
-                "size": [1.0, 1.0, 1.0]
+                "size": [4.0, 4.0, 4.0]
             },
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "../Content/Material/FirePlanets.zpmat",
                             "textures": [{
                                     "name": "albedo",
-                                    "type": "Texture2D",
-                                    "path": "../Content/Sprites/uv_mapper.jpg"
-                                }],
-                            "vec2Properties": [{
-                                    "name": "uTiling",
-                                    "value": [1.0, 1.0]
+                                    "type": "Cubemap",
+                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
                                 }]
                         }
                     }
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -225,6 +231,7 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -246,6 +253,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],

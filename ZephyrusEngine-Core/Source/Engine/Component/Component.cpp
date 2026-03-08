@@ -7,7 +7,7 @@ namespace Zephyrus::ActorComponent
 {
     Component::Component(Actor* pOwner, const std::string& pName, int pUpdateOder)
         : mOwner(pOwner), mUpdateOrder(pUpdateOder), mRelativePosition(0),
-        mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1), mComponentName(pName)
+        mRelativeRotation(Quaternion(0, 0, 0, 1)), mRelativeSize(1), mComponentName(pName), mType(pName)
     {
         if (mOwner->GetState() != ActorState::Active)
         {
@@ -71,8 +71,9 @@ namespace Zephyrus::ActorComponent
     void Component::BeginSerialize(Serialization::ISerializer& pWriter)
     {
         pWriter.BeginObject();
-        pWriter.WriteString("type", mComponentName);
+        pWriter.WriteString("type", mType);
         pWriter.WriteString("componentId", mComponentId);
+        pWriter.WriteString("componentName", mComponentName);
         if (mParent)
         {
             pWriter.WriteString("parentID", mParent->GetId());

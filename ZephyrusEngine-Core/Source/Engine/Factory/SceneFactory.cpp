@@ -57,6 +57,11 @@ namespace Zephyrus::Factory {
                             {
                                 mSceneContext->GetPrefabFactory()->AddParentToAttach(c, *parentId);
                             }
+
+                            if (auto name = reader.ReadString("componentName"))
+                            {
+                                c->SetName(*name);
+                            }
                         
                             if (reader.BeginObject("properties"))
                             {

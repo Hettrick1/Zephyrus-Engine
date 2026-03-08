@@ -28,6 +28,7 @@ namespace Zephyrus::ActorComponent
 		Vector3D mRelativeSize;
 		Quaternion mRelativeRotation;
 		std::vector<std::string> mComponentTags;
+		std::string mType;
 		std::string mComponentName;
 		std::string mComponentId;
 	protected:
