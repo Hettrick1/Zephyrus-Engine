@@ -6,6 +6,7 @@
 #include "../../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
 #include "EditorApplication/EventSystem/Event/SetTransformEvent.h"
 #include "Panel/SelectedActorAccessor.h"
+#include "Timer.h"
 
 ScenePanel::ScenePanel(ISceneContext* pSceneContext, const std::string& pName, unsigned int  pSceneRenderTexture, SelectedActorAccessor* actorAccessor)
 	: Panel(pSceneContext, pName), mSceneRenderTexture(pSceneRenderTexture), mSelectedActorAccessor(actorAccessor)
@@ -126,7 +127,6 @@ void ScenePanel::Draw()
 		}
 
 	}
-	
 	ImGui::End();
 	Panel::EndDraw();
 }

@@ -62,5 +62,12 @@ namespace zpMaths
 
         return min + (std::rand() % (max - min + 1));
     }
+    inline float roundFloat(
+        float x,
+        int precision)
+    {
+        float power_of_10 = std::pow(10, precision);
+        return std::round(x * power_of_10) / power_of_10;
+    }
 
 }

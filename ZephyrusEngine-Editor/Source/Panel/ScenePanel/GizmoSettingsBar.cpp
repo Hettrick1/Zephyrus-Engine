@@ -4,6 +4,8 @@
 #include <imgui_internal.h>
 
 #include "EditorUI/ImGuiUtils.h"
+#include "Timer.h"
+#include "Maths.h"
 
 void GizmoSettingsBar::DrawGizmoSettingsBar()
 {
@@ -60,6 +62,25 @@ void GizmoSettingsBar::DrawGizmoSettingsBar()
     
     ImGui::SameLine();
     ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical, 5);
+    ImGui::SameLine();
+
+    float deltaTime = Timer::mDeltaTimeDebug;
+    deltaTime = zpMaths::roundFloat(deltaTime, 4);
+
+    std::string fpsText = "fps : " + std::to_string(Timer::mFPS) + "\t | \t" + std::to_string(deltaTime) + " ms";
+
+    ImVec4 color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f);
+
+    if (Timer::mFPS < 20)
+    {
+        color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+    }
+    if (Timer::mFPS < 40 && Timer::mFPS > 20)
+    {
+        color = ImVec4(1.0f, 0.5f, 0.0f, 1.0f);
+    }
+
+    ImGui::TextColored(color, fpsText.c_str());
 }
 
 void GizmoSettingsBar::DrawSnap()
