@@ -35,7 +35,6 @@ unsigned int Timer::ComputeDeltaTime()
         mFPS = mFrameCount;
         mFrameCount = 0;
         mLastFPSUpdate = duration_cast<milliseconds>(now.time_since_epoch()).count();
-
     }
 
     return static_cast<unsigned int>(dt * 1000.0);

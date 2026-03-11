@@ -1,0 +1,17 @@
+{
+    "shaders": {
+        "vertex": "../Content/Shaders/VertFrag/FirePlanet.vert",
+        "fragment": "../Content/Shaders/VertFrag/FirePlanet.frag",
+        "control": "../Content/Shaders/Tesselation/FirePlanet.tesc",
+        "eval": "../Content/Shaders/Tesselation/FirePlanet.tese"
+    },
+    "textures": [{
+            "name": "albedo",
+            "type": "Cubemap",
+            "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+        }],
+    "vec4Properties": [{
+            "name": "tint",
+            "value": [1.0, 1.0, 1.0, 1.0]
+        }]
+}

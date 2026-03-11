@@ -966,14 +966,17 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 		{
 			for (auto& [name, value] : vec4Overrides)
 			{
-				const char* vec4Label = (name + pIndex).c_str();
-				ImGui::PushID(vec4Label);
+				std::string vec4Label = name + pIndex;
+				ImGui::PushID(vec4Label.c_str());
 				ImGui::Text("%s", name.c_str());
 				ImGui::SameLine(pLabelWidth);
-				ImGui::SetNextItemWidth(pInputWidth);
+				ImGui::SetNextItemWidth(pInputWidth / 4 * 3);
 
 				float v[4] = { value.x, value.y, value.z, value.w };
+				static float newVec4[4];
+
 				ImGui::InputFloat4("##Value", v, "%.2f");
+
 				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 				{
 					Vector4D oldVal = value;
@@ -985,6 +988,38 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 						[instance, name](const Vector4D& val) { instance->SetVector4D(name, val); }
 					);
 					EventSystem::DoEvent(evt);
+				}
+
+				ImGui::SameLine();
+
+				std::string colorLabel = vec4Label + "color";
+				ImGui::PopID();
+				ImGui::PushID(colorLabel.c_str());
+				if (ImGui::ColorButton("##color", ImVec4(v[0], v[1], v[2], v[3]), 0, ImVec2(pInputWidth / 4, 0)))
+				{
+					ImGui::OpenPopup("ColorPopupOverride");
+					newVec4[0] = value.x;
+					newVec4[1] = value.y;
+					newVec4[2] = value.z;
+					newVec4[3] = value.w;
+				}
+				if (ImGui::BeginPopup("ColorPopupOverride", ImGuiWindowFlags_NoMove))
+				{
+					ImGui::ColorPicker4(colorLabel.c_str(), newVec4);
+					if (ImGui::Button("Save Color"))
+					{
+						Vector4D oldVal = value;
+						Vector4D newVal(newVec4[0], newVec4[1], newVec4[2], newVec4[3]);
+						auto* evt = new SetGenericPropertyEvent<Vector4D>(
+							nullptr,
+							oldVal,
+							newVal,
+							[instance, name](const Vector4D& val) { instance->SetVector4D(name, val); }
+						);
+						EventSystem::DoEvent(evt);
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::EndPopup();
 				}
 				ImGui::PopID();
 			}
