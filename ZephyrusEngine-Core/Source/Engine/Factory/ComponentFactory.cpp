@@ -20,11 +20,13 @@
 #include "Temp/TheDescentComponents/TheDescentPC.h"
 #include "Temp/TheDescentComponents/TheDescentPCNoPhysics.h"
 #include "Temp/TheDescentComponents/TheDescentPlayer.h"
+#include "RotatingComponent.h"
 
 using Zephyrus::ActorComponent::SkySphereComponent;
 using Zephyrus::ActorComponent::DoomMenuPC;
 using Zephyrus::ActorComponent::MeshComponent;
 using Zephyrus::ActorComponent::SpriteComponent;
+using Zephyrus::ActorComponent::RotatingComponent;
 using Zephyrus::ActorComponent::PickUpComponent;
 using Zephyrus::ActorComponent::DoomPC;
 using Zephyrus::ActorComponent::DoomPlayerComponent;
@@ -74,6 +76,7 @@ namespace Zephyrus::Factory {
 		Register("TheDescentPC", TheDescentPC::Create);
 		Register("TheDescentPlayer", TheDescentPlayer::Create);
 		Register("TheDescentPCNoPhysics", TheDescentPCNoPhysics::Create);
+		Register("RotatingComponent", RotatingComponent::Create);
     }
 
     Component* ComponentFactory::Create(const std::string& pName, Actor* pOwner)

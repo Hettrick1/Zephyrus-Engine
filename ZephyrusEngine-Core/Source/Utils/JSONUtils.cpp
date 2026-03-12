@@ -237,7 +237,7 @@ namespace Serialization::Json {
 
         if (!mContextStack.empty())
         {
-            float stack = stackCount;
+            int stack = stackCount;
             for (int i = 0; i < stack; i++)
             {
                 stackCount--;

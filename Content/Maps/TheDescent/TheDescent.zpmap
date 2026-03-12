@@ -131,6 +131,16 @@
                                 }]
                         }
                     }
+                }, {
+                    "type": "RotatingComponent",
+                    "componentId": "RotatingComponent1",
+                    "componentName": "RotatingComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "rotationRate": [5.0, 5.0, 5.0]
+                    }
                 }]
         }, {
             "prefabName": "CubeActor",
@@ -181,6 +191,16 @@
                         "isQuery": false,
                         "ignoreSelf": true,
                         "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }, {
+                    "type": "RotatingComponent",
+                    "componentId": "RotatingComponent1",
+                    "componentName": "RotatingComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "rotationRate": [0.0, 5.0, 0.0]
                     }
                 }]
         }, {
@@ -233,6 +253,16 @@
                         "ignoreSelf": true,
                         "halfExtents": [1.0, 1.0, 1.0]
                     }
+                }, {
+                    "type": "RotatingComponent",
+                    "componentId": "RotatingComponent1",
+                    "componentName": "RotatingComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "rotationRate": [0.0, 0.0, 10.0]
+                    }
                 }]
         }, {
             "prefabName": "CubeActor",
@@ -283,6 +313,16 @@
                         "isQuery": false,
                         "ignoreSelf": true,
                         "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }, {
+                    "type": "RotatingComponent",
+                    "componentId": "RotatingComponent1",
+                    "componentName": "RotatingComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "rotationRate": [-100.0, -100.0, -100.0]
                     }
                 }]
         }]
