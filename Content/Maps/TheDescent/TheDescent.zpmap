@@ -135,12 +135,12 @@
         }, {
             "prefabName": "CubeActor",
             "uuid": "9f965659-ca4b-4062-b94a-f703488867fc",
-            "name": "Sphere",
+            "name": "FirePlanet",
             "state": "active",
             "transform": {
-                "position": [-14.246, 0.0, 6.959],
+                "position": [-40.826, 20.18, 21.597],
                 "rotation": [0.0, 0.0, 0.0],
-                "size": [1.0, 1.0, 1.0]
+                "size": [8.0, 8.0, 8.0]
             },
             "components": [{
                     "type": "MeshComponent",
@@ -166,7 +166,7 @@
                                     "value": [0.8, 0.5, 0.0, 1.0]
                                 }, {
                                     "name": "lowColor",
-                                    "value": [0.899, 1.0, 0.0, 1.0]
+                                    "value": [0.898, 1.0, 0.0, 1.0]
                                 }]
                         }
                     }
@@ -186,11 +186,11 @@
         }, {
             "prefabName": "CubeActor",
             "uuid": "9935f687-bb36-4a7c-b44d-ba46ed8a4ef2",
-            "name": "FirePlanet",
+            "name": "MonkeyPlanet",
             "state": "active",
             "transform": {
                 "position": [19.895, 0.0, -6.605],
-                "rotation": [0.0, 0.0, 0.0],
+                "rotation": [29.999, 0.0, 89.999],
                 "size": [4.0, 4.0, 4.0]
             },
             "components": [{
@@ -211,13 +211,13 @@
                                 }],
                             "vec4Properties": [{
                                     "name": "highColor",
-                                    "value": [0.008, 0.0, 1.0, 1.0]
+                                    "value": [0.698, 1.0, 0.554, 1.0]
                                 }, {
                                     "name": "middleColor",
-                                    "value": [0.069, 0.8, 0.0, 1.0]
+                                    "value": [0.064, 0.572, 0.017, 1.0]
                                 }, {
                                     "name": "lowColor",
-                                    "value": [0.034, 0.0, 1.0, 1.0]
+                                    "value": [0.008, 0.0, 0.296, 1.0]
                                 }]
                         }
                     }
@@ -240,7 +240,7 @@
             "name": "WaterPlanet",
             "state": "active",
             "transform": {
-                "position": [0.0, -26.568, 7.717],
+                "position": [-17.818, -34.166, 7.717],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [4.0, 4.0, 4.0]
             },
@@ -252,23 +252,23 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/pin.obj",
+                        "mesh": "../Content/Meshes/cube.obj",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+                                    "paths": ["../Content/Sprites/CubeMap/nx1.png", "../Content/Sprites/CubeMap/px1.png", "../Content/Sprites/CubeMap/py1.png", "../Content/Sprites/CubeMap/ny1.png", "../Content/Sprites/CubeMap/nz1.png", "../Content/Sprites/CubeMap/pz1.png"]
                                 }],
                             "vec4Properties": [{
                                     "name": "highColor",
-                                    "value": [1.0, 0.0, 0.0, 1.0]
+                                    "value": [0.0, 0.75, 1.0, 1.0]
                                 }, {
                                     "name": "middleColor",
-                                    "value": [0.8, 0.5, 0.0, 1.0]
+                                    "value": [0.0, 0.307, 0.8, 1.0]
                                 }, {
                                     "name": "lowColor",
-                                    "value": [0.899, 1.0, 0.0, 1.0]
+                                    "value": [0.078, 0.013, 0.349, 1.0]
                                 }]
                         }
                     }

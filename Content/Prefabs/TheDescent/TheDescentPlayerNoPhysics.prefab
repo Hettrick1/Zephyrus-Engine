@@ -9,6 +9,7 @@
     "components": [{
             "type": "TheDescentPlayer",
             "componentId": "TheDescentPlayer1",
+            "componentName": "TheDescentPlayer",
             "properties": {
                 "relativePosition": [0.0, 0.0, 0.0],
                 "relativeSize": [1.0, 1.0, 1.0],
@@ -17,6 +18,7 @@
         }, {
             "type": "TheDescentPCNoPhysics",
             "componentId": "TheDescentPCNoPhysics1",
+            "componentName": "TheDescentPCNoPhysics",
             "properties": {
                 "relativePosition": [0.0, 0.0, 0.0],
                 "relativeSize": [1.0, 1.0, 1.0],
@@ -25,6 +27,7 @@
         }, {
             "type": "CameraComponent",
             "componentId": "CameraComponent1",
+            "componentName": "CameraComponent",
             "properties": {
                 "relativePosition": [0.0, 0.0, 0.0],
                 "relativeSize": [1.0, 1.0, 1.0],
@@ -38,10 +41,11 @@
         }, {
             "type": "SpriteComponent",
             "componentId": "SpriteComponent1",
+            "componentName": "SpriteComponent",
             "parentID": "CameraComponent1",
             "properties": {
-                "relativePosition": [0.0, 0.5, 0.0],
-                "relativeSize": [1.777, 1.0, 1.0],
+                "relativePosition": [0.0, 0.649, 0.0],
+                "relativeSize": [1.776, 1.0, 1.0],
                 "relativeRotation": [89.999, 0.0, 0.0],
                 "texture": "../Content/Sprites/TheDescent/spaceship.png",
                 "cullOff": false,
