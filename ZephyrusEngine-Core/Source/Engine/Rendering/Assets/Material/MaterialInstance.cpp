@@ -377,7 +377,7 @@ namespace Zephyrus::Material
 			reader.EndObjectArray();
 		}
 
-		// --- Vec4 properties ---
+		// --- Mat4 properties ---
 		if (reader.BeginObjectArray("mat4Properties"))
 		{
 			while (reader.NextObjectElement())

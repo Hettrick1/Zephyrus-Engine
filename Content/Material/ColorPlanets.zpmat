@@ -11,7 +11,15 @@
             "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
         }],
     "vec4Properties": [{
-            "name": "tint",
-            "value": [1.0, 1.0, 1.0, 1.0]
+            "name": "highColor",
+            "value": [1.0, 0.0, 0.0, 1.0]
+        },
+        {
+            "name": "middleColor",
+            "value": [0.8, 0.5, 0.0, 1.0]
+        },
+        {
+            "name": "lowColor",
+            "value": [0.9, 1.0, 0.0, 1.0]
         }]
 }

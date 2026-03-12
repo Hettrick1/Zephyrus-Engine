@@ -40,7 +40,7 @@ namespace Zephyrus::ActorComponent
 		else
 		{
 			mMesh = AssetsManager::LoadMesh("cube.obj", "cube.obj");
-			ZP_CORE_WARN("No mesh referenced in the prefab actor !");
+			ZP_CORE_WARN("No mesh referenced in " + mOwner->GetName());
 		}
 	}
 

@@ -21,6 +21,8 @@ namespace Serialization
 
 		virtual std::string GetCurrentKey() = 0;
 
+		virtual int GetStackCount() const = 0;
+
 		virtual std::optional<std::string> ReadString(const char* pKey = nullptr) = 0;
 		virtual std::optional<float> ReadFloat(const char* pKey = nullptr) = 0;
 		virtual std::optional<int> ReadInt(const char* pKey = nullptr) = 0;

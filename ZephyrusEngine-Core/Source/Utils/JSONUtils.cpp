@@ -199,12 +199,14 @@ namespace Serialization::Json {
     }
     bool JsonReader::BeginObjectArray(const char* pKey)
     {
+        mSavedCurrentValue = mCurrentValue;
         const rapidjson::Value* arr = GetMember(mCurrentValue, pKey);
         if (!arr || !arr->IsArray())
         {
             return false;
         }
 
+        stackCount = 0;
         mArrayStack.push({ arr, arr->Begin(), arr->End() });
         return true;
     }
@@ -217,14 +219,15 @@ namespace Serialization::Json {
         if (ctx.it == ctx.end)
             return false;
 
-        if (!ctx.it->IsObject())
-        {
-            ++ctx.it;
-            return false;
-        }
+        // if (!ctx.it->IsObject())
+        // {
+        //     ++ctx.it;
+        //     return false;
+        // }
 
         mContextStack.push(mCurrentValue);
-        mCurrentValue = &(*ctx.it++);
+        ++stackCount;
+        mCurrentValue = ctx.it++;
         return true;
     }
     void JsonReader::EndObjectArray()
@@ -234,10 +237,14 @@ namespace Serialization::Json {
 
         if (!mContextStack.empty())
         {
-            mCurrentValue = mContextStack.top();
-            mContextStack.pop();
+            float stack = stackCount;
+            for (int i = 0; i < stack; i++)
+            {
+                stackCount--;
+                mContextStack.pop();
+            }
+            mCurrentValue = mSavedCurrentValue;
         }
-
         mArrayStack.pop();
     }
 

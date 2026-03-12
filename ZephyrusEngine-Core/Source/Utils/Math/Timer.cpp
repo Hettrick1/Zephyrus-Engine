@@ -9,7 +9,7 @@ unsigned int Timer::mFPS = 0;
 unsigned int Timer::mFrameCount = 0;
 unsigned int Timer::mLastFPSUpdate = 0;
 unsigned int Timer::mFrameTime = 0;
-float Timer::mDeltaTimeDebug = 0.0f;
+float Timer::mDtMsDebug = 0.0f;
 high_resolution_clock::time_point Timer::mFrameStart = high_resolution_clock::now();
 high_resolution_clock::time_point Timer::mLastFrame = high_resolution_clock::now();
 
@@ -25,9 +25,9 @@ unsigned int Timer::ComputeDeltaTime()
 
     double diff = duration_cast<milliseconds>(now.time_since_epoch()).count() - mLastFPSUpdate;
 
-    if (diff >= 200 && diff <= 201)
+    if (diff >= 100 && diff <= 110)
     {
-        mDeltaTimeDebug = deltaTime;
+        mDtMsDebug = deltaTime * 1000;
     }
 
     if (diff >= 1000)

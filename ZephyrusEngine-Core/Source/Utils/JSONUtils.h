@@ -20,6 +20,7 @@ namespace Serialization::Json
 	private:
 		rapidjson::Document mDocument;
 		const rapidjson::Value* mCurrentValue{ nullptr };
+		const rapidjson::Value* mSavedCurrentValue{ nullptr };
 		rapidjson::Value::ConstMemberIterator mObjectIterator;
 		std::string mCurrentKey{ "" };
 		std::stack<const rapidjson::Value*> mContextStack;
@@ -35,6 +36,8 @@ namespace Serialization::Json
 		const rapidjson::Value* GetMember(const rapidjson::Value* parent, const char* key);
 
 	public:
+		int stackCount = 0;
+		
 		bool LoadDocument(const std::string& pFilepath) override;
 		bool BeginObject(const char* pKey = nullptr) override;
 		void EndObject() override;
@@ -97,6 +100,8 @@ namespace Serialization::Json
 		bool BeginObjectArray(const char* pKey) override;
 		bool NextObjectElement() override;
 		void EndObjectArray() override;
+
+		int GetStackCount() const override { return stackCount; }
 	};
 
 	class JsonWriter : public ISerializer

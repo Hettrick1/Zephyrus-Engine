@@ -64,7 +64,7 @@ void GizmoSettingsBar::DrawGizmoSettingsBar()
     ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical, 5);
     ImGui::SameLine();
 
-    float deltaTime = Timer::mDeltaTimeDebug;
+    float deltaTime = Timer::mDtMsDebug;
     deltaTime = zpMaths::roundFloat(deltaTime, 4);
 
     std::string fpsText = "fps : " + std::to_string(Timer::mFPS) + "\t | \t" + std::to_string(deltaTime) + " ms";

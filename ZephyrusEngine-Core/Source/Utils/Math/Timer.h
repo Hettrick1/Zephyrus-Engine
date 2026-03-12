@@ -15,7 +15,7 @@ public:
 	static void DelayTime();
 
 	static float deltaTime;
-	static float mDeltaTimeDebug; // only for showing in debug, do not use it in critical functions
+	static float mDtMsDebug; // only for showing in debug, do not use it in critical functions
 	static unsigned int mFPS;
 
 private:

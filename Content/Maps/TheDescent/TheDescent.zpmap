@@ -135,7 +135,7 @@
         }, {
             "prefabName": "CubeActor",
             "uuid": "9f965659-ca4b-4062-b94a-f703488867fc",
-            "name": "CubeActor",
+            "name": "Sphere",
             "state": "active",
             "transform": {
                 "position": [-14.246, 0.0, 6.959],
@@ -145,22 +145,28 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
-                    "componentName": "MeshComponent",
+                    "componentName": "Mesh",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "../Content/Meshes/cube.obj",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
                             "textures": [{
                                     "name": "albedo",
-                                    "type": "Texture2D",
-                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                    "type": "Cubemap",
+                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
                                 }],
-                            "vec2Properties": [{
-                                    "name": "uTiling",
-                                    "value": [1.0, 1.0]
+                            "vec4Properties": [{
+                                    "name": "highColor",
+                                    "value": [1.0, 0.0, 0.0, 1.0]
+                                }, {
+                                    "name": "middleColor",
+                                    "value": [0.8, 0.5, 0.0, 1.0]
+                                }, {
+                                    "name": "lowColor",
+                                    "value": [0.899, 1.0, 0.0, 1.0]
                                 }]
                         }
                     }
@@ -183,25 +189,35 @@
             "name": "FirePlanet",
             "state": "active",
             "transform": {
-                "position": [19.896, 0.0, -6.608],
+                "position": [19.895, 0.0, -6.605],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [4.0, 4.0, 4.0]
             },
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
-                    "componentName": "MeshComponent",
+                    "componentName": "Mesh",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "../Content/Meshes/monkey.obj",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/FirePlanets.zpmat",
+                            "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
                                     "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+                                }],
+                            "vec4Properties": [{
+                                    "name": "highColor",
+                                    "value": [0.008, 0.0, 1.0, 1.0]
+                                }, {
+                                    "name": "middleColor",
+                                    "value": [0.069, 0.8, 0.0, 1.0]
+                                }, {
+                                    "name": "lowColor",
+                                    "value": [0.034, 0.0, 1.0, 1.0]
                                 }]
                         }
                     }
@@ -221,7 +237,7 @@
         }, {
             "prefabName": "CubeActor",
             "uuid": "fce7a027-d3c7-4f70-a3de-8838e227fc9e",
-            "name": "CubeActor",
+            "name": "WaterPlanet",
             "state": "active",
             "transform": {
                 "position": [0.0, -26.568, 7.717],
@@ -231,22 +247,28 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
-                    "componentName": "MeshComponent",
+                    "componentName": "Mesh",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/monkey.obj",
+                        "mesh": "../Content/Meshes/pin.obj",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
                             "textures": [{
                                     "name": "albedo",
-                                    "type": "Texture2D",
-                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                    "type": "Cubemap",
+                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
                                 }],
-                            "vec2Properties": [{
-                                    "name": "uTiling",
-                                    "value": [1.0, 1.0]
+                            "vec4Properties": [{
+                                    "name": "highColor",
+                                    "value": [1.0, 0.0, 0.0, 1.0]
+                                }, {
+                                    "name": "middleColor",
+                                    "value": [0.8, 0.5, 0.0, 1.0]
+                                }, {
+                                    "name": "lowColor",
+                                    "value": [0.899, 1.0, 0.0, 1.0]
                                 }]
                         }
                     }
