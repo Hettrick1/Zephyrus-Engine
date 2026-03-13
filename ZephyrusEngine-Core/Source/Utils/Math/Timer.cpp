@@ -25,9 +25,9 @@ unsigned int Timer::ComputeDeltaTime()
 
     double diff = duration_cast<milliseconds>(now.time_since_epoch()).count() - mLastFPSUpdate;
 
-    if (diff >= 100 && diff <= 110)
+    if (diff >= 10 && diff <= 110)
     {
-        mDtMsDebug = deltaTime * 1000;
+    mDtMsDebug = deltaTime * 1000;
     }
 
     if (diff >= 1000)

@@ -10,5 +10,13 @@
             "name": "albedo",
             "type": "Cubemap",
             "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+        }],
+    "vec4Properties": [{
+            "name": "bottomColor",
+            "value": [0.03, 0.28, 0.03, 1.0]
+        },
+        {
+            "name": "topColor",
+            "value": [0.23, 0.68, 0.23, 1.0]
         }]
 }

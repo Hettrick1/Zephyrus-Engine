@@ -7,6 +7,9 @@ layout(triangle_strip, max_vertices = 24) out;
 uniform mat4 uWorldTransform;
 uniform mat4 uViewProj;
 
+uniform vec4 bottomColor; // vec4(0.03, 0.28, 0.03, 1.0)
+uniform vec4 topColor;    // vec4(0.23, 0.68, 0.23, 1.0)
+
 out vec4 color;
 
 uniform samplerCube uTexture;
@@ -63,14 +66,14 @@ void CreateCube(vec4 position, vec4 normal, float size, float height)
     top[3] = top[3] - vec4(0.4, 0.8, 0 , 0);
     
     // Faces latérales
-    EmitCubeFace(base[0], base[1], top[0], top[1], vec4(0.03, 0.28, 0.03, 1.0), vec4(0.23, 0.68, 0.23, 1.0), vec4(0.03, 0.28, 0.03, 1.0), vec4(0.23, 0.68, 0.23, 1.0)); // Face avant
-    EmitCubeFace(base[1], base[3], top[1], top[3], vec4(0.03, 0.28, 0.03, 1.0), vec4(0.23, 0.68, 0.23, 1.0), vec4(0.03, 0.28, 0.03, 1.0), vec4(0.23, 0.68, 0.23, 1.0)); // Face droite
-    EmitCubeFace(base[3], base[2], top[3], top[2], vec4(0.03, 0.28, 0.03, 1.0), vec4(0.23, 0.68, 0.23, 1.0), vec4(0.03, 0.28, 0.03, 1.0), vec4(0.23, 0.68, 0.23, 1.0)); // Face arrière
-    EmitCubeFace(base[2], base[0], top[2], top[0], vec4(0.03, 0.28, 0.03, 1.0), vec4(0.23, 0.68, 0.23, 1.0), vec4(0.03, 0.28, 0.03, 1.0), vec4(0.23, 0.68, 0.3, 1.0)); // Face gauche
+    EmitCubeFace(base[0], base[1], top[0], top[1], bottomColor, topColor, bottomColor, topColor); // Face avant
+    EmitCubeFace(base[1], base[3], top[1], top[3], bottomColor, topColor, bottomColor, topColor); // Face droite
+    EmitCubeFace(base[3], base[2], top[3], top[2], bottomColor, topColor, bottomColor, topColor); // Face arrière
+    EmitCubeFace(base[2], base[0], top[2], top[0], bottomColor, topColor, bottomColor, topColor); // Face gauche
     
     // Faces horizontales (bas et haut)
-    EmitCubeFace(base[0], base[2], base[1], base[3], vec4(0.03, 0.28, 0.03, 1.0), vec4(0.03, 0.28, 0.03, 1.0), vec4(0.03, 0.28, 0.03, 1.0), vec4(0.03, 0.28, 0.03, 1.0)); // Face inférieure
-    EmitCubeFace(top[0], top[1], top[2], top[3], vec4(0.23, 0.68, 0.23, 1.0), vec4(0.23, 0.68, 0.23, 1.0), vec4(0.23, 0.68, 0.23, 1.0), vec4(0.23, 0.68, 0.23, 1.0)); // Face supérieure
+    EmitCubeFace(base[0], base[2], base[1], base[3], bottomColor, bottomColor, bottomColor, bottomColor); // Face inférieure
+    EmitCubeFace(top[0], top[1], top[2], top[3], topColor, topColor, topColor, topColor); // Face supérieure
 }
 
 void main() {
