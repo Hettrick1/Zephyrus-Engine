@@ -503,7 +503,12 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const std::string& pIndex, cons
 	}
 	if (ImGui::Button("Create Texture Map"))
 	{
-		Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::LoadCubemap(newFaces, newFaces[0]);
+		std::string name;
+		for (auto face : newFaces)
+		{
+			name += face;
+		}
+		Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::LoadCubemap(newFaces, name);
 		if (!newCubemap)
 		{
 			ZP_CORE_ERROR("Cubemap creation failed!");
@@ -808,7 +813,12 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 					if (ImGui::Button(("Create Cubemap##" + name).c_str()))
 					{
-						Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::LoadCubemap(faces, faces[0]);
+						std::string nameCm;
+						for (auto face : faces)
+						{
+							nameCm += face;
+						}
+						Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::LoadCubemap(faces, nameCm);
 						if (newCubemap)
 						{
 							auto oldTex = cubemap;

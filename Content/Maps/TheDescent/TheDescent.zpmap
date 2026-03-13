@@ -325,5 +325,84 @@
                         "rotationRate": [-100.0, -100.0, -100.0]
                     }
                 }]
+        }, {
+            "prefabName": "CubeActor",
+            "uuid": "40ab853f-0d28-4608-9553-a3fd4f3f8541",
+            "name": "CubeActor",
+            "state": "active",
+            "transform": {
+                "position": [17.902, -28.395, -0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [5.0, 5.0, 5.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/cube.obj",
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Cubemap",
+                                    "paths": ["../Content/Sprites/CubeMap/noisePlanetE.png", "../Content/Sprites/CubeMap/noisePlanetW.png", "../Content/Sprites/CubeMap/noisePlanetT.png", "../Content/Sprites/CubeMap/noisePlanetB.png", "../Content/Sprites/CubeMap/noisePlanetS.png", "../Content/Sprites/CubeMap/noisePlanetN.png"]
+                                }],
+                            "vec4Properties": [{
+                                    "name": "highColor",
+                                    "value": [0.664, 0.86, 0.657, 1.0]
+                                }, {
+                                    "name": "middleColor",
+                                    "value": [0.449, 0.449, 0.449, 1.0]
+                                }, {
+                                    "name": "lowColor",
+                                    "value": [0.01, 0.005, 0.615, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }, {
+                    "type": "RotatingComponent",
+                    "componentId": "RotatingComponent1",
+                    "componentName": "RotatingComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "rotationRate": [10.0, 10.0, 10.0]
+                    }
+                }, {
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent2",
+                    "componentName": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "../Content/Meshes/cube.obj",
+                        "materialInstance": {
+                            "baseMaterial": "../Content/Material/EarthPlanetsTree.zpmat",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Cubemap",
+                                    "paths": ["../Content/Sprites/CubeMap/noisePlanetE.png", "../Content/Sprites/CubeMap/noisePlanetW.png", "../Content/Sprites/CubeMap/noisePlanetT.png", "../Content/Sprites/CubeMap/noisePlanetB.png", "../Content/Sprites/CubeMap/noisePlanetS.png", "../Content/Sprites/CubeMap/noisePlanetN.png"]
+                                }]
+                        }
+                    }
+                }]
         }]
 }
