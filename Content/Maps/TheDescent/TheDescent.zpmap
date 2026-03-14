@@ -411,7 +411,7 @@
                                 }],
                             "vec4Properties": [{
                                     "name": "bottomColor",
-                                    "value": [0.28, 0.029, 0.029, 1.0]
+                                    "value": [0.28, 0.028, 0.028, 1.0]
                                 }, {
                                     "name": "topColor",
                                     "value": [0.833, 0.119, 0.119, 1.0]

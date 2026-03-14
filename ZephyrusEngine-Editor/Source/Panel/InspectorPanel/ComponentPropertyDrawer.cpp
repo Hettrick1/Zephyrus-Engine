@@ -479,6 +479,8 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const std::string& pIndex, cons
 		strncpy_s(buffer, newFaces[i].c_str(), sizeof(buffer));
 		buffer[sizeof(buffer) - 1] = '\0';
 
+		//ImGui::SetCursorPosX(pLabelWidth);
+
 		ImGui::PushID((int)i);
 		if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 		{
@@ -724,7 +726,9 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 			for (auto& [name, tex] : texOverrides)
 			{
 				ImGui::PushID(name.c_str());
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
+				ImGui::PopStyleColor();
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth);
 
@@ -786,6 +790,9 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 						strncpy_s(buffer, faces[i].c_str(), sizeof(buffer));
 						buffer[sizeof(buffer) - 1] = '\0';
 
+						ImGui::SetCursorPosX(pLabelWidth);
+						ImGui::SetNextItemWidth(pInputWidth);
+						
 						ImGui::PushID(static_cast<int>(i));
 						if (ImGui::InputText(("##Face" + std::to_string(i)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 						{
@@ -811,7 +818,9 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 						ImGui::PopID();
 					}
 
-					if (ImGui::Button(("Create Cubemap##" + name).c_str()))
+					ImGui::SetCursorPosX(pLabelWidth);
+					//ImGui::SetNextItemWidth(pInputWidth);
+					if (ImGui::Button(("Create Cubemap##" + name).c_str(), ImVec2(pInputWidth, 0)))
 					{
 						std::string nameCm;
 						for (auto face : faces)
@@ -848,7 +857,9 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 			{
 				const char* floatLabel = (name + pIndex).c_str();
 				ImGui::PushID(floatLabel);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
+				ImGui::PopStyleColor();
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth);
 
@@ -880,7 +891,9 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 			{
 				const char* intLabel = (name + pIndex).c_str();
 				ImGui::PushID(intLabel);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
+				ImGui::PopStyleColor();
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth);
 
@@ -912,7 +925,9 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 			{
 				const char* vec2Label = (name + pIndex).c_str();
 				ImGui::PushID(vec2Label);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
+				ImGui::PopStyleColor();
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth);
 
@@ -945,7 +960,9 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 			{
 				const char* vec3Label = (name + pIndex).c_str();
 				ImGui::PushID(vec3Label);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
+				ImGui::PopStyleColor();
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth);
 
@@ -978,7 +995,9 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 			{
 				std::string vec4Label = name + pIndex;
 				ImGui::PushID(vec4Label.c_str());
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
+				ImGui::PopStyleColor();
 				ImGui::SameLine(pLabelWidth);
 				ImGui::SetNextItemWidth(pInputWidth / 4 * 3);
 
