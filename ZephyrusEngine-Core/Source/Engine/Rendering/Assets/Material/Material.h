@@ -3,6 +3,7 @@
 #include "Interface/ITextureBase.h"
 #include "IMaterial.h"
 #include <unordered_map>
+#include <utility>
 
 namespace Zephyrus::Material
 {
@@ -17,27 +18,13 @@ namespace Zephyrus::Material
 
 		Render::IShaderProgram* mShaderProgram{ nullptr };
 
-		std::unordered_map<std::string, Assets::ITextureBase*> mTextures;
-
-		bool mIsAlbedoTexture{ true };
-		Assets::ITextureBase* mAlbedoTexture{ nullptr };
-		Vector4D mAlbedoColor{1.0f, 1.0f, 1.0f, 1.0f};
-		bool mIsMetallicTexture{ false };
-		Assets::ITextureBase* mMetallicTexture{ nullptr };
-		float mMetallic{0.0f};
-		bool mIsRoughnessTexture{ false };
-		Assets::ITextureBase* mRoughnessTexture{ nullptr };
-		float mRoughness{0.0f};
-		bool mIsSpecularTexture{ false };
-		Assets::ITextureBase* mSpecularTexture{ nullptr };
-		float mSpecular{0.0f};
-		
-		std::unordered_map<std::string, int> mIntProperties;
-		std::unordered_map<std::string, float> mfloatProperties;
-		std::unordered_map<std::string, Vector2D> mVec2Properties;
-		std::unordered_map<std::string, Vector3D> mVec3Properties;
-		std::unordered_map<std::string, Vector4D> mVec4Properties;
-		std::unordered_map<std::string, Matrix4DRow> mMat4Properties;
+		std::vector<std::pair<std::string, Assets::ITextureBase*>> mTextures;
+		std::vector<std::pair<std::string, int>> mIntProperties;
+		std::vector<std::pair<std::string, float>> mfloatProperties;
+		std::vector<std::pair<std::string, Vector2D>> mVec2Properties;
+		std::vector<std::pair<std::string, Vector3D>> mVec3Properties;
+		std::vector<std::pair<std::string, Vector4D>> mVec4Properties;
+		std::vector<std::pair<std::string, Matrix4DRow>> mMat4Properties;
 
 		std::string mFilePath{ " " };
 
@@ -57,8 +44,21 @@ namespace Zephyrus::Material
 		inline Render::IShaderProgram* GetShaderProgram() override { return mShaderProgram; }
 
 		void SetTexture(const std::string& uniformName, Assets::ITextureBase* texture) override;
-		void RemoveTexture(const std::string& uniformName) override;
 
+		template<typename T>
+		void UpdateOrAddProperty(std::vector<std::pair<std::string, T>>& container, const std::string& name, const T& value)
+		{
+			auto it = std::find_if(container.begin(), container.end(),
+			[&name](const auto& pair) { return pair.first == name; });
+
+			if (it != container.end()) {
+				it->second = value;
+			} else {
+				RemoveProperty(name); 
+				container.emplace_back(name, value);
+			}
+		}
+		
 		void SetProperty(const std::string& uniformName, float value) override;
 		void SetProperty(const std::string& uniformName, int value) override;
 		void SetProperty(const std::string& uniformName, const Vector2D& value) override;
@@ -67,13 +67,13 @@ namespace Zephyrus::Material
 		void SetProperty(const std::string& uniformName, const Matrix4DRow& value) override;
 		void RemoveProperty(const std::string& uniformName) override;
 
-		inline std::unordered_map<std::string, float> GetFloatProperties() override { return mfloatProperties; }
-		inline std::unordered_map<std::string, int> GetIntProperties() override { return mIntProperties; }
-		inline std::unordered_map<std::string, Vector2D> GetVec2Properties() override { return mVec2Properties; }
-		inline std::unordered_map<std::string, Vector3D> GetVec3Properties() override { return mVec3Properties; }
-		inline std::unordered_map<std::string, Vector4D> GetVec4Properties() override { return mVec4Properties; }
-		inline std::unordered_map<std::string, Matrix4DRow> GetMatrix4Properties() override { return mMat4Properties; }
-		inline std::unordered_map<std::string, Assets::ITextureBase*> GetTextureProperties() override { return mTextures; }
+		inline std::vector<std::pair<std::string, float>> GetFloatProperties() override { return mfloatProperties; }
+		inline std::vector<std::pair<std::string, int>> GetIntProperties() override { return mIntProperties; }
+		inline std::vector<std::pair<std::string, Vector2D>> GetVec2Properties() override { return mVec2Properties; }
+		inline std::vector<std::pair<std::string, Vector3D>> GetVec3Properties() override { return mVec3Properties; }
+		inline std::vector<std::pair<std::string, Vector4D>> GetVec4Properties() override { return mVec4Properties; }
+		inline std::vector<std::pair<std::string, Matrix4DRow>> GetMatrix4Properties() override { return mMat4Properties; }
+		inline std::vector<std::pair<std::string, Assets::ITextureBase*>> GetTextureProperties() override { return mTextures; }
 
 		void Use(const Matrix4DRow* world = nullptr, const Matrix4DRow* viewproj = nullptr) override;
 

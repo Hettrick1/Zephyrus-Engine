@@ -27,7 +27,6 @@ namespace Zephyrus::Material
         virtual Render::IShaderProgram* GetShaderProgram() = 0;
 
         virtual void SetTexture(const std::string& uniformName, Assets::ITextureBase* texture) = 0;
-        virtual void RemoveTexture(const std::string& uniformName) = 0;
 
         virtual void SetProperty(const std::string& uniformName, float value) = 0;
         virtual void SetProperty(const std::string& uniformName, int value) = 0;
@@ -37,13 +36,13 @@ namespace Zephyrus::Material
         virtual void SetProperty(const std::string& uniformName, const Matrix4DRow& value) = 0;
         virtual void RemoveProperty(const std::string& uniformName) = 0;
 
-        virtual std::unordered_map<std::string, float> GetFloatProperties() = 0;
-        virtual std::unordered_map<std::string, int> GetIntProperties() = 0;
-        virtual std::unordered_map<std::string, Vector2D> GetVec2Properties() = 0;
-        virtual std::unordered_map<std::string, Vector3D> GetVec3Properties() = 0;
-        virtual std::unordered_map<std::string, Vector4D> GetVec4Properties() = 0;
-        virtual std::unordered_map<std::string, Matrix4DRow> GetMatrix4Properties() = 0;
-        virtual std::unordered_map<std::string, Assets::ITextureBase*> GetTextureProperties() = 0;
+        virtual std::vector<std::pair<std::string, float>> GetFloatProperties() = 0;
+        virtual std::vector<std::pair<std::string, int>> GetIntProperties() = 0;
+        virtual std::vector<std::pair<std::string, Vector2D>> GetVec2Properties() = 0;
+        virtual std::vector<std::pair<std::string, Vector3D>> GetVec3Properties() = 0;
+        virtual std::vector<std::pair<std::string, Vector4D>> GetVec4Properties() = 0;
+        virtual std::vector<std::pair<std::string, Matrix4DRow>> GetMatrix4Properties() = 0;
+        virtual std::vector<std::pair<std::string, Assets::ITextureBase*>> GetTextureProperties() = 0;
 
         virtual void Use(const Matrix4DRow* world = nullptr, const Matrix4DRow* viewproj = nullptr) = 0;
 

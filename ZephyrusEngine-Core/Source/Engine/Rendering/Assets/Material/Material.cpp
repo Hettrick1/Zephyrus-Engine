@@ -89,46 +89,63 @@ namespace Zephyrus::Material
 	void Material::SetTexture(const std::string& uniformName, Assets::ITextureBase* texture)
 	{
 		if (!texture) return;
-
-		mTextures[uniformName] = texture;
-
+		
+		auto it = std::find_if(mTextures.begin(), mTextures.end(), 
+		[&uniformName](const std::pair<std::string, Assets::ITextureBase*>& pair)
+		{
+			return pair.first == uniformName;
+		});
+		
+		if (it != mTextures.end())
+		{
+			it->second = texture;
+		}
+		else
+		{
+			mTextures.emplace_back(uniformName, texture);
+		}
 	}
-	void Material::RemoveTexture(const std::string& uniformName)
-	{
-		mTextures.erase(uniformName);
-	}
+	
 	void Material::SetProperty(const std::string& uniformName, float value)
 	{
-		mfloatProperties[uniformName] = value;
+		UpdateOrAddProperty(mfloatProperties, uniformName, value);
 	}
 	void Material::SetProperty(const std::string& uniformName, int value)
 	{
-		mIntProperties[uniformName] = value;
+		UpdateOrAddProperty(mIntProperties, uniformName, value);
 	}
 	void Material::SetProperty(const std::string& uniformName, const Vector2D& value)
 	{
-		mVec2Properties[uniformName] = value;
+		UpdateOrAddProperty(mVec2Properties, uniformName, value);
 	}
 	void Material::SetProperty(const std::string& uniformName, const Vector3D& value)
 	{
-		mVec3Properties[uniformName] = value;
+		UpdateOrAddProperty(mVec3Properties, uniformName, value);
 	}
 	void Material::SetProperty(const std::string& uniformName, const Vector4D& value)
 	{
-		mVec4Properties[uniformName] = value;
+		UpdateOrAddProperty(mVec4Properties, uniformName, value);
 	}
 	void Material::SetProperty(const std::string& uniformName, const Matrix4DRow& value)
 	{
-		mMat4Properties[uniformName] = value;
+		UpdateOrAddProperty(mMat4Properties, uniformName, value);
 	}
 	void Material::RemoveProperty(const std::string& uniformName)
 	{
-		mIntProperties.erase(uniformName);
-		mfloatProperties.erase(uniformName);
-		mVec2Properties.erase(uniformName);
-		mVec3Properties.erase(uniformName);
-		mVec4Properties.erase(uniformName);
-		mMat4Properties.erase(uniformName);
+		std::erase_if(mTextures, [&uniformName](const auto& pair)
+		{ return pair.first == uniformName; });
+		std::erase_if(mIntProperties, [&uniformName](const auto& pair)
+		{ return pair.first == uniformName; });
+		std::erase_if(mfloatProperties, [&uniformName](const auto& pair)
+		{ return pair.first == uniformName; });
+		std::erase_if(mVec2Properties, [&uniformName](const auto& pair)
+		{ return pair.first == uniformName; });
+		std::erase_if(mVec3Properties, [&uniformName](const auto& pair)
+		{ return pair.first == uniformName; });
+		std::erase_if(mVec4Properties, [&uniformName](const auto& pair)
+		{ return pair.first == uniformName; });
+		std::erase_if(mMat4Properties, [&uniformName](const auto& pair)
+		{ return pair.first == uniformName; });
 	}
 	void Material::Use(const Matrix4DRow* world, const Matrix4DRow* viewproj)
 	{
@@ -369,7 +386,7 @@ namespace Zephyrus::Material
 					{
 						auto tex = Assets::AssetsManager::LoadTexture(pathOpt.value(), pathOpt.value());
 						if (tex)
-							mTextures[name] = tex;
+							SetTexture(name, tex);
 					}
 				}
 				else if (type == "Cubemap")
@@ -383,7 +400,7 @@ namespace Zephyrus::Material
 
 						auto tex = Assets::AssetsManager::LoadCubemap(facesOpt.value(), cubeKey);
 						if (tex)
-							mTextures[name] = tex;
+							SetTexture(name, tex);
 					}
 				}
 				else
@@ -403,7 +420,9 @@ namespace Zephyrus::Material
 				auto nameOpt = reader.ReadString("name");
 				auto valueOpt = reader.ReadFloat("value");
 				if (nameOpt && valueOpt)
-					mfloatProperties[nameOpt.value()] = valueOpt.value();
+				{
+					SetProperty(*nameOpt, *valueOpt);
+				}
 			}
 			reader.EndObjectArray();
 		}
@@ -416,7 +435,9 @@ namespace Zephyrus::Material
 				auto nameOpt = reader.ReadString("name");
 				auto valueOpt = reader.ReadInt("value");
 				if (nameOpt && valueOpt)
-					mIntProperties[nameOpt.value()] = valueOpt.value();
+				{
+					SetProperty(*nameOpt, *valueOpt);
+				}
 			}
 			reader.EndObjectArray();
 		}
@@ -429,7 +450,9 @@ namespace Zephyrus::Material
 				auto nameOpt = reader.ReadString("name");
 				auto valueOpt = reader.ReadVector2D("value");
 				if (nameOpt && valueOpt)
-					mVec2Properties[nameOpt.value()] = valueOpt.value();
+				{
+					SetProperty(*nameOpt, *valueOpt);
+				}
 			}
 			reader.EndObjectArray();
 		}
@@ -442,7 +465,9 @@ namespace Zephyrus::Material
 				auto nameOpt = reader.ReadString("name");
 				auto valueOpt = reader.ReadVector3D("value");
 				if (nameOpt && valueOpt)
-					mVec3Properties[nameOpt.value()] = valueOpt.value();
+				{
+					SetProperty(*nameOpt, *valueOpt);
+				}
 			}
 			reader.EndObjectArray();
 		}
@@ -455,7 +480,9 @@ namespace Zephyrus::Material
 				auto nameOpt = reader.ReadString("name");
 				auto valueOpt = reader.ReadVector4D("value");
 				if (nameOpt && valueOpt)
-					mVec4Properties[nameOpt.value()] = valueOpt.value();
+				{
+					SetProperty(*nameOpt, *valueOpt);
+				}
 			}
 			reader.EndObjectArray();
 		}
@@ -468,7 +495,9 @@ namespace Zephyrus::Material
 				auto nameOpt = reader.ReadString("name");
 				auto valueOpt = reader.ReadMatrix4DRow("value");
 				if (nameOpt && valueOpt)
-					mMat4Properties[nameOpt.value()] = valueOpt.value();
+				{
+					SetProperty(*nameOpt, *valueOpt);
+				}
 			}
 			reader.EndObjectArray();
 		}
@@ -477,27 +506,21 @@ namespace Zephyrus::Material
 
 	std::vector<PropertyDescriptor> Material::GetProperties()
 	{
-		return
-		{
-			{"Vertex Shader : ", &mVertShader, PropertyType::ShaderVert},
-			{"Fragment Shader : ", &mFragShader, PropertyType::ShaderFrag},
-			{"Tesselation Control Shader : ", &mTescShader, PropertyType::ShaderTesc},
-			{"Tesselation Evaluation Shader : ", &mTeseShader, PropertyType::ShaderTese},
-			{"Geometry Shader : ", &mGeomShader, PropertyType::ShaderGeom},
-			{"", &mIsAlbedoTexture, PropertyType::Bool, DropDown("Texture","Vector 3D")},
-			{"Albedo : ", &mAlbedoTexture, PropertyType::TextureBase, Condition(mIsAlbedoTexture, PropertyFlags::Hidden_In_Editor)},
-			{"Albedo : ", &mAlbedoColor, PropertyType::Color, Condition(!mIsAlbedoTexture, PropertyFlags::Hidden_In_Editor)},
-			{"", &mIsMetallicTexture, PropertyType::Bool,DropDown("Texture","Float")},
-			{"Metallic : ", &mMetallicTexture, PropertyType::TextureBase, Condition(mIsMetallicTexture, PropertyFlags::Hidden_In_Editor)},
-			{"Metallic : ", &mMetallic, PropertyType::Float, Condition(!mIsMetallicTexture, PropertyFlags::Hidden_In_Editor) | Range(0.0f, 1.0f)},
-			{"", &mIsRoughnessTexture, PropertyType::Bool, DropDown("Texture","Float")},
-			{"Roughness : ", &mRoughnessTexture, PropertyType::TextureBase, Condition(mIsRoughnessTexture, PropertyFlags::Hidden_In_Editor)},
-			{"Roughness : ", &mRoughness, PropertyType::Float, Condition(!mIsRoughnessTexture, PropertyFlags::Hidden_In_Editor)| Range(0.0f, 1.0f)},
-			{"", &mIsSpecularTexture, PropertyType::Bool, DropDown("Texture","Float")},
-			{"Specular : ", &mSpecularTexture, PropertyType::TextureBase, Condition(mIsSpecularTexture, PropertyFlags::Hidden_In_Editor)},
-			{"Specular : ", &mSpecular, PropertyType::Float, Condition(!mIsSpecularTexture, PropertyFlags::Hidden_In_Editor)| Range(0.0f, 1.0f)},
-			
-		};
+		std::vector<PropertyDescriptor> mProperties;
+		mProperties.emplace_back("Vertex Shader : ", &mVertShader, PropertyType::ShaderVert);
+		mProperties.emplace_back("Fragment Shader : ", &mFragShader, PropertyType::ShaderFrag);
+		mProperties.emplace_back("Tesselation Control Shader : ", &mTescShader, PropertyType::ShaderTesc);
+		mProperties.emplace_back("Tesselation Evaluation Shader : ", &mTeseShader, PropertyType::ShaderTese);
+		mProperties.emplace_back("Geometry Shader : ", &mGeomShader, PropertyType::ShaderGeom);
+
+		mProperties.emplace_back("Textures : ", &mTextures, PropertyType::ArrayTextureBase);
+		mProperties.emplace_back("Ints : ", &mIntProperties, PropertyType::ArrayInt);
+		mProperties.emplace_back("Floats : ", &mfloatProperties, PropertyType::ArrayFloat);
+		mProperties.emplace_back("Vec2 : ", &mVec2Properties, PropertyType::ArrayVector2D);
+		mProperties.emplace_back("Vec3 : ", &mVec3Properties, PropertyType::ArrayVector3D);
+		mProperties.emplace_back("Vec4 : ", &mVec4Properties, PropertyType::ArrayVector4D);
+		
+		return mProperties;
 	}
 
 	void Material::SetFilePath(const std::string& filePath)
