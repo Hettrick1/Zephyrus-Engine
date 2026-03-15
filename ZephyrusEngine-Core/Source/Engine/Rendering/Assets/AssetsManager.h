@@ -68,6 +68,8 @@ namespace Zephyrus::Assets {
 		static const std::string FONT_PATH;
 		static const std::string SHADER_PATH;
 
+		static const std::string PLACE_HOLDER_TEXTURE_PATH;
+
 		static void SetContext(ISceneContext* pContext);
 
 		// Loads a texture from file and stores it with the given name

@@ -42,12 +42,12 @@ ComponentPropertyDrawer::ComponentPropertyDrawer()
 	mPropertySetters[PropertyType::ShaderTesc] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShaderTesc(i, p, lw, iw); };
 	mPropertySetters[PropertyType::ShaderTese] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShaderTese(i, p, lw, iw); };
 	mPropertySetters[PropertyType::ShaderGeom] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyShaderGeom(i, p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayFloat] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayFloat(i, p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayInt] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayInt(i, p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayVector2D] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector2D(i, p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayVector3D] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector3D(i, p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayVector4D] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector4D(i, p, lw, iw); };
-	mPropertySetters[PropertyType::ArrayTextureBase] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTextureBase(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayMatFloat] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayFloat(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayMatInt] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayInt(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayMatVector2D] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector2D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayMatVector3D] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector3D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayMatVector4D] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector4D(i, p, lw, iw); };
+	mPropertySetters[PropertyType::ArrayMatTextureBase] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTextureBase(i, p, lw, iw); };
 	mPropertySetters[PropertyType::TextureBase] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyTextureBase(i, p, lw, iw); };
 }
 
@@ -1123,7 +1123,193 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex
 bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
-	return false;
+	auto prop = MakeUndoableProperty<std::vector<std::pair<std::string, Zephyrus::Assets::ITextureBase*>>>(property, mActiveComponent);
+	auto* textures = static_cast<std::vector<std::pair<std::string, Zephyrus::Assets::ITextureBase*>>*>(prop.getter());
+	if (!textures)
+	{
+		return false;
+	}
+	if (ImGui::CollapsingHeader("Textures", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		for (size_t i = 0; i < textures->size(); i++)
+		{
+			std::string propertyName = textures->at(i).first;
+			Zephyrus::Assets::ITextureBase* tex = textures->at(i).second;
+			std::string name = "Texture " + std::to_string(i);
+		
+			ImGui::PushID(name.c_str());
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
+			ImGui::Text("%s", propertyName.c_str());
+			ImGui::PopStyleColor();
+			ImGui::SameLine(pLabelWidth * 2);
+			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+
+			if (auto* tex2D = dynamic_cast<Zephyrus::Assets::ITexture2D*>(tex))
+			{
+				char buffer[256];
+				strncpy_s(buffer, tex2D->GetFilePath().c_str(), sizeof(buffer));
+				buffer[sizeof(buffer) - 1] = '\0';
+
+				if (ImGui::InputText(("##" + name).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+				{
+					auto oldTex = tex2D;
+					Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(buffer, buffer);
+					if (newTex)
+					{
+						auto newVec = *textures;
+						newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyName, newTex);
+						prop.Set(&newVec);
+					}
+				}
+
+				if (ImGui::IsItemHovered())
+				{
+					ImGui::SetTooltip(buffer);
+				}
+
+				// drag & drop
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+					{
+						std::string texID((const char*)payload->Data, payload->DataSize);
+						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(texID, texID);
+						if (newTex)
+						{
+							auto newVec = *textures;
+							newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyName, newTex);
+							prop.Set(&newVec);
+						}
+					}
+					ImGui::EndDragDropTarget();
+				}
+			}
+			else if (auto* cubemap = dynamic_cast<Zephyrus::Assets::ICubeMapTexture*>(tex))
+			{
+				std::vector<std::string> faces = cubemap->GetTempFilePath();
+				for (size_t i = 0; i < 6; i++)
+				{
+					char buffer[128];
+					strncpy_s(buffer, faces[i].c_str(), sizeof(buffer));
+					buffer[sizeof(buffer) - 1] = '\0';
+
+					ImGui::SetCursorPosX(pLabelWidth * 2);
+					ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+					
+					ImGui::PushID(static_cast<int>(i));
+					if (ImGui::InputText(("##Face" + std::to_string(i)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+					{
+						faces[i] = buffer;
+						cubemap->SetTempFilePath(faces);
+					}
+
+					if (ImGui::IsItemHovered())
+					{
+						ImGui::SetTooltip(buffer);
+					}
+
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
+						{
+							std::string texID((const char*)payload->Data, payload->DataSize);
+							faces[i] = texID;
+							cubemap->SetTempFilePath(faces);
+						}
+						ImGui::EndDragDropTarget();
+					}
+					ImGui::PopID();
+				}
+
+				ImGui::SetCursorPosX(pLabelWidth * 2.0f);
+				if (ImGui::Button(("Create Cubemap##" + name).c_str(), ImVec2(pInputWidth - pLabelWidth * 1.5f , 0)))
+				{
+					std::string nameCm;
+					for (auto face : faces)
+					{
+						nameCm += face;
+					}
+					Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::LoadCubemap(faces, nameCm);
+					if (newCubemap)
+					{
+						auto newVec = *textures;
+						newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyName, newCubemap);
+						prop.Set(&newVec);
+					}
+				}
+			}
+
+			if (!textures->empty())
+			{
+				ImGui::SameLine();
+				std::string removeId = "Remove" + std::to_string(i);
+				//ImGui::PushID(removeId.c_str());
+				if (ImGui::Button("Remove"))
+				{
+					auto newVec = *textures;
+					newVec.erase(newVec.begin() + static_cast<size_t>(i));
+					prop.Set(&newVec);
+		
+					ImGui::PopID();
+					break;
+				}
+			}
+			ImGui::PopID();
+		}
+		if (ImGui::Button("+ Add Texture"))
+		{
+			mNameProp = "None";
+			ImGui::OpenPopup("NewTextureParameter");
+		}
+		if (ImGui::BeginPopup("NewTextureParameter", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
+		{
+			ImGui::Text("Add Texture");
+			ImGui::Separator();
+			ImGui::Text("Parameter name : ");
+			ImGui::SameLine();
+			
+			char NewParameterNameBuffer[128];
+			strncpy_s(NewParameterNameBuffer, mNameProp.c_str(), sizeof(NewParameterNameBuffer));
+			NewParameterNameBuffer[sizeof(NewParameterNameBuffer) - 1] = '\0';
+			
+			ImGui::InputText("##NewParameterName", NewParameterNameBuffer, sizeof(NewParameterNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
+
+			mNameProp = NewParameterNameBuffer;
+			
+			ImGui::Text("Texture path : ");
+			ImGui::SameLine();
+
+			// if texture2d
+			char NewParameterTexBuffer[256];
+			strncpy_s(NewParameterTexBuffer, Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH.c_str(), sizeof(NewParameterTexBuffer));
+			NewParameterTexBuffer[sizeof(NewParameterTexBuffer) - 1] = '\0';
+			
+			ImGui::InputText("##NewParameterTex", NewParameterTexBuffer, sizeof(NewParameterTexBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
+
+			Zephyrus::Assets::ITextureBase* tex;
+			
+			tex = Zephyrus::Assets::AssetsManager::LoadTexture(NewParameterTexBuffer, NewParameterTexBuffer);
+
+			// ImGui::SetCursorPosX((ImGui::GetContentRegionAvail().x * 0.5f) - 75.0f);
+			// ImGui::Image(tex->GetHandle(), ImVec2(150, 150));
+			
+			if (ImGui::Button("Accept##NewParameter"))
+			{
+				auto newVec = *textures;
+				newVec.emplace_back(NewParameterNameBuffer, tex);
+				prop.Set(&newVec);
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel##NewParameter"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			
+			ImGui::EndPopup();
+		}
+	}
+	return true;
 }
 
 bool ComponentPropertyDrawer::SetPropertyTextureBase(const std::string& pIndex, const PropertyDescriptor& pProperty,
@@ -1177,7 +1363,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 	ImGui::SameLine(pLabelWidth * 2);
 
 	ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
-	std::string label = "##Texture" + std::string(buffer) + pIndex;
+	std::string label = "##Shader" + std::string(buffer) + pIndex;
 	
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{

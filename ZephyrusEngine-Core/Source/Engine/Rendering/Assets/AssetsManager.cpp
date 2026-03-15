@@ -32,6 +32,7 @@ namespace Zephyrus::Assets {
 	const std::string AssetsManager::MESH_PATH = "../Content/Meshes/";
 	const std::string AssetsManager::FONT_PATH = "../Content/Fonts/";
 	const std::string AssetsManager::SHADER_PATH = "../Content/Shaders/";
+	const std::string AssetsManager::PLACE_HOLDER_TEXTURE_PATH = "../Content/Sprites/uv_mapper.jpg";
 
 	ITexture2D* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
 	{

@@ -27,12 +27,12 @@ enum class PropertyType
     ShaderTesc,
     ShaderTese,
     ShaderGeom,
-    ArrayFloat,
-    ArrayInt,
-    ArrayVector2D,
-    ArrayVector3D,
-    ArrayVector4D,
-    ArrayTextureBase,
+    ArrayMatFloat,
+    ArrayMatInt,
+    ArrayMatVector2D,
+    ArrayMatVector3D,
+    ArrayMatVector4D,
+    ArrayMatTextureBase,
     TextureBase,
 };
 

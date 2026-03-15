@@ -25,6 +25,7 @@ class ComponentPropertyDrawer
 private:
 	std::unordered_map<PropertyType, std::function<bool(const std::string&, const PropertyDescriptor&, float, float)>> mPropertySetters;
 	Component* mActiveComponent = nullptr;
+	std::string mNameProp = "None";
 public:
 	ComponentPropertyDrawer();
 	~ComponentPropertyDrawer() = default;

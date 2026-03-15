@@ -182,8 +182,11 @@ namespace Zephyrus::Material
 		int slot = 0;
 		for (auto& [name, tex] : mTextures)
 		{
-			tex->Bind(slot);
-			++slot;
+			if (tex)
+			{
+				tex->Bind(slot);
+				++slot;
+			}
 		}
 		if (world)
 		{
@@ -513,12 +516,12 @@ namespace Zephyrus::Material
 		mProperties.emplace_back("Tesselation Evaluation Shader : ", &mTeseShader, PropertyType::ShaderTese);
 		mProperties.emplace_back("Geometry Shader : ", &mGeomShader, PropertyType::ShaderGeom);
 
-		mProperties.emplace_back("Textures : ", &mTextures, PropertyType::ArrayTextureBase);
-		mProperties.emplace_back("Ints : ", &mIntProperties, PropertyType::ArrayInt);
-		mProperties.emplace_back("Floats : ", &mfloatProperties, PropertyType::ArrayFloat);
-		mProperties.emplace_back("Vec2 : ", &mVec2Properties, PropertyType::ArrayVector2D);
-		mProperties.emplace_back("Vec3 : ", &mVec3Properties, PropertyType::ArrayVector3D);
-		mProperties.emplace_back("Vec4 : ", &mVec4Properties, PropertyType::ArrayVector4D);
+		mProperties.emplace_back("Textures : ", &mTextures, PropertyType::ArrayMatTextureBase);
+		mProperties.emplace_back("Ints : ", &mIntProperties, PropertyType::ArrayMatInt);
+		mProperties.emplace_back("Floats : ", &mfloatProperties, PropertyType::ArrayMatFloat);
+		mProperties.emplace_back("Vec2 : ", &mVec2Properties, PropertyType::ArrayMatVector2D);
+		mProperties.emplace_back("Vec3 : ", &mVec3Properties, PropertyType::ArrayMatVector3D);
+		mProperties.emplace_back("Vec4 : ", &mVec4Properties, PropertyType::ArrayMatVector4D);
 		
 		return mProperties;
 	}
