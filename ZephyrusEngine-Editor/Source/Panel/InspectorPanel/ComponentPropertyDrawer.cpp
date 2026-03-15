@@ -1139,7 +1139,24 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 		
 			ImGui::PushID(name.c_str());
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
-			ImGui::Text("%s", propertyName.c_str());
+
+			char propertyNameBuffer[256];
+			strncpy_s(propertyNameBuffer, propertyName.c_str(), sizeof(propertyNameBuffer));
+			propertyNameBuffer[sizeof(propertyNameBuffer) - 1] = '\0';
+			
+			ImGui::SetNextItemWidth(pLabelWidth * 1.8f);
+			if (ImGui::InputText(("##Prop" + name).c_str(), propertyNameBuffer, sizeof(propertyNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			{
+				auto newVec = *textures;
+				auto it = std::find_if(newVec.begin(), newVec.end(),
+				[&propertyNameBuffer](const auto& pair) { return pair.first == propertyNameBuffer; });
+				if (it == newVec.end())
+				{
+					newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyNameBuffer, tex);
+					prop.Set(&newVec);	
+				}
+			}
+			
 			ImGui::PopStyleColor();
 			ImGui::SameLine(pLabelWidth * 2);
 			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
@@ -1157,7 +1174,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 					if (newTex)
 					{
 						auto newVec = *textures;
-						newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyName, newTex);
+						newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyNameBuffer, newTex);
 						prop.Set(&newVec);
 					}
 				}
@@ -1177,7 +1194,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 						if (newTex)
 						{
 							auto newVec = *textures;
-							newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyName, newTex);
+							newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyNameBuffer, newTex);
 							prop.Set(&newVec);
 						}
 					}
@@ -1233,7 +1250,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 					if (newCubemap)
 					{
 						auto newVec = *textures;
-						newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyName, newCubemap);
+						newVec[i] = std::pair<std::string, Zephyrus::Assets::ITextureBase*>(propertyNameBuffer, newCubemap);
 						prop.Set(&newVec);
 					}
 				}
@@ -1242,8 +1259,6 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 			if (!textures->empty())
 			{
 				ImGui::SameLine();
-				std::string removeId = "Remove" + std::to_string(i);
-				//ImGui::PushID(removeId.c_str());
 				if (ImGui::Button("Remove"))
 				{
 					auto newVec = *textures;
@@ -1254,49 +1269,84 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 					break;
 				}
 			}
+			if (i < textures->size() - 1)
+			{
+				ImGui::Separator();
+			}
 			ImGui::PopID();
 		}
 		if (ImGui::Button("+ Add Texture"))
 		{
-			mNameProp = "None";
+			mNameProp = "None" + std::to_string(textures->size());
+			mTextureType = 0;
 			ImGui::OpenPopup("NewTextureParameter");
 		}
 		if (ImGui::BeginPopup("NewTextureParameter", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
 		{
 			ImGui::Text("Add Texture");
 			ImGui::Separator();
-			ImGui::Text("Parameter name : ");
-			ImGui::SameLine();
 			
-			char NewParameterNameBuffer[128];
+			ImGui::Text("Type : ");
+			ImGui::SameLine(pLabelWidth);
+			ImGui::Combo("##TextureType", &mTextureType, texureTypeStrings, 2);
+			ImGui::Separator();
+			
+			ImGui::Text("Parameter name : ");
+			ImGui::SameLine(pLabelWidth);
+			
+			char NewParameterNameBuffer[32];
 			strncpy_s(NewParameterNameBuffer, mNameProp.c_str(), sizeof(NewParameterNameBuffer));
 			NewParameterNameBuffer[sizeof(NewParameterNameBuffer) - 1] = '\0';
+
+			auto newVec = *textures;
+			auto it = std::find_if(newVec.begin(), newVec.end(),
+			[&NewParameterNameBuffer](const auto& pair) { return pair.first == NewParameterNameBuffer; });
+			if (it != newVec.end())
+			{
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+			}
 			
 			ImGui::InputText("##NewParameterName", NewParameterNameBuffer, sizeof(NewParameterNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
+			if (it != newVec.end())
+			{
+				ImGui::PopStyleColor();
+			}
+			
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::SetTooltip(NewParameterNameBuffer);
+			}
+			
 			mNameProp = NewParameterNameBuffer;
 			
-			ImGui::Text("Texture path : ");
-			ImGui::SameLine();
-
-			// if texture2d
-			char NewParameterTexBuffer[256];
-			strncpy_s(NewParameterTexBuffer, Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH.c_str(), sizeof(NewParameterTexBuffer));
-			NewParameterTexBuffer[sizeof(NewParameterTexBuffer) - 1] = '\0';
-			
-			ImGui::InputText("##NewParameterTex", NewParameterTexBuffer, sizeof(NewParameterTexBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
-
-			Zephyrus::Assets::ITextureBase* tex;
-			
-			tex = Zephyrus::Assets::AssetsManager::LoadTexture(NewParameterTexBuffer, NewParameterTexBuffer);
-
-			// ImGui::SetCursorPosX((ImGui::GetContentRegionAvail().x * 0.5f) - 75.0f);
-			// ImGui::Image(tex->GetHandle(), ImVec2(150, 150));
+			Zephyrus::Assets::ITextureBase* tex = nullptr;
+			if (mTextureType == 0)
+			{
+				tex = Zephyrus::Assets::AssetsManager::LoadTexture(Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH, Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH);
+			}
+			else
+			{
+				std::vector<std::string> mFilePaths;
+				std::string cubemapName;
+				for (int j = 0; j < 6; ++j)
+				{
+					mFilePaths.emplace_back(Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH);
+					cubemapName += Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH;
+				}
+				tex = Zephyrus::Assets::AssetsManager::LoadCubemap(mFilePaths, cubemapName);
+			}
 			
 			if (ImGui::Button("Accept##NewParameter"))
 			{
 				auto newVec = *textures;
-				newVec.emplace_back(NewParameterNameBuffer, tex);
+				auto it = std::find_if(newVec.begin(), newVec.end(),
+				[&NewParameterNameBuffer](const auto& pair) { return pair.first == NewParameterNameBuffer; });
+				if (it != newVec.end())
+				{
+					mNameProp = NewParameterNameBuffer + std::to_string(textures->size());
+				}
+				newVec.emplace_back(mNameProp, tex);
 				prop.Set(&newVec);
 				ImGui::CloseCurrentPopup();
 			}

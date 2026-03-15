@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <functional>
 
+#include "Interface/ITextureBase.h"
+
 namespace Zephyrus::Render
 {
 	enum class ShaderType;
@@ -26,6 +28,8 @@ private:
 	std::unordered_map<PropertyType, std::function<bool(const std::string&, const PropertyDescriptor&, float, float)>> mPropertySetters;
 	Component* mActiveComponent = nullptr;
 	std::string mNameProp = "None";
+	int mTextureType = 0; // texture2D
+	const char* const texureTypeStrings[2] = {"Texture 2D", "Cubemap"};
 public:
 	ComponentPropertyDrawer();
 	~ComponentPropertyDrawer() = default;
