@@ -646,7 +646,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(const std::string& pInde
 				if (ImGui::Button("Remove"))
 				{
 					auto newVec = *textures;
-					newVec.erase(newVec.begin() + i);
+					newVec.erase(newVec.begin() + static_cast<size_t>(i));
 					prop.Set(&newVec);
 
 					ImGui::PopID();
@@ -734,14 +734,14 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 				if (auto* tex2D = dynamic_cast<Zephyrus::Assets::ITexture2D*>(tex))
 				{
-					char buffer[256];
-					strncpy_s(buffer, tex2D->GetFilePath().c_str(), sizeof(buffer));
-					buffer[sizeof(buffer) - 1] = '\0';
+					char instanceTextureBuffer[256];
+					strncpy_s(instanceTextureBuffer, tex2D->GetFilePath().c_str(), sizeof(instanceTextureBuffer));
+					instanceTextureBuffer[sizeof(instanceTextureBuffer) - 1] = '\0';
 
-					if (ImGui::InputText(("##" + name).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+					if (ImGui::InputText(("##" + name).c_str(), instanceTextureBuffer, sizeof(instanceTextureBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 					{
 						auto oldTex = tex2D;
-						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(buffer, buffer);
+						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(instanceTextureBuffer, instanceTextureBuffer);
 						if (newTex)
 						{
 							auto* evt = new SetGenericPropertyEvent<Zephyrus::Assets::ITexture2D*>(
@@ -756,7 +756,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 					if (ImGui::IsItemHovered())
 					{
-						ImGui::SetTooltip(buffer);
+						ImGui::SetTooltip(instanceTextureBuffer);
 					}
 
 					// drag & drop
@@ -786,23 +786,23 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 					std::vector<std::string> faces = cubemap->GetTempFilePath();
 					for (size_t i = 0; i < 6; i++)
 					{
-						char buffer[128];
-						strncpy_s(buffer, faces[i].c_str(), sizeof(buffer));
-						buffer[sizeof(buffer) - 1] = '\0';
+						char InstanceCubemapBuffer[128];
+						strncpy_s(InstanceCubemapBuffer, faces[i].c_str(), sizeof(InstanceCubemapBuffer));
+						InstanceCubemapBuffer[sizeof(InstanceCubemapBuffer) - 1] = '\0';
 
 						ImGui::SetCursorPosX(pLabelWidth);
 						ImGui::SetNextItemWidth(pInputWidth);
 						
 						ImGui::PushID(static_cast<int>(i));
-						if (ImGui::InputText(("##Face" + std::to_string(i)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+						if (ImGui::InputText(("##Face" + std::to_string(i)).c_str(), InstanceCubemapBuffer, sizeof(InstanceCubemapBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 						{
-							faces[i] = buffer;
+							faces[i] = InstanceCubemapBuffer;
 							cubemap->SetTempFilePath(faces);
 						}
 
 						if (ImGui::IsItemHovered())
 						{
-							ImGui::SetTooltip(buffer);
+							ImGui::SetTooltip(InstanceCubemapBuffer);
 						}
 
 						if (ImGui::BeginDragDropTarget())
@@ -1117,7 +1117,112 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector3D(const std::string& pIndex
 bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
-	return false;
+	auto prop = MakeUndoableProperty<std::vector<std::pair<std::string, Vector4D>>>(property, mActiveComponent);
+	auto* vectors = static_cast<std::vector<std::pair<std::string, Vector4D>>*>(prop.getter());
+	if (!vectors)
+	{
+		return false;
+	}
+	if (ImGui::CollapsingHeader("Vector4D", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		for (size_t i = 0; i < vectors->size(); i++)
+		{
+			std::string propertyName = vectors->at(i).first;
+			Vector4D vec4 = vectors->at(i).second;
+			std::string name = "Vector4D " + std::to_string(i);
+
+			ImGui::PushID(name.c_str());
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
+
+			char propertyNameBuffer[256];
+			strncpy_s(propertyNameBuffer, propertyName.c_str(), sizeof(propertyNameBuffer));
+			propertyNameBuffer[sizeof(propertyNameBuffer) - 1] = '\0';
+			
+			ImGui::SetNextItemWidth(pLabelWidth * 1.8f);
+			if (ImGui::InputText(("##Prop" + name).c_str(), propertyNameBuffer, sizeof(propertyNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			{
+				auto newVec = *vectors;
+				auto it = std::find_if(newVec.begin(), newVec.end(),
+				[&propertyNameBuffer](const auto& pair) { return pair.first == propertyNameBuffer; });
+				if (it == newVec.end())
+				{
+					newVec[i] = std::pair<std::string, Vector4D>(propertyNameBuffer, vec4);
+					prop.Set(&newVec);	
+				}
+			}
+			
+			ImGui::PopStyleColor();
+			ImGui::SameLine(pLabelWidth * 2);
+			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+
+			float v[4] = { vec4.x, vec4.y, vec4.z, vec4.w };
+			static float newVec4[4];
+
+			ImGui::InputFloat4("##Value", v, "%.2f");
+
+			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+			{
+				auto newVec = *vectors;
+				Vector4D newVector4D(newVec4[0], newVec4[1], newVec4[2], newVec4[3]);
+				newVec[i] = std::pair<std::string, Vector4D>(propertyNameBuffer, newVector4D);
+				prop.Set(&newVec);
+			}
+
+			ImGui::SameLine();
+
+			std::string colorLabel = name + "color";
+			ImGui::PopID();
+			ImGui::PushID(colorLabel.c_str());
+			if (ImGui::ColorButton("##color", ImVec4(v[0], v[1], v[2], v[3]), 0, ImVec2(pInputWidth / 4, 0)))
+			{
+				ImGui::OpenPopup("ColorPopupOverride");
+				newVec4[0] = vec4.x;
+				newVec4[1] = vec4.y;
+				newVec4[2] = vec4.z;
+				newVec4[3] = vec4.w;
+			}
+			if (ImGui::BeginPopup("ColorPopupOverride", ImGuiWindowFlags_NoMove))
+			{
+				ImGui::ColorPicker4(colorLabel.c_str(), newVec4);
+				if (ImGui::Button("Save Color"))
+				{
+					auto newVec = *vectors;
+					Vector4D newVector4D(newVec4[0], newVec4[1], newVec4[2], newVec4[3]);
+					newVec[i] = std::pair<std::string, Vector4D>(propertyNameBuffer, newVector4D);
+					prop.Set(&newVec);
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
+			}
+
+			if (!vectors->empty())
+			{
+				ImGui::SameLine();
+				if (ImGui::Button("Remove"))
+				{
+					auto removedVec = *vectors;
+					removedVec.erase(removedVec.begin() + static_cast<size_t>(i));
+					prop.Set(&removedVec);
+		
+					ImGui::PopID();
+					break;
+				}
+			}
+			if (i < vectors->size() - 1)
+			{
+				ImGui::Separator();
+			}
+			ImGui::PopID();
+		}
+		if (ImGui::Button("+ Add Vec4"))
+		{
+			mNameProp = "None" + std::to_string(vectors->size());
+			auto newVec = *vectors;
+			newVec.emplace_back(mNameProp, Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
+			prop.Set(&newVec);	
+		}
+	}
+	return true;
 }
 
 bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
@@ -1169,7 +1274,6 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 
 				if (ImGui::InputText(("##" + name).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 				{
-					auto oldTex = tex2D;
 					Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(buffer, buffer);
 					if (newTex)
 					{
@@ -1204,17 +1308,17 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 			else if (auto* cubemap = dynamic_cast<Zephyrus::Assets::ICubeMapTexture*>(tex))
 			{
 				std::vector<std::string> faces = cubemap->GetTempFilePath();
-				for (size_t i = 0; i < 6; i++)
+				for (size_t j = 0; j < 6; j++)
 				{
 					char buffer[128];
-					strncpy_s(buffer, faces[i].c_str(), sizeof(buffer));
+					strncpy_s(buffer, faces[j].c_str(), sizeof(buffer));
 					buffer[sizeof(buffer) - 1] = '\0';
 
 					ImGui::SetCursorPosX(pLabelWidth * 2);
 					ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
 					
-					ImGui::PushID(static_cast<int>(i));
-					if (ImGui::InputText(("##Face" + std::to_string(i)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+					ImGui::PushID(static_cast<int>(j));
+					if (ImGui::InputText(("##Face" + std::to_string(j)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 					{
 						faces[i] = buffer;
 						cubemap->SetTempFilePath(faces);
@@ -1339,8 +1443,8 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 			
 			if (ImGui::Button("Accept##NewParameter"))
 			{
-				auto newVec = *textures;
-				auto it = std::find_if(newVec.begin(), newVec.end(),
+				newVec = *textures;
+				it = std::find_if(newVec.begin(), newVec.end(),
 				[&NewParameterNameBuffer](const auto& pair) { return pair.first == NewParameterNameBuffer; });
 				if (it != newVec.end())
 				{
