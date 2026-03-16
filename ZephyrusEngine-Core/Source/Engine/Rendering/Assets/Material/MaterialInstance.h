@@ -3,10 +3,11 @@
 #include "JSONUtils.h"
 #include "Material/IMaterial.h"
 #include <unordered_map>
+#include "IBaseMaterialListener.h"
 
 namespace Zephyrus::Material
 {
-    class MaterialInstance
+    class MaterialInstance : public IBaseMaterialListener
     {
     private:
         IMaterial* mBaseMaterial{ nullptr };
@@ -19,7 +20,7 @@ namespace Zephyrus::Material
         std::unordered_map<std::string, Assets::ITextureBase*> mTextureOverrides;
     public:
         MaterialInstance() = default;
-        ~MaterialInstance() = default;
+        ~MaterialInstance() override = default;
         void SetMaterial(IMaterial* newMaterial);
         void ClearOverride(const std::string& name);
         void ClearOverrides();
@@ -46,5 +47,7 @@ namespace Zephyrus::Material
         inline std::unordered_map<std::string, Assets::ITextureBase*> GetTextureOverrides() { return mTextureOverrides; }
 
         inline IMaterial* GetBaseMaterial() const { return mBaseMaterial; }
+
+        void UpdateMaterial() override;
     };
 }

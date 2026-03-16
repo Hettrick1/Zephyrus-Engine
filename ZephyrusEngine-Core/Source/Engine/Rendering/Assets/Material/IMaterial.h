@@ -11,6 +11,8 @@
 
 namespace Zephyrus::Material
 {
+    class IBaseMaterialListener;
+    
     class IMaterial
     {
     public:
@@ -53,5 +55,10 @@ namespace Zephyrus::Material
         
         virtual void SetFilePath(const std::string& filePath) = 0;
         virtual std::string GetFilePath() const = 0;
+
+        virtual void Save() const = 0;
+
+        virtual void AddMaterialListener(IBaseMaterialListener* listener) = 0;
+        virtual void RemoveMaterialListener(IBaseMaterialListener* listener) = 0;
     };
 }

@@ -8,7 +8,12 @@ namespace Zephyrus::Material
 {
 	void MaterialInstance::SetMaterial(IMaterial* newMaterial)
 	{
+		if (mBaseMaterial)
+		{
+			mBaseMaterial->RemoveMaterialListener(this);
+		}
 		mBaseMaterial = newMaterial;
+		mBaseMaterial->AddMaterialListener(this);
 		ClearOverrides();
 
 		if (!mBaseMaterial)
@@ -389,5 +394,10 @@ namespace Zephyrus::Material
 			}
 			reader.EndObjectArray();
 		}
+	}
+
+	void MaterialInstance::UpdateMaterial()
+	{
+		ZP_EDITOR_ERROR("TEST");
 	}
 }

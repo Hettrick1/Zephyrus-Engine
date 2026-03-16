@@ -2,6 +2,7 @@
 #include "Material.h"
 
 #include "AssetsManager.h"
+#include "IBaseMaterialListener.h"
 #include "Interface/ICubeMapTexture.h"
 #include "Interface/ITexture2D.h"
 
@@ -28,6 +29,8 @@ namespace Zephyrus::Material
 		mVec3Properties.clear();
 		mVec4Properties.clear();
 		mMat4Properties.clear();
+		
+		mListeners.clear();
 	}
 	void Material::SetVertexShader(Render::IShader* s)
 	{
@@ -529,5 +532,27 @@ namespace Zephyrus::Material
 	void Material::SetFilePath(const std::string& filePath)
 	{
 		mFilePath = filePath;
+	}
+
+	void Material::Save() const
+	{
+		Serialization::Json::JsonWriter writer;
+		Serialize(writer);
+		writer.SaveDocument(mFilePath);
+
+		for (auto listener : mListeners)
+		{
+			listener->UpdateMaterial();
+		}
+	}
+
+	void Material::AddMaterialListener(IBaseMaterialListener* listener)
+	{
+		mListeners.push_back(listener);
+	}
+
+	void Material::RemoveMaterialListener(IBaseMaterialListener* listener)
+	{
+		std::erase(mListeners, listener);
 	}
 }

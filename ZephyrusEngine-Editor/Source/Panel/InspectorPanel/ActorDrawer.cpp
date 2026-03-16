@@ -156,6 +156,18 @@ void ActorDrawer::DrawActorInfos(Zephyrus::ActorComponent::Actor* pActor)
 				float factor = (prevVal != 0.0f) ? newVal / prevVal : 1.0f;
 
 				newSize = prevSize * factor;
+				if (newSize.x < 0)
+				{
+					newSize.x = 0;
+				}
+				if (newSize.y < 0)
+				{
+					newSize.y = 0;
+				}
+				if (newSize.z < 0)
+				{
+					newSize.z = 0;
+				}
 			}
 			pActor->SetSize(newSize);
 		},

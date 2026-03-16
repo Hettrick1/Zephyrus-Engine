@@ -13,13 +13,11 @@
     "vec4Properties": [{
             "name": "highColor",
             "value": [1.0, 0.0, 0.0, 1.0]
-        },
-        {
+        }, {
             "name": "middleColor",
             "value": [0.8, 0.5, 0.0, 1.0]
-        },
-        {
+        }, {
             "name": "lowColor",
-            "value": [0.9, 1.0, 0.0, 1.0]
+            "value": [0.899, 1.0, 0.0, 1.0]
         }]
 }

@@ -1,11 +1,17 @@
 #include "MaterialWindow.h"
+
 #include "AssetsManager.h"
 #include "../../EditorUI/ImGuiUtils.h"
 #include "Interface/ITexture2D.h"
 #include <imgui.h> 
 
-#include "ISerializationFactory.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#include <shellapi.h>
+#include <filesystem>
+#endif
 
 namespace Zephyrus::Editor::Window
 {
@@ -35,10 +41,12 @@ namespace Zephyrus::Editor::Window
         ImTextureID redoIcon = (ImTextureID)(intptr_t)redoTex->GetHandle();
         Zephyrus::Assets::ITexture2D* saveTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/save20.png", "Sprites/Icons/save20.png");
         ImTextureID saveIcon = (ImTextureID)(intptr_t)saveTex->GetHandle();
+        Zephyrus::Assets::ITexture2D* openTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/open20.png", "Sprites/Icons/open20.png");
+        ImTextureID openIcon = (ImTextureID)(intptr_t)openTex->GetHandle();
 
         ImVec2 iconSize(20, 20);
         float buttonSize = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y;
-        ImVec2 btnSize(buttonSize * 2, buttonSize * 1.1);
+        ImVec2 btnSize(buttonSize * 2, buttonSize * 1.1f);
         
         if (ZP::UI::CustomImageButton("Undo", undoIcon, btnSize, iconSize))
         {
@@ -52,8 +60,16 @@ namespace Zephyrus::Editor::Window
         ImGui::SameLine();
         if (ZP::UI::CustomImageButton("Save", saveIcon, btnSize, iconSize))
         {
-            // TODO serialize material
+            mMaterial->Save();
         }
+#ifdef _WIN32
+        ImGui::SameLine();
+        if (ZP::UI::CustomImageButton("Open", openIcon, btnSize, iconSize))
+        {
+            std::filesystem::path path = mFilePath;
+            ShellExecuteA(nullptr, "open", path.make_preferred().string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+        }
+#endif
         ImGui::PopFont();
 
         ImGui::Spacing();
@@ -64,6 +80,7 @@ namespace Zephyrus::Editor::Window
         for (unsigned int i = 0; i < properties.size(); i++)
         {
             mComponentPropertyDrawer->DrawProperty(std::to_string(i), properties[i], nullptr);
+            ImGui::Dummy(ImVec2(0, 10));
         }
         
         // TODO: ton UI material ici

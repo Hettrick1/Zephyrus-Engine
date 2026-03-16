@@ -28,6 +28,8 @@ namespace Zephyrus::Material
 
 		std::string mFilePath{ " " };
 
+		std::vector<IBaseMaterialListener*> mListeners;
+
 	public:
 
 		Material();
@@ -84,5 +86,10 @@ namespace Zephyrus::Material
 		
 		inline std::string GetFilePath() const override { return mFilePath; }
 		void SetFilePath(const std::string& filePath) override;
+
+		void Save() const override;
+
+		void AddMaterialListener(IBaseMaterialListener* listener) override;
+		void RemoveMaterialListener(IBaseMaterialListener* listener) override;
 	};
 }

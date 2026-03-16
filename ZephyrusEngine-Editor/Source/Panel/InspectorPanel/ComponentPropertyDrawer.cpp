@@ -1093,25 +1093,347 @@ bool ComponentPropertyDrawer::SetPropertyShaderGeom(const std::string& pIndex, c
 bool ComponentPropertyDrawer::SetPropertyArrayFloat(const std::string& pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
-	return false;
+	auto prop = MakeUndoableProperty<std::vector<std::pair<std::string, float>>>(property, mActiveComponent);
+	auto* floats = static_cast<std::vector<std::pair<std::string, float>>*>(prop.getter());
+	if (!floats)
+	{
+		return false;
+	}
+	ImGuiTreeNodeFlags flags = floats->empty() ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_DefaultOpen;
+	if (ImGui::CollapsingHeader("Float Parameters", flags))
+	{
+		for (size_t i = 0; i < floats->size(); i++)
+		{
+			std::string propertyName = floats->at(i).first;
+			float floatingNumber = floats->at(i).second;
+			std::string name = "Float " + std::to_string(i);
+
+			ImGui::PushID(name.c_str());
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
+
+			char propertyNameBuffer[256];
+			strncpy_s(propertyNameBuffer, propertyName.c_str(), sizeof(propertyNameBuffer));
+			propertyNameBuffer[sizeof(propertyNameBuffer) - 1] = '\0';
+			
+			ImGui::SetNextItemWidth(pLabelWidth * 1.8f);
+			if (ImGui::InputText(("##Prop" + name).c_str(), propertyNameBuffer, sizeof(propertyNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			{
+				auto newVec = *floats;
+				auto it = std::find_if(newVec.begin(), newVec.end(),
+				[&propertyNameBuffer](const auto& pair) { return pair.first == propertyNameBuffer; });
+				if (it == newVec.end())
+				{
+					newVec[i] = std::pair<std::string, float>(propertyNameBuffer, floatingNumber);
+					prop.Set(&newVec);	
+				}
+			}
+			
+			ImGui::PopStyleColor();
+			ImGui::SameLine(pLabelWidth * 2);
+			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+
+			float tempFloat = floatingNumber;
+			static float newVec4[4];
+
+			ImGui::InputFloat("##Value", &tempFloat, 0, 0, "%.2f");
+
+			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+			{
+				auto newVec = *floats;
+				newVec[i] = std::pair<std::string, float>(propertyNameBuffer, tempFloat);
+				prop.Set(&newVec);
+			}
+
+			ImGui::SameLine();
+
+			if (!floats->empty())
+			{
+				ImGui::SameLine();
+				if (ImGui::Button("Remove"))
+				{
+					auto removedVec = *floats;
+					removedVec.erase(removedVec.begin() + static_cast<size_t>(i));
+					prop.Set(&removedVec);
+		
+					ImGui::PopID();
+					break;
+				}
+			}
+			if (i < floats->size() - 1)
+			{
+				ImGui::Separator();
+			}
+			ImGui::PopID();
+		}
+		if (ImGui::Button("+ Add Float"))
+		{
+			mNameProp = "Float" + std::to_string(floats->size());
+			auto newVec = *floats;
+			newVec.emplace_back(mNameProp, 1);
+			prop.Set(&newVec);	
+		}
+	}
+	return true;
 }
 
 bool ComponentPropertyDrawer::SetPropertyArrayInt(const std::string& pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
-	return false;
+	auto prop = MakeUndoableProperty<std::vector<std::pair<std::string, int>>>(property, mActiveComponent);
+	auto* ints = static_cast<std::vector<std::pair<std::string, int>>*>(prop.getter());
+	if (!ints)
+	{
+		return false;
+	}
+	ImGuiTreeNodeFlags flags = ints->empty() ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_DefaultOpen;
+	if (ImGui::CollapsingHeader("Int Parameters", flags))
+	{
+		for (size_t i = 0; i < ints->size(); i++)
+		{
+			std::string propertyName = ints->at(i).first;
+			int integer = ints->at(i).second;
+			std::string name = "Int " + std::to_string(i);
+
+			ImGui::PushID(name.c_str());
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
+
+			char propertyNameBuffer[256];
+			strncpy_s(propertyNameBuffer, propertyName.c_str(), sizeof(propertyNameBuffer));
+			propertyNameBuffer[sizeof(propertyNameBuffer) - 1] = '\0';
+			
+			ImGui::SetNextItemWidth(pLabelWidth * 1.8f);
+			if (ImGui::InputText(("##Prop" + name).c_str(), propertyNameBuffer, sizeof(propertyNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			{
+				auto newVec = *ints;
+				auto it = std::find_if(newVec.begin(), newVec.end(),
+				[&propertyNameBuffer](const auto& pair) { return pair.first == propertyNameBuffer; });
+				if (it == newVec.end())
+				{
+					newVec[i] = std::pair<std::string, int>(propertyNameBuffer, integer);
+					prop.Set(&newVec);	
+				}
+			}
+			
+			ImGui::PopStyleColor();
+			ImGui::SameLine(pLabelWidth * 2);
+			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+
+			int tempInt = integer;
+			static float newVec4[4];
+
+			ImGui::InputInt("##Value", &tempInt, 0);
+
+			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+			{
+				auto newVec = *ints;
+				newVec[i] = std::pair<std::string, int>(propertyNameBuffer, tempInt);
+				prop.Set(&newVec);
+			}
+
+			ImGui::SameLine();
+
+			if (!ints->empty())
+			{
+				ImGui::SameLine();
+				if (ImGui::Button("Remove"))
+				{
+					auto removedVec = *ints;
+					removedVec.erase(removedVec.begin() + static_cast<size_t>(i));
+					prop.Set(&removedVec);
+		
+					ImGui::PopID();
+					break;
+				}
+			}
+			if (i < ints->size() - 1)
+			{
+				ImGui::Separator();
+			}
+			ImGui::PopID();
+		}
+		if (ImGui::Button("+ Add Int"))
+		{
+			mNameProp = "Int" + std::to_string(ints->size());
+			auto newVec = *ints;
+			newVec.emplace_back(mNameProp, 1);
+			prop.Set(&newVec);	
+		}
+	}
+	return true;
 }
 
 bool ComponentPropertyDrawer::SetPropertyArrayVector2D(const std::string& pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
-	return false;
+	auto prop = MakeUndoableProperty<std::vector<std::pair<std::string, Vector2D>>>(property, mActiveComponent);
+	auto* vectors = static_cast<std::vector<std::pair<std::string, Vector2D>>*>(prop.getter());
+	if (!vectors)
+	{
+		return false;
+	}
+	ImGuiTreeNodeFlags flags = vectors->empty() ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_DefaultOpen;
+	if (ImGui::CollapsingHeader("Vector2D Parameters", flags))
+	{
+		for (size_t i = 0; i < vectors->size(); i++)
+		{
+			std::string propertyName = vectors->at(i).first;
+			Vector2D vec3 = vectors->at(i).second;
+			std::string name = "Vector2D " + std::to_string(i);
+
+			ImGui::PushID(name.c_str());
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
+
+			char propertyNameBuffer[256];
+			strncpy_s(propertyNameBuffer, propertyName.c_str(), sizeof(propertyNameBuffer));
+			propertyNameBuffer[sizeof(propertyNameBuffer) - 1] = '\0';
+			
+			ImGui::SetNextItemWidth(pLabelWidth * 1.8f);
+			if (ImGui::InputText(("##Prop" + name).c_str(), propertyNameBuffer, sizeof(propertyNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			{
+				auto newVec = *vectors;
+				auto it = std::find_if(newVec.begin(), newVec.end(),
+				[&propertyNameBuffer](const auto& pair) { return pair.first == propertyNameBuffer; });
+				if (it == newVec.end())
+				{
+					newVec[i] = std::pair<std::string, Vector2D>(propertyNameBuffer, vec3);
+					prop.Set(&newVec);	
+				}
+			}
+			
+			ImGui::PopStyleColor();
+			ImGui::SameLine(pLabelWidth * 2);
+			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+
+			float v[4] = { vec3.x, vec3.y};
+			static float newVec4[4];
+
+			ImGui::InputFloat2("##Value", v, "%.2f");
+
+			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+			{
+				auto newVec = *vectors;
+				Vector2D newVector3D(newVec4[0], newVec4[1]);
+				newVec[i] = std::pair<std::string, Vector2D>(propertyNameBuffer, newVector3D);
+				prop.Set(&newVec);
+			}
+
+			ImGui::SameLine();
+
+			if (!vectors->empty())
+			{
+				ImGui::SameLine();
+				if (ImGui::Button("Remove"))
+				{
+					auto removedVec = *vectors;
+					removedVec.erase(removedVec.begin() + static_cast<size_t>(i));
+					prop.Set(&removedVec);
+		
+					ImGui::PopID();
+					break;
+				}
+			}
+			if (i < vectors->size() - 1)
+			{
+				ImGui::Separator();
+			}
+			ImGui::PopID();
+		}
+		if (ImGui::Button("+ Add Vec2"))
+		{
+			mNameProp = "Vector2D" + std::to_string(vectors->size());
+			auto newVec = *vectors;
+			newVec.emplace_back(mNameProp, Vector2D(1.0f, 1.0f));
+			prop.Set(&newVec);	
+		}
+	}
+	return true;
 }
 
 bool ComponentPropertyDrawer::SetPropertyArrayVector3D(const std::string& pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
 	const float& pInputWidth)
 {
-	return false;
+	auto prop = MakeUndoableProperty<std::vector<std::pair<std::string, Vector3D>>>(property, mActiveComponent);
+	auto* vectors = static_cast<std::vector<std::pair<std::string, Vector3D>>*>(prop.getter());
+	if (!vectors)
+	{
+		return false;
+	}
+	ImGuiTreeNodeFlags flags = vectors->empty() ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_DefaultOpen;
+	if (ImGui::CollapsingHeader("Vector3D Parameters", flags))
+	{
+		for (size_t i = 0; i < vectors->size(); i++)
+		{
+			std::string propertyName = vectors->at(i).first;
+			Vector3D vec3 = vectors->at(i).second;
+			std::string name = "Vector3D " + std::to_string(i);
+
+			ImGui::PushID(name.c_str());
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
+
+			char propertyNameBuffer[256];
+			strncpy_s(propertyNameBuffer, propertyName.c_str(), sizeof(propertyNameBuffer));
+			propertyNameBuffer[sizeof(propertyNameBuffer) - 1] = '\0';
+			
+			ImGui::SetNextItemWidth(pLabelWidth * 1.8f);
+			if (ImGui::InputText(("##Prop" + name).c_str(), propertyNameBuffer, sizeof(propertyNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			{
+				auto newVec = *vectors;
+				auto it = std::find_if(newVec.begin(), newVec.end(),
+				[&propertyNameBuffer](const auto& pair) { return pair.first == propertyNameBuffer; });
+				if (it == newVec.end())
+				{
+					newVec[i] = std::pair<std::string, Vector3D>(propertyNameBuffer, vec3);
+					prop.Set(&newVec);	
+				}
+			}
+			
+			ImGui::PopStyleColor();
+			ImGui::SameLine(pLabelWidth * 2);
+			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+
+			float v[4] = { vec3.x, vec3.y, vec3.z};
+			static float newVec4[4];
+
+			ImGui::InputFloat3("##Value", v, "%.2f");
+
+			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
+			{
+				auto newVec = *vectors;
+				Vector3D newVector3D(newVec4[0], newVec4[1], newVec4[2]);
+				newVec[i] = std::pair<std::string, Vector3D>(propertyNameBuffer, newVector3D);
+				prop.Set(&newVec);
+			}
+
+			ImGui::SameLine();
+
+			if (!vectors->empty())
+			{
+				ImGui::SameLine();
+				if (ImGui::Button("Remove"))
+				{
+					auto removedVec = *vectors;
+					removedVec.erase(removedVec.begin() + static_cast<size_t>(i));
+					prop.Set(&removedVec);
+		
+					ImGui::PopID();
+					break;
+				}
+			}
+			if (i < vectors->size() - 1)
+			{
+				ImGui::Separator();
+			}
+			ImGui::PopID();
+		}
+		if (ImGui::Button("+ Add Vec3"))
+		{
+			mNameProp = "Vector3D" + std::to_string(vectors->size());
+			auto newVec = *vectors;
+			newVec.emplace_back(mNameProp, Vector3D(1.0f, 1.0f, 1.0f));
+			prop.Set(&newVec);	
+		}
+	}
+	return true;
 }
 
 bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex, const PropertyDescriptor& property, const float& pLabelWidth,
@@ -1123,7 +1445,8 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex
 	{
 		return false;
 	}
-	if (ImGui::CollapsingHeader("Vector4D", ImGuiTreeNodeFlags_DefaultOpen))
+	ImGuiTreeNodeFlags flags = vectors->empty() ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_DefaultOpen;
+	if (ImGui::CollapsingHeader("Vector4D Parameters", flags))
 	{
 		for (size_t i = 0; i < vectors->size(); i++)
 		{
@@ -1153,7 +1476,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex
 			
 			ImGui::PopStyleColor();
 			ImGui::SameLine(pLabelWidth * 2);
-			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+			ImGui::SetNextItemWidth((pInputWidth - pLabelWidth * 1.5f) * 0.8f);
 
 			float v[4] = { vec4.x, vec4.y, vec4.z, vec4.w };
 			static float newVec4[4];
@@ -1173,13 +1496,17 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex
 			std::string colorLabel = name + "color";
 			ImGui::PopID();
 			ImGui::PushID(colorLabel.c_str());
-			if (ImGui::ColorButton("##color", ImVec4(v[0], v[1], v[2], v[3]), 0, ImVec2(pInputWidth / 4, 0)))
+			if (ImGui::ColorButton("##color", ImVec4(v[0], v[1], v[2], v[3]), 0, ImVec2((pInputWidth - pLabelWidth * 1.5f) * 0.2f - 10, 0)))
 			{
 				ImGui::OpenPopup("ColorPopupOverride");
 				newVec4[0] = vec4.x;
 				newVec4[1] = vec4.y;
 				newVec4[2] = vec4.z;
 				newVec4[3] = vec4.w;
+			}
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 			}
 			if (ImGui::BeginPopup("ColorPopupOverride", ImGuiWindowFlags_NoMove))
 			{
@@ -1216,7 +1543,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex
 		}
 		if (ImGui::Button("+ Add Vec4"))
 		{
-			mNameProp = "None" + std::to_string(vectors->size());
+			mNameProp = "Vector4D" + std::to_string(vectors->size());
 			auto newVec = *vectors;
 			newVec.emplace_back(mNameProp, Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
 			prop.Set(&newVec);	
@@ -1234,7 +1561,8 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 	{
 		return false;
 	}
-	if (ImGui::CollapsingHeader("Textures", ImGuiTreeNodeFlags_DefaultOpen))
+	ImGuiTreeNodeFlags flags = textures->empty() ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_DefaultOpen;
+	if (ImGui::CollapsingHeader("Textures Parameters", flags))
 	{
 		for (size_t i = 0; i < textures->size(); i++)
 		{
@@ -1381,7 +1709,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 		}
 		if (ImGui::Button("+ Add Texture"))
 		{
-			mNameProp = "None" + std::to_string(textures->size());
+			mNameProp = "Texture" + std::to_string(textures->size());
 			mTextureType = 0;
 			ImGui::OpenPopup("NewTextureParameter");
 		}
