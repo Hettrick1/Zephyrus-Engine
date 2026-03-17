@@ -1,7 +1,5 @@
 #include "ComponentPropertyDrawer.h"
-
 #include <filesystem>
-
 #include "Actor.h"
 #include "EditorUI/ImGuiUtils.h"
 #include "EditorApplication/EventSystem/Event/RenameActorEvent.h"
@@ -17,6 +15,11 @@
 #include "Interface/IMesh.h"
 #include "Interface/ITexture2D.h"
 #include "Material/MaterialInstance.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#include <shellapi.h>
+#endif
 
 ComponentPropertyDrawer::ComponentPropertyDrawer()
 {
@@ -1662,7 +1665,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 						{
 							std::string texID((const char*)payload->Data, payload->DataSize);
-							faces[i] = texID;
+							faces[j] = texID;
 							cubemap->SetTempFilePath(faces);
 						}
 						ImGui::EndDragDropTarget();
@@ -1844,7 +1847,12 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 
 	ImGui::SameLine(pLabelWidth * 2);
 
-	ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
+	float buttonSize = 0.0f;
+#ifdef _WIN32
+	buttonSize = ImGui::CalcTextSize("Open").x + 10;
+#endif
+	
+	ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f - buttonSize);
 	std::string label = "##Shader" + std::string(buffer) + pIndex;
 	
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
@@ -1883,6 +1891,23 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 	{
 		ImGui::SetTooltip(buffer);
 	}
+	
+#ifdef _WIN32
+	ImGui::SameLine();
+	if (!shader)
+	{
+		ImGui::BeginDisabled();
+	}
+	if (ImGui::Button(("Open##" + pIndex).c_str(), ImVec2( buttonSize, 0)))
+	{
+			std::filesystem::path path = shader->GetFilePath();
+			ShellExecuteA(nullptr, "open", path.make_preferred().string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+	}
+	if (!shader)
+	{
+		ImGui::EndDisabled();
+	}
+#endif
 	
 	ImGui::SameLine();
 	ImGui::PushID(("Clear" + pIndex).c_str());
