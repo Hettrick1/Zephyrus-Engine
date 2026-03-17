@@ -398,6 +398,35 @@ namespace Zephyrus::Material
 
 	void MaterialInstance::UpdateMaterial()
 	{
-		ZP_EDITOR_ERROR("TEST");
+		if (!mBaseMaterial)
+			return;
+
+		// --- FLOAT ---
+		UpdateProperties(mFloatOverrides, mBaseMaterial->GetFloatProperties());
+
+		// --- INT ---
+		UpdateProperties(mIntOverrides, mBaseMaterial->GetIntProperties());
+
+		// --- VECTOR2 ---
+		UpdateProperties(mVector2DOverrides, mBaseMaterial->GetVec2Properties());
+
+		// --- VECTOR3 ---
+		UpdateProperties(mVector3DOverrides, mBaseMaterial->GetVec3Properties());
+
+		// --- VECTOR4 ---
+		UpdateProperties(mVector4DOverrides, mBaseMaterial->GetVec4Properties());
+
+		// --- TEXTURE ---
+		std::map<std::string, Assets::ITextureBase*> tempContainer;
+		for (auto& [name, value] : mBaseMaterial->GetTextureProperties())
+		{
+			if (mTextureOverrides.contains(name) && mTextureOverrides[name]->GetType() == value->GetType())
+			{
+				tempContainer[name] = mTextureOverrides[name];
+				continue;
+			}
+			tempContainer[name]  = value;
+		}
+		mTextureOverrides = tempContainer;
 	}
 }

@@ -681,7 +681,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 	ImGui::Text("Base Material : ");
 	ImGui::SameLine(pLabelWidth);
 	ImGui::SetNextItemWidth(pInputWidth);
-	std::string label = "##String" + std::string(buffer) + pIndex;
+	std::string label = "##StringInst" + std::string(buffer) + pIndex;
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
 		auto newMaterial = Zephyrus::Assets::AssetsManager::LoadMaterial(buffer, buffer);
@@ -718,17 +718,17 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 		ImGui::SetTooltip(buffer);
 	}
 
-	if (ImGui::TreeNodeEx("Material Properties", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::TreeNodeEx("Material Properties ##Inst", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		// --- TEXTURES OVERRIDES ---
-
 		auto texOverrides = instance->GetTextureOverrides();
-		ImGui::PushID(("texture" + pIndex).c_str());
-		if (!texOverrides.empty() && ImGui::TreeNode("Textures"))
+		ImGui::PushID(("textureInst" + pIndex).c_str());
+		if (!texOverrides.empty() && ImGui::TreeNode("Textures##Inst"))
 		{
 			for (auto& [name, tex] : texOverrides)
 			{
-				ImGui::PushID(name.c_str());
+				std::string texLabel = "TexInst" + name;
+				ImGui::PushID(texLabel.c_str());
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
 				ImGui::PopStyleColor();
@@ -741,7 +741,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 					strncpy_s(instanceTextureBuffer, tex2D->GetFilePath().c_str(), sizeof(instanceTextureBuffer));
 					instanceTextureBuffer[sizeof(instanceTextureBuffer) - 1] = '\0';
 
-					if (ImGui::InputText(("##" + name).c_str(), instanceTextureBuffer, sizeof(instanceTextureBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+					if (ImGui::InputText(("##Inst" + name).c_str(), instanceTextureBuffer, sizeof(instanceTextureBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 					{
 						auto oldTex = tex2D;
 						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(instanceTextureBuffer, instanceTextureBuffer);
@@ -797,7 +797,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 						ImGui::SetNextItemWidth(pInputWidth);
 						
 						ImGui::PushID(static_cast<int>(i));
-						if (ImGui::InputText(("##Face" + std::to_string(i)).c_str(), InstanceCubemapBuffer, sizeof(InstanceCubemapBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+						if (ImGui::InputText(("##FaceInst" + std::to_string(i)).c_str(), InstanceCubemapBuffer, sizeof(InstanceCubemapBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 						{
 							faces[i] = InstanceCubemapBuffer;
 							cubemap->SetTempFilePath(faces);
@@ -822,8 +822,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 					}
 
 					ImGui::SetCursorPosX(pLabelWidth);
-					//ImGui::SetNextItemWidth(pInputWidth);
-					if (ImGui::Button(("Create Cubemap##" + name).c_str(), ImVec2(pInputWidth, 0)))
+					if (ImGui::Button(("Create Cubemap##Inst" + name).c_str(), ImVec2(pInputWidth, 0)))
 					{
 						std::string nameCm;
 						for (auto face : faces)
@@ -853,13 +852,13 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 		// --- FLOAT OVERRIDES ---
 		auto floatOverrides = instance->GetFloatOverrides();
-		ImGui::PushID(("float" + pIndex).c_str());
-		if (!floatOverrides.empty() && ImGui::TreeNode("Float"))
+		ImGui::PushID(("floatInst" + pIndex).c_str());
+		if (!floatOverrides.empty() && ImGui::TreeNode("Float##Inst"))
 		{
 			for (auto& [name, value] : floatOverrides)
 			{
-				const char* floatLabel = (name + pIndex).c_str();
-				ImGui::PushID(floatLabel);
+				std::string floatLabel = "FloatInst" + name + pIndex;
+				ImGui::PushID(floatLabel.c_str());
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
 				ImGui::PopStyleColor();
@@ -867,7 +866,8 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 				ImGui::SetNextItemWidth(pInputWidth);
 
 				float v = value;
-				ImGui::InputFloat("##Value", &v, 0.01f, 0.1f, "%.3f");
+				std::string valueLabel = "##ValueInst" + name + pIndex;
+				ImGui::InputFloat(valueLabel.c_str(), &v, 0.0f, 0.0f, "%.2f");
 				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 				{
 					auto oldVal = value;
@@ -887,13 +887,13 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 		// --- INT OVERRIDES ---
 		auto intOverrides = instance->GetIntOverrides();
-		ImGui::PushID(("int" + pIndex).c_str());
-		if (!intOverrides.empty() && ImGui::TreeNode("Int"))
+		ImGui::PushID(("intInst" + pIndex).c_str());
+		if (!intOverrides.empty() && ImGui::TreeNode("Int##Inst"))
 		{
 			for (auto& [name, value] : intOverrides)
 			{
-				const char* intLabel = (name + pIndex).c_str();
-				ImGui::PushID(intLabel);
+				std::string intLabel = "IntInst" + name + pIndex;
+				ImGui::PushID(intLabel.c_str());
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
 				ImGui::PopStyleColor();
@@ -901,7 +901,8 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 				ImGui::SetNextItemWidth(pInputWidth);
 
 				int v = value;
-				ImGui::InputInt("##Value", &v, 0, 0);
+				std::string valueLabel = "##ValueInst" + name + pIndex;
+				ImGui::InputInt(valueLabel.c_str(), &v, 0, 0);
 				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 				{
 					auto oldVal = value;
@@ -921,13 +922,13 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 		// --- VECTOR2 OVERRIDES ---
 		auto vec2Overrides = instance->GetVec2Overrides();
-		ImGui::PushID(("vec2" + pIndex).c_str());
-		if (!vec2Overrides.empty() && ImGui::TreeNode("Vector 2D"))
+		ImGui::PushID(("vec2Inst" + pIndex).c_str());
+		if (!vec2Overrides.empty() && ImGui::TreeNode("Vector 2D##Inst"))
 		{
 			for (auto& [name, value] : vec2Overrides)
 			{
-				const char* vec2Label = (name + pIndex).c_str();
-				ImGui::PushID(vec2Label);
+				std::string vec2Label = "Vec2Inst" + name + pIndex;
+				ImGui::PushID(vec2Label.c_str());
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
 				ImGui::PopStyleColor();
@@ -935,7 +936,8 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 				ImGui::SetNextItemWidth(pInputWidth);
 
 				float v[2] = { value.x, value.y };
-				ImGui::InputFloat2("##Value", v, "%.3f");
+				std::string valueLabel = "##ValueInst" + name + pIndex;
+				ImGui::InputFloat2(valueLabel.c_str(), v, "%.3f");
 				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 				{
 					Vector2D oldVal = value;
@@ -956,13 +958,13 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 		// --- VECTOR3 OVERRIDES ---
 		auto vec3Overrides = instance->GetVec3Overrides();
-		ImGui::PushID(("vec3" + pIndex).c_str());
-		if (!vec3Overrides.empty() && ImGui::TreeNode("Vector 3D"))
+		ImGui::PushID(("vec3Inst" + pIndex).c_str());
+		if (!vec3Overrides.empty() && ImGui::TreeNode("Vector 3D##Inst"))
 		{
 			for (auto& [name, value] : vec3Overrides)
 			{
-				const char* vec3Label = (name + pIndex).c_str();
-				ImGui::PushID(vec3Label);
+				std::string vec3Label = "Vec3Inst" + name + pIndex;
+				ImGui::PushID(vec3Label.c_str());
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
 				ImGui::PopStyleColor();
@@ -970,7 +972,8 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 				ImGui::SetNextItemWidth(pInputWidth);
 
 				float v[3] = { value.x, value.y, value.z };
-				ImGui::InputFloat3("##Value", v, "%.3f");
+				std::string valueLabel = "##ValueInst" + name + pIndex;
+				ImGui::InputFloat3(valueLabel.c_str(), v, "%.3f");
 				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 				{
 					Vector3D oldVal = value;
@@ -991,12 +994,12 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 		// --- VECTOR4 OVERRIDES ---
 		auto vec4Overrides = instance->GetVec4Overrides();
-		ImGui::PushID(("vec4" + pIndex).c_str());
-		if (!vec4Overrides.empty() && ImGui::TreeNode("Vector 4D"))
+		ImGui::PushID(("vec4Inst" + pIndex).c_str());
+		if (!vec4Overrides.empty() && ImGui::TreeNode("Vector 4D##Inst"))
 		{
 			for (auto& [name, value] : vec4Overrides)
 			{
-				std::string vec4Label = name + pIndex;
+				std::string vec4Label = "Vec2Inst" + name + pIndex;
 				ImGui::PushID(vec4Label.c_str());
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.7f, 0.0f, 1.0f));
 				ImGui::Text("%s", name.c_str());
@@ -1007,7 +1010,8 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 				float v[4] = { value.x, value.y, value.z, value.w };
 				static float newVec4[4];
 
-				ImGui::InputFloat4("##Value", v, "%.2f");
+				std::string valueLabel = "##ValueInst" + name + pIndex;
+				ImGui::InputFloat4(valueLabel.c_str(), v, "%.2f");
 
 				if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 				{
@@ -1024,10 +1028,10 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 
 				ImGui::SameLine();
 
-				std::string colorLabel = vec4Label + "color";
+				std::string colorLabel = "ColorInst" +vec4Label + "color";
 				ImGui::PopID();
 				ImGui::PushID(colorLabel.c_str());
-				if (ImGui::ColorButton("##color", ImVec4(v[0], v[1], v[2], v[3]), 0, ImVec2(pInputWidth / 4, 0)))
+				if (ImGui::ColorButton("##colorInst", ImVec4(v[0], v[1], v[2], v[3]), 0, ImVec2(pInputWidth / 4, 0)))
 				{
 					ImGui::OpenPopup("ColorPopupOverride");
 					newVec4[0] = value.x;
@@ -1038,7 +1042,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 				if (ImGui::BeginPopup("ColorPopupOverride", ImGuiWindowFlags_NoMove))
 				{
 					ImGui::ColorPicker4(colorLabel.c_str(), newVec4);
-					if (ImGui::Button("Save Color"))
+					if (ImGui::Button("Save Color##Inst"))
 					{
 						Vector4D oldVal = value;
 						Vector4D newVal(newVec4[0], newVec4[1], newVec4[2], newVec4[3]);
@@ -1170,7 +1174,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayFloat(const std::string& pIndex, c
 		}
 		if (ImGui::Button("+ Add Float"))
 		{
-			mNameProp = "Float" + std::to_string(floats->size());
+			mNameProp = "uFloat" + std::to_string(floats->size());
 			auto newVec = *floats;
 			newVec.emplace_back(mNameProp, 1);
 			prop.Set(&newVec);	
@@ -1256,7 +1260,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayInt(const std::string& pIndex, con
 		}
 		if (ImGui::Button("+ Add Int"))
 		{
-			mNameProp = "Int" + std::to_string(ints->size());
+			mNameProp = "uInt" + std::to_string(ints->size());
 			auto newVec = *ints;
 			newVec.emplace_back(mNameProp, 1);
 			prop.Set(&newVec);	
@@ -1307,15 +1311,14 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector2D(const std::string& pIndex
 			ImGui::SameLine(pLabelWidth * 2);
 			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
 
-			float v[4] = { vec3.x, vec3.y};
-			static float newVec4[4];
+			float v[2] = { vec3.x, vec3.y};
 
 			ImGui::InputFloat2("##Value", v, "%.2f");
 
 			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 			{
 				auto newVec = *vectors;
-				Vector2D newVector3D(newVec4[0], newVec4[1]);
+				Vector2D newVector3D(v[0], v[1]);
 				newVec[i] = std::pair<std::string, Vector2D>(propertyNameBuffer, newVector3D);
 				prop.Set(&newVec);
 			}
@@ -1343,7 +1346,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector2D(const std::string& pIndex
 		}
 		if (ImGui::Button("+ Add Vec2"))
 		{
-			mNameProp = "Vector2D" + std::to_string(vectors->size());
+			mNameProp = "uVector2D" + std::to_string(vectors->size());
 			auto newVec = *vectors;
 			newVec.emplace_back(mNameProp, Vector2D(1.0f, 1.0f));
 			prop.Set(&newVec);	
@@ -1394,15 +1397,14 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector3D(const std::string& pIndex
 			ImGui::SameLine(pLabelWidth * 2);
 			ImGui::SetNextItemWidth(pInputWidth - pLabelWidth * 1.5f);
 
-			float v[4] = { vec3.x, vec3.y, vec3.z};
-			static float newVec4[4];
+			float v[3] = { vec3.x, vec3.y, vec3.z};
 
 			ImGui::InputFloat3("##Value", v, "%.2f");
 
 			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 			{
 				auto newVec = *vectors;
-				Vector3D newVector3D(newVec4[0], newVec4[1], newVec4[2]);
+				Vector3D newVector3D(v[0], v[1], v[2]);
 				newVec[i] = std::pair<std::string, Vector3D>(propertyNameBuffer, newVector3D);
 				prop.Set(&newVec);
 			}
@@ -1430,7 +1432,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector3D(const std::string& pIndex
 		}
 		if (ImGui::Button("+ Add Vec3"))
 		{
-			mNameProp = "Vector3D" + std::to_string(vectors->size());
+			mNameProp = "uVector3D" + std::to_string(vectors->size());
 			auto newVec = *vectors;
 			newVec.emplace_back(mNameProp, Vector3D(1.0f, 1.0f, 1.0f));
 			prop.Set(&newVec);	
@@ -1489,7 +1491,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex
 			if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter))
 			{
 				auto newVec = *vectors;
-				Vector4D newVector4D(newVec4[0], newVec4[1], newVec4[2], newVec4[3]);
+				Vector4D newVector4D(v[0], v[1], v[2], v[3]);
 				newVec[i] = std::pair<std::string, Vector4D>(propertyNameBuffer, newVector4D);
 				prop.Set(&newVec);
 			}
@@ -1546,7 +1548,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayVector4D(const std::string& pIndex
 		}
 		if (ImGui::Button("+ Add Vec4"))
 		{
-			mNameProp = "Vector4D" + std::to_string(vectors->size());
+			mNameProp = "uVector4D" + std::to_string(vectors->size());
 			auto newVec = *vectors;
 			newVec.emplace_back(mNameProp, Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
 			prop.Set(&newVec);	
@@ -1712,7 +1714,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 		}
 		if (ImGui::Button("+ Add Texture"))
 		{
-			mNameProp = "Texture" + std::to_string(textures->size());
+			mNameProp = "uTexture" + std::to_string(textures->size());
 			mTextureType = 0;
 			ImGui::OpenPopup("NewTextureParameter");
 		}

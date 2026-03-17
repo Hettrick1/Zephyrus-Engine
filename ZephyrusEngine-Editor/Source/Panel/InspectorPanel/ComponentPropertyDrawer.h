@@ -29,7 +29,7 @@ private:
 	Component* mActiveComponent = nullptr;
 	std::string mNameProp = "None";
 	int mTextureType = 0; // texture2D
-	const char* const texureTypeStrings[2] = {"Texture 2D", "Cubemap"};
+	const char* texureTypeStrings[2] = {"Texture 2D", "Cubemap"};
 public:
 	ComponentPropertyDrawer();
 	~ComponentPropertyDrawer() = default;

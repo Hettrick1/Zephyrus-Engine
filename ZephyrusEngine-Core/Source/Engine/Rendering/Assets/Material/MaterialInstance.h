@@ -2,7 +2,7 @@
 
 #include "JSONUtils.h"
 #include "Material/IMaterial.h"
-#include <unordered_map>
+#include <map>
 #include "IBaseMaterialListener.h"
 
 namespace Zephyrus::Material
@@ -11,13 +11,13 @@ namespace Zephyrus::Material
     {
     private:
         IMaterial* mBaseMaterial{ nullptr };
-        std::unordered_map<std::string, float> mFloatOverrides;
-        std::unordered_map<std::string, int> mIntOverrides;
-        std::unordered_map<std::string, Vector2D> mVector2DOverrides;
-        std::unordered_map<std::string, Vector3D> mVector3DOverrides;
-        std::unordered_map<std::string, Vector4D> mVector4DOverrides;
-        std::unordered_map<std::string, Matrix4DRow> mMatrix4DOverrides;
-        std::unordered_map<std::string, Assets::ITextureBase*> mTextureOverrides;
+        std::map<std::string, float> mFloatOverrides;
+        std::map<std::string, int> mIntOverrides;
+        std::map<std::string, Vector2D> mVector2DOverrides;
+        std::map<std::string, Vector3D> mVector3DOverrides;
+        std::map<std::string, Vector4D> mVector4DOverrides;
+        std::map<std::string, Matrix4DRow> mMatrix4DOverrides;
+        std::map<std::string, Assets::ITextureBase*> mTextureOverrides;
     public:
         MaterialInstance() = default;
         ~MaterialInstance() override = default;
@@ -38,16 +38,32 @@ namespace Zephyrus::Material
         void Serialize(Serialization::ISerializer& writer) const;
         void Deserialize(Serialization::IDeserializer& reader);
 
-        inline std::unordered_map<std::string, float> GetFloatOverrides() { return mFloatOverrides; }
-        inline std::unordered_map<std::string, int> GetIntOverrides() { return mIntOverrides; }
-        inline std::unordered_map<std::string, Vector2D> GetVec2Overrides() { return mVector2DOverrides; }
-        inline std::unordered_map<std::string, Vector3D> GetVec3Overrides() { return mVector3DOverrides; }
-        inline std::unordered_map<std::string, Vector4D> GetVec4Overrides() { return mVector4DOverrides; }
-        inline std::unordered_map<std::string, Matrix4DRow> GetMatrix4Overrides() { return mMatrix4DOverrides; }
-        inline std::unordered_map<std::string, Assets::ITextureBase*> GetTextureOverrides() { return mTextureOverrides; }
+        inline std::map<std::string, float> GetFloatOverrides() { return mFloatOverrides; }
+        inline std::map<std::string, int> GetIntOverrides() { return mIntOverrides; }
+        inline std::map<std::string, Vector2D> GetVec2Overrides() { return mVector2DOverrides; }
+        inline std::map<std::string, Vector3D> GetVec3Overrides() { return mVector3DOverrides; }
+        inline std::map<std::string, Vector4D> GetVec4Overrides() { return mVector4DOverrides; }
+        inline std::map<std::string, Matrix4DRow> GetMatrix4Overrides() { return mMatrix4DOverrides; }
+        inline std::map<std::string, Assets::ITextureBase*> GetTextureOverrides() { return mTextureOverrides; }
 
         inline IMaterial* GetBaseMaterial() const { return mBaseMaterial; }
 
         void UpdateMaterial() override;
+
+        template<typename T>
+        void UpdateProperties(std::map<std::string, T>& container, const std::vector<std::pair<std::string, T>>& properties)
+        {
+            std::map<std::string, T> tempContainer;
+            for (auto& [name, value] : properties)
+            {
+                if (container.contains(name))
+                {
+                    tempContainer[name] = container[name];
+                    continue;
+                }
+                tempContainer[name]  = value;
+            }
+            container = tempContainer;
+        }
     };
 }
