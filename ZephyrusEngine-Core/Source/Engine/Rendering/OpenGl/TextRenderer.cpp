@@ -74,11 +74,10 @@ namespace Zephyrus::Render {
         glBindVertexArray(VAO);
 
         // iterate through all characters
-        std::string::const_iterator c;
-        for (c = pText.begin(); c != pText.end(); c++)
+        for (auto c : pText)
         {
             const auto& characters = pFont->GetCharacters();
-            auto it = characters.find(*c);
+            auto it = characters.find(c);
             if (it != characters.end())
             {
                 const Zephyrus::Assets::CharacterInfo& ch = it->second;
@@ -97,14 +96,14 @@ namespace Zephyrus::Render {
                     { xpos + w, ypos,       1.0f, 1.0f },
                     { xpos + w, ypos + h,   1.0f, 0.0f }
                 };
-                pFont->BindCharacterTexture(*c);
+                pFont->BindCharacterTexture(c);
                 
                 glBindBuffer(GL_ARRAY_BUFFER, VBO);
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
                 glDrawArrays(GL_TRIANGLES, 0, 6);
-                position.x += (ch.Advance >> 6) * pScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+                position.x += static_cast<float>(ch.Advance >> 6) * pScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
             }
         }
         glBindVertexArray(0);

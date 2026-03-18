@@ -8,6 +8,7 @@
 #include "HudManager.h" 
 #include "SceneManager.h"
 #include "PrefabFactory.h"
+#include "Utils.h"
 
 using Zephyrus::Assets::AssetsManager;
 using Zephyrus::Render::IShader;
@@ -15,7 +16,7 @@ using Zephyrus::Render::ShaderType;
 
 namespace Zephyrus::Scenes {
 	SplashScreen::SplashScreen(ISceneContext* pContext, const std::string& pNextScene)
-		: Scene(pContext, "SplashScreen"), mZephyrusText(nullptr), mStudioText(nullptr), mTime(0), mNextScene(pNextScene)
+		: Scene(pContext, "SplashScreen"), mZephyrusText(nullptr), mStudioText(nullptr), mVersionText(nullptr), mTime(0), mNextScene(pNextScene)
 	{
 	}
 
@@ -27,7 +28,7 @@ namespace Zephyrus::Scenes {
 	{
 		Scene::Start();
 
-		mTime = -5.0f;
+		mTime = 0.0f;
 
 		Render::IShader* vert = AssetsManager::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
 		Render::IShader* frag = AssetsManager::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
@@ -37,8 +38,11 @@ namespace Zephyrus::Scenes {
 
 		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
 
+		std::string versionEngineText = "Version - ";
+		versionEngineText.append(ENGINE_VERSION);
+		mVersionText = new Zephyrus::UI::HudText(mContext, versionEngineText, Vector2D(-1850.0f, 950.0f), 0.3f, Vector4D(1, 1, 1, 1), Zephyrus::UI::TextAlignment::LEFT, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
+		
 		mInputManager->SetCursorVisible(false);
-		//SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
 
 	void SplashScreen::Update(float pDetltaTime)

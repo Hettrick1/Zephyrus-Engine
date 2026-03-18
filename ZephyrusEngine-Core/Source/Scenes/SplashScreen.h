@@ -10,11 +10,12 @@ namespace Zephyrus::Scenes {
 	private:
 		Zephyrus::UI::HudText* mZephyrusText;
 		Zephyrus::UI::HudText* mStudioText;
+		Zephyrus::UI::HudText* mVersionText;
 		std::string mNextScene;
 		float mTime;
 	public:
 		SplashScreen(ISceneContext* pContext, const std::string& pNextScene);
-		~SplashScreen();
+		~SplashScreen() override;
 		void Start() override;
 		void Update(float pDetltaTime) override;
 		void Render() override;

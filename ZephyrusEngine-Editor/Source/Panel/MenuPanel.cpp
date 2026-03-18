@@ -1,6 +1,7 @@
 #include "MenuPanel.h"
 #include "EditorApplication/ImGuiEditorLayer.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
+#include "Utils/Utils.h"
 
 MenuPanel::MenuPanel(ISceneContext* pSceneContext, const std::string& pName, ImGuiEditorLayer* pApplication)
 	: Panel(pSceneContext, pName), mApplication(pApplication)
@@ -107,11 +108,14 @@ void MenuPanel::Draw()
         ImVec2 menuBarPos = ImGui::GetWindowPos();
         ImVec2 menuBarSize = ImGui::GetWindowSize();
 
-        ImVec2 textSize = ImGui::CalcTextSize("ZephyrusEngine - v.0.0.2");
+        std::string menuBarText = "ZephyrusEngine - ";
+        menuBarText.append(ENGINE_VERSION);
+        
+        ImVec2 textSize = ImGui::CalcTextSize(menuBarText.c_str());
         ImVec2 versionTextPos = ImVec2(menuBarPos.x + menuBarSize.x - textSize.x - 15, menuBarPos.y);
 
         ImGui::SetCursorScreenPos(versionTextPos);
-        ImGui::Text("ZephyrusEngine - v.0.0.2");
+        ImGui::Text(menuBarText.c_str());
 
         ImGui::EndMainMenuBar();
 

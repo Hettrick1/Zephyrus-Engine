@@ -52,16 +52,21 @@ namespace Zephyrus::Editor::Window
         {
             EventSystem::UndoLastEvent();
         }
+        
         ImGui::SameLine();
+        
         if (ZP::UI::CustomImageButton("Redo", redoIcon, btnSize, iconSize))
         {
             EventSystem::RedoLastUndo();
         }
+        
         ImGui::SameLine();
+        
         if (ZP::UI::CustomImageButton("Save", saveIcon, btnSize, iconSize))
         {
             mMaterial->Save();
         }
+        
 #ifdef _WIN32
         ImGui::SameLine();
         if (ZP::UI::CustomImageButton("Open", openIcon, btnSize, iconSize))
@@ -83,7 +88,6 @@ namespace Zephyrus::Editor::Window
             ImGui::Dummy(ImVec2(0, 10));
         }
         
-        // TODO: ton UI material ici
         ImGui::End();
     }
 }
