@@ -383,6 +383,10 @@ ImTextureID ContentBrowserPanel::GetImageFromExtension(const std::string& extens
     {
         tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/shader80.png", "../Content/Sprites/Icons/shader80.png");
     }
+    else if (extension == ".zpmat")
+    {
+        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/mat80.png", "../Content/Sprites/Icons/mat80.png");
+    }
     else
     {
         tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png");
