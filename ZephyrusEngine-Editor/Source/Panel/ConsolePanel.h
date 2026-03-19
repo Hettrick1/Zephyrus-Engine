@@ -4,6 +4,8 @@
 #include "ILogListener.h"
 #include <deque>
 
+#include "Vector2D.h"
+
 class ConsolePanel : public Panel, public Zephyrus::Debug::ILogListener
 {
 private:
@@ -17,9 +19,14 @@ private:
 	bool mShowWarns = true;
 	bool mShowErrors = true;
 
+	bool mEnableHidePopupCheck = false;
+	bool HidePopUpCheck = false;
+	
+	Vector2D cursorPos;
+
 public:
 	ConsolePanel(ISceneContext* pSceneContext, const std::string& pName);
-	~ConsolePanel();
+	~ConsolePanel() override;
 	void Update() override;
 	void Draw() override;
 	void OnLogMessage(const Zephyrus::Debug::ZPMessage& pMessage) override;

@@ -215,17 +215,17 @@ void ImGuiEditorLayer::SetEditorStyle()
     colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
     colors[ImGuiCol_Border] = ImVec4(0.9f, 0.7f, 0.0f, 0.3f);
 
-    colors[ImGuiCol_TitleBg] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+    colors[ImGuiCol_TitleBg] = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);
     colors[ImGuiCol_TitleBgActive] = ImVec4(0.9f, 0.7f, 0.0f, 1.0f);
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.10f, 0.10f, 0.10f, 1.0f);
 
     colors[ImGuiCol_TabSelected] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
     colors[ImGuiCol_TabSelectedOverline] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_TabHovered] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-    colors[ImGuiCol_TabUnfocused] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
+    colors[ImGuiCol_TabHovered] = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
+    colors[ImGuiCol_TabUnfocused] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
 
-    colors[ImGuiCol_Tab] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
+    colors[ImGuiCol_Tab] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
     colors[ImGuiCol_TabActive] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
 
     colors[ImGuiCol_DockingPreview] = ImVec4(1.0f, 0.81176f, 0.0f, 0.8f);

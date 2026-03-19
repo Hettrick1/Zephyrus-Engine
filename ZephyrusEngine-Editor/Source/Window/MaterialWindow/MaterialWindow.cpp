@@ -32,7 +32,7 @@ namespace Zephyrus::Editor::Window
     {
         if (!mIsOpen) return;
         
-        ImGui::Begin(GetTitle().c_str(), &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing);
+        ImGui::Begin(GetTitle().c_str(), &mIsOpen);
         
         ImGui::PushFont(ZP::UI::gFonts.medium);
         Zephyrus::Assets::ITexture2D* undoTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/undo20.png", "Sprites/Icons/undo20.png");
@@ -81,13 +81,14 @@ namespace Zephyrus::Editor::Window
         ImGui::Separator();
         ImGui::Spacing();
 
+        ImGui::BeginChild("Properties");
         auto properties = mMaterial->GetProperties();
         for (unsigned int i = 0; i < properties.size(); i++)
         {
             mComponentPropertyDrawer->DrawProperty(std::to_string(i), properties[i], nullptr);
             ImGui::Dummy(ImVec2(0, 10));
         }
-        
+        ImGui::EndChild();
         ImGui::End();
     }
 }

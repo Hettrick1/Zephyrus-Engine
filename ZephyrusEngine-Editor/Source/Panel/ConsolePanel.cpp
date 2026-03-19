@@ -1,5 +1,10 @@
 #include "ConsolePanel.h"
 
+#include <imgui_internal.h>
+
+#include "Maths.h"
+#include "Rectangle.h"
+
 ConsolePanel::ConsolePanel(ISceneContext* pSceneContext, const std::string& pName)
 	: Panel(pSceneContext, pName)
 {
@@ -31,7 +36,14 @@ void ConsolePanel::Draw()
 
     ImGui::BeginChild("MenuRegion1", ImVec2(100, 20), false, ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
     ImGui::SetCursorPos(ImVec2(0, 0));
-    if (ImGui::BeginMenu("Show Logs"))
+    ImGui::Button("Show Logs > ");
+    if (ImGui::IsItemHovered())
+    {
+        mEnableHidePopupCheck = true;
+        ImGui::OpenPopup("Show Logs :");
+    }
+    ImGui::SetNextWindowPos(ImGui::GetItemRectMin(), ImGuiCond_Always);
+    if (ImGui::BeginPopup("Show Logs :", ImGuiWindowFlags_NoMove))
     {
         if (ImGui::MenuItem("Infos", nullptr, mShowInfos)) 
         {
@@ -53,8 +65,26 @@ void ConsolePanel::Draw()
             mShowErrors = !mShowErrors;
             mNewMessage = true;
         }
-        ImGui::EndMenu();
+        Vector2D currentCursorPos = Vector2D(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+
+        Rectangle2D popup;
+        popup.position = Vector2D(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+        popup.dimensions = Vector2D(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y);
+        
+        if (HidePopUpCheck && !popup.IsPointInside(currentCursorPos, 10.0f))
+        {
+            HidePopUpCheck = false;
+            mEnableHidePopupCheck = false;
+            ImGui::CloseCurrentPopup();
+        }
+        if (mEnableHidePopupCheck)
+        {
+            HidePopUpCheck = true;
+        }
+        
+        ImGui::EndPopup();
     }
+    
     ImGui::EndChild();
 
     ImGui::SameLine();
@@ -126,13 +156,14 @@ void ConsolePanel::Draw()
 
 void ConsolePanel::OnLogMessage(const Zephyrus::Debug::ZPMessage& pMessage)
 {
-	if (pMessage.pLogger == Zephyrus::Debug::Logger::ZP_ZEPHYRUS)
-	{
-		return;
-	}
-	else
-	{
-		mLogMessages.push_back(pMessage);
-        mNewMessage = true;
-	}
+    mLogMessages.push_back(pMessage);
+    mNewMessage = true;
+	// if (pMessage.pLogger == Zephyrus::Debug::Logger::ZP_ZEPHYRUS)
+	// {
+	// 	return;
+	// }
+	// else
+	// {
+	// 	
+	// }
 }

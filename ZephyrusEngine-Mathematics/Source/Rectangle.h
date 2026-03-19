@@ -22,4 +22,13 @@ struct Rectangle2D
     }
 
     static const Rectangle2D Null;
+
+    inline bool IsPointInside(const Vector2D& pos, float precision = 0.0f) const
+    {
+        if (pos.x >= position.x - precision && pos.x < position.x + dimensions.x + precision && pos.y >= position.y - precision && pos.y < position.y + dimensions.y + precision)
+        {
+            return true;
+        }
+        return false;
+    }
 };

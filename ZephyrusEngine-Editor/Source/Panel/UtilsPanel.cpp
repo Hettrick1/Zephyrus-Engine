@@ -4,7 +4,13 @@
 #include "Scene.h"
 #include "Interface/ITexture2D.h"
 #include <cstdlib>
+
+#include <filesystem>
+
+#ifdef _WIN32
 #include <windows.h>
+#include <shellapi.h>
+#endif
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -203,16 +209,19 @@ void UtilsPanel::LaunchGame()
     case LaunchGameMode::Standalone:
     {
         mContext->GetActiveScene()->SaveScene();
+#ifdef _WIN32
+            char path[MAX_PATH];
+            GetModuleFileNameA(nullptr, path, MAX_PATH);
+            std::string exePath(path);
+            size_t pos = exePath.find_last_of("\\/");
+            std::string finalPath = exePath.substr(0, pos);
 
-        char path[MAX_PATH];
-        GetModuleFileNameA(nullptr, path, MAX_PATH);
-        std::string exePath(path);
-        size_t pos = exePath.find_last_of("\\/");
-        std::string finalPath = exePath.substr(0, pos);
-
-        std::string runtimePath = finalPath + std::string("\\..\\ZephyrusEngine-Runtime\\ZephyrusEngine-Runtime.exe");
-
-        system(runtimePath.c_str());
+            //TODO : Use the renamed game app .exe
+            std::string runtimePath = finalPath + "\\..\\ZephyrusEngine-Runtime\\ZephyrusEngine-Runtime.exe";
+            
+            std::filesystem::path standalonePath = runtimePath;
+            ShellExecuteA(nullptr, "open", standalonePath.make_preferred().string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+#endif
     }
     break;
     case LaunchGameMode::Editor:
