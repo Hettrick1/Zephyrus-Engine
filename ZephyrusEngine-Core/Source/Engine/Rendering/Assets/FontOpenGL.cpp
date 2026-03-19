@@ -72,8 +72,8 @@ namespace Zephyrus::Assets {
                 ch.Bearing = Vector2D(face->glyph->bitmap_left, face->glyph->bitmap_top);
                 ch.Advance = face->glyph->advance.x;
 
-                mCharacters[c] = ch;
-                mCharactersInfos[c] = ch;
+                mCharacters[static_cast<char>(c)] = ch;
+                mCharactersInfos[static_cast<char>(c)] = ch;
             }
             glBindTexture(GL_TEXTURE_2D, 0);
         }

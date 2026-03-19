@@ -66,7 +66,7 @@ namespace zpMaths
         float x,
         int precision)
     {
-        float power_of_10 = std::pow(10, precision);
+        float power_of_10 = static_cast<float>(std::pow(10, precision));
         return std::round(x * power_of_10) / power_of_10;
     }
 

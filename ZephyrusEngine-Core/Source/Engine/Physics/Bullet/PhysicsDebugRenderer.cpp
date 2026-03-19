@@ -71,7 +71,7 @@ namespace Zephyrus::Physics
         mDebugShaderProgram->setVector3f("uColor", Vector3D(0.0, 1.0, 0));
         mDebugShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
         mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
-        glDrawArrays(GL_LINES, 0, mLines.size() / 3);
+        glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(mLines.size() / 3));
         glBindVertexArray(0);
         glLineWidth(6);
 

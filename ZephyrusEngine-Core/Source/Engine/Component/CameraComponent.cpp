@@ -9,7 +9,7 @@ using Zephyrus::Scenes::SceneManager;
 namespace Zephyrus::ActorComponent
 {
     CameraComponent::CameraComponent(Actor* pOwner, int pWidth, int pHeight, CameraUsage pUsage)
-        : Component(pOwner, "CameraComponent"), usage(pUsage), mWidth(pWidth), mHeight(pHeight)
+        : Component(pOwner, "CameraComponent"), usage(pUsage), mWidth(static_cast<float>(pWidth)), mHeight(static_cast<float>(pHeight))
     {
         mRenderTarget = new Zephyrus::Render::RenderTargetOpenGL(pWidth, pHeight);
         mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
@@ -92,7 +92,7 @@ namespace Zephyrus::ActorComponent
         mWidth = pDimensions.x;
         mHeight = pDimensions.y;
         mProjMatrix = Matrix4DRow::CreatePerspectiveFOV(mFov, mWidth, mHeight, mNearClip, mFarClip);
-        mRenderTarget->Resize(mWidth, mHeight);
+        mRenderTarget->Resize(static_cast<int>(mWidth), static_cast<int>(mHeight));
     }
 
     inline void CameraComponent::SetFov(float pFov)

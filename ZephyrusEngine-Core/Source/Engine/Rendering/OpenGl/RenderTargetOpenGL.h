@@ -23,8 +23,8 @@ namespace Zephyrus::Render {
         void Unbind() override;
 
         void Resize(int pWidth, int pHeight) override;
-
-        inline Vector2D GetDimensions() const override { return Vector2D(mWidth, mHeight); }
+        
+        inline Vector2D GetDimensions() const override { return {mWidth, mHeight}; }
         inline unsigned int GetColorTexture() const override { return mColorTexture; }
         unsigned int GetDepthTexture() const override { return mDepthTexture; }
     };
