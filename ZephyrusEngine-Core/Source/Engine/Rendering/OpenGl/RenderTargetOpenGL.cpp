@@ -26,7 +26,10 @@ namespace Zephyrus::Render {
 
     void RenderTargetOpenGL::Resize(int pWidth, int pHeight)
     {
-        if (pWidth == mWidth && pHeight == mHeight) return;
+        if ((pWidth <= 0 || pHeight <= 0) || (pWidth == mWidth && pHeight == mHeight))
+        {
+            return;
+        }
         mWidth = pWidth;
         mHeight = pHeight;
         Destroy();
@@ -51,7 +54,7 @@ namespace Zephyrus::Render {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, mWidth, mHeight, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, nullptr);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
             GL_TEXTURE_2D, mDepthTexture, 0);
-
+        
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
             ZP_CORE_ERROR("RenderTarget : Framebuffer is not complete!");
         }
