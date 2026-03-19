@@ -9,6 +9,7 @@
     #include <GLFW/glfw3native.h>
 #endif
 #include "Window.h"
+#include "TextureGlfw.h"
 
 namespace Zephyrus::Application {
     Window::Window(int pWidth, int pHeight, bool pIsResizable, bool pFullscreen) :
@@ -78,9 +79,20 @@ namespace Zephyrus::Application {
         BOOL dark = TRUE;
         DwmSetWindowAttribute(hwnd, 20, &dark, sizeof(dark));
 #endif
+
+        GLFWimage images[1];
+
+        Assets::TextureGlfw tex;
+        
+        tex.Load("../Content/Sprites/Icons/ZephyrusLogo.png");
+
+        images[0].width = tex.GetWidth();
+        images[0].height = tex.GetHeight();
+        images[0].pixels = tex.GetDatas();
+        
+        glfwSetWindowIcon(mGlfwWindow, 1, images);
         
         return true;
-
     }
 
     void Window::Close()
