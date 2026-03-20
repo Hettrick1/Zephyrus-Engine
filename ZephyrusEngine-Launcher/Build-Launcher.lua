@@ -5,7 +5,9 @@ project "ZephyrusEngine-Launcher"
     targetdir "Binaries/%{cfg.buildcfg}"
     staticruntime "off"
 
-    files { "Source/**.h", "Source/**.cpp" }
+    targetname ("Zephyrus")
+
+    files { "Source/**.h", "Source/**.cpp", "Source/**.rc" }
 
     linkoptions { "/ENTRY:mainCRTStartup" }
 
