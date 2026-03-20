@@ -13,9 +13,18 @@ void AssetDataBase::Init(ISceneContext* context)
 
 void AssetDataBase::RefreshContent()
 {
-    for (auto& entry : std::filesystem::directory_iterator(mContentFilePath))
+    CheckForFiles(mContentFilePath);
+}
+
+void AssetDataBase::CheckForFiles(const std::filesystem::path& pFilePath)
+{
+    for (auto& entry : std::filesystem::directory_iterator(pFilePath))
     {
-        if (!entry.is_directory())
+        if (entry.is_directory())
+        {
+            CheckForFiles(entry.path());
+        }
+        else
         {
             auto serializer = mContext->GetSerializationFactory()->CreateSerializer();
 

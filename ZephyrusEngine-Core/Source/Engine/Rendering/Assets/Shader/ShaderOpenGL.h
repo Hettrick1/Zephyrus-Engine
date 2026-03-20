@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Interface/IShader.h"
-#include "FileSystem/AssetData.h"
 
 namespace Zephyrus::Render {
 	/**

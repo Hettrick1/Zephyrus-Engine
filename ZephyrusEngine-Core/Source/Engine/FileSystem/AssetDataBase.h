@@ -15,6 +15,7 @@ private:
 public:
     void Init(ISceneContext* context);
     void RefreshContent();
+    void CheckForFiles(const std::filesystem::path& pFilePath);
     std::string GetPathFromID(const std::string& id);
     void UpdatePathFromID(const std::string& id, const std::string& path);
 };
