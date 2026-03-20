@@ -31,7 +31,8 @@ void AssetDataBase::CheckForFiles(const std::filesystem::path& pFilePath)
             serializer->WriteString("id :", "testID");
             serializer->WriteInt("version :", 1.0);
 
-            serializer->SaveDocument(entry.path().string() + entry.path().filename().string() + ".meta" + entry.path().extension().string());
+            std::filesystem::path assetPath = entry.path();
+            serializer->SaveDocument(assetPath.string() + ".meta");
         }
     }
 }
