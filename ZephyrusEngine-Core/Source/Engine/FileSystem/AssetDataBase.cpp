@@ -5,6 +5,11 @@
 
 #include "Log.h"
 
+#ifndef UUID_SYSTEM_GENERATOR
+    #define UUID_SYSTEM_GENERATOR
+#endif
+#include "uuid.h"
+
 void AssetDataBase::Init(ISceneContext* context)
 {
     mContext = context;
@@ -14,6 +19,40 @@ void AssetDataBase::Init(ISceneContext* context)
 void AssetDataBase::RefreshContent()
 {
     CheckForFiles(mContentFilePath);
+}
+
+void AssetDataBase::RetriveMetaDatas(std::filesystem::path file)
+{
+    std::filesystem::path metaPath = file.string() + ".meta";
+    if (std::filesystem::exists(metaPath))
+    {
+        //metadata already exist so read from it
+        auto reader = mContext->GetSerializationFactory()->CreateDeserializer();
+
+        if (!reader->LoadDocument(metaPath.string()))
+        {
+            ZP_CORE_ERROR("Impossible to open or parse the prefab: " + metaPath.string());
+        }
+        
+        if (auto id = reader->ReadString("id"))
+        {
+            UpdatePathFromID(*id, file.string());
+        }            
+    }
+    else
+    {
+        // metadata don't exist so create the file
+        auto writer = mContext->GetSerializationFactory()->CreateSerializer();
+
+        std::string id = uuids::to_string(uuids::uuid_system_generator{}());
+        
+        writer->WriteString("id", id);
+        writer->WriteInt("version", 1.0);
+        
+        writer->SaveDocument(metaPath.string());
+
+        UpdatePathFromID(id, file.string());
+    }
 }
 
 void AssetDataBase::CheckForFiles(const std::filesystem::path& pFilePath)
@@ -26,13 +65,11 @@ void AssetDataBase::CheckForFiles(const std::filesystem::path& pFilePath)
         }
         else
         {
-            auto serializer = mContext->GetSerializationFactory()->CreateSerializer();
-
-            serializer->WriteString("id :", "testID");
-            serializer->WriteInt("version :", 1.0);
-
-            std::filesystem::path assetPath = entry.path();
-            serializer->SaveDocument(assetPath.string() + ".meta");
+            if (entry.path().extension() != ".meta")
+            {
+                RetriveMetaDatas(entry.path());
+                mFiles.emplace_back(entry.path());
+            }
         }
     }
 }

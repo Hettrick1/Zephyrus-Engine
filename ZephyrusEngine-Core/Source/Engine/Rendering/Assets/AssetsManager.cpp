@@ -330,6 +330,7 @@ namespace Zephyrus::Assets {
 
 	std::string AssetsManager::GetFullPath(const std::string& pPath, AssetType pType)
 	{
+		// TODO : Refactor this
 		std::string newPath;
 		switch (pType)
 		{
@@ -380,5 +381,6 @@ namespace Zephyrus::Assets {
 		}
 		}
 		return newPath;
+		//return pPath;
 	}
 }

@@ -172,7 +172,7 @@ void ContentBrowserPanel::DrawDirectoryContent(const std::filesystem::path& dire
     //then files
     for (auto& entry : std::filesystem::directory_iterator(directory))
     {
-        if (!entry.is_directory() && entry.path().extension().string() != ".txt" && entry.path().extension().string() != ".zip")
+        if (!entry.is_directory() && entry.path().extension().string() != ".txt" && entry.path().extension().string() != ".zip" && entry.path().extension().string() != ".meta")
         {
             DrawEntry(entry);
         }
