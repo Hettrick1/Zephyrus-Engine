@@ -28,6 +28,8 @@ namespace Zephyrus::Assets {
 
 	ISceneContext* AssetsManager::mContext{ nullptr };
 
+	AssetDataBase AssetsManager::database;
+
 	const std::string AssetsManager::IMPORT_PATH = "../Content/";
 	const std::string AssetsManager::MESH_PATH = "../Content/Meshes/";
 	const std::string AssetsManager::FONT_PATH = "../Content/Fonts/";
@@ -77,6 +79,7 @@ namespace Zephyrus::Assets {
 	void AssetsManager::SetContext(ISceneContext* pContext)
 	{
 		mContext = pContext;
+		database.Init(mContext);
 	}
 
 	IMesh* AssetsManager::LoadMesh(const std::string& pFilePath, const std::string& pName)

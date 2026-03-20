@@ -2,6 +2,7 @@
 
 #include "../Interface/IShaderProgram.h"
 #include "../Interface/IShader.h"
+#include "FileSystem/AssetDataBase.h"
 #include "Vertex.h"
 
 #include <map>
@@ -60,6 +61,8 @@ namespace Zephyrus::Assets {
 		static std::map<std::string, ICubeMapTexture*> mCubemaps;
 		static std::map<std::string, Material::IMaterial*> mMaterials;
 		static ISceneContext* mContext;
+
+		static AssetDataBase database;
 
 	public:
 
