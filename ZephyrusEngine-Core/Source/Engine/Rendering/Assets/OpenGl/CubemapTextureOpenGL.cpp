@@ -21,7 +21,7 @@ namespace Zephyrus::Assets {
 		for (unsigned int i = 0; i < pCubePaths.size(); i++) // retrieve the skybox textures
 		{
 
-			std::string path = AssetsManager::GetFullPath(mCubeFacePaths[i], AssetType::Texture);
+			std::string path = AssetsManager::GetInstance().GetFullPath(mCubeFacePaths[i], AssetType::Texture);
 
 			unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 			if (!data)
@@ -40,7 +40,7 @@ namespace Zephyrus::Assets {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, data);
 			stbi_image_free(data);
 
-			ZP_LOAD("Loaded GL texture : " + AssetsManager::IMPORT_PATH + mCubeFacePaths[i]);
+			ZP_LOAD("Loaded GL texture : " + AssetsManager::GetInstance().IMPORT_PATH + mCubeFacePaths[i]);
 		}
 
 		// Setting some image parameters

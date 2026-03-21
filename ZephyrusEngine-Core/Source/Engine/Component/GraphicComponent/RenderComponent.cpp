@@ -11,7 +11,7 @@ namespace Zephyrus::ActorComponent
 		: Component(pOwner, pName)
 	{
 		mMaterial = Material::MaterialInstance();
-		auto mat = Assets::AssetsManager::LoadMaterial(pDefaultMat, pDefaultMat);
+		auto mat = Assets::AssetsManager::GetInstance().LoadMaterial(pDefaultMat, pDefaultMat);
 		SetMaterial(mat);
 		auto reader = mOwner->GetSceneContext()->GetSerializationFactory()->CreateDeserializer();
 	}
@@ -23,7 +23,7 @@ namespace Zephyrus::ActorComponent
 		{
 			if (auto materialPath = pReader.ReadString("baseMaterial"))
 			{
-				auto mat = Assets::AssetsManager::LoadMaterial(*materialPath, *materialPath);
+				auto mat = Assets::AssetsManager::GetInstance().LoadMaterial(*materialPath, *materialPath);
 				SetMaterial(mat);
 				mMaterial.Deserialize(pReader);
 			}

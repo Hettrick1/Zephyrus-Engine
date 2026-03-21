@@ -45,9 +45,9 @@ namespace Zephyrus::Editor::Window
             ImGui::Text("Zephyrus Engine");
             
             ImGui::SetCursorPosX(rightOffset);
-            Zephyrus::Assets::ITexture2D* fullScreenTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/FullScreen16.png", "Sprites/Icons/FullScreen16.png");
+            Zephyrus::Assets::ITexture2D* fullScreenTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/FullScreen16.png", "Sprites/Icons/FullScreen16.png");
             ImTextureID fullScreenIcon = (ImTextureID)(intptr_t)fullScreenTex->GetHandle();
-            Zephyrus::Assets::ITexture2D* exitFullScreenTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/ExitFullScreen16.png", "Sprites/Icons/ExitFullScreen16.png");
+            Zephyrus::Assets::ITexture2D* exitFullScreenTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/ExitFullScreen16.png", "Sprites/Icons/ExitFullScreen16.png");
             ImTextureID exitFullScreenIcon = (ImTextureID)(intptr_t)exitFullScreenTex->GetHandle();
 
             ImVec2 iconSize(16, 16);

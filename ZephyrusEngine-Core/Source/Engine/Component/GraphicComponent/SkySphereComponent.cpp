@@ -63,12 +63,12 @@ namespace Zephyrus::ActorComponent
 			if (*isSphere) 
 			{
 				mIsSphere = true;
-				mMesh = AssetsManager::LoadMesh("sphere.obj", "sphere");
+				mMesh = AssetsManager::GetInstance().LoadMesh("sphere.obj", "sphere");
 			}
 			else
 			{
 				mIsSphere = false;
-				mMesh = AssetsManager::LoadMesh("cube.obj", "cube");
+				mMesh = AssetsManager::GetInstance().LoadMesh("cube.obj", "cube");
 			}
 		}
 	}

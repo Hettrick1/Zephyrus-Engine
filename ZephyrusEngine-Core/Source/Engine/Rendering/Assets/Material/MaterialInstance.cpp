@@ -289,7 +289,7 @@ namespace Zephyrus::Material
 					auto pathOpt = reader.ReadString("path");
 					if (pathOpt.has_value())
 					{
-						auto tex = Assets::AssetsManager::LoadTexture(pathOpt.value(), pathOpt.value());
+						auto tex = Assets::AssetsManager::GetInstance().LoadTexture(pathOpt.value(), pathOpt.value());
 						if (tex)
 							mTextureOverrides[name] = tex;
 					}
@@ -303,7 +303,7 @@ namespace Zephyrus::Material
 						for (auto& path : facesOpt.value())
 							cubeKey += path;
 
-						auto tex = Assets::AssetsManager::LoadCubemap(facesOpt.value(), cubeKey);
+						auto tex = Assets::AssetsManager::GetInstance().LoadCubemap(facesOpt.value(), cubeKey);
 						if (tex)
 							mTextureOverrides[name] = tex;
 					}

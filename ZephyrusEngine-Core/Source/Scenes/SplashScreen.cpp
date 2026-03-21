@@ -30,17 +30,17 @@ namespace Zephyrus::Scenes {
 
 		mTime = 0.0f;
 
-		Render::IShader* vert = AssetsManager::LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
-		Render::IShader* frag = AssetsManager::LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
+		Render::IShader* vert = AssetsManager::GetInstance().LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
+		Render::IShader* frag = AssetsManager::GetInstance().LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
 
-		mZephyrusText = new Zephyrus::UI::HudText(mContext, "Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
-		mZephyrusText->SetShaderProgram(AssetsManager::LoadShaderProgram({ vert, frag }, "splashScreenSP"));
+		mZephyrusText = new Zephyrus::UI::HudText(mContext, "Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont("Chopsic.otf", "Chopsic"));
+		mZephyrusText->SetShaderProgram(AssetsManager::GetInstance().LoadShaderProgram({ vert, frag }, "splashScreenSP"));
 
-		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
+		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont("Chopsic.otf", "Chopsic"));
 
 		std::string versionEngineText = "Version - ";
 		versionEngineText.append(ENGINE_VERSION);
-		mVersionText = new Zephyrus::UI::HudText(mContext, versionEngineText, Vector2D(-1850.0f, 950.0f), 0.3f, Vector4D(1, 1, 1, 1), Zephyrus::UI::TextAlignment::LEFT, AssetsManager::LoadFont("Chopsic.otf", "Chopsic"));
+		mVersionText = new Zephyrus::UI::HudText(mContext, versionEngineText, Vector2D(-1850.0f, 950.0f), 0.3f, Vector4D(1, 1, 1, 1), Zephyrus::UI::TextAlignment::LEFT, AssetsManager::GetInstance().LoadFont("Chopsic.otf", "Chopsic"));
 		
 		mInputManager->SetCursorVisible(false);
 	}

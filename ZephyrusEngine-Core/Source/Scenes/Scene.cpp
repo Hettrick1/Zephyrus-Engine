@@ -154,7 +154,7 @@ namespace Zephyrus::Scenes {
 		mActors.clear();
 		//InputManager::Instance().Unload();
 		mRenderer->Unload();
-		AssetsManager::Clear();
+		AssetsManager::GetInstance().CleanUp();
 		mCameraManager->Unload();
 		delete mCameraManager;
 		mCameraManager = nullptr;

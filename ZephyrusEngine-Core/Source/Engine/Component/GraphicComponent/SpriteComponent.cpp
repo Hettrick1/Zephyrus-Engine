@@ -15,7 +15,7 @@ namespace Zephyrus::ActorComponent
 		: RenderComponent(pOwner, pName, "../Content/Material/BasicSprite.zpmat"), mTexture(), mDrawOrder(100)
 	{
 		mOwner->GetScene().GetRenderer()->AddSprite(this);
-		mTexture = AssetsManager::LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
+		mTexture = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
 		mTexWidth = static_cast<int>(mTexture->GetWidth());
 		mTexHeight = static_cast<int>(mTexture->GetHeight());
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
@@ -54,7 +54,7 @@ namespace Zephyrus::ActorComponent
 		RenderComponent::Deserialize(pReader);
 		if (auto texturePath = pReader.ReadString("texture"))
 		{
-			SetTexture(AssetsManager::LoadTexture(*texturePath, *texturePath));
+			SetTexture(AssetsManager::GetInstance().LoadTexture(*texturePath, *texturePath));
 		}
 		mTexWidth = static_cast<int>(mTexture->GetWidth());
 		mTexHeight = static_cast<int>(mTexture->GetHeight());

@@ -36,7 +36,7 @@ namespace Zephyrus::ActorComponent
 	void DoomMenuPC::OnStart()
 	{
 		Component::OnStart();
-		Assets::ITexture2D* damageIndicator = Zephyrus::Assets::AssetsManager::LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
+		Assets::ITexture2D* damageIndicator = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
 		mDoomMenu = new Zephyrus::UI::HudImage(mOwner->GetSceneContext(), damageIndicator, Vector2D(0, 0), 2);
 		mDoomMenu->SetTint(Vector4D(1.0, 1.0, 1.0, 1.0));
 

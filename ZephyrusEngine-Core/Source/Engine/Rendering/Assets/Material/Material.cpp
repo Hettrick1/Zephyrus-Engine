@@ -86,7 +86,7 @@ namespace Zephyrus::Material
 			programName += s->GetFilePath();
 		}
 
-		mShaderProgram = Assets::AssetsManager::LoadShaderProgram(shaders, programName);
+		mShaderProgram = Assets::AssetsManager::GetInstance().LoadShaderProgram(shaders, programName);
 
 	}
 	void Material::SetTexture(const std::string& uniformName, Assets::ITextureBase* texture)
@@ -351,23 +351,23 @@ namespace Zephyrus::Material
 		{
 			if (auto vertex = reader.ReadString("vertex"))
 			{
-				mVertShader = Assets::AssetsManager::LoadShader(*vertex, Render::ShaderType::VERTEX, *vertex);
+				mVertShader = Assets::AssetsManager::GetInstance().LoadShader(*vertex, Render::ShaderType::VERTEX, *vertex);
 			}
 			if (auto fragment = reader.ReadString("fragment"))
 			{
-				mFragShader = Assets::AssetsManager::LoadShader(*fragment, Render::ShaderType::FRAGMENT, *fragment);
+				mFragShader = Assets::AssetsManager::GetInstance().LoadShader(*fragment, Render::ShaderType::FRAGMENT, *fragment);
 			}
 			if (auto control = reader.ReadString("control"))
 			{
-				mTescShader = Assets::AssetsManager::LoadShader(*control, Render::ShaderType::TESSELLATION_CONTROL, *control);
+				mTescShader = Assets::AssetsManager::GetInstance().LoadShader(*control, Render::ShaderType::TESSELLATION_CONTROL, *control);
 			}
 			if (auto eval = reader.ReadString("eval"))
 			{
-				mTeseShader = Assets::AssetsManager::LoadShader(*eval, Render::ShaderType::TESSELLATION_EVALUATION, *eval);
+				mTeseShader = Assets::AssetsManager::GetInstance().LoadShader(*eval, Render::ShaderType::TESSELLATION_EVALUATION, *eval);
 			}
 			if (auto geometry = reader.ReadString("geometry"))
 			{
-				mGeomShader = Assets::AssetsManager::LoadShader(*geometry, Render::ShaderType::GEOMETRY, *geometry);
+				mGeomShader = Assets::AssetsManager::GetInstance().LoadShader(*geometry, Render::ShaderType::GEOMETRY, *geometry);
 			}
 			reader.EndObject();
 		}
@@ -390,7 +390,7 @@ namespace Zephyrus::Material
 					auto pathOpt = reader.ReadString("path");
 					if (pathOpt.has_value())
 					{
-						auto tex = Assets::AssetsManager::LoadTexture(pathOpt.value(), pathOpt.value());
+						auto tex = Assets::AssetsManager::GetInstance().LoadTexture(pathOpt.value(), pathOpt.value());
 						if (tex)
 							SetTexture(name, tex);
 					}
@@ -404,7 +404,7 @@ namespace Zephyrus::Material
 						for (auto& path : facesOpt.value())
 							cubeKey += path;
 
-						auto tex = Assets::AssetsManager::LoadCubemap(facesOpt.value(), cubeKey);
+						auto tex = Assets::AssetsManager::GetInstance().LoadCubemap(facesOpt.value(), cubeKey);
 						if (tex)
 							SetTexture(name, tex);
 					}

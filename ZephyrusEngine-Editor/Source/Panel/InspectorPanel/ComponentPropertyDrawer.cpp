@@ -372,7 +372,7 @@ bool ComponentPropertyDrawer::SetPropertyTexture(const std::string& pIndex, cons
 	std::string label = "##Texture" + std::string(buffer) + pIndex;
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(buffer, buffer);
+		Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(buffer, buffer);
 		if (newTex)
 		{
 			prop.Set(newTex);
@@ -387,7 +387,7 @@ bool ComponentPropertyDrawer::SetPropertyTexture(const std::string& pIndex, cons
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 		{
 			std::string textureID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::LoadTexture(textureID, textureID);
+			Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(textureID, textureID);
 			if (droppedTex)
 			{
 				prop.Set(droppedTex);
@@ -428,7 +428,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(const std::string& pIndex, const P
 	std::string label = "##Mesh" + std::string(buffer) + pIndex;
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		Zephyrus::Assets::IMesh* newMesh = Zephyrus::Assets::AssetsManager::LoadMesh(buffer, buffer);
+		Zephyrus::Assets::IMesh* newMesh = Zephyrus::Assets::AssetsManager::GetInstance().LoadMesh(buffer, buffer);
 		if (newMesh)
 		{
 			prop.Set(newMesh);
@@ -443,7 +443,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(const std::string& pIndex, const P
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MESH"))
 		{
 			std::string meshID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Assets::IMesh* droppedMesh = Zephyrus::Assets::AssetsManager::LoadMesh(meshID, meshID);
+			Zephyrus::Assets::IMesh* droppedMesh = Zephyrus::Assets::AssetsManager::GetInstance().LoadMesh(meshID, meshID);
 			if (droppedMesh)
 			{
 				prop.Set(droppedMesh);
@@ -513,7 +513,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const std::string& pIndex, cons
 		{
 			name += face;
 		}
-		Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::LoadCubemap(newFaces, name);
+		Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::GetInstance().LoadCubemap(newFaces, name);
 		if (!newCubemap)
 		{
 			ZP_CORE_ERROR("Cubemap creation failed!");
@@ -616,7 +616,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(const std::string& pInde
 			ImGui::PushID((int)i);
 			if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 			{
-				Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(buffer, buffer);
+				Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(buffer, buffer);
 				if (newTex)
 				{
 					auto newVec = *textures;
@@ -629,7 +629,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(const std::string& pInde
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 				{
 					std::string textureID((const char*)payload->Data, payload->DataSize);
-					Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::LoadTexture(textureID, textureID);
+					Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(textureID, textureID);
 					if (droppedTex)
 					{
 						auto newVec = *textures;
@@ -684,7 +684,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 	std::string label = "##StringInst" + std::string(buffer) + pIndex;
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		auto newMaterial = Zephyrus::Assets::AssetsManager::LoadMaterial(buffer, buffer);
+		auto newMaterial = Zephyrus::Assets::AssetsManager::GetInstance().LoadMaterial(buffer, buffer);
 		if (newMaterial == instance->GetBaseMaterial())
 		{
 			return true;
@@ -700,7 +700,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MATERIAL"))
 		{
 			std::string materialID((const char*)payload->Data, payload->DataSize);
-			auto droppedMat = Zephyrus::Assets::AssetsManager::LoadMaterial(materialID, materialID);
+			auto droppedMat = Zephyrus::Assets::AssetsManager::GetInstance().LoadMaterial(materialID, materialID);
 			if (droppedMat == instance->GetBaseMaterial())
 			{
 				return true;
@@ -744,7 +744,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 					if (ImGui::InputText(("##Inst" + name).c_str(), instanceTextureBuffer, sizeof(instanceTextureBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 					{
 						auto oldTex = tex2D;
-						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(instanceTextureBuffer, instanceTextureBuffer);
+						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(instanceTextureBuffer, instanceTextureBuffer);
 						if (newTex)
 						{
 							auto* evt = new SetGenericPropertyEvent<Zephyrus::Assets::ITexture2D*>(
@@ -768,7 +768,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 						{
 							std::string texID((const char*)payload->Data, payload->DataSize);
-							Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(texID, texID);
+							Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(texID, texID);
 							if (newTex)
 							{
 								auto oldTex = tex2D;
@@ -829,7 +829,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 						{
 							nameCm += face;
 						}
-						Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::LoadCubemap(faces, nameCm);
+						Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::GetInstance().LoadCubemap(faces, nameCm);
 						if (newCubemap)
 						{
 							auto oldTex = cubemap;
@@ -1607,7 +1607,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 
 				if (ImGui::InputText(("##" + name).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 				{
-					Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(buffer, buffer);
+					Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(buffer, buffer);
 					if (newTex)
 					{
 						auto newVec = *textures;
@@ -1627,7 +1627,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 					{
 						std::string texID((const char*)payload->Data, payload->DataSize);
-						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::LoadTexture(texID, texID);
+						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(texID, texID);
 						if (newTex)
 						{
 							auto newVec = *textures;
@@ -1683,7 +1683,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 					{
 						nameCm += face;
 					}
-					Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::LoadCubemap(faces, nameCm);
+					Zephyrus::Assets::ICubeMapTexture* newCubemap = Zephyrus::Assets::AssetsManager::GetInstance().LoadCubemap(faces, nameCm);
 					if (newCubemap)
 					{
 						auto newVec = *textures;
@@ -1760,7 +1760,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 			Zephyrus::Assets::ITextureBase* tex = nullptr;
 			if (mTextureType == 0)
 			{
-				tex = Zephyrus::Assets::AssetsManager::LoadTexture(Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH, Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH);
+				tex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(Zephyrus::Assets::AssetsManager::GetInstance().PLACE_HOLDER_TEXTURE_PATH, Zephyrus::Assets::AssetsManager::GetInstance().PLACE_HOLDER_TEXTURE_PATH);
 			}
 			else
 			{
@@ -1768,10 +1768,10 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 				std::string cubemapName;
 				for (int j = 0; j < 6; ++j)
 				{
-					mFilePaths.emplace_back(Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH);
-					cubemapName += Zephyrus::Assets::AssetsManager::PLACE_HOLDER_TEXTURE_PATH;
+					mFilePaths.emplace_back(Zephyrus::Assets::AssetsManager::GetInstance().PLACE_HOLDER_TEXTURE_PATH);
+					cubemapName += Zephyrus::Assets::AssetsManager::GetInstance().PLACE_HOLDER_TEXTURE_PATH;
 				}
-				tex = Zephyrus::Assets::AssetsManager::LoadCubemap(mFilePaths, cubemapName);
+				tex = Zephyrus::Assets::AssetsManager::GetInstance().LoadCubemap(mFilePaths, cubemapName);
 			}
 			
 			if (ImGui::Button("Accept##NewParameter"))
@@ -1865,7 +1865,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 			prop.Set(nullptr);
 			return true;
 		}
-		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::LoadShader(buffer, pType ,buffer);
+		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::GetInstance().LoadShader(buffer, pType ,buffer);
 		if (newShader)
 		{
 			prop.Set(newShader);
@@ -1881,7 +1881,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SHADER"))
 		{
 			std::string shaderID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Render::IShader* droppedShader = Zephyrus::Assets::AssetsManager::LoadShader(shaderID, pType, shaderID);
+			Zephyrus::Render::IShader* droppedShader = Zephyrus::Assets::AssetsManager::GetInstance().LoadShader(shaderID, pType, shaderID);
 			if (droppedShader)
 			{
 				prop.Set(droppedShader);

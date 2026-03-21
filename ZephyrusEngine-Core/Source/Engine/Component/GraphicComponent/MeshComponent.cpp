@@ -19,7 +19,7 @@ namespace Zephyrus::ActorComponent
 	{
 		mOwner->GetScene().GetRenderer()->AddMesh(this);
 
-		mMesh = AssetsManager::LoadMesh("cube.obj", "cube.obj");
+		mMesh = AssetsManager::GetInstance().LoadMesh("cube.obj", "cube.obj");
 	}
 
 	MeshComponent::~MeshComponent()
@@ -31,7 +31,7 @@ namespace Zephyrus::ActorComponent
 		RenderComponent::Deserialize(pReader);
 		if (auto mesh = pReader.ReadString("mesh"))
 		{
-			mMesh = AssetsManager::LoadMesh(*mesh, *mesh);
+			mMesh = AssetsManager::GetInstance().LoadMesh(*mesh, *mesh);
 			if (!mMesh)
 			{
 				ZP_CORE_ERROR("Mesh creation failed !");
@@ -39,7 +39,7 @@ namespace Zephyrus::ActorComponent
 		}
 		else
 		{
-			mMesh = AssetsManager::LoadMesh("cube.obj", "cube.obj");
+			mMesh = AssetsManager::GetInstance().LoadMesh("cube.obj", "cube.obj");
 			ZP_CORE_WARN("No mesh referenced in " + mOwner->GetName());
 		}
 	}

@@ -9,7 +9,7 @@ namespace Zephyrus::UI {
         : HudElement(pContext), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
     {
         if (pFont == nullptr) {
-            mFont = AssetsManager::LoadFont("RoadPixel.ttf", "RoadPixel");
+            mFont = AssetsManager::GetInstance().LoadFont("RoadPixel.ttf", "RoadPixel");
         }
         SetPosition(pPos);
     }

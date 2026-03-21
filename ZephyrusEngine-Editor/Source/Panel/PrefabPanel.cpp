@@ -27,7 +27,7 @@ void PrefabPanel::Draw()
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
 
-	Zephyrus::Assets::ITexture2D* arrowTex = AssetsManager::LoadTexture("Sprites/Icons/prefab36.png", "Sprites/Icons/prefab36.png");
+	Zephyrus::Assets::ITexture2D* arrowTex = AssetsManager::GetInstance().LoadTexture("Sprites/Icons/prefab36.png", "Sprites/Icons/prefab36.png");
 	ImTextureID myIcon = (ImTextureID)(intptr_t)arrowTex->GetHandle();
 
 	ImVec2 iconSize(36, 36);

@@ -23,9 +23,9 @@ namespace Zephyrus::Render {
 	{
 		mWindow = &pWindow;
 		glLineWidth(4);
-		mDebugVertex = AssetsManager::LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
-		mDebugFragment = AssetsManager::LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
-		mDebugShaderProgram = AssetsManager::LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
+		mDebugVertex = AssetsManager::GetInstance().LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
+		mDebugFragment = AssetsManager::GetInstance().LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
+		mDebugShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
 		mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 		mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, pWindow.GetDimensions().x, pWindow.GetDimensions().y, 0.01f, 10000.0f);
 		GLfloat vertices[] = {

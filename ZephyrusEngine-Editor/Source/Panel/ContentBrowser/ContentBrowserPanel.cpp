@@ -361,35 +361,35 @@ ImTextureID ContentBrowserPanel::GetImageFromExtension(const std::string& extens
     Zephyrus::Assets::ITexture2D* tex;
     if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
     {
-        tex = AssetsManager::LoadTexture(filepath, filepath);
+        tex = AssetsManager::GetInstance().LoadTexture(filepath, filepath);
     }
     else if (extension == ".otf" || extension == ".ttf")
     {
-        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/font80.png", "../Content/Sprites/Icons/font80.png");
+        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/font80.png", "../Content/Sprites/Icons/font80.png");
     }
     else if (extension == ".zpmap")
     {
-        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/scene80.png", "../Content/Sprites/Icons/scene80.png");
+        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/scene80.png", "../Content/Sprites/Icons/scene80.png");
     }
     else if (extension == ".obj" || extension == ".fbx")
     {
-        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/mesh80.png", "../Content/Sprites/Icons/mesh80.png");
+        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/mesh80.png", "../Content/Sprites/Icons/mesh80.png");
     }
     else if (extension == ".prefab")
     {
-        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/prefab80.png", "../Content/Sprites/Icons/prefab80.png");
+        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/prefab80.png", "../Content/Sprites/Icons/prefab80.png");
     }
     else if (extension == ".vert" || extension == ".frag" || extension == ".tesc" || extension == ".tese" || extension == ".geom")
     {
-        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/shader80.png", "../Content/Sprites/Icons/shader80.png");
+        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/shader80.png", "../Content/Sprites/Icons/shader80.png");
     }
     else if (extension == ".zpmat")
     {
-        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/mat80.png", "../Content/Sprites/Icons/mat80.png");
+        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/mat80.png", "../Content/Sprites/Icons/mat80.png");
     }
     else
     {
-        tex = AssetsManager::LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png");
+        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png");
     }
     ImTextureID myIcon = (ImTextureID)(intptr_t)tex->GetHandle();
 

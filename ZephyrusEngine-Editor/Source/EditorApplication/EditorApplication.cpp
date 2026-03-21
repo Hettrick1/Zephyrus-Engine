@@ -29,7 +29,7 @@ void EditorApplication::Initialize()
     mEditorWindow = new Window(1920, 1030, true);
     mRenderer = new Zephyrus::Render::RendererOpenGl();
     mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);
-    Zephyrus::Assets::AssetsManager::SetContext(mSceneManager);
+    Zephyrus::Assets::AssetsManager::GetInstance().Initialize(mSceneManager);
 
     mImGuiEditorLayer = std::make_unique<ImGuiEditorLayer>();
     

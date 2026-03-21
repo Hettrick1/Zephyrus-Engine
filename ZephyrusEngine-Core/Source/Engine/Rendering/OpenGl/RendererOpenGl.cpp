@@ -54,17 +54,17 @@ namespace Zephyrus::Render {
 		// {
 		// 	ZP_CORE_ERROR("Failed to initialize SDL_Image");
 		// }
-		mSpriteVertexShader = AssetsManager::LoadShader("BasicHudImage.vert", ShaderType::VERTEX, "BasicHudImageVert");
-		mSpriteFragmentShader = AssetsManager::LoadShader("BasicHudImage.frag", ShaderType::FRAGMENT, "BasicHudImageFrag");
-		mSpriteShaderProgramTemp = AssetsManager::LoadShaderProgram({ mSpriteVertexShader, mSpriteFragmentShader }, "simpleSpriteSP");
+		mSpriteVertexShader = AssetsManager::GetInstance().LoadShader("BasicHudImage.vert", ShaderType::VERTEX, "BasicHudImageVert");
+		mSpriteFragmentShader = AssetsManager::GetInstance().LoadShader("BasicHudImage.frag", ShaderType::FRAGMENT, "BasicHudImageFrag");
+		mSpriteShaderProgramTemp = AssetsManager::GetInstance().LoadShaderProgram({ mSpriteVertexShader, mSpriteFragmentShader }, "simpleSpriteSP");
 		SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 
 		mVAO = new VertexArrayOpenGL(Zephyrus::Assets::spriteVertices, 32);
 		mFullscreenQuadVAO = new VertexArrayOpenGL(Zephyrus::Assets::fullscreenQuadVertices, 32);
 
-		mFullscreenVertexShader = AssetsManager::LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuadvert");
-		mFullscreenFragmentShader = AssetsManager::LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuadfrag");
-		mFullscreenShaderProgram = AssetsManager::LoadShaderProgram({ mFullscreenVertexShader, mFullscreenFragmentShader }, "FullscreenQuadSP");
+		mFullscreenVertexShader = AssetsManager::GetInstance().LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuadvert");
+		mFullscreenFragmentShader = AssetsManager::GetInstance().LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuadfrag");
+		mFullscreenShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mFullscreenVertexShader, mFullscreenFragmentShader }, "FullscreenQuadSP");
 
 		mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.1f, 100000);
 		mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);

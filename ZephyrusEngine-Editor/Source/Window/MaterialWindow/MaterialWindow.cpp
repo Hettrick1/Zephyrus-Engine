@@ -19,7 +19,7 @@ namespace Zephyrus::Editor::Window
     : mFilePath(filePath), mTitle(title)
     {
     	mComponentPropertyDrawer = new ComponentPropertyDrawer();
-        mMaterial = Assets::AssetsManager::LoadMaterial(filePath, filePath);
+        mMaterial = Assets::AssetsManager::GetInstance().LoadMaterial(filePath, filePath);
     }
 
     MaterialWindow::~MaterialWindow()
@@ -35,13 +35,13 @@ namespace Zephyrus::Editor::Window
         ImGui::Begin(GetTitle().c_str(), &mIsOpen);
         
         ImGui::PushFont(ZP::UI::gFonts.medium);
-        Zephyrus::Assets::ITexture2D* undoTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/undo20.png", "Sprites/Icons/undo20.png");
+        Zephyrus::Assets::ITexture2D* undoTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/undo20.png", "Sprites/Icons/undo20.png");
         ImTextureID undoIcon = (ImTextureID)(intptr_t)undoTex->GetHandle();
-        Zephyrus::Assets::ITexture2D* redoTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/redo20.png", "Sprites/Icons/redo20.png");
+        Zephyrus::Assets::ITexture2D* redoTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/redo20.png", "Sprites/Icons/redo20.png");
         ImTextureID redoIcon = (ImTextureID)(intptr_t)redoTex->GetHandle();
-        Zephyrus::Assets::ITexture2D* saveTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/save20.png", "Sprites/Icons/save20.png");
+        Zephyrus::Assets::ITexture2D* saveTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/save20.png", "Sprites/Icons/save20.png");
         ImTextureID saveIcon = (ImTextureID)(intptr_t)saveTex->GetHandle();
-        Zephyrus::Assets::ITexture2D* openTex = Assets::AssetsManager::LoadTexture("Sprites/Icons/open20.png", "Sprites/Icons/open20.png");
+        Zephyrus::Assets::ITexture2D* openTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/open20.png", "Sprites/Icons/open20.png");
         ImTextureID openIcon = (ImTextureID)(intptr_t)openTex->GetHandle();
 
         ImVec2 iconSize(20, 20);

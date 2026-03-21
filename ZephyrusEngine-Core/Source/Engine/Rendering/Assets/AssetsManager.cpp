@@ -18,24 +18,7 @@
 #include <filesystem>
 
 namespace Zephyrus::Assets {
-	std::map<std::string, ITexture2D*> AssetsManager::mTextures = {};
-	std::map<std::string, IFont*> AssetsManager::mFonts = {};
-	std::map<std::string, IMesh*> AssetsManager::mMeshes = {};
-	std::map<std::string, Render::IShader*> AssetsManager::mShaders = {};
-	std::map<std::string, Render::IShaderProgram*> AssetsManager::mShaderPrograms = {};
-	std::map<std::string, ICubeMapTexture*> AssetsManager::mCubemaps = {};
-	std::map<std::string, Material::IMaterial*> AssetsManager::mMaterials = {};
-
-	ISceneContext* AssetsManager::mContext{ nullptr };
-
-	AssetDataBase AssetsManager::database;
-
-	const std::string AssetsManager::IMPORT_PATH = "../Content/";
-	const std::string AssetsManager::MESH_PATH = "../Content/Meshes/";
-	const std::string AssetsManager::FONT_PATH = "../Content/Fonts/";
-	const std::string AssetsManager::SHADER_PATH = "../Content/Shaders/";
-	const std::string AssetsManager::PLACE_HOLDER_TEXTURE_PATH = "../Content/Sprites/uv_mapper.jpg";
-
+	
 	ITexture2D* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
 	{
 		if (mTextures.find(pName) == mTextures.end()) {
@@ -76,7 +59,13 @@ namespace Zephyrus::Assets {
 		return mCubemaps[pName];
 	}
 
-	void AssetsManager::SetContext(ISceneContext* pContext)
+	AssetsManager& AssetsManager::GetInstance()
+	{
+		static AssetsManager instance;
+		return instance;
+	}
+
+	void AssetsManager::Initialize(ISceneContext* pContext)
 	{
 		mContext = pContext;
 		database.Init(mContext);
@@ -170,7 +159,7 @@ namespace Zephyrus::Assets {
 		return mMaterials[pName];
 	}
 
-	void AssetsManager::Clear()
+	void AssetsManager::CleanUp()
 	{
 		for (auto& iter : mTextures)
 		{
