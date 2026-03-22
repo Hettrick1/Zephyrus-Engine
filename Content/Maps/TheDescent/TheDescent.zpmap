@@ -18,7 +18,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/sphere.obj",
+                        "mesh": "64cd0a92-d909-4bb3-aca8-0cf06467e584",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -91,7 +91,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/EarthPlanets.zpmat",
                             "textures": [{
@@ -121,7 +121,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/EarthPlanetsTree.zpmat",
                             "textures": [{
@@ -167,7 +167,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
                             "textures": [{
@@ -228,7 +228,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/monkey.obj",
+                        "mesh": "8a333439-f70a-4b81-8411-4b3b1c471ccd",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
                             "textures": [{
@@ -289,7 +289,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
                             "textures": [{
@@ -350,7 +350,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
                             "textures": [{
@@ -401,7 +401,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/EarthPlanetsTree.zpmat",
                             "textures": [{
@@ -411,10 +411,10 @@
                                 }],
                             "vec4Properties": [{
                                     "name": "bottomColor",
-                                    "value": [0.197, 0.035, 0.27, 1.0]
+                                    "value": [0.195, 0.035, 0.27, 1.0]
                                 }, {
                                     "name": "topColor",
-                                    "value": [1.0, 0.0, 0.89, 1.0]
+                                    "value": [1.0, 0.0, 0.888, 1.0]
                                 }]
                         }
                     }

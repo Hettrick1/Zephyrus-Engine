@@ -5,7 +5,7 @@ namespace Zephyrus::Render {
 
     MeshOpenGL::MeshOpenGL(const Assets::MeshData& data)
     {
-        mMeshPath = data.sourceFile;
+        mMeshId = data.sourceFileId;
         auto verts = data.ToVerticeArray();
         mVertexArray = std::make_unique<Assets::VertexArrayOpenGL>(verts.data(), verts.size());
     }

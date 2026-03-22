@@ -8,7 +8,7 @@ namespace Zephyrus::Assets {
     {
         std::vector<Zephyrus::Render::Vertex> vertices;
         std::vector<uint32_t> indices;
-        std::string sourceFile;
+        std::string sourceFileId;
 
         std::vector<float> ToVerticeArray() const
         {

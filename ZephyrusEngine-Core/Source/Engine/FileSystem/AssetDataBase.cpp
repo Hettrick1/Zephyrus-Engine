@@ -36,7 +36,7 @@ void AssetDataBase::RetriveMetaDatas(std::filesystem::path file)
         
         if (auto id = reader->ReadString("id"))
         {
-            UpdatePathFromID(*id, file.string());
+            UpdatePathFromID(*id, file.make_preferred().string());
         }            
     }
     else
@@ -51,7 +51,7 @@ void AssetDataBase::RetriveMetaDatas(std::filesystem::path file)
         
         writer->SaveDocument(metaPath.string());
 
-        UpdatePathFromID(id, file.string());
+        UpdatePathFromID(id, file.make_preferred().string());
     }
 }
 
@@ -87,4 +87,18 @@ std::string AssetDataBase::GetPathFromID(const std::string& id)
 void AssetDataBase::UpdatePathFromID(const std::string& id, const std::string& path)
 {
     mContent[id] = path;
+
+    // TEMP
+    mContentTEMP[path] = id;
+}
+
+std::string AssetDataBase::GetIdFromPath(const std::string& path)
+{
+    std::filesystem::path metaPath = path;
+    if (mContentTEMP.contains(metaPath.make_preferred().string()))
+    {
+        return mContentTEMP[metaPath.make_preferred().string()];
+    }
+    ZP_CORE_ERROR("The asset with the path : " + metaPath.make_preferred().string() + " is nowhere to be found. It may have been forced deleted.");
+    return path;
 }

@@ -11,15 +11,15 @@ namespace Zephyrus::Render {
     {
     private:
         std::unique_ptr<Zephyrus::Assets::VertexArrayOpenGL> mVertexArray;
-        std::string mMeshPath;
+        std::string mMeshId;
     public:
         explicit MeshOpenGL(const Assets::MeshData& data);
-        ~MeshOpenGL();
+        ~MeshOpenGL() override;
 
         void Bind() const override;
         void Unbind() const override;
         uint32_t GetVertexCount() const override { return mVertexArray->GetVerticeCount(); }
-        std::string GetFilePath() const override { return mMeshPath; }
+        std::string GetFileId() const override { return mMeshId; }
     };
 
 }

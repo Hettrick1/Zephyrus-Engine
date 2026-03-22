@@ -417,7 +417,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(const std::string& pIndex, const P
 		return false;
 	}
 	char buffer[255];
-	strncpy_s(buffer, mesh->GetFilePath().c_str(), sizeof(buffer));
+	strncpy_s(buffer, mesh->GetFileId().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	ImGui::Text("Mesh : ");
@@ -443,7 +443,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(const std::string& pIndex, const P
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MESH"))
 		{
 			std::string meshID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Assets::IMesh* droppedMesh = Zephyrus::Assets::AssetsManager::GetInstance().LoadMesh(meshID, meshID);
+			Zephyrus::Assets::IMesh* droppedMesh = Zephyrus::Assets::AssetsManager::GetInstance().LoadMesh(meshID);
 			if (droppedMesh)
 			{
 				prop.Set(droppedMesh);

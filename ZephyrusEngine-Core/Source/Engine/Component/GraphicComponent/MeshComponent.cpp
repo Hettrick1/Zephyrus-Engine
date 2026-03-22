@@ -31,7 +31,7 @@ namespace Zephyrus::ActorComponent
 		RenderComponent::Deserialize(pReader);
 		if (auto mesh = pReader.ReadString("mesh"))
 		{
-			mMesh = AssetsManager::GetInstance().LoadMesh(*mesh, *mesh);
+			mMesh = AssetsManager::GetInstance().LoadMesh(*mesh);
 			if (!mMesh)
 			{
 				ZP_CORE_ERROR("Mesh creation failed !");
@@ -47,7 +47,7 @@ namespace Zephyrus::ActorComponent
 	void MeshComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
-		pWriter.WriteString("mesh", mMesh->GetFilePath());
+		pWriter.WriteString("mesh", mMesh->GetFileId());
 		RenderComponent::Serialize(pWriter);
 		Component::EndSerialize(pWriter);
 	}

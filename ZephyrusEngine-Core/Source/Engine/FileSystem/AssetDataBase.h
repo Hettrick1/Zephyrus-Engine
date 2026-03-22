@@ -15,6 +15,8 @@ private:
     //std::vector<std::filesystem::path> mMetaFiles;
     std::vector<std::filesystem::path> mFiles;
     ISceneContext* mContext{nullptr};
+
+    std::unordered_map<std::string, std::string> mContentTEMP;
 public:
     void Init(ISceneContext* context);
     void RefreshContent();
@@ -22,4 +24,7 @@ public:
     void CheckForFiles(const std::filesystem::path& pFilePath);
     std::string GetPathFromID(const std::string& id);
     void UpdatePathFromID(const std::string& id, const std::string& path);
+
+    // TEMP
+    std::string GetIdFromPath(const std::string& path);
 };

@@ -11,6 +11,6 @@ namespace Zephyrus::Assets {
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
         virtual uint32_t GetVertexCount() const = 0;
-        virtual std::string GetFilePath() const = 0;
+        virtual std::string GetFileId() const = 0;
     };
 }

@@ -71,14 +71,17 @@ namespace Zephyrus::Assets {
 		database.Init(mContext);
 	}
 
-	IMesh* AssetsManager::LoadMesh(const std::string& pFilePath, const std::string& pName)
+	IMesh* AssetsManager::LoadMesh(const std::string& pId, bool pForceReload)
 	{
-		if (mMeshes.find(pName) == mMeshes.end()) {
-			auto data = LoadMeshData(GetFullPath(pFilePath, AssetType::Mesh));
-			mMeshes[pName] = mContext->GetRenderer()->LoadMeshFromData(data);
-			return mMeshes[pName];
+		// refactor this to only use pID and not the get id from path
+		std::string idTemp = database.GetIdFromPath(GetFullPath(pId, AssetType::Mesh));
+		
+		if (!mMeshes.contains(idTemp) || pForceReload) {
+			auto data = LoadMeshData(idTemp);
+			mMeshes[idTemp] = mContext->GetRenderer()->LoadMeshFromData(data);
+			return mMeshes[idTemp];
 		}
-		return mMeshes[pName];
+		return mMeshes[idTemp];
 	}
 
 	IMesh* AssetsManager::GetMesh(const std::string& pName)
@@ -216,12 +219,13 @@ namespace Zephyrus::Assets {
 		return mContext->GetRenderer()->LoadTexture(pFilePath);
 	}
 
-	MeshData AssetsManager::LoadMeshData(const std::string& pFilePath)
+	MeshData AssetsManager::LoadMeshData(const std::string& pId)
 	{
+		std::string path =database.GetPathFromID(pId);
 		MeshData data;
-		data.sourceFile = pFilePath;
+		data.sourceFileId = pId;
 
-		std::string extension = std::filesystem::path(pFilePath).extension().string();
+		std::string extension = std::filesystem::path(path).extension().string();
 		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
 
 		if (extension == ".obj")
@@ -231,10 +235,10 @@ namespace Zephyrus::Assets {
 			std::vector<tinyobj::material_t> materials;
 			std::string warning, errors;
 
-			bool success = tinyobj::LoadObj(&attributes, &shapes, &materials, &warning, &errors, pFilePath.c_str());
+			bool success = tinyobj::LoadObj(&attributes, &shapes, &materials, &warning, &errors, path.c_str());
 			if (!success)
 			{
-				ZP_CORE_ERROR("Mesh " + pFilePath + " does not exist or is not .obj");
+				ZP_CORE_ERROR("Mesh " + path + " does not exist or is not .obj");
 				return data;
 			}
 
@@ -266,7 +270,7 @@ namespace Zephyrus::Assets {
 
 			data.vertices = std::move(vertices);
 			data.indices = std::move(indices);
-			ZP_LOAD("Mesh " + pFilePath + " successfully loaded");
+			ZP_LOAD("Mesh " + path + " successfully loaded");
 		}
 		else if (extension == ".fbx")
 		{
@@ -338,6 +342,10 @@ namespace Zephyrus::Assets {
 			if (pPath.find(MESH_PATH) == std::string::npos)
 			{
 				newPath = MESH_PATH + pPath;
+				if (newPath.find(".obj") == std::string::npos)
+				{
+					newPath = pPath;
+				}
 				break;
 			}
 			newPath = pPath;
