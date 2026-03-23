@@ -74,25 +74,25 @@ namespace Zephyrus::Assets {
 	IMesh* AssetsManager::LoadMesh(const std::string& pId, bool pForceReload)
 	{
 		// refactor this to only use pID and not the get id from path
-		std::string idTemp = database.GetIdFromPath(GetFullPath(pId, AssetType::Mesh));
+		//std::string idTemp = database.GetIdFromPath(GetFullPath(pId, AssetType::Mesh));
 		
-		if (!mMeshes.contains(idTemp) || pForceReload) {
-			auto data = LoadMeshData(idTemp);
-			mMeshes[idTemp] = mContext->GetRenderer()->LoadMeshFromData(data);
-			return mMeshes[idTemp];
+		if (!mMeshes.contains(pId) || pForceReload) {
+			auto data = LoadMeshData(pId);
+			mMeshes[pId] = mContext->GetRenderer()->LoadMeshFromData(data);
+			return mMeshes[pId];
 		}
-		return mMeshes[idTemp];
+		return mMeshes[pId];
 	}
 
-	IMesh* AssetsManager::GetMesh(const std::string& pName)
+	IMesh* AssetsManager::GetMesh(const std::string& pId)
 	{
-		if (mMeshes.find(pName) == mMeshes.end()) {
+		if (!mMeshes.contains(pId)) {
 			std::ostringstream loadError;
-			loadError << "Mesh " << pName << " does not exists in assets manager\n";
+			loadError << "Mesh " << pId << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
 			return nullptr;
 		}
-		return mMeshes[pName];
+		return mMeshes[pId];
 	}
 
 	IFont* AssetsManager::LoadFont(const std::string& pFilePath, const std::string& pName)

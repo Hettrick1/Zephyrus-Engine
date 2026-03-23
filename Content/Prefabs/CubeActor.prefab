@@ -13,7 +13,7 @@
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0],
-                "mesh" : "cube.obj",
+                "mesh" : "d66e8308-7299-4ef6-80d2-be12f7d81604",
                 "textures" : [
                     "../Content/Sprites/planks.png"
                 ],

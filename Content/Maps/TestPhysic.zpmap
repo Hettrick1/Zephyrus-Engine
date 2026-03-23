@@ -13,11 +13,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/sphere.obj",
+                        "mesh": "64cd0a92-d909-4bb3-aca8-0cf06467e584",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -34,6 +35,7 @@
                 }, {
                     "type": "PlayerStartComponent",
                     "componentId": "PlayerStartComponent1",
+                    "componentName": "PlayerStartComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],

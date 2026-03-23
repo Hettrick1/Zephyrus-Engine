@@ -8,6 +8,7 @@
 #include "DebugRenderer.h"
 #include "JSONUtils.h"
 #include "Interface/ITexture2D.h"
+#include "EngineContentIds.h"
 
 
 using Zephyrus::Assets::AssetsManager;
@@ -19,7 +20,7 @@ namespace Zephyrus::ActorComponent
 	{
 		mOwner->GetScene().GetRenderer()->AddMesh(this);
 
-		mMesh = AssetsManager::GetInstance().LoadMesh("cube.obj", "cube.obj");
+		mMesh = AssetsManager::GetInstance().LoadMesh(CUBE_OBJ.data());
 	}
 
 	MeshComponent::~MeshComponent()
@@ -39,7 +40,7 @@ namespace Zephyrus::ActorComponent
 		}
 		else
 		{
-			mMesh = AssetsManager::GetInstance().LoadMesh("cube.obj", "cube.obj");
+			mMesh = AssetsManager::GetInstance().LoadMesh(CUBE_OBJ.data());
 			ZP_CORE_WARN("No mesh referenced in " + mOwner->GetName());
 		}
 	}

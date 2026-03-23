@@ -13,7 +13,7 @@
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0],
-                "mesh" : "sphere.obj",
+                "mesh" : "64cd0a92-d909-4bb3-aca8-0cf06467e584",
                 "textures" : [
                     "Sprites/uv_mapper.jpg"
                 ],

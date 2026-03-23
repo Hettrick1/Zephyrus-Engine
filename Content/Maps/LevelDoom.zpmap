@@ -13,11 +13,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/sphere.obj",
+                        "mesh": "64cd0a92-d909-4bb3-aca8-0cf06467e584",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -34,6 +35,7 @@
                 }, {
                     "type": "PlayerStartComponent",
                     "componentId": "PlayerStartComponent1",
+                    "componentName": "PlayerStartComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -54,6 +56,7 @@
             "components": [{
                     "type": "SkySphereComponent",
                     "componentId": "SkySphereComponent1",
+                    "componentName": "SkySphereComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -83,11 +86,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -104,6 +108,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -127,11 +132,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -148,6 +154,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -171,11 +178,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -192,6 +200,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -215,11 +224,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -236,6 +246,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -259,11 +270,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -280,6 +292,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -303,11 +316,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -324,6 +338,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -347,11 +362,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -368,6 +384,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -391,11 +408,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -412,6 +430,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -435,11 +454,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -456,6 +476,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -479,11 +500,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -500,6 +522,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -523,11 +546,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -544,6 +568,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -567,11 +592,12 @@
             "components": [{
                     "type": "MeshComponent",
                     "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "../Content/Meshes/cube.obj",
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
                             "baseMaterial": "../Content/Material/BasicMesh.zpmat",
                             "textures": [{
@@ -588,6 +614,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -610,6 +637,7 @@
             "components": [{
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
+                    "componentName": "SpriteComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -632,6 +660,7 @@
                 }, {
                     "type": "PickUpComponent",
                     "componentId": "PickUpComponent1",
+                    "componentName": "PickUpComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -641,6 +670,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -663,6 +693,7 @@
             "components": [{
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
+                    "componentName": "SpriteComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -685,6 +716,7 @@
                 }, {
                     "type": "PickUpComponent",
                     "componentId": "PickUpComponent1",
+                    "componentName": "PickUpComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -694,6 +726,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -716,6 +749,7 @@
             "components": [{
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
+                    "componentName": "SpriteComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -738,6 +772,7 @@
                 }, {
                     "type": "PickUpComponent",
                     "componentId": "PickUpComponent1",
+                    "componentName": "PickUpComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -747,6 +782,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -769,6 +805,7 @@
             "components": [{
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
+                    "componentName": "SpriteComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -791,6 +828,7 @@
                 }, {
                     "type": "PickUpComponent",
                     "componentId": "PickUpComponent1",
+                    "componentName": "PickUpComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -800,6 +838,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -822,6 +861,7 @@
             "components": [{
                     "type": "SpriteComponent",
                     "componentId": "SpriteComponent1",
+                    "componentName": "SpriteComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -844,6 +884,7 @@
                 }, {
                     "type": "PickUpComponent",
                     "componentId": "PickUpComponent1",
+                    "componentName": "PickUpComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -853,6 +894,7 @@
                 }, {
                     "type": "CubeColliderComponent",
                     "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -876,6 +918,7 @@
             "components": [{
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent1",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [2.5, 2.5, 2.5],
@@ -901,6 +944,7 @@
                 }, {
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent2",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.1, 0.3],
                         "relativeSize": [1.299, 1.299, 1.299],
@@ -925,6 +969,7 @@
                 }, {
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
+                    "componentName": "CapsuleColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -937,6 +982,7 @@
                 }, {
                     "type": "DoomEnemyComponent",
                     "componentId": "DoomEnemyComponent1",
+                    "componentName": "DoomEnemyComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -957,6 +1003,7 @@
             "components": [{
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent1",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [2.5, 2.5, 2.5],
@@ -982,6 +1029,7 @@
                 }, {
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent2",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.1, 0.3],
                         "relativeSize": [1.299, 1.299, 1.299],
@@ -1006,6 +1054,7 @@
                 }, {
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
+                    "componentName": "CapsuleColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -1018,6 +1067,7 @@
                 }, {
                     "type": "DoomEnemyComponent",
                     "componentId": "DoomEnemyComponent1",
+                    "componentName": "DoomEnemyComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -1038,6 +1088,7 @@
             "components": [{
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent1",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [2.5, 2.5, 2.5],
@@ -1063,6 +1114,7 @@
                 }, {
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent2",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.1, 0.3],
                         "relativeSize": [1.299, 1.299, 1.299],
@@ -1087,6 +1139,7 @@
                 }, {
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
+                    "componentName": "CapsuleColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -1099,6 +1152,7 @@
                 }, {
                     "type": "DoomEnemyComponent",
                     "componentId": "DoomEnemyComponent1",
+                    "componentName": "DoomEnemyComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -1119,6 +1173,7 @@
             "components": [{
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent1",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [2.5, 2.5, 2.5],
@@ -1144,6 +1199,7 @@
                 }, {
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent2",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.1, 0.3],
                         "relativeSize": [1.299, 1.299, 1.299],
@@ -1168,6 +1224,7 @@
                 }, {
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
+                    "componentName": "CapsuleColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -1180,6 +1237,7 @@
                 }, {
                     "type": "DoomEnemyComponent",
                     "componentId": "DoomEnemyComponent1",
+                    "componentName": "DoomEnemyComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -1200,6 +1258,7 @@
             "components": [{
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent1",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [2.5, 2.5, 2.5],
@@ -1225,6 +1284,7 @@
                 }, {
                     "type": "FlipbookComponent",
                     "componentId": "FlipbookComponent2",
+                    "componentName": "FlipbookComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.1, 0.3],
                         "relativeSize": [1.299, 1.299, 1.299],
@@ -1249,6 +1309,7 @@
                 }, {
                     "type": "CapsuleColliderComponent",
                     "componentId": "CapsuleColliderComponent1",
+                    "componentName": "CapsuleColliderComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.2],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -1261,6 +1322,7 @@
                 }, {
                     "type": "DoomEnemyComponent",
                     "componentId": "DoomEnemyComponent1",
+                    "componentName": "DoomEnemyComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
@@ -1280,6 +1342,7 @@
             "components": [{
                     "type": "AtmosphereComponent",
                     "componentId": "AtmosphereComponent1",
+                    "componentName": "AtmosphereComponent",
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],

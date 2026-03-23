@@ -428,7 +428,7 @@ bool ComponentPropertyDrawer::SetPropertyMesh(const std::string& pIndex, const P
 	std::string label = "##Mesh" + std::string(buffer) + pIndex;
 	if (ImGui::InputText(label.c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 	{
-		Zephyrus::Assets::IMesh* newMesh = Zephyrus::Assets::AssetsManager::GetInstance().LoadMesh(buffer, buffer);
+		Zephyrus::Assets::IMesh* newMesh = Zephyrus::Assets::AssetsManager::GetInstance().LoadMesh(buffer);
 		if (newMesh)
 		{
 			prop.Set(newMesh);

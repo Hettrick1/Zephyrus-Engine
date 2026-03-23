@@ -9,7 +9,7 @@
 #include "Interface/IMesh.h"
 
 #include "ComponentFactory.h"
-#include "JSONUtils.h"
+#include "EngineContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -63,12 +63,12 @@ namespace Zephyrus::ActorComponent
 			if (*isSphere) 
 			{
 				mIsSphere = true;
-				mMesh = AssetsManager::GetInstance().LoadMesh("sphere.obj", "sphere");
+				mMesh = AssetsManager::GetInstance().LoadMesh(SPHERE_OBJ.data());
 			}
 			else
 			{
 				mIsSphere = false;
-				mMesh = AssetsManager::GetInstance().LoadMesh("cube.obj", "cube");
+				mMesh = AssetsManager::GetInstance().LoadMesh(CUBE_OBJ.data());
 			}
 		}
 	}
