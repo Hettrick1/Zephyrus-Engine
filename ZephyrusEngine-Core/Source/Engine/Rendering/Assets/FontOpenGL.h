@@ -15,10 +15,11 @@ namespace Zephyrus::Assets {
     private:
         std::map<char, CharacterGL> mCharacters;
         std::map<char, CharacterInfo> mCharactersInfos;
+        std::string mFontId = "None";
     public:
-        ~FontOpenGL();
+        ~FontOpenGL() override;
 
-        bool Load(const std::string& fontPath, unsigned int pixelHeight = 128) override;
+        bool Load(const std::string& fontPath, const std::string& id, unsigned int pixelHeight = 128) override;
         void Unload() override;
         const std::map<char, CharacterInfo>& GetCharacters() const override;
 

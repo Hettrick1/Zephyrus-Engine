@@ -158,10 +158,10 @@ namespace Zephyrus::Render {
 		return new MeshOpenGL(data);
 	}
 
-	Assets::IFont* RendererOpenGl::LoadFont(const std::string& fontPath, unsigned int pixelHeight)
+	Assets::IFont* RendererOpenGl::LoadFont(const std::string& fontPath, const std::string& id, unsigned int pixelHeight)
 	{
 		Assets::FontOpenGL* font = new Assets::FontOpenGL();
-		font->Load(fontPath, pixelHeight);
+		font->Load(fontPath, id, pixelHeight);
 		return font;
 	}
 

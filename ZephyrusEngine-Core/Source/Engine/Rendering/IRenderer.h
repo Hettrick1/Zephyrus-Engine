@@ -75,7 +75,7 @@ namespace Zephyrus::Render {
 		virtual void EndDraw() = 0;
 
 		virtual Assets::IMesh* LoadMeshFromData(Assets::MeshData& data) = 0;
-		virtual Assets::IFont* LoadFont(const std::string& fontPath, unsigned int pixelHeight = 128) = 0;
+		virtual Assets::IFont* LoadFont(const std::string& fontPath, const std::string& id,unsigned int pixelHeight = 128) = 0;
 		virtual Assets::ITexture2D* LoadTexture(const std::string& texturePath) = 0;
 		virtual Assets::ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths) = 0;
 		virtual IShader* LoadShader(const std::string& shaderPath, ShaderType type) = 0;

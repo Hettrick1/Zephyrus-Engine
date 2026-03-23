@@ -12,7 +12,7 @@ namespace Zephyrus::Assets {
 		Unload();
 	}
 
-	bool FontOpenGL::Load(const std::string& fontPath, unsigned int pixelHeight)
+	bool FontOpenGL::Load(const std::string& fontPath, const std::string& id, unsigned int pixelHeight)
 	{
         FT_Library ft;
         if (FT_Init_FreeType(&ft))
@@ -79,6 +79,9 @@ namespace Zephyrus::Assets {
         }
         FT_Done_Face(face);
         FT_Done_FreeType(ft);
+
+	    mFontId = id;
+	    
         return true;
 	}
 

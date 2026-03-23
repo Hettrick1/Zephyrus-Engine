@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "PrefabFactory.h"
 #include "Utils.h"
+#include "EngineContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 using Zephyrus::Render::IShader;
@@ -33,14 +34,14 @@ namespace Zephyrus::Scenes {
 		Render::IShader* vert = AssetsManager::GetInstance().LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
 		Render::IShader* frag = AssetsManager::GetInstance().LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
 
-		mZephyrusText = new Zephyrus::UI::HudText(mContext, "Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont("Chopsic.otf", "Chopsic"));
+		mZephyrusText = new Zephyrus::UI::HudText(mContext, "Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont(CHOPSIC.data()));
 		mZephyrusText->SetShaderProgram(AssetsManager::GetInstance().LoadShaderProgram({ vert, frag }, "splashScreenSP"));
 
-		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont("Chopsic.otf", "Chopsic"));
+		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont(CHOPSIC.data()));
 
 		std::string versionEngineText = "Version - ";
 		versionEngineText.append(ENGINE_VERSION);
-		mVersionText = new Zephyrus::UI::HudText(mContext, versionEngineText, Vector2D(-1850.0f, 950.0f), 0.3f, Vector4D(1, 1, 1, 1), Zephyrus::UI::TextAlignment::LEFT, AssetsManager::GetInstance().LoadFont("Chopsic.otf", "Chopsic"));
+		mVersionText = new Zephyrus::UI::HudText(mContext, versionEngineText, Vector2D(-1850.0f, 950.0f), 0.3f, Vector4D(1, 1, 1, 1), Zephyrus::UI::TextAlignment::LEFT, AssetsManager::GetInstance().LoadFont(CHOPSIC.data()));
 		
 		mInputManager->SetCursorVisible(false);
 	}

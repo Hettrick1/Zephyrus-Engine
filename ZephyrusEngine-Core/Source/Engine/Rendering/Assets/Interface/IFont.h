@@ -18,7 +18,7 @@ namespace Zephyrus::Assets {
     public:
         virtual ~IFont() = default;
 
-        virtual bool Load(const std::string& fontPath, unsigned int pixelHeight) = 0;
+        virtual bool Load(const std::string& fontPath, const std::string& id, unsigned int pixelHeight) = 0;
         virtual void Unload() = 0;
 
         virtual const std::map<char, CharacterInfo>& GetCharacters() const = 0;

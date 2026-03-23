@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "HudText.h"
 #include "AssetsManager.h"
+#include "EngineContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -9,13 +10,9 @@ namespace Zephyrus::UI {
         : HudElement(pContext), mText(pText), mScale(pScale), mColor(pColor), mAlignment(pAlignment), mFont(pFont), mShaderProgram(nullptr)
     {
         if (pFont == nullptr) {
-            mFont = AssetsManager::GetInstance().LoadFont("RoadPixel.ttf", "RoadPixel");
+            mFont = AssetsManager::GetInstance().LoadFont(ROADPIXEL.data());
         }
         SetPosition(pPos);
-    }
-
-    HudText::~HudText()
-    {
     }
 
     void HudText::Draw(Zephyrus::Render::IRenderer& pRenderer)

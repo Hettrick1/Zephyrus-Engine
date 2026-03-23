@@ -20,7 +20,7 @@ namespace Zephyrus::UI {
         Render::IShaderProgram* mShaderProgram = nullptr;
     public:
         HudText(ISceneContext* pContext, const std::string& pText, const Vector2D& pPos, float pScale, const Vector4D& pColor, TextAlignment pAlignment = TextAlignment::LEFT, Assets::IFont* pFont = nullptr);
-        ~HudText();
+        ~HudText() override = default;
 
         // Draws the text on the HUD using the specified renderer.
         void Draw(Zephyrus::Render::IRenderer& pRenderer) override;

@@ -95,24 +95,24 @@ namespace Zephyrus::Assets {
 		return mMeshes[pId];
 	}
 
-	IFont* AssetsManager::LoadFont(const std::string& pFilePath, const std::string& pName)
+	IFont* AssetsManager::LoadFont(const std::string& pId, bool pForceReload)
 	{
-		if (mFonts.find(pName) == mFonts.end()) {
-			mFonts[pName] = LoadFontFromFile(GetFullPath(pFilePath, AssetType::Font));
-			return mFonts[pName];
+		if (!mFonts.contains(pId) || pForceReload) {
+			mFonts[pId] = LoadFontFromFile(pId);
+			return mFonts[pId];
 		}
-		return mFonts[pName];
+		return mFonts[pId];
 	}
 
-	IFont* AssetsManager::GetFont(const std::string& pName)
+	IFont* AssetsManager::GetFont(const std::string& pId)
 	{
-		if (mFonts.find(pName) == mFonts.end()) {
+		if (!mFonts.contains(pId)) {
 			std::ostringstream loadError;
-			loadError << "Font " << pName << " does not exists in assets manager\n";
+			loadError << "Font " << pId << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
 			return nullptr;
 		}
-		return mFonts[pName];
+		return mFonts[pId];
 	}
 
 	Render::IShader* AssetsManager::LoadShader(const std::string& pFilePath, Render::ShaderType pType, const std::string& pName)
@@ -284,9 +284,9 @@ namespace Zephyrus::Assets {
 		return data;
 	}
 
-	IFont* AssetsManager::LoadFontFromFile(const std::string& pFilePath)
+	IFont* AssetsManager::LoadFontFromFile(const std::string& pId)
 	{
-		return mContext->GetRenderer()->LoadFont(pFilePath);
+		return mContext->GetRenderer()->LoadFont(database.GetPathFromID(pId), pId);
 	}
 
 	Render::IShader* AssetsManager::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)

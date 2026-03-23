@@ -44,7 +44,7 @@ namespace Zephyrus::Assets {
 		// Loads a texture from file (internal use)
 		ITexture2D* LoadTextureFromFile(const std::string& pFilePath);
 		MeshData LoadMeshData(const std::string& pId);
-		IFont* LoadFontFromFile(const std::string& pFilePath);
+		IFont* LoadFontFromFile(const std::string& pId);
 		Render::IShader* LoadShaderFromFile(const std::string& pFilePath, Render::ShaderType pType);
 		Render::IShaderProgram* LoadProgramWithShaders(std::vector<Render::IShader*> pShaders);
 		ICubeMapTexture* LoadCubemapFromFile(const std::vector<std::string>& pCubePaths);
@@ -86,11 +86,11 @@ namespace Zephyrus::Assets {
 
 		// Loads a mesh from file and stores it with the given name
 		IMesh* LoadMesh(const std::string& pId, bool pForceReload = false);
-		IMesh* GetMesh(const std::string& pName);
+		IMesh* GetMesh(const std::string& pId);
 
 		// Loads a font from file and stores it with the given name
-		IFont* LoadFont(const std::string& pFilePath, const std::string& pName);
-		IFont* GetFont(const std::string& pName);
+		IFont* LoadFont(const std::string& pId, bool pForceReload = false);
+		IFont* GetFont(const std::string& pId);
 
 		Render::IShader* LoadShader(const std::string& pFilePath, Render::ShaderType pType, const std::string& pName);
 		Render::IShader* GetShader(const std::string& pName);
