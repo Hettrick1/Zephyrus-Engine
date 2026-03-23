@@ -1,7 +1,7 @@
 {
     "shaders": {
-        "vertex": "../Content/Shaders/Simple.vert",
-        "fragment": "../Content/Shaders/Simple.frag"
+        "vertex": "be798918-1776-4864-8424-27b0d042571c",
+        "fragment": "5e912b8d-11ab-4e7d-ba2e-6bcd0f433297"
     },
     "textures": [{
             "name": "albedo",

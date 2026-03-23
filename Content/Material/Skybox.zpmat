@@ -1,9 +1,9 @@
 {
     "shaders": {
-        "vertex": "../Content/Shaders/VertFrag/SkyBox.vert",
-        "fragment": "../Content/Shaders/VertFrag/SkyBox.frag",
-        "control": "../Content/Shaders/Tesselation/SkyBox.tesc",
-        "eval": "../Content/Shaders/Tesselation/SkyBox.tese"
+        "vertex": "b99bcd46-1e45-4f2c-a27a-34288b8145b4",
+        "fragment": "ef2d8460-7288-4461-8274-57a8b0ae1dd6",
+        "control": "2a082397-5749-4e8f-a578-ba5057a744f2",
+        "eval": "7bffefb1-d61b-483e-9e91-abc1f87255a2"
     },
     "textures": [{
             "name": "albedo",

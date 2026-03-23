@@ -1,9 +1,9 @@
 {
     "shaders": {
-        "vertex": "../Content/Shaders/VertFrag/PlanetsNoise.vert",
-        "fragment": "../Content/Shaders/VertFrag/PlanetsNoise.frag",
-        "control": "../Content/Shaders/Tesselation/PlanetsNoise.tesc",
-        "eval": "../Content/Shaders/Tesselation/PlanetsNoise.tese"
+        "vertex": "8adb9144-5a28-4d3b-a417-55d5b5074616",
+        "fragment": "4ec29e52-eb72-4767-b787-099771eea2a5",
+        "control": "a813793b-1019-4c16-a361-63ed4e8a72dd",
+        "eval": "8978b7be-bb44-4541-83a7-2cf30ac8b5d6"
     },
     "textures": [{
             "name": "albedo",

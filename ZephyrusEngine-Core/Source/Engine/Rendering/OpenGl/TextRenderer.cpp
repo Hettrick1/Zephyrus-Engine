@@ -10,6 +10,7 @@
 #include "Interface/IFont.h"
 #include <iostream>
 #include <string>
+#include "EngineContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -23,8 +24,8 @@ namespace Zephyrus::Render {
     bool TextRenderer::Init(Window& pWindow)
     {
         mWindow = &pWindow;
-        mVertexShader = AssetsManager::GetInstance().LoadShader("TextRenderer.vert", ShaderType::VERTEX, "TextRendererVert");
-        mFragmentShader = AssetsManager::GetInstance().LoadShader("TextRenderer.frag", ShaderType::FRAGMENT, "TextRendererFrag");
+        mVertexShader = AssetsManager::GetInstance().LoadShader(HUD_TEXT_VERT.data(), ShaderType::VERTEX);
+        mFragmentShader = AssetsManager::GetInstance().LoadShader(HUD_TEXT_FRAG.data(), ShaderType::FRAGMENT);
         mShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mVertexShader, mFragmentShader }, "textRendererSP");
         mProjection = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.000001f, 100000);
         mShaderProgram->Use();

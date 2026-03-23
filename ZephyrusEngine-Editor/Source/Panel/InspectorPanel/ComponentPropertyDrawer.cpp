@@ -1836,7 +1836,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 	char buffer[255];
 	if (shader)
 	{
-		strncpy_s(buffer, shader->GetFilePath().c_str(), sizeof(buffer));
+		strncpy_s(buffer, shader->GetShaderID().c_str(), sizeof(buffer));
 		buffer[sizeof(buffer) - 1] = '\0';
 	}
 	else
@@ -1865,7 +1865,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 			prop.Set(nullptr);
 			return true;
 		}
-		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::GetInstance().LoadShader(buffer, pType ,buffer);
+		Zephyrus::Render::IShader* newShader = Zephyrus::Assets::AssetsManager::GetInstance().LoadShader(buffer, pType);
 		if (newShader)
 		{
 			prop.Set(newShader);
@@ -1881,7 +1881,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SHADER"))
 		{
 			std::string shaderID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Render::IShader* droppedShader = Zephyrus::Assets::AssetsManager::GetInstance().LoadShader(shaderID, pType, shaderID);
+			Zephyrus::Render::IShader* droppedShader = Zephyrus::Assets::AssetsManager::GetInstance().LoadShader(shaderID, pType);
 			if (droppedShader)
 			{
 				prop.Set(droppedShader);
@@ -1902,7 +1902,7 @@ bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const
 	}
 	if (ImGui::Button(("Open##" + pIndex).c_str(), ImVec2( buttonSize, 0)))
 	{
-			std::filesystem::path path = shader->GetFilePath();
+			std::filesystem::path path = shader->GetShaderID();
 			ShellExecuteA(nullptr, "open", path.make_preferred().string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 	}
 	if (!shader)

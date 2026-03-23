@@ -1,7 +1,7 @@
 {
     "shaders": {
-        "vertex": "../Content/Shaders/VertFrag/SkySphere.vert",
-        "fragment": "../Content/Shaders/VertFrag/SkySphere.frag"
+        "vertex": "8ff7d563-5ac6-4348-bc94-00aa5caccff5",
+        "fragment": "29173cef-9126-41c2-a621-9cb436e6c901"
     },
     "textures": [{
             "name": "albedo",

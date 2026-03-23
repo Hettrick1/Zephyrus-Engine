@@ -3,6 +3,7 @@
 #include "AssetsManager.h"
 #include "SceneManager.h"
 #include "ISceneContext.h"
+#include "EngineContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -22,8 +23,8 @@ namespace Zephyrus::Physics
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
         glBindVertexArray(0);
 
-        mDebugVertex = AssetsManager::GetInstance().LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
-        mDebugFragment = AssetsManager::GetInstance().LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
+        mDebugVertex = AssetsManager::GetInstance().LoadShader(DEBUG_VERT.data(), ShaderType::VERTEX);
+        mDebugFragment = AssetsManager::GetInstance().LoadShader(DEBUG_FRAG.data(), ShaderType::FRAGMENT);
         mDebugShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
         mProj = Matrix4DRow::CreatePerspectiveFOV(70, 1920, 1080, 0.1f, 10000000);
     }

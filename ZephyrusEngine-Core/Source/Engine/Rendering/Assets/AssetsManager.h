@@ -92,8 +92,8 @@ namespace Zephyrus::Assets {
 		IFont* LoadFont(const std::string& pId, bool pForceReload = false);
 		IFont* GetFont(const std::string& pId);
 
-		Render::IShader* LoadShader(const std::string& pFilePath, Render::ShaderType pType, const std::string& pName);
-		Render::IShader* GetShader(const std::string& pName);
+		Render::IShader* LoadShader(const std::string& pId, Render::ShaderType pType, bool pForceReload = false);
+		Render::IShader* GetShader(const std::string& pId);
 
 		Render::IShaderProgram* LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName);
 

@@ -1,10 +1,10 @@
 {
     "shaders": {
-        "vertex": "../Content/Shaders/VertFrag/EarthPlanet.vert",
-        "fragment": "../Content/Shaders/VertFrag/EarthPlanetTree.frag",
-        "control": "../Content/Shaders/Tesselation/EarthPlanet.tesc",
-        "eval": "../Content/Shaders/Tesselation/EarthPlanet.tese",
-        "geometry": "../Content/Shaders/Geometry/EarthPlanet.geom"
+        "vertex": "e12c7641-0401-4697-9d10-999f0605aa48",
+        "fragment": "85ee6398-8064-4bb5-a403-8b055798ad7c",
+        "control": "10708857-a1a6-4c23-b097-2c4a47a9b213",
+        "eval": "f159cbfd-938b-4a66-a2ba-093029b66757",
+        "geometry": "7d7b5220-abc3-4722-a9a7-a977321ca3a1"
     },
     "textures": [{
             "name": "albedo",
@@ -13,9 +13,8 @@
         }],
     "vec4Properties": [{
             "name": "bottomColor",
-            "value": [0.03, 0.28, 0.03, 1.0]
-        },
-        {
+            "value": [0.029, 0.28, 0.029, 1.0]
+        }, {
             "name": "topColor",
             "value": [0.23, 0.68, 0.23, 1.0]
         }]

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DebugRenderer.h"
 #include "AssetsManager.h"
+#include "EngineContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -23,8 +24,8 @@ namespace Zephyrus::Render {
 	{
 		mWindow = &pWindow;
 		glLineWidth(4);
-		mDebugVertex = AssetsManager::GetInstance().LoadShader("Debug.vert", ShaderType::VERTEX, "DebugVert");
-		mDebugFragment = AssetsManager::GetInstance().LoadShader("Debug.frag", ShaderType::FRAGMENT, "DebugFrag");
+		mDebugVertex = AssetsManager::GetInstance().LoadShader(DEBUG_VERT.data(), ShaderType::VERTEX);
+		mDebugFragment = AssetsManager::GetInstance().LoadShader(DEBUG_FRAG.data(), ShaderType::FRAGMENT);
 		mDebugShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
 		mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 		mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, pWindow.GetDimensions().x, pWindow.GetDimensions().y, 0.01f, 10000.0f);

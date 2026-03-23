@@ -31,8 +31,8 @@ namespace Zephyrus::Scenes {
 
 		mTime = 0.0f;
 
-		Render::IShader* vert = AssetsManager::GetInstance().LoadShader("VertFrag/TextSplashScreen.vert", ShaderType::VERTEX, "TextSplashScreenVert");
-		Render::IShader* frag = AssetsManager::GetInstance().LoadShader("VertFrag/TextSplashScreen.frag", ShaderType::FRAGMENT, "TextSplashScreenFrag");
+		Render::IShader* vert = AssetsManager::GetInstance().LoadShader(SPLASH_SCREEN_VERT.data(), ShaderType::VERTEX);
+		Render::IShader* frag = AssetsManager::GetInstance().LoadShader(SPLASH_SCREEN_FRAG.data(), ShaderType::FRAGMENT);
 
 		mZephyrusText = new Zephyrus::UI::HudText(mContext, "Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont(CHOPSIC.data()));
 		mZephyrusText->SetShaderProgram(AssetsManager::GetInstance().LoadShaderProgram({ vert, frag }, "splashScreenSP"));

@@ -83,7 +83,7 @@ namespace Zephyrus::Material
 		std::string programName;
 		for (auto s : shaders)
 		{
-			programName += s->GetFilePath();
+			programName += s->GetShaderID();
 		}
 
 		mShaderProgram = Assets::AssetsManager::GetInstance().LoadShaderProgram(shaders, programName);
@@ -207,23 +207,23 @@ namespace Zephyrus::Material
 		writer.BeginObject("shaders");
 		if (mVertShader)
 		{
-			writer.WriteString("vertex", mVertShader->GetFilePath());
+			writer.WriteString("vertex", mVertShader->GetShaderID());
 		}
 		if (mFragShader)
 		{
-			writer.WriteString("fragment", mFragShader->GetFilePath());
+			writer.WriteString("fragment", mFragShader->GetShaderID());
 		}
 		if (mTescShader)
 		{
-			writer.WriteString("control", mTescShader->GetFilePath());
+			writer.WriteString("control", mTescShader->GetShaderID());
 		}
 		if (mTeseShader)
 		{
-			writer.WriteString("eval", mTeseShader->GetFilePath());
+			writer.WriteString("eval", mTeseShader->GetShaderID());
 		}
 		if (mGeomShader)
 		{
-			writer.WriteString("geometry", mGeomShader->GetFilePath());
+			writer.WriteString("geometry", mGeomShader->GetShaderID());
 		}
 		writer.EndObject();
 
@@ -351,23 +351,23 @@ namespace Zephyrus::Material
 		{
 			if (auto vertex = reader.ReadString("vertex"))
 			{
-				mVertShader = Assets::AssetsManager::GetInstance().LoadShader(*vertex, Render::ShaderType::VERTEX, *vertex);
+				mVertShader = Assets::AssetsManager::GetInstance().LoadShader(*vertex, Render::ShaderType::VERTEX);
 			}
 			if (auto fragment = reader.ReadString("fragment"))
 			{
-				mFragShader = Assets::AssetsManager::GetInstance().LoadShader(*fragment, Render::ShaderType::FRAGMENT, *fragment);
+				mFragShader = Assets::AssetsManager::GetInstance().LoadShader(*fragment, Render::ShaderType::FRAGMENT);
 			}
 			if (auto control = reader.ReadString("control"))
 			{
-				mTescShader = Assets::AssetsManager::GetInstance().LoadShader(*control, Render::ShaderType::TESSELLATION_CONTROL, *control);
+				mTescShader = Assets::AssetsManager::GetInstance().LoadShader(*control, Render::ShaderType::TESSELLATION_CONTROL);
 			}
 			if (auto eval = reader.ReadString("eval"))
 			{
-				mTeseShader = Assets::AssetsManager::GetInstance().LoadShader(*eval, Render::ShaderType::TESSELLATION_EVALUATION, *eval);
+				mTeseShader = Assets::AssetsManager::GetInstance().LoadShader(*eval, Render::ShaderType::TESSELLATION_EVALUATION);
 			}
 			if (auto geometry = reader.ReadString("geometry"))
 			{
-				mGeomShader = Assets::AssetsManager::GetInstance().LoadShader(*geometry, Render::ShaderType::GEOMETRY, *geometry);
+				mGeomShader = Assets::AssetsManager::GetInstance().LoadShader(*geometry, Render::ShaderType::GEOMETRY);
 			}
 			reader.EndObject();
 		}

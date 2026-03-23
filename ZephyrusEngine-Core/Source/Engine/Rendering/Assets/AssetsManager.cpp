@@ -115,23 +115,24 @@ namespace Zephyrus::Assets {
 		return mFonts[pId];
 	}
 
-	Render::IShader* AssetsManager::LoadShader(const std::string& pFilePath, Render::ShaderType pType, const std::string& pName)
+	Render::IShader* AssetsManager::LoadShader(const std::string& pId, Render::ShaderType pType, bool pForceReload)
 	{
-		if (mShaders.find(pName) == mShaders.end()) {
-			mShaders[pName] = LoadShaderFromFile(GetFullPath(pFilePath, AssetType::Shader), pType);
-			return mShaders[pName];
+		//std::string idTemp = database.GetIdFromPath(GetFullPath(pId, AssetType::Shader));
+		if (!mShaders.contains(pId) || pForceReload) {
+			mShaders[pId] = LoadShaderFromFile(pId, pType);
+			return mShaders[pId];
 		}
-		return mShaders[pName];
+		return mShaders[pId];
 	}
 
-	Render::IShader* AssetsManager::GetShader(const std::string& pName)
+	Render::IShader* AssetsManager::GetShader(const std::string& pId)
 	{
-		if (mShaders.find(pName) == mShaders.end()) {
+		if (!mShaders.contains(pId)) {
 			std::ostringstream loadError;
-			loadError << "Shader " << pName << " does not exists in assets manager\n";
+			loadError << "Shader " << pId << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
 		}
-		return mShaders[pName];
+		return mShaders[pId];
 	}
 
 	Render::IShaderProgram* AssetsManager::LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName)
@@ -289,9 +290,9 @@ namespace Zephyrus::Assets {
 		return mContext->GetRenderer()->LoadFont(database.GetPathFromID(pId), pId);
 	}
 
-	Render::IShader* AssetsManager::LoadShaderFromFile(const std::string& pFilePath, ShaderType pType)
+	Render::IShader* AssetsManager::LoadShaderFromFile(const std::string& pId, ShaderType pType)
 	{
-		return mContext->GetRenderer()->LoadShader(pFilePath, pType);
+		return mContext->GetRenderer()->LoadShader(database.GetPathFromID(pId), pId, pType);
 	}
 
 	Render::IShaderProgram* AssetsManager::LoadProgramWithShaders(std::vector<Render::IShader*> pShaders)
@@ -366,6 +367,10 @@ namespace Zephyrus::Assets {
 			if (pPath.find(SHADER_PATH) == std::string::npos)
 			{
 				newPath = SHADER_PATH + pPath;
+				if (newPath.find(".obj") == std::string::npos)
+				{
+					newPath = pPath;
+				}
 				break;
 			}
 			newPath = pPath;

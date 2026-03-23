@@ -1,9 +1,9 @@
 {
     "shaders": {
-        "vertex": "../Content/Shaders/VertFrag/EarthPlanet.vert",
-        "fragment": "../Content/Shaders/VertFrag/EarthPlanet.frag",
-        "control": "../Content/Shaders/Tesselation/EarthPlanet.tesc",
-        "eval": "../Content/Shaders/Tesselation/EarthPlanet.tese"
+        "vertex": "e12c7641-0401-4697-9d10-999f0605aa48",
+        "fragment": "66eefb38-9dd3-432a-9c43-31464780c542",
+        "control": "10708857-a1a6-4c23-b097-2c4a47a9b213",
+        "eval": "f159cbfd-938b-4a66-a2ba-093029b66757"
     },
     "textures": [{
             "name": "albedo",

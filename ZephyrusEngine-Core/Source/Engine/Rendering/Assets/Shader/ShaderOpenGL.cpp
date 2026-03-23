@@ -14,7 +14,7 @@ namespace Zephyrus::Render {
 	{
 	}
 
-	void ShaderOpenGL::Load(const std::string& pFileName, ShaderType pShaderType)
+	void ShaderOpenGL::Load(const std::string& pFileName, const std::string& id, ShaderType pShaderType)
 	{
 		mType = pShaderType;
 		std::ifstream myFile;
@@ -25,7 +25,7 @@ namespace Zephyrus::Render {
 			ZP_CORE_ERROR("Error - Failed to open" + pFileName);
 
 		}
-		mFilePath = pFileName;
+		mShaderId = id;
 		
 		std::string fileText = "";
 		std::string line = "";

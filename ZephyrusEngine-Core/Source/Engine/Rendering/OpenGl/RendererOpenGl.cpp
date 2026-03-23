@@ -17,6 +17,7 @@
 #include "CubemapTextureOpenGL.h"
 #include "ShaderOpenGL.h"
 #include "AtmosphereComponent.h"
+#include "EngineContentIds.h"
 #include <algorithm>
 
 using Zephyrus::Assets::AssetsManager;
@@ -54,16 +55,16 @@ namespace Zephyrus::Render {
 		// {
 		// 	ZP_CORE_ERROR("Failed to initialize SDL_Image");
 		// }
-		mSpriteVertexShader = AssetsManager::GetInstance().LoadShader("BasicHudImage.vert", ShaderType::VERTEX, "BasicHudImageVert");
-		mSpriteFragmentShader = AssetsManager::GetInstance().LoadShader("BasicHudImage.frag", ShaderType::FRAGMENT, "BasicHudImageFrag");
+		mSpriteVertexShader = AssetsManager::GetInstance().LoadShader(HUD_IMAGE_VERT.data(), ShaderType::VERTEX);
+		mSpriteFragmentShader = AssetsManager::GetInstance().LoadShader(HUD_IMAGE_FRAG.data(), ShaderType::FRAGMENT);
 		mSpriteShaderProgramTemp = AssetsManager::GetInstance().LoadShaderProgram({ mSpriteVertexShader, mSpriteFragmentShader }, "simpleSpriteSP");
 		SetSpriteShaderProgram(mSpriteShaderProgramTemp);
 
 		mVAO = new VertexArrayOpenGL(Zephyrus::Assets::spriteVertices, 32);
 		mFullscreenQuadVAO = new VertexArrayOpenGL(Zephyrus::Assets::fullscreenQuadVertices, 32);
 
-		mFullscreenVertexShader = AssetsManager::GetInstance().LoadShader("VertFrag/FullscreenQuad.vert", ShaderType::VERTEX, "FullscreenQuadvert");
-		mFullscreenFragmentShader = AssetsManager::GetInstance().LoadShader("VertFrag/FullscreenQuad.frag", ShaderType::FRAGMENT, "FullscreenQuadfrag");
+		mFullscreenVertexShader = AssetsManager::GetInstance().LoadShader(FULLSCREEN_QUAD_VERT.data(), ShaderType::VERTEX);
+		mFullscreenFragmentShader = AssetsManager::GetInstance().LoadShader(FULLSCREEN_QUAD_FRAG.data(), ShaderType::FRAGMENT);
 		mFullscreenShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mFullscreenVertexShader, mFullscreenFragmentShader }, "FullscreenQuadSP");
 
 		mSpriteViewProj = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.1f, 100000);
@@ -179,10 +180,10 @@ namespace Zephyrus::Render {
 		return cubemap;
 	}
 
-	IShader* RendererOpenGl::LoadShader(const std::string& shaderPath, ShaderType type)
+	IShader* RendererOpenGl::LoadShader(const std::string& shaderPath, const std::string& id, ShaderType type)
 	{
 		ShaderOpenGL* shader = new ShaderOpenGL();
-		shader->Load(shaderPath, type);
+		shader->Load(shaderPath, id, type);
 		ZP_LOAD("Shader " + shaderPath + " successfully loaded");
 		return shader;
 	}
