@@ -7,6 +7,7 @@
 #include "Window/WindowManager.h"
 #include "Window/MaterialWindow/MaterialWindow.h"
 #include "../../EditorUI/ImGuiUtils.h"
+#include "FileAsset.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
@@ -20,6 +21,47 @@ using Zephyrus::Assets::AssetsManager;
 ContentBrowserPanel::ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName, std::shared_ptr<Zephyrus::Editor::Window::WindowManager> pWindowManager)
     : Panel(pSceneContext, pName), mWindowManager(pWindowManager)
 {
+    auto database = AssetsManager::GetInstance().GetDatabase();
+    for (auto [id, path] : database.GetContent())
+    {
+        FileAsset asset;
+        asset.mId = id;
+        asset.mPath = path;
+        asset.mExtension = std::filesystem::path(path).extension().string();
+        asset.mMetaPath = path + ".meta";
+        asset.mType = GetTypeFromExtension(asset.mExtension);
+        
+        mFileAssets.emplace(path, asset);
+    }
+    RefreshContentBrowser(mRootDirectory);
+}
+
+void ContentBrowserPanel::RefreshContentBrowser(std::filesystem::path& path)
+{
+    mCurrentItemsInFolder.clear();
+    std::vector<ContentBrowserItem> files;
+    for (auto& entry : std::filesystem::directory_iterator(path))
+    {
+        ContentBrowserItem item;
+        item.path = entry.path();
+        item.isDirectory = entry.is_directory();
+
+        if (item.isDirectory)
+        {
+            mCurrentItemsInFolder.push_back(item);
+        }
+        else
+        {
+            auto extension = entry.path().extension();
+            if (extension != ".zip" && extension != ".txt" && extension != ".meta")
+            {
+                auto file = mFileAssets.find(item.path.make_preferred().string());
+                item.asset = file == mFileAssets.end() ? nullptr : &file->second;
+                files.emplace_back(item);
+            }
+        }
+    }
+    mCurrentItemsInFolder.insert(mCurrentItemsInFolder.end(), files.begin(), files.end());
 }
 
 void ContentBrowserPanel::Draw()
@@ -47,7 +89,7 @@ void ContentBrowserPanel::Draw()
         ImGui::SameLine();
 
         ImGui::BeginChild("child2", ImVec2(0, height), true);
-        DrawDirectoryContent(mCurrentDirectory);
+        DrawDirectoryContent();
         ImGui::EndChild();
         ImGui::PopStyleVar();
 
@@ -128,7 +170,7 @@ void ContentBrowserPanel::DrawDirectory(const std::string& folderPath)
     }
 }
 
-void ContentBrowserPanel::DrawDirectoryContent(const std::filesystem::path& directory)
+void ContentBrowserPanel::DrawDirectoryContent()
 {
     int columns = 12;
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
@@ -137,14 +179,14 @@ void ContentBrowserPanel::DrawDirectoryContent(const std::filesystem::path& dire
     if (mCurrentDirectory != mRootDirectory)
     {
         mIsSelected = (mSelectedEntry == mCurrentDirectory.parent_path());
-        ImageButton(mIsSelected, "folder", "folder");
+        ContentBrowserItem returnFolder;
+        returnFolder.path = mCurrentDirectory;
+        returnFolder.isDirectory = true;
+        returnFolder.asset = nullptr;
+        ImageButton(mIsSelected, returnFolder);
         if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
-            if (ImGui::IsItemClicked())
-            {
-                mSelectedEntry.clear();
-            }
-            else if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
+            if (ImGui::IsItemClicked() || (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()))
             {
                 mSelectedEntry.clear();
             }
@@ -154,51 +196,37 @@ void ContentBrowserPanel::DrawDirectoryContent(const std::filesystem::path& dire
         {
             mCurrentDirectory = mCurrentDirectory.parent_path();
             mSelectedEntry.clear();
+            RefreshContentBrowser(mCurrentDirectory);
         }
         ImGui::TextWrapped("...");
 
         ImGui::NextColumn();
     }
 
-    //first directories
-    for (auto& entry : std::filesystem::directory_iterator(directory))
+    for (auto item : mCurrentItemsInFolder)
     {
-        if (entry.is_directory())
-        {
-            DrawEntry(entry);
-        }
-    }
-
-    //then files
-    for (auto& entry : std::filesystem::directory_iterator(directory))
-    {
-        if (!entry.is_directory() && entry.path().extension().string() != ".txt" && entry.path().extension().string() != ".zip" && entry.path().extension().string() != ".meta")
-        {
-            DrawEntry(entry);
-        }
+        DrawItem(item);
     }
 
     ImGui::Columns(1);
     ImGui::PopStyleVar();
 }
 
-void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entry)
+void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
 {
-    const auto& path = entry.path();
+    mIsSelected = (mSelectedEntry == item.path);
 
-    mIsSelected = (mSelectedEntry == path);
-
-    std::string name = path.filename().string();
+    std::string name = item.path.filename().string();
 
     ImGui::PushID(name.c_str());
 
-    ImageButton(mIsSelected, entry.path().string(), entry.path().filename().extension().string());
+    ImageButton(mIsSelected, item);
 
     if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
         if (ImGui::IsItemClicked())
         {
-            mSelectedEntry = path;
+            mSelectedEntry = item.path.string();
         }
         else if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
         {
@@ -208,22 +236,23 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
 
     if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
     {
-        if (entry.is_directory())
+        if (item.isDirectory)
         {
-            mCurrentDirectory = path;
+            mCurrentDirectory = item.path;
             mSelectedEntry.clear();
+            RefreshContentBrowser(mCurrentDirectory);
         }
         else // TODO : Create a map and function to open files, if the extension is not found then open with shellexecuteA
         {
-            if (entry.path().extension().string() != ".zpmap" && entry.path().extension().string() != ".zpmat")
+            if (item.asset->mType != FileType::Material && item.asset->mType != FileType::Map)
             {
 #ifdef _WIN32
-                ShellExecuteA(nullptr, "open", path.string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+                ShellExecuteA(nullptr, "open", item.path.string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 #endif
             }
-            else if (entry.path().extension().string() == ".zpmap")// load map
+            else if (item.asset->mType == FileType::Map)// load map
             {
-                std::filesystem::path fsPath = path.lexically_normal();
+                std::filesystem::path fsPath = item.path.lexically_normal();
                 std::string normalizedPath = fsPath.generic_string();
                 mContext->LoadSceneWithFile(normalizedPath, nullptr, false);
                 mContext->SetSceneLoaded(true);
@@ -232,9 +261,9 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
                 EventSystem::ClearAllEvents();
                 resetfunc();
             }
-            else if (entry.path().extension().string() == ".zpmat")
+            else if (item.asset->mType == FileType::Material)
             {
-                std::filesystem::path fsPath = path.lexically_normal();
+                std::filesystem::path fsPath = item.path.lexically_normal();
                 std::string fileName = fsPath.filename().string();
                 std::string normalizedPath = fsPath.generic_string();
                 mWindowManager->OpenWindow<Zephyrus::Editor::Window::MaterialWindow>(normalizedPath, fileName);
@@ -268,55 +297,44 @@ void ContentBrowserPanel::DrawEntry(const std::filesystem::directory_entry& entr
     ImGui::PopID();
 }
 
-void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry, const std::string& extension)
+void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem& file)
 {
     ImVec2 size(80, 80);
 
     ImVec2 pos = ImGui::GetCursorScreenPos();
     ImVec2 end = ImVec2(pos.x + size.x, pos.y + size.y);
+    
+    std::string cleanPath = file.path.lexically_normal().generic_string();
+    auto asset = file.asset;
+    
+    ImGui::InvisibleButton(("##" + cleanPath).c_str(), size);
 
-    std::filesystem::path p(entry);
-    std::string cleanPath = p.lexically_normal().generic_string();
-
-    ImGui::InvisibleButton(("##" + cleanPath).c_str(), size); // TODO clean the dropsource data function -> it's messy rn
-    if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+    if (asset) // TODO : This could be in a function
     {
-        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-            ImGui::SetDragDropPayload("TEXTURE", cleanPath.c_str(), cleanPath.size() + 1);
-            ImGui::Text(cleanPath.c_str());
-            ImGui::EndDragDropSource();
-        }
-    }
-    else if (extension == ".obj" || extension == ".fbx")
-    {
-        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-            ImGui::SetDragDropPayload("MESH", cleanPath.c_str(), cleanPath.size());
-            ImGui::Text(cleanPath.c_str());
-            ImGui::EndDragDropSource();
-        }
-    }
-    else if (extension == ".prefab")
-    {
-        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-            ImGui::SetDragDropPayload("PREFAB", cleanPath.c_str(), cleanPath.size() + 1);
-            ImGui::Text(cleanPath.c_str());
-            ImGui::EndDragDropSource();
-        }
-    }
-    else if (extension == ".vert" || extension == ".frag" || extension == ".tesc" || extension == ".tese" || extension == ".geom")
-    {
-        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-            ImGui::SetDragDropPayload("SHADER", cleanPath.c_str(), cleanPath.size() + 1);
-            ImGui::Text(cleanPath.c_str());
-            ImGui::EndDragDropSource();
-        }
-    }
-    else if (extension == ".zpmat")
-    {
-        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-            ImGui::SetDragDropPayload("MATERIAL", cleanPath.c_str(), cleanPath.size() + 1);
-            ImGui::Text(cleanPath.c_str());
-            ImGui::EndDragDropSource();
+        switch (asset->mType)
+        {
+        case FileType::Image:
+            CreateDragDropSource("TEXTURE", file);
+            break;
+        case FileType::Mesh:
+            CreateDragDropSource("MESH", file);
+            break;
+        case FileType::Prefab:
+            CreateDragDropSource("PREFAB", file);
+            break;
+        case FileType::Shader:
+            CreateDragDropSource("SHADER", file);
+            break;
+        case FileType::Material:
+            CreateDragDropSource("MATERIAL", file);
+            break;
+        case FileType::Map:
+            CreateDragDropSource("MAP", file);
+        case FileType::Font:
+            CreateDragDropSource("FONT", file);
+            break;
+        case FileType::None:
+            break;
         }
     }
 
@@ -347,7 +365,15 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
         8.0f
     );
 
-    ImTextureID myIcon = GetImageFromExtension(extension, entry);
+    ImTextureID myIcon;
+    if (asset)
+    {
+        myIcon = GetImageFromType(asset->mType, file.path.lexically_normal().generic_string());
+    }
+    else
+    {
+        myIcon = (ImTextureID)(intptr_t)AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png")->GetHandle();
+    }
 
     draw_list->AddImage(
         myIcon,
@@ -356,40 +382,49 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const std::string& entry
     );
 }
 
-ImTextureID ContentBrowserPanel::GetImageFromExtension(const std::string& extension, std::string filepath)
+void ContentBrowserPanel::CreateDragDropSource(const std::string& name, const ContentBrowserItem& data)
+{
+    if (!data.asset)
+    {
+        return;
+    }
+    if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+        ImGui::SetDragDropPayload(name.c_str(), data.asset->mId.c_str(), data.asset->mId.size());
+        ImGui::Text(data.path.string().c_str());
+        ImGui::EndDragDropSource();
+    }
+}
+
+ImTextureID ContentBrowserPanel::GetImageFromType(const FileType& type, const std::string& filepath)
 {
     Zephyrus::Assets::ITexture2D* tex;
-    if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+
+    switch (type)
     {
+    case FileType::Image:
         tex = AssetsManager::GetInstance().LoadTexture(filepath, filepath);
-    }
-    else if (extension == ".otf" || extension == ".ttf")
-    {
+        break;
+    case FileType::Font:
         tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/font80.png", "../Content/Sprites/Icons/font80.png");
-    }
-    else if (extension == ".zpmap")
-    {
-        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/scene80.png", "../Content/Sprites/Icons/scene80.png");
-    }
-    else if (extension == ".obj" || extension == ".fbx")
-    {
+        break;
+    case FileType::Mesh:
         tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/mesh80.png", "../Content/Sprites/Icons/mesh80.png");
-    }
-    else if (extension == ".prefab")
-    {
+        break;
+    case FileType::Prefab:
         tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/prefab80.png", "../Content/Sprites/Icons/prefab80.png");
-    }
-    else if (extension == ".vert" || extension == ".frag" || extension == ".tesc" || extension == ".tese" || extension == ".geom")
-    {
+        break;
+    case FileType::Shader:
         tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/shader80.png", "../Content/Sprites/Icons/shader80.png");
-    }
-    else if (extension == ".zpmat")
-    {
+        break;
+    case FileType::Material:
         tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/mat80.png", "../Content/Sprites/Icons/mat80.png");
-    }
-    else
-    {
+        break;
+    case FileType::Map:
+        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/scene80.png", "../Content/Sprites/Icons/scene80.png");
+        break;
+    default:
         tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png");
+        break;
     }
     ImTextureID myIcon = (ImTextureID)(intptr_t)tex->GetHandle();
 

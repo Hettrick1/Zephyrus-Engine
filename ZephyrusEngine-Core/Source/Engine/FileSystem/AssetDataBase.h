@@ -25,6 +25,8 @@ public:
     std::string GetPathFromID(const std::string& id);
     void UpdatePathFromID(const std::string& id, const std::string& path);
 
+    const std::unordered_map<std::string, std::string>& GetContent() { return mContent; }
+    
     // TEMP
     std::string GetIdFromPath(const std::string& path);
 };

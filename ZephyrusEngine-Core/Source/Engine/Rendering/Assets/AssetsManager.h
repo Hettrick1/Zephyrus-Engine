@@ -102,6 +102,8 @@ namespace Zephyrus::Assets {
 
 		std::string GetFullPath(const std::string& pPath, AssetType pType);
 
+		AssetDataBase& GetDatabase() {return database;}
+
 		// Clears all loaded assets
 		void CleanUp();
 	};
