@@ -18,9 +18,9 @@ class ContentBrowserPanel : public Panel
 {
 private:
 	struct ContentBrowserItem {
-		bool isDirectory { true };
-		std::filesystem::path path;
-		FileAsset* asset { nullptr };
+		bool mIsDirectory { true };
+		std::filesystem::path mPath;
+		FileAsset* mAsset { nullptr };
 	};
 	
 	static std::filesystem::path mRootDirectory;
@@ -35,6 +35,8 @@ private:
 	bool mIsSelected{ false };
 	bool mNeedRefresh{ false };
 	std::filesystem::path mSelectedEntry;
+
+	void ImageButton(bool pIsSelected, const ContentBrowserItem& file);
 public:
 	ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName, std::shared_ptr<Zephyrus::Editor::Window::WindowManager> pWindowManager);
 	~ContentBrowserPanel() override = default;
@@ -42,10 +44,11 @@ public:
 	void RefreshContentBrowser(std::filesystem::path& path);
 	
 	void Draw() override;
-	void DrawDirectory(const std::string& folderPath);
+	void DrawDirectoryTree(const std::string& folderPath);
 	void DrawDirectoryContent();
 	void DrawItem(ContentBrowserItem& item);
-	void ImageButton(bool pIsSelected, const ContentBrowserItem& file);
+	void DrawBrowserUtils(float width);
+
 	void CreateDragDropSource(const std::string& name, const ContentBrowserItem&  data);
 	ImTextureID GetImageFromType(const FileType& type, const std::string& filepath);
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);

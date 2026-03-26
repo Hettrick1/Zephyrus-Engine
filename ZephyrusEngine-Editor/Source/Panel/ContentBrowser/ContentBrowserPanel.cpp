@@ -43,10 +43,10 @@ void ContentBrowserPanel::RefreshContentBrowser(std::filesystem::path& path)
     for (auto& entry : std::filesystem::directory_iterator(path))
     {
         ContentBrowserItem item;
-        item.path = entry.path();
-        item.isDirectory = entry.is_directory();
+        item.mPath = entry.path();
+        item.mIsDirectory = entry.is_directory();
 
-        if (item.isDirectory)
+        if (item.mIsDirectory)
         {
             mCurrentItemsInFolder.push_back(item);
         }
@@ -55,8 +55,8 @@ void ContentBrowserPanel::RefreshContentBrowser(std::filesystem::path& path)
             auto extension = entry.path().extension();
             if (extension != ".zip" && extension != ".txt" && extension != ".meta")
             {
-                auto file = mFileAssets.find(item.path.make_preferred().string());
-                item.asset = file == mFileAssets.end() ? nullptr : &file->second;
+                auto file = mFileAssets.find(item.mPath.make_preferred().string());
+                item.mAsset = file == mFileAssets.end() ? nullptr : &file->second;
                 files.emplace_back(item);
             }
         }
@@ -73,13 +73,12 @@ void ContentBrowserPanel::Draw()
 
     Panel::BeginDraw();
     if (ImGui::Begin("Content Browser"))
-    {
-        ImGui::Text(mCurrentDirectory.string().c_str());
+    {        
         static float width = 200.0f;
         float height = ImGui::GetContentRegionAvail().y;
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
         ImGui::BeginChild("child1", ImVec2(width, height), true);
-        DrawDirectory("../Content");
+        DrawDirectoryTree("../Content");
         ImGui::EndChild();
 
         ImGui::SameLine();
@@ -88,10 +87,15 @@ void ContentBrowserPanel::Draw()
 
         ImGui::SameLine();
 
-        ImGui::BeginChild("child2", ImVec2(0, height), true);
+        ImGui::PopStyleVar();
+        ImGui::BeginChild("filePool", ImVec2(0, height));
+        
+        DrawBrowserUtils(width);
+        
+        ImGui::BeginChild("child2", ImVec2(0, 0), ImGuiChildFlags_Borders);
         DrawDirectoryContent();
         ImGui::EndChild();
-        ImGui::PopStyleVar();
+        ImGui::EndChild();
 
         if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows))
         {
@@ -143,7 +147,7 @@ void ContentBrowserPanel::Draw()
     Panel::EndDraw();
 }
 
-void ContentBrowserPanel::DrawDirectory(const std::string& folderPath)
+void ContentBrowserPanel::DrawDirectoryTree(const std::string& folderPath)
 {
     for (auto& entry : std::filesystem::directory_iterator(folderPath))
     {
@@ -163,7 +167,7 @@ void ContentBrowserPanel::DrawDirectory(const std::string& folderPath)
             }
             if (nodeOpen)
             {
-                DrawDirectory(entry.path().string());
+                DrawDirectoryTree(entry.path().string());
                 ImGui::TreePop();
             }
         }
@@ -172,17 +176,19 @@ void ContentBrowserPanel::DrawDirectory(const std::string& folderPath)
 
 void ContentBrowserPanel::DrawDirectoryContent()
 {
-    int columns = 12;
+    int columns = ImGui::GetContentRegionAvail().x * 0.01;
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
+
+    // TODO : USE TABLES
     ImGui::Columns(columns, 0, false);
 
     if (mCurrentDirectory != mRootDirectory)
     {
         mIsSelected = (mSelectedEntry == mCurrentDirectory.parent_path());
         ContentBrowserItem returnFolder;
-        returnFolder.path = mCurrentDirectory;
-        returnFolder.isDirectory = true;
-        returnFolder.asset = nullptr;
+        returnFolder.mPath = mCurrentDirectory;
+        returnFolder.mIsDirectory = true;
+        returnFolder.mAsset = nullptr;
         ImageButton(mIsSelected, returnFolder);
         if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
@@ -219,9 +225,9 @@ void ContentBrowserPanel::DrawDirectoryContent()
 
 void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
 {
-    mIsSelected = (mSelectedEntry == item.path);
+    mIsSelected = (mSelectedEntry == item.mPath);
 
-    std::string name = item.path.filename().string();
+    std::string name = item.mPath.filename().string();
 
     ImGui::PushID(name.c_str());
 
@@ -231,7 +237,7 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
     {
         if (ImGui::IsItemClicked())
         {
-            mSelectedEntry = item.path.string();
+            mSelectedEntry = item.mPath.string();
         }
         else if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
         {
@@ -241,9 +247,9 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
 
     if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
     {
-        if (item.isDirectory)
+        if (item.mIsDirectory)
         {
-            mCurrentDirectory = item.path;
+            mCurrentDirectory = item.mPath;
             mSelectedEntry.clear();
             mNeedRefresh = true;
         }
@@ -260,15 +266,15 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
             // mNeedRefresh = true;
             //RefreshContentBrowser(mCurrentDirectory);
             
-            if (item.asset->mType != FileType::Material && item.asset->mType != FileType::Map)
+            if (item.mAsset->mType != FileType::Material && item.mAsset->mType != FileType::Map)
             {
 #ifdef _WIN32
-                ShellExecuteA(nullptr, "open", item.path.string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+                ShellExecuteA(nullptr, "open", item.mPath.string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 #endif
             }
-            else if (item.asset->mType == FileType::Map)// load map
+            else if (item.mAsset->mType == FileType::Map)// load map
             {
-                std::filesystem::path fsPath = item.path.lexically_normal();
+                std::filesystem::path fsPath = item.mPath.lexically_normal();
                 std::string normalizedPath = fsPath.generic_string();
                 mContext->LoadSceneWithFile(normalizedPath, nullptr, false);
                 mContext->SetSceneLoaded(true);
@@ -277,9 +283,9 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
                 EventSystem::ClearAllEvents();
                 resetfunc();
             }
-            else if (item.asset->mType == FileType::Material)
+            else if (item.mAsset->mType == FileType::Material)
             {
-                std::filesystem::path fsPath = item.path.lexically_normal();
+                std::filesystem::path fsPath = item.mPath.lexically_normal();
                 std::string fileName = fsPath.filename().string();
                 std::string normalizedPath = fsPath.generic_string();
                 mWindowManager->OpenWindow<Zephyrus::Editor::Window::MaterialWindow>(normalizedPath, fileName);
@@ -313,6 +319,17 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
     ImGui::PopID();
 }
 
+void ContentBrowserPanel::DrawBrowserUtils(float width)
+{
+    if (ImGui::BeginChild("Utils", ImVec2(0, 0), ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_Borders))
+    {
+        ImGui::Button("+ Add");
+        ImGui::SameLine();
+        ImGui::Button("Save All");
+        ImGui::EndChild();
+    }
+}
+
 void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem& file)
 {
     ImVec2 size(80, 80);
@@ -320,8 +337,8 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
     ImVec2 pos = ImGui::GetCursorScreenPos();
     ImVec2 end = ImVec2(pos.x + size.x, pos.y + size.y);
     
-    std::string cleanPath = file.path.lexically_normal().generic_string();
-    auto asset = file.asset;
+    std::string cleanPath = file.mPath.lexically_normal().generic_string();
+    auto asset = file.mAsset;
     
     ImGui::InvisibleButton(("##" + cleanPath).c_str(), size);
 
@@ -400,13 +417,13 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
 
 void ContentBrowserPanel::CreateDragDropSource(const std::string& name, const ContentBrowserItem& data)
 {
-    if (!data.asset)
+    if (!data.mAsset)
     {
         return;
     }
     if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-        ImGui::SetDragDropPayload(name.c_str(), data.asset->mId.c_str(), data.asset->mId.size());
-        ImGui::Text(data.path.string().c_str());
+        ImGui::SetDragDropPayload(name.c_str(), data.mAsset->mId.c_str(), data.mAsset->mId.size());
+        ImGui::Text(data.mPath.string().c_str());
         ImGui::EndDragDropSource();
     }
 }
