@@ -196,7 +196,7 @@ void ContentBrowserPanel::DrawDirectoryContent()
         {
             mCurrentDirectory = mCurrentDirectory.parent_path();
             mSelectedEntry.clear();
-            RefreshContentBrowser(mCurrentDirectory);
+            mNeedRefresh = true;
         }
         ImGui::TextWrapped("...");
 
@@ -206,6 +206,11 @@ void ContentBrowserPanel::DrawDirectoryContent()
     for (auto item : mCurrentItemsInFolder)
     {
         DrawItem(item);
+    }
+
+    if (mNeedRefresh)
+    {
+        RefreshContentBrowser(mCurrentDirectory);
     }
 
     ImGui::Columns(1);
@@ -240,10 +245,21 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
         {
             mCurrentDirectory = item.path;
             mSelectedEntry.clear();
-            RefreshContentBrowser(mCurrentDirectory);
+            mNeedRefresh = true;
         }
         else // TODO : Create a map and function to open files, if the extension is not found then open with shellexecuteA
         {
+            // ------------ EXAMPLE OF RENAME --------------
+            
+            // auto oldPath = item.asset->mPath;
+            // item.asset->Rename("test");
+            // auto newPath = item.asset->mPath;
+            // auto browserItem = mFileAssets[oldPath];
+            // mFileAssets.erase(oldPath);
+            // mFileAssets[newPath] = browserItem;
+            // mNeedRefresh = true;
+            //RefreshContentBrowser(mCurrentDirectory);
+            
             if (item.asset->mType != FileType::Material && item.asset->mType != FileType::Map)
             {
 #ifdef _WIN32
@@ -368,7 +384,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
     ImTextureID myIcon;
     if (asset)
     {
-        myIcon = GetImageFromType(asset->mType, file.path.lexically_normal().generic_string());
+        myIcon = GetImageFromType(asset->mType, asset->mPath);
     }
     else
     {

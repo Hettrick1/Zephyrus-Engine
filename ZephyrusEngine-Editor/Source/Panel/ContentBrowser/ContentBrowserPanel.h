@@ -33,6 +33,7 @@ private:
 	std::vector<ContentBrowserItem> mCurrentItemsInFolder;
 
 	bool mIsSelected{ false };
+	bool mNeedRefresh{ false };
 	std::filesystem::path mSelectedEntry;
 public:
 	ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName, std::shared_ptr<Zephyrus::Editor::Window::WindowManager> pWindowManager);
