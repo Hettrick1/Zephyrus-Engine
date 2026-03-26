@@ -36,7 +36,7 @@ private:
 	bool mNeedRefresh{ false };
 	std::filesystem::path mSelectedEntry;
 
-	void ImageButton(bool pIsSelected, const ContentBrowserItem& file);
+	void ImageButton(bool pIsSelected, const ContentBrowserItem& file, const std::string& name);
 public:
 	ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName, std::shared_ptr<Zephyrus::Editor::Window::WindowManager> pWindowManager);
 	~ContentBrowserPanel() override = default;

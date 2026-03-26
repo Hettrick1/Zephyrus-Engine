@@ -176,7 +176,7 @@ void ContentBrowserPanel::DrawDirectoryTree(const std::string& folderPath)
 
 void ContentBrowserPanel::DrawDirectoryContent()
 {
-    int columns = ImGui::GetContentRegionAvail().x * 0.01;
+    int columns = ImGui::GetContentRegionAvail().x / 120;
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
 
     // TODO : USE TABLES
@@ -189,7 +189,7 @@ void ContentBrowserPanel::DrawDirectoryContent()
         returnFolder.mPath = mCurrentDirectory;
         returnFolder.mIsDirectory = true;
         returnFolder.mAsset = nullptr;
-        ImageButton(mIsSelected, returnFolder);
+        ImageButton(mIsSelected, returnFolder, "...");
         if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
             if (ImGui::IsItemClicked() || (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()))
@@ -204,7 +204,6 @@ void ContentBrowserPanel::DrawDirectoryContent()
             mSelectedEntry.clear();
             mNeedRefresh = true;
         }
-        ImGui::TextWrapped("...");
 
         ImGui::NextColumn();
     }
@@ -227,11 +226,11 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
 {
     mIsSelected = (mSelectedEntry == item.mPath);
 
-    std::string name = item.mPath.filename().string();
+    std::string name = item.mPath.filename().replace_extension("").string();
 
     ImGui::PushID(name.c_str());
 
-    ImageButton(mIsSelected, item);
+    ImageButton(mIsSelected, item, name);
 
     if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
@@ -293,27 +292,6 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
         }
     }
 
-    float padding = 6.0f;
-    float boxSize = 80.0f;
-    float wrapWidth = boxSize - 2 * padding;
-
-    ImVec2 pos = ImGui::GetCursorScreenPos();
-
-    ImVec2 textSize = ImGui::CalcTextSize(name.c_str(), nullptr, true, wrapWidth * 1.8);
-
-    if (mIsSelected)
-    {
-        ImU32 bgColor = IM_COL32(70, 70, 70, 255);
-        ImGui::GetWindowDrawList()->AddRectFilled(
-            pos,
-            ImVec2(pos.x + boxSize, pos.y + textSize.y + 2 * padding),
-            bgColor,
-            4.0f
-        );
-    }
-
-    ImGui::TextWrapped(name.c_str());
-
     ImGui::NextColumn();
 
     ImGui::PopID();
@@ -324,18 +302,37 @@ void ContentBrowserPanel::DrawBrowserUtils(float width)
     if (ImGui::BeginChild("Utils", ImVec2(0, 0), ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_Borders))
     {
         ImGui::Button("+ Add");
+        
         ImGui::SameLine();
+        
         ImGui::Button("Save All");
+
+        ImGui::SameLine();
+        ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical, 5);
+        ImGui::SameLine();
+        
+        ImGui::Button("Filter");
+        
+        ImGui::SameLine();
+        
+        char searchBuffer[128];
+        strncpy_s(searchBuffer, std::string("...").c_str(), sizeof(searchBuffer));
+        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * 0.3);
+        ImGui::InputText("##Searchbar", searchBuffer, sizeof(searchBuffer));
+        
         ImGui::EndChild();
     }
 }
 
-void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem& file)
+void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem& file, const std::string& name)
 {
-    ImVec2 size(80, 80);
+    ImVec2 size(100, 150);
+    ImVec2 imgSize(90, 90);
 
-    ImVec2 pos = ImGui::GetCursorScreenPos();
-    ImVec2 end = ImVec2(pos.x + size.x, pos.y + size.y);
+    ImVec2 start = ImGui::GetCursorScreenPos();
+    ImVec2 startImage = ImVec2(start.x + 5, start.y + 5);
+    ImVec2 endImage = ImVec2(startImage.x + imgSize.x, startImage.y + imgSize.y);
+    ImVec2 end = ImVec2(start.x + size.x, start.y + size.y);
     
     std::string cleanPath = file.mPath.lexically_normal().generic_string();
     auto asset = file.mAsset;
@@ -372,47 +369,53 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
     }
 
     ImU32 bgColor;
+    ImU32 bgBottomColor;
+    float rounding = 8.0f;
 
     if (ImGui::IsItemActive())
     {
-        bgColor = IM_COL32(100, 100, 100, 255);
+        bgColor = IM_COL32(100, 100, 100, 155);
+        bgBottomColor = IM_COL32(100, 100, 100, 255);
     }
     else if (ImGui::IsItemHovered())
     {
-        bgColor = IM_COL32(140, 140, 140, 255);
+        bgColor = IM_COL32(140, 140, 140, 155);
+        bgBottomColor = IM_COL32(140, 140, 140, 255);
     }
     else if (pIsSelected)
     {
-        bgColor = IM_COL32(70, 70, 70, 255);
+        bgColor = IM_COL32(0, 0, 0, 0);
+        bgBottomColor = IM_COL32(140, 140, 140, 255);
     }
     else
     {
         bgColor = IM_COL32(0, 0, 0, 0);
+        bgBottomColor = IM_COL32(60, 60, 60, 255);
     }
-
+    
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
-    draw_list->AddRectFilled(
-        pos,
-        end,
-        bgColor,
-        8.0f
-    );
 
     ImTextureID myIcon;
+    ImVec2 textPos;
     if (asset)
     {
         myIcon = GetImageFromType(asset->mType, asset->mPath);
+        textPos = ImVec2(startImage.x, startImage.y + 100);
+        ImVec2 rectPos = ImVec2(start.x, startImage.y + 95);
+        draw_list->AddRect(start, end, ImColor(60, 60, 60, 255), rounding, 0, 2.0f);
+        draw_list->AddRectFilled(rectPos, end, bgBottomColor, 0.0f);
+        draw_list->AddLine(rectPos, ImVec2(rectPos.x + 100, rectPos.y), ImColor(230, 179, 0, 255), 3);
     }
     else
     {
         myIcon = (ImTextureID)(intptr_t)AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png")->GetHandle();
+        textPos = ImVec2(start.x + 50 - (ImGui::CalcTextSize(name.c_str()).x * 0.5f), startImage.y + 100);
     }
 
-    draw_list->AddImage(
-        myIcon,
-        pos,
-        end
-    );
+    draw_list->AddRectFilled(start, end, bgColor, rounding);
+    draw_list->AddImage(myIcon, startImage, endImage);
+    
+    draw_list->AddText(ImGui::GetFont(), 16, textPos, IM_COL32(255, 255, 255, 255), name.c_str(), 0, 90, 0);
 }
 
 void ContentBrowserPanel::CreateDragDropSource(const std::string& name, const ContentBrowserItem& data)

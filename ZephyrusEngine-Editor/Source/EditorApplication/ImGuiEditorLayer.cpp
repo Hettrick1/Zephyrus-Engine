@@ -181,7 +181,7 @@ void ImGuiEditorLayer::DrawDockSpace()
         ImGuiID dock_id_right;
         ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Right, 0.20f, &dock_id_right, &dock_main_id);
         ImGuiID dock_id_down;
-        ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Down, 0.25f, &dock_id_down, &dock_main_id);
+        ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Down, 0.28f, &dock_id_down, &dock_main_id);
         ImGuiID dock_id_up;
         ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Up, 0.1f, &dock_id_up, &dock_main_id);
         ImGuiID dock_id_left;
