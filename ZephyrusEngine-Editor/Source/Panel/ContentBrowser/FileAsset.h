@@ -84,3 +84,27 @@ inline FileType GetTypeFromExtension(const std::string& extension)
     return FileType::None;
 }
 
+inline std::string GetStringFromFileType(const FileType& type)
+{
+    switch (type)
+    {
+        case FileType::None:
+        return "Undefined";
+        case FileType::Map:
+        return "Map";
+        case FileType::Prefab:
+        return "Prefab";
+        case FileType::Image:
+        return "Texture";
+        case FileType::Font:
+        return "Font";
+        case FileType::Mesh:
+        return "Mesh";
+        case FileType::Material:
+        return "Material";
+        case FileType::Shader:
+        return "Shader";
+    }
+    return "Undefined";
+}
+

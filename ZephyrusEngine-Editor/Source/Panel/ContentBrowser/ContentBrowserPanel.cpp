@@ -8,6 +8,7 @@
 #include "Window/MaterialWindow/MaterialWindow.h"
 #include "../../EditorUI/ImGuiUtils.h"
 #include "FileAsset.h"
+#include "Utils.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
@@ -310,14 +311,25 @@ void ContentBrowserPanel::DrawBrowserUtils(float width)
         ImGui::SameLine();
         ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical, 5);
         ImGui::SameLine();
+
+
+        // FOLDER BAR NEEDS TO BE ANOTHER FUNCTION
+        char searchBuffer[128];
+        strncpy_s(searchBuffer, std::string("...").c_str(), sizeof(searchBuffer));
+        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * 0.7);
+        ImGui::InputText("##FolderBar", searchBuffer, sizeof(searchBuffer));
+
+
+        
+        ImGui::SameLine();
+        ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical, 5);
+        ImGui::SameLine();
         
         ImGui::Button("Filter");
         
         ImGui::SameLine();
         
-        char searchBuffer[128];
-        strncpy_s(searchBuffer, std::string("...").c_str(), sizeof(searchBuffer));
-        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * 0.3);
+        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
         ImGui::InputText("##Searchbar", searchBuffer, sizeof(searchBuffer));
         
         ImGui::EndChild();
@@ -328,6 +340,10 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
 {
     ImVec2 size(100, 150);
     ImVec2 imgSize(90, 90);
+    ImU32 bgColor;
+    ImU32 bgBottomColor;
+    float rounding = 8.0f;
+    float fontSize = 16.0f;
 
     ImVec2 start = ImGui::GetCursorScreenPos();
     ImVec2 startImage = ImVec2(start.x + 5, start.y + 5);
@@ -360,6 +376,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
             break;
         case FileType::Map:
             CreateDragDropSource("MAP", file);
+            break;
         case FileType::Font:
             CreateDragDropSource("FONT", file);
             break;
@@ -367,10 +384,6 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
             break;
         }
     }
-
-    ImU32 bgColor;
-    ImU32 bgBottomColor;
-    float rounding = 8.0f;
 
     if (ImGui::IsItemActive())
     {
@@ -405,6 +418,17 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
         draw_list->AddRect(start, end, ImColor(60, 60, 60, 255), rounding, 0, 2.0f);
         draw_list->AddRectFilled(rectPos, end, bgBottomColor, 0.0f);
         draw_list->AddLine(rectPos, ImVec2(rectPos.x + 100, rectPos.y), ImColor(230, 179, 0, 255), 3);
+        fontSize = 14;
+
+        if (pIsSelected && ImGui::IsItemHovered())
+        {
+            std::string tooltipText =
+                "File : " + file.mPath.filename().string() + "\n" +
+                "Path : " + file.mPath.generic_string() + "\n" +
+                "Type : " + GetStringFromFileType(asset->mType) + "\n" +
+                "File Size : " + StringifyFileSize(std::filesystem::file_size(file.mPath)) + "\n" ;
+            ImGui::SetTooltip(tooltipText.c_str());
+        }
     }
     else
     {
@@ -415,7 +439,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
     draw_list->AddRectFilled(start, end, bgColor, rounding);
     draw_list->AddImage(myIcon, startImage, endImage);
     
-    draw_list->AddText(ImGui::GetFont(), 16, textPos, IM_COL32(255, 255, 255, 255), name.c_str(), 0, 90, 0);
+    draw_list->AddText(ImGui::GetFont(), fontSize, textPos, IM_COL32(255, 255, 255, 255), name.c_str(), 0, 90, 0);
 }
 
 void ContentBrowserPanel::CreateDragDropSource(const std::string& name, const ContentBrowserItem& data)
