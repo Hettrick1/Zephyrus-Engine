@@ -12,6 +12,8 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
+
+#include <algorithm>
 #endif
 
 std::filesystem::path ContentBrowserPanel::mRootDirectory = "../Content";
@@ -63,6 +65,22 @@ void ContentBrowserPanel::RefreshContentBrowser(std::filesystem::path& path)
         }
     }
     mCurrentItemsInFolder.insert(mCurrentItemsInFolder.end(), files.begin(), files.end());
+
+    // refresh bread crumb bar
+    auto currentPath = path;
+    mPreviousFoldersInHierarchy.clear();
+    for (int i = 0; i < 5; ++i)
+    {
+        if (currentPath != mRootDirectory.parent_path())
+        {
+            mPreviousFoldersInHierarchy.push_back(currentPath);
+            currentPath = currentPath.parent_path();
+        }
+        else
+        {
+            break;
+        }
+    }
 }
 
 void ContentBrowserPanel::Draw()
@@ -209,14 +227,14 @@ void ContentBrowserPanel::DrawDirectoryContent()
         ImGui::NextColumn();
     }
 
-    for (auto item : mCurrentItemsInFolder)
-    {
-        DrawItem(item);
-    }
-
     if (mNeedRefresh)
     {
         RefreshContentBrowser(mCurrentDirectory);
+    }
+    
+    for (auto item : mCurrentItemsInFolder)
+    {
+        DrawItem(item);
     }
 
     ImGui::Columns(1);
@@ -312,14 +330,30 @@ void ContentBrowserPanel::DrawBrowserUtils(float width)
         ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical, 5);
         ImGui::SameLine();
 
-
-        // FOLDER BAR NEEDS TO BE ANOTHER FUNCTION
-        char searchBuffer[128];
-        strncpy_s(searchBuffer, std::string("...").c_str(), sizeof(searchBuffer));
-        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * 0.7);
-        ImGui::InputText("##FolderBar", searchBuffer, sizeof(searchBuffer));
-
-
+        float totalWidth = ImGui::GetContentRegionAvail().x;
+        
+        if (!mShowFullPath)
+        {
+            DrawBreadCrumb(totalWidth * 0.7f);
+        }
+        else
+        {
+            char fullPathBuffer[128];
+            strncpy_s(fullPathBuffer, mCurrentDirectory.generic_string().c_str(), sizeof(fullPathBuffer));
+            ImGui::SetNextItemWidth(totalWidth * 0.7f);
+            ImGui::SetKeyboardFocusHere(0);
+            ImGui::InputText("##BreadcrumbBar", fullPathBuffer, sizeof(fullPathBuffer), ImGuiInputTextFlags_AutoSelectAll);
+            if (ImGui::IsItemDeactivated())
+            {
+                mShowFullPath = false;
+            }
+            if (ImGui::IsItemDeactivatedAfterEdit() && std::filesystem::exists(fullPathBuffer) && IsSubpathOf(fullPathBuffer, mRootDirectory))
+            {
+                mShowFullPath = false;
+                mCurrentDirectory = fullPathBuffer;
+                mNeedRefresh = true;
+            }
+        }
         
         ImGui::SameLine();
         ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical, 5);
@@ -330,9 +364,59 @@ void ContentBrowserPanel::DrawBrowserUtils(float width)
         ImGui::SameLine();
         
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+        char searchBuffer[128];
+        strncpy_s(searchBuffer, std::string("...").c_str(), sizeof(searchBuffer));
         ImGui::InputText("##Searchbar", searchBuffer, sizeof(searchBuffer));
         
         ImGui::EndChild();
+    }
+}
+
+bool ContentBrowserPanel::IsSubpathOf(const std::filesystem::path &path,const std::filesystem::path &base)
+{
+    auto rel = std::filesystem::relative(path, base);
+    return !rel.empty() && rel.native()[0] != '.';
+}
+
+void ContentBrowserPanel::DrawBreadCrumb(float width)
+{
+    float startPosX = ImGui::GetCursorPosX();
+    auto tex = GetImageFromType(FileType::None, "");
+    ImGui::Image(tex, ImVec2(ImGui::GetContentRegionAvail().y, ImGui::GetContentRegionAvail().y));
+    for (int i = (static_cast<int>(mPreviousFoldersInHierarchy.size()) - 1); i >= 0; --i)
+    {
+        ImGui::SameLine();
+        std::string folderName = mPreviousFoldersInHierarchy[i].filename().string();
+        ImGui::PushStyleColor(ImGuiCol_Button, IM_COL32(50, 50, 50, 255));
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+        ImGui::PushStyleColor(ImGuiCol_Border, IM_COL32(70, 70, 70, 200));
+        if (ImGui::Button(folderName.c_str()))
+        {
+            mCurrentDirectory = mPreviousFoldersInHierarchy[i];
+            mNeedRefresh = true;
+        }
+        ImGui::PopStyleColor(2);
+        ImGui::PopStyleVar();
+        
+        if (i != 0)
+        {
+            ImGui::SameLine();
+            ImGui::Text(" > ");
+        }
+    }
+    ImGui::SameLine();
+    float newStartPosX = ImGui::GetCursorPosX();
+    float remainingWidth = width - newStartPosX + startPosX;
+    remainingWidth = std::max<float>(remainingWidth, 50);
+    
+    ImGui::InvisibleButton("##ShowFullPathBtn", ImVec2(remainingWidth, ImGui::GetContentRegionAvail().y));
+    if (ImGui::IsItemClicked())
+    {
+        mShowFullPath = true;
+    }
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
     }
 }
 

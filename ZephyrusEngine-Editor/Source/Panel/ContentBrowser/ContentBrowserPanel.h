@@ -35,6 +35,8 @@ private:
 	bool mIsSelected{ false };
 	bool mNeedRefresh{ false };
 	std::filesystem::path mSelectedEntry;
+	bool mShowFullPath{ false };
+	std::vector<std::filesystem::path> mPreviousFoldersInHierarchy;
 
 	void ImageButton(bool pIsSelected, const ContentBrowserItem& file, const std::string& name);
 public:
@@ -48,6 +50,8 @@ public:
 	void DrawDirectoryContent();
 	void DrawItem(ContentBrowserItem& item);
 	void DrawBrowserUtils(float width);
+	void DrawBreadCrumb(float width);
+	bool IsSubpathOf(const std::filesystem::path &path,const std::filesystem::path &base);
 
 	void CreateDragDropSource(const std::string& name, const ContentBrowserItem&  data);
 	ImTextureID GetImageFromType(const FileType& type, const std::string& filepath);
