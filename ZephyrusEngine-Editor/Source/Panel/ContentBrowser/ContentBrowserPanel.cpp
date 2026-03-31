@@ -408,8 +408,9 @@ void ContentBrowserPanel::DrawBreadCrumb(float width)
     float newStartPosX = ImGui::GetCursorPosX();
     float remainingWidth = width - newStartPosX + startPosX;
     remainingWidth = std::max<float>(remainingWidth, 50);
-    
-    ImGui::InvisibleButton("##ShowFullPathBtn", ImVec2(remainingWidth, ImGui::GetContentRegionAvail().y));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::Button("##ShowFullPathBtn", ImVec2(remainingWidth, 0));
+    ImGui::PopStyleColor();
     if (ImGui::IsItemClicked())
     {
         mShowFullPath = true;
