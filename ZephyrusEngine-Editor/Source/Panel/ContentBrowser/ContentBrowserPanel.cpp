@@ -411,6 +411,7 @@ void ContentBrowserPanel::DrawBreadCrumb(float width)
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Button("##ShowFullPathBtn", ImVec2(remainingWidth, 0));
     ImGui::PopStyleColor();
+
     if (ImGui::IsItemClicked())
     {
         mShowFullPath = true;

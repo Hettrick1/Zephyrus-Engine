@@ -700,7 +700,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MATERIAL"))
 		{
 			std::string materialID((const char*)payload->Data, payload->DataSize);
-			auto droppedMat = Zephyrus::Assets::AssetsManager::GetInstance().LoadMaterial(materialID, materialID);
+			auto droppedMat = Zephyrus::Assets::AssetsManager::GetInstance().LoadMaterial(materialID);
 			if (droppedMat == instance->GetBaseMaterial())
 			{
 				return true;

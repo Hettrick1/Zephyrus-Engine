@@ -19,7 +19,7 @@ namespace Zephyrus::Editor::Window
     : mFilePath(filePath), mTitle(title)
     {
     	mComponentPropertyDrawer = new ComponentPropertyDrawer();
-        mMaterial = Assets::AssetsManager::GetInstance().LoadMaterial(filePath, filePath);
+        mMaterial = Assets::AssetsManager::GetInstance().LoadMaterial(filePath);
     }
 
     MaterialWindow::~MaterialWindow()

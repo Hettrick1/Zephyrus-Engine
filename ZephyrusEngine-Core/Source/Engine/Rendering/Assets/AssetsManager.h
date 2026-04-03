@@ -97,8 +97,8 @@ namespace Zephyrus::Assets {
 
 		Render::IShaderProgram* LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName);
 
-		Material::IMaterial* LoadMaterial(const std::string& pFilePath, const std::string& pName);
-		Material::IMaterial* GetMaterial(const std::string& pName);
+		Material::IMaterial* LoadMaterial(const std::string& pFileId, bool pForceReleoad = false);
+		Material::IMaterial* GetMaterial(const std::string& pId);
 
 		std::string GetFullPath(const std::string& pPath, AssetType pType);
 

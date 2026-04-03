@@ -54,7 +54,9 @@ namespace Zephyrus::Material
         virtual std::vector<PropertyDescriptor> GetProperties() = 0;
         
         virtual void SetFilePath(const std::string& filePath) = 0;
+        virtual void SetMaterialFileId(const std::string& fileId) = 0;
         virtual std::string GetFilePath() const = 0;
+        virtual std::string GetMaterialFileId() const = 0; 
 
         virtual void Save() const = 0;
 

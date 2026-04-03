@@ -534,6 +534,11 @@ namespace Zephyrus::Material
 		mFilePath = filePath;
 	}
 
+	void Material::SetMaterialFileId(const std::string& fileId)
+	{
+		mMaterialFileId = fileId;
+	}
+
 	void Material::Save() const
 	{
 		Serialization::Json::JsonWriter writer;

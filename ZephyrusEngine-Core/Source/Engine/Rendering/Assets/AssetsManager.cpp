@@ -144,23 +144,24 @@ namespace Zephyrus::Assets {
 		return mShaderPrograms[pName];
 	}
 
-	Material::IMaterial* AssetsManager::LoadMaterial(const std::string& pFilePath, const std::string& pName)
+	Material::IMaterial* AssetsManager::LoadMaterial(const std::string& pId, bool pForceReleoad)
 	{
-		if (mMaterials.find(pName) == mMaterials.end()) {
-			mMaterials[pName] = LoadMaterialFromFile(pFilePath);
-			return mMaterials[pName];
+		std::string idTemp = database.GetIdFromPath(pId);
+		if (!mMaterials.contains(idTemp) || pForceReleoad) {
+			mMaterials[idTemp] = LoadMaterialFromFile(idTemp);
+			return mMaterials[idTemp];
 		}
-		return mMaterials[pName];
+		return mMaterials[idTemp];
 	}
 
-	Material::IMaterial* AssetsManager::GetMaterial(const std::string& pName)
+	Material::IMaterial* AssetsManager::GetMaterial(const std::string& pId)
 	{
-		if (mMaterials.find(pName) == mMaterials.end()) {
+		if (!mMaterials.contains(pId)) {
 			std::ostringstream loadError;
-			loadError << "Shader " << pName << " does not exists in assets manager\n";
+			loadError << "Material " << pId << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
 		}
-		return mMaterials[pName];
+		return mMaterials[pId];
 	}
 
 	void AssetsManager::CleanUp()
@@ -305,13 +306,14 @@ namespace Zephyrus::Assets {
 		return mContext->GetRenderer()->LoadCubemap(pCubePaths);
 	}
 
-	Material::IMaterial* AssetsManager::LoadMaterialFromFile(const std::string& pFilePath)
+	Material::IMaterial* AssetsManager::LoadMaterialFromFile(const std::string& pMaterialFileId)
 	{
 		auto mat = mContext->GetRenderer()->CreateMaterial();
-		mat->SetFilePath(pFilePath);
+		mat->SetMaterialFileId(pMaterialFileId);
+		std::string filePath = database.GetPathFromID(pMaterialFileId);
+		mat->SetFilePath(filePath);
 		auto reader = mContext->GetSerializationFactory()->CreateDeserializer();
-		reader->LoadDocument(pFilePath);
-		if (reader->LoadDocument(pFilePath))
+		if (reader->LoadDocument(filePath))
 		{
 			mat->Deserialize(*reader);
 		}
