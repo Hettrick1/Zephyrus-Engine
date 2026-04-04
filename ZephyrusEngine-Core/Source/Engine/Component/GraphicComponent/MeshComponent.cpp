@@ -16,15 +16,11 @@ using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::ActorComponent
 {
 	MeshComponent::MeshComponent(Actor* pOwner, const std::string& pName)
-		: RenderComponent(pOwner, pName, "../Content/Material/BasicMesh.zpmat"), mMesh(nullptr)
+		: RenderComponent(pOwner, pName, MAT_DEFAULT_MESH), mMesh(nullptr)
 	{
 		mOwner->GetScene().GetRenderer()->AddMesh(this);
 
-		mMesh = AssetsManager::GetInstance().LoadMesh(CUBE_OBJ.data());
-	}
-
-	MeshComponent::~MeshComponent()
-	{
+		mMesh = AssetsManager::GetInstance().LoadMesh(MESH_CUBE_OBJ);
 	}
 
 	void MeshComponent::Deserialize(Serialization::IDeserializer& pReader)
@@ -40,7 +36,7 @@ namespace Zephyrus::ActorComponent
 		}
 		else
 		{
-			mMesh = AssetsManager::GetInstance().LoadMesh(CUBE_OBJ.data());
+			mMesh = AssetsManager::GetInstance().LoadMesh(MESH_CUBE_OBJ);
 			ZP_CORE_WARN("No mesh referenced in " + mOwner->GetName());
 		}
 	}

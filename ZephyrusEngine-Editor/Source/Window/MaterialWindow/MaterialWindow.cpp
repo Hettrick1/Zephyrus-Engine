@@ -15,11 +15,11 @@
 
 namespace Zephyrus::Editor::Window
 {
-    MaterialWindow::MaterialWindow(const std::string& filePath, const std::string& title)
-    : mFilePath(filePath), mTitle(title)
+    MaterialWindow::MaterialWindow(const std::string& matId, const std::string& title)
+    : mMaterialId(matId), mTitle(title)
     {
     	mComponentPropertyDrawer = new ComponentPropertyDrawer();
-        mMaterial = Assets::AssetsManager::GetInstance().LoadMaterial(filePath);
+        mMaterial = Assets::AssetsManager::GetInstance().LoadMaterial(matId);
     }
 
     MaterialWindow::~MaterialWindow()
@@ -71,7 +71,7 @@ namespace Zephyrus::Editor::Window
         ImGui::SameLine();
         if (ZP::UI::CustomImageButton("Open", openIcon, btnSize, iconSize))
         {
-            std::filesystem::path path = mFilePath;
+            std::filesystem::path path = Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(mMaterialId);
             ShellExecuteA(nullptr, "open", path.make_preferred().string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
         }
 #endif

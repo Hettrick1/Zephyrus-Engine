@@ -31,17 +31,17 @@ namespace Zephyrus::Scenes {
 
 		mTime = 0.0f;
 
-		Render::IShader* vert = AssetsManager::GetInstance().LoadShader(SPLASH_SCREEN_VERT.data(), ShaderType::VERTEX);
-		Render::IShader* frag = AssetsManager::GetInstance().LoadShader(SPLASH_SCREEN_FRAG.data(), ShaderType::FRAGMENT);
+		Render::IShader* vert = AssetsManager::GetInstance().LoadShader(SH_SPLASH_SCREEN_VERT, ShaderType::VERTEX);
+		Render::IShader* frag = AssetsManager::GetInstance().LoadShader(SH_SPLASH_SCREEN_FRAG, ShaderType::FRAGMENT);
 
-		mZephyrusText = new Zephyrus::UI::HudText(mContext, "Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont(CHOPSIC.data()));
+		mZephyrusText = new Zephyrus::UI::HudText(mContext, "Zephyrus", Vector2D(0), 2.0f, Vector4D(1.0, 0.81176f, 0.0, 0.0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont(FONT_CHOPSIC));
 		mZephyrusText->SetShaderProgram(AssetsManager::GetInstance().LoadShaderProgram({ vert, frag }, "splashScreenSP"));
 
-		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont(CHOPSIC.data()));
+		mStudioText = new Zephyrus::UI::HudText(mContext, "Engine", Vector2D(0.0f, -200.0f), 0.5f, Vector4D(1, 1, 1, 0), Zephyrus::UI::TextAlignment::CENTER, AssetsManager::GetInstance().LoadFont(FONT_CHOPSIC));
 
 		std::string versionEngineText = "Version - ";
 		versionEngineText.append(ENGINE_VERSION);
-		mVersionText = new Zephyrus::UI::HudText(mContext, versionEngineText, Vector2D(-1850.0f, 950.0f), 0.3f, Vector4D(1, 1, 1, 1), Zephyrus::UI::TextAlignment::LEFT, AssetsManager::GetInstance().LoadFont(CHOPSIC.data()));
+		mVersionText = new Zephyrus::UI::HudText(mContext, versionEngineText, Vector2D(-1850.0f, 950.0f), 0.3f, Vector4D(1, 1, 1, 1), Zephyrus::UI::TextAlignment::LEFT, AssetsManager::GetInstance().LoadFont(FONT_CHOPSIC));
 		
 		mInputManager->SetCursorVisible(false);
 	}

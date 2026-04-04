@@ -45,7 +45,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "64cd0a92-d909-4bb3-aca8-0cf06467e584",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -88,7 +88,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "isSphere": true,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/SkySphere.zpmat",
+                            "baseMaterial": "4f458241-1b6a-4539-a756-f3f43e0b58ed",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",

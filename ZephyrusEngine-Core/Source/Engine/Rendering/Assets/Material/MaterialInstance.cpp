@@ -148,7 +148,7 @@ namespace Zephyrus::Material
 	{
 		writer.BeginObject("materialInstance");
 
-		writer.WriteString("baseMaterial", mBaseMaterial ? mBaseMaterial->GetFilePath() : "");
+		writer.WriteString("baseMaterial", mBaseMaterial ? mBaseMaterial->GetMaterialFileId() : "");
 
 		if (!mTextureOverrides.empty())
 		{

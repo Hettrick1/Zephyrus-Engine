@@ -21,9 +21,9 @@ namespace Zephyrus::ActorComponent
 		Component::Deserialize(pReader);
 		if (pReader.BeginObject("materialInstance"))
 		{
-			if (auto materialPath = pReader.ReadString("baseMaterial"))
+			if (auto materialId = pReader.ReadString("baseMaterial"))
 			{
-				auto mat = Assets::AssetsManager::GetInstance().LoadMaterial(*materialPath);
+				auto mat = Assets::AssetsManager::GetInstance().LoadMaterial(*materialId);
 				SetMaterial(mat);
 				mMaterial.Deserialize(pReader);
 			}

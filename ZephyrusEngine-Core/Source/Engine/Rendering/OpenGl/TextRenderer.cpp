@@ -24,8 +24,8 @@ namespace Zephyrus::Render {
     bool TextRenderer::Init(Window& pWindow)
     {
         mWindow = &pWindow;
-        mVertexShader = AssetsManager::GetInstance().LoadShader(HUD_TEXT_VERT.data(), ShaderType::VERTEX);
-        mFragmentShader = AssetsManager::GetInstance().LoadShader(HUD_TEXT_FRAG.data(), ShaderType::FRAGMENT);
+        mVertexShader = AssetsManager::GetInstance().LoadShader(SH_HUD_TEXT_VERT, ShaderType::VERTEX);
+        mFragmentShader = AssetsManager::GetInstance().LoadShader(SH_HUD_TEXT_FRAG, ShaderType::FRAGMENT);
         mShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mVertexShader, mFragmentShader }, "textRendererSP");
         mProjection = Matrix4DRow::CreateOrtho(static_cast<float>(pWindow.GetDimensions().x), static_cast<float>(pWindow.GetDimensions().y), 0.000001f, 100000);
         mShaderProgram->Use();

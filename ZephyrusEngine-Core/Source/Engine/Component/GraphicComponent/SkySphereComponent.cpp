@@ -18,7 +18,7 @@ namespace Zephyrus::ActorComponent
 	int SkySphereComponent::index = 0;
 
 	SkySphereComponent::SkySphereComponent(Actor* pOwner)
-		: RenderComponent(pOwner, "SkySphereComponent", "../Content/Material/SkySphere.zpmat"), mMesh(nullptr), mIsSphere(false)
+		: RenderComponent(pOwner, "SkySphereComponent", MAT_SKY_SHPERE), mMesh(nullptr), mIsSphere(false)
 	{
 		
 	}
@@ -63,12 +63,12 @@ namespace Zephyrus::ActorComponent
 			if (*isSphere) 
 			{
 				mIsSphere = true;
-				mMesh = AssetsManager::GetInstance().LoadMesh(SPHERE_OBJ.data());
+				mMesh = AssetsManager::GetInstance().LoadMesh(MESH_SPHERE_OBJ);
 			}
 			else
 			{
 				mIsSphere = false;
-				mMesh = AssetsManager::GetInstance().LoadMesh(CUBE_OBJ.data());
+				mMesh = AssetsManager::GetInstance().LoadMesh(MESH_CUBE_OBJ);
 			}
 		}
 	}

@@ -25,8 +25,7 @@ namespace Zephyrus::Material
 		std::vector<std::pair<std::string, Vector3D>> mVec3Properties;
 		std::vector<std::pair<std::string, Vector4D>> mVec4Properties;
 		std::vector<std::pair<std::string, Matrix4DRow>> mMat4Properties;
-
-		std::string mFilePath{ "" };
+		
 		std::string mMaterialFileId{ "" };
 
 		std::vector<IBaseMaterialListener*> mListeners;
@@ -85,8 +84,7 @@ namespace Zephyrus::Material
 
 		std::vector<PropertyDescriptor> GetProperties() override;
 		
-		inline std::string GetFilePath() const override { return mFilePath; }
-		void SetFilePath(const std::string& filePath) override;
+		inline std::string GetFilePath() const override;
 		std::string GetMaterialFileId() const override { return mMaterialFileId; }
 		void SetMaterialFileId(const std::string& fileId) override;
 

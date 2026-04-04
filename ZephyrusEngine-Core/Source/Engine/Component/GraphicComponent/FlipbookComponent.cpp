@@ -13,12 +13,9 @@ namespace Zephyrus::ActorComponent
 		: SpriteComponent(pOwner, "FlipbookComponent"), mCurrentFrame(0.0f), mAnimationFps(24.0f)
 		, mHasFinished(true), mCanPlay(true), mCanPlayPending(false), mPlayOnce(false), mIsLooping(false), mAnimationTextures({})
 	{
-		if (mAnimationTextures.size() > 0)
+		if (!mAnimationTextures.empty())
 		{
-			SetTexture(mAnimationTextures[0]);
-			mCurrentFrame = 0.0f;
-			mPlayOnce = false;
-			mHasFinished = true;
+			SpriteComponent::SetTexture(mAnimationTextures[0]);
 		}
 	}
 
@@ -73,7 +70,7 @@ namespace Zephyrus::ActorComponent
 					Assets::ITexture2D* texture = AssetsManager::GetInstance().LoadTexture(element, element);
 					AddAnimationTexture(texture);
 				}
-				if (mAnimationTextures.size() > 0)
+				if (!mAnimationTextures.empty())
 				{
 					SetTexture(mAnimationTextures[0]);
 					mCurrentFrame = 0.0f;
@@ -111,7 +108,7 @@ namespace Zephyrus::ActorComponent
 	void FlipbookComponent::SetAnimationTextures(const std::vector<Assets::ITexture2D*>& pTextures)
 	{
 		mAnimationTextures = pTextures;
-		if (mAnimationTextures.size() > 0)
+		if (!mAnimationTextures.empty())
 		{
 			SetTexture(mAnimationTextures[0]);
 			mCurrentFrame = 0.0f;
@@ -151,7 +148,7 @@ namespace Zephyrus::ActorComponent
 	void FlipbookComponent::Update()
 	{
 		SpriteComponent::Update();
-		if (mAnimationTextures.size() == 0)
+		if (mAnimationTextures.empty())
 		{
 			return;
 		}
@@ -159,9 +156,9 @@ namespace Zephyrus::ActorComponent
 		{
 			mHasFinished = false;
 			mCurrentFrame += mAnimationFps * Timer::deltaTime;
-			while (mCurrentFrame >= mAnimationTextures.size())
+			while (mCurrentFrame >= static_cast<float>(mAnimationTextures.size()))
 			{
-				mCurrentFrame -= mAnimationTextures.size();
+				mCurrentFrame -= static_cast<float>(mAnimationTextures.size());
 				mPlayOnce = false;
 				mHasFinished = true;
 				if (mCanPlayPending) {

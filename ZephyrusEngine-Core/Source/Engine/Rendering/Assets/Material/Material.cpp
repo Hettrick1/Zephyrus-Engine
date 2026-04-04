@@ -529,9 +529,9 @@ namespace Zephyrus::Material
 		return mProperties;
 	}
 
-	void Material::SetFilePath(const std::string& filePath)
+	std::string Material::GetFilePath() const
 	{
-		mFilePath = filePath;
+		return Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(mMaterialFileId);
 	}
 
 	void Material::SetMaterialFileId(const std::string& fileId)
@@ -543,7 +543,7 @@ namespace Zephyrus::Material
 	{
 		Serialization::Json::JsonWriter writer;
 		Serialize(writer);
-		writer.SaveDocument(mFilePath);
+		writer.SaveDocument(Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(mMaterialFileId));
 
 		for (auto listener : mListeners)
 		{

@@ -20,7 +20,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "64cd0a92-d909-4bb3-aca8-0cf06467e584",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -63,7 +63,7 @@
                         "relativeRotation": [20.0, 0.0, 0.0],
                         "isSphere": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/Skybox.zpmat",
+                            "baseMaterial": "bb8c892f-e419-492d-836f-7e64002f4a4c",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
@@ -93,7 +93,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -139,7 +139,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -185,7 +185,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -231,7 +231,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -277,7 +277,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -323,7 +323,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -369,7 +369,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -415,7 +415,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -461,7 +461,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -507,7 +507,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -553,7 +553,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -599,7 +599,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -645,7 +645,7 @@
                         "texture": "../Content/Sprites/Doom/amoPu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -701,7 +701,7 @@
                         "texture": "../Content/Sprites/Doom/lifePu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -757,7 +757,7 @@
                         "texture": "../Content/Sprites/Doom/lifePu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -813,7 +813,7 @@
                         "texture": "../Content/Sprites/Doom/armorPu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -869,7 +869,7 @@
                         "texture": "../Content/Sprites/Doom/armorPu.png",
                         "cullOff": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -929,7 +929,7 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -954,7 +954,7 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -1014,7 +1014,7 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -1039,7 +1039,7 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -1099,7 +1099,7 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -1124,7 +1124,7 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -1184,7 +1184,7 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -1209,7 +1209,7 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -1269,7 +1269,7 @@
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -1294,7 +1294,7 @@
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                            "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",

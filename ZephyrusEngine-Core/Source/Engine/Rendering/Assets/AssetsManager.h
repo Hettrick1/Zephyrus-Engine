@@ -7,6 +7,7 @@
 
 #include <map>
 #include <string>
+#include <string_view>
 
 /**
  * @brief Manages loading, storing, and retrieving textures, meshes, and fonts for the engine.

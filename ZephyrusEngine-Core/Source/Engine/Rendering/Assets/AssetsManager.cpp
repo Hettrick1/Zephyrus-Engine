@@ -146,12 +146,12 @@ namespace Zephyrus::Assets {
 
 	Material::IMaterial* AssetsManager::LoadMaterial(const std::string& pId, bool pForceReleoad)
 	{
-		std::string idTemp = database.GetIdFromPath(pId);
-		if (!mMaterials.contains(idTemp) || pForceReleoad) {
-			mMaterials[idTemp] = LoadMaterialFromFile(idTemp);
-			return mMaterials[idTemp];
+		//std::string idTemp = database.GetIdFromPath(pId);
+		if (!mMaterials.contains(pId) || pForceReleoad) {
+			mMaterials[pId] = LoadMaterialFromFile(pId);
+			return mMaterials[pId];
 		}
-		return mMaterials[idTemp];
+		return mMaterials[pId];
 	}
 
 	Material::IMaterial* AssetsManager::GetMaterial(const std::string& pId)
@@ -311,7 +311,6 @@ namespace Zephyrus::Assets {
 		auto mat = mContext->GetRenderer()->CreateMaterial();
 		mat->SetMaterialFileId(pMaterialFileId);
 		std::string filePath = database.GetPathFromID(pMaterialFileId);
-		mat->SetFilePath(filePath);
 		auto reader = mContext->GetSerializationFactory()->CreateDeserializer();
 		if (reader->LoadDocument(filePath))
 		{

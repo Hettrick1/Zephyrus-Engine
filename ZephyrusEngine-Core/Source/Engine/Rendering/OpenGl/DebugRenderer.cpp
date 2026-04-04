@@ -24,8 +24,8 @@ namespace Zephyrus::Render {
 	{
 		mWindow = &pWindow;
 		glLineWidth(4);
-		mDebugVertex = AssetsManager::GetInstance().LoadShader(DEBUG_VERT.data(), ShaderType::VERTEX);
-		mDebugFragment = AssetsManager::GetInstance().LoadShader(DEBUG_FRAG.data(), ShaderType::FRAGMENT);
+		mDebugVertex = AssetsManager::GetInstance().LoadShader(SH_DEBUG_VERT, ShaderType::VERTEX);
+		mDebugFragment = AssetsManager::GetInstance().LoadShader(SH_DEBUG_FRAG, ShaderType::FRAGMENT);
 		mDebugShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
 		mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 		mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, pWindow.GetDimensions().x, pWindow.GetDimensions().y, 0.01f, 10000.0f);
@@ -149,7 +149,7 @@ namespace Zephyrus::Render {
 
 		mDebugShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
 		mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
-		mDebugShaderProgram->setVector3f("uColor", Vector3D(1.0, 0.7, 0));
+		mDebugShaderProgram->setVector3f("uColor", Vector3D(1.0f, 0.7f, 0.0f));
 
 		glDrawArrays(GL_LINES, 0, 24);
 		glLineWidth(4);

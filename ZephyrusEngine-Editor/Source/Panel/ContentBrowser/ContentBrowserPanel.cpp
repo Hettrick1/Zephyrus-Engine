@@ -305,8 +305,8 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
             {
                 std::filesystem::path fsPath = item.mPath.lexically_normal();
                 std::string fileName = fsPath.filename().string();
-                std::string normalizedPath = fsPath.generic_string();
-                mWindowManager->OpenWindow<Zephyrus::Editor::Window::MaterialWindow>(normalizedPath, fileName);
+                std::string id = item.mAsset->mId;
+                mWindowManager->OpenWindow<Zephyrus::Editor::Window::MaterialWindow>(id, fileName);
             }
         }
     }

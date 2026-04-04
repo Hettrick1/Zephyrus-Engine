@@ -18,7 +18,7 @@ namespace Zephyrus::ActorComponent
 		IMesh* mMesh{ nullptr };
 	public:
 		MeshComponent(Actor* pOwner, const std::string& pName);
-		virtual ~MeshComponent() override;
+		virtual ~MeshComponent() override = default;
 
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;

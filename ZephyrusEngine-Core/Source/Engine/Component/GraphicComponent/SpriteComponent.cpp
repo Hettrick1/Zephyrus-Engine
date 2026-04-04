@@ -6,18 +6,19 @@
 #include "JSONUtils.h"
 #include "DebugRenderer.h"
 #include "Interface/ITexture2D.h"
+#include "EngineContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 
 namespace Zephyrus::ActorComponent
 {
 	SpriteComponent::SpriteComponent(Actor* pOwner, const std::string& pName)
-		: RenderComponent(pOwner, pName, "../Content/Material/BasicSprite.zpmat"), mTexture(), mDrawOrder(100)
+		: RenderComponent(pOwner, pName, MAT_DEFAULT_SPRITE), mDrawOrder(100)
 	{
 		mOwner->GetScene().GetRenderer()->AddSprite(this);
 		mTexture = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/uv_mapper.jpg", "../Content/Sprites/uv_mapper.jpg");
-		mTexWidth = static_cast<int>(mTexture->GetWidth());
-		mTexHeight = static_cast<int>(mTexture->GetHeight());
+		mTexWidth = mTexture->GetWidth();
+		mTexHeight = mTexture->GetHeight();
 		aspectRatio = static_cast<float>(mTexWidth) / static_cast<float>(mTexHeight);
 		aspectRatioInv = 1 / aspectRatio;
 

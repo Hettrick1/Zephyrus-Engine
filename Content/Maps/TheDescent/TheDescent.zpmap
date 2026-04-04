@@ -20,7 +20,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "64cd0a92-d909-4bb3-aca8-0cf06467e584",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
@@ -63,7 +63,7 @@
                         "relativeRotation": [20.0, 0.0, 0.0],
                         "isSphere": false,
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/Skybox.zpmat",
+                            "baseMaterial": "bb8c892f-e419-492d-836f-7e64002f4a4c",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
@@ -93,7 +93,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/EarthPlanets.zpmat",
+                            "baseMaterial": "c9a76dfc-09ea-488f-b2ac-736a275ed775",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
@@ -123,7 +123,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/EarthPlanetsTree.zpmat",
+                            "baseMaterial": "e2d39562-80b0-41ea-92f7-9cd38f1cf03d",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
@@ -169,7 +169,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
+                            "baseMaterial": "396d2462-6e71-4fe5-8f79-5ace8b73bf01",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
@@ -230,7 +230,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "8a333439-f70a-4b81-8411-4b3b1c471ccd",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
+                            "baseMaterial": "396d2462-6e71-4fe5-8f79-5ace8b73bf01",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
@@ -291,7 +291,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
+                            "baseMaterial": "396d2462-6e71-4fe5-8f79-5ace8b73bf01",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
@@ -352,7 +352,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/ColorPlanets.zpmat",
+                            "baseMaterial": "396d2462-6e71-4fe5-8f79-5ace8b73bf01",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
@@ -403,7 +403,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
                         "materialInstance": {
-                            "baseMaterial": "../Content/Material/EarthPlanetsTree.zpmat",
+                            "baseMaterial": "e2d39562-80b0-41ea-92f7-9cd38f1cf03d",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
