@@ -50,7 +50,7 @@
                 "texture": "../Content/Sprites/TheDescent/spaceship.png",
                 "cullOff": false,
                 "materialInstance": {
-                    "baseMaterial": "../Content/Material/BasicSprite.zpmat",
+                    "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                     "textures": [{
                             "name": "albedo",
                             "type": "Texture2D",

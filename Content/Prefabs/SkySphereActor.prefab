@@ -16,7 +16,7 @@
                 "isSphere" : true,
                 "textures" : ["../Content/Sprites/LakeSkyTexture.png"],
                 "materialInstance": {
-                            "baseMaterial": "../Content/Material/SkySphere.zpmat",
+                            "baseMaterial": "4f458241-1b6a-4539-a756-f3f43e0b58ed",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",

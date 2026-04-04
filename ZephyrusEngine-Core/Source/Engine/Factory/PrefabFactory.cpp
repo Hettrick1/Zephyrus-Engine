@@ -112,7 +112,7 @@ namespace Zephyrus::Factory {
                 auto path = entry.path();
                 if (path.extension() == ".prefab")
                 {
-                    prefabs.push_back(path.stem().string());
+                    prefabs.push_back(path.make_preferred().generic_string());
                 }
             }
         }

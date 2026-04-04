@@ -23,7 +23,7 @@
                     "../Content/Sprites/SkyBox/DAY_CLOUDS_E.jpg"
                 ],
                 "materialInstance": {
-                            "baseMaterial": "../Content/Material/Skybox.zpmat",
+                            "baseMaterial": "bb8c892f-e419-492d-836f-7e64002f4a4c",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",

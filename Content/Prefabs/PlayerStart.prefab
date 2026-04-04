@@ -19,7 +19,7 @@
                 ],
                 "textureIndex" : 1,
                 "materialInstance": {
-                            "baseMaterial": "../Content/Material/BasicMesh.zpmat",
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
