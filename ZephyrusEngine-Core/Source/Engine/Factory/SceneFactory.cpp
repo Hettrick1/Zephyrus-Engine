@@ -5,6 +5,8 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+
+#include "PlayerStartComponent.h"
 #include "SceneManager.h"
 
 namespace Zephyrus::Factory {
@@ -94,7 +96,7 @@ namespace Zephyrus::Factory {
                         }
                     }
                 }
-                if (prefabName == "PlayerStart")
+                if (actorPrefab->GetComponentOfType<ActorComponent::PlayerStartComponent>()) // is it a player start
                 {
                     pSceneRef->SetPlayerStart(actorPrefab);
                 }

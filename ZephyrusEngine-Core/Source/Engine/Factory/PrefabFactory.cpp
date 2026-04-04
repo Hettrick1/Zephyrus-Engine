@@ -14,28 +14,19 @@ namespace Zephyrus::Factory {
         : mSceneContext{pSceneContext}, mComponentFactory{ pComponentFactory }
     {
     }
-    Actor* PrefabFactory::SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabName, const Vector3D& pInitialPos, const Vector3D& pInitialRot, const Vector3D& pInitialSize)
+    Actor* PrefabFactory::SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabId, const Vector3D& pInitialPos, const Vector3D& pInitialRot, const Vector3D& pInitialSize)
     {
-        std::string fullPath;
-        // TODO -> only work with full path, no longer spawn prefab with name
-        if (pPrefabName.find(".prefab") == std::string::npos)
-        {
-            fullPath = "../Content/Prefabs/" + pPrefabName + ".prefab";
-        }
-        else
-        {
-            fullPath = pPrefabName;
-        }
-
+        auto finalPath = Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(pPrefabId);
+        
         auto reader = mSceneContext->GetSerializationFactory()->CreateDeserializer();
-        if (!reader->LoadDocument(fullPath))
+        if (!reader->LoadDocument(finalPath))
         {
-            ZP_CORE_ERROR("Impossible to open or parse the prefab: " + fullPath);
+            ZP_CORE_ERROR("Impossible to open or parse the prefab: " + finalPath);
             return nullptr;
         }
 
         auto actor = new Actor(mSceneContext, *pScene);
-        actor->SetPrefab(pPrefabName);
+        actor->SetPrefab(pPrefabId);
 
         actor->Deserialize(*reader);
 
@@ -60,28 +51,19 @@ namespace Zephyrus::Factory {
         return actor;
     }
 
-    Actor* PrefabFactory::InitPrefab(Scene* pScene, const std::string& pPrefabName)
+    Actor* PrefabFactory::InitPrefab(Scene* pScene, const std::string& pPrefabId)
     {
-        std::string fullPath;
-        // TODO -> only work with full path, no longer spawn prefab with name
-        if (pPrefabName.find(".prefab") == std::string::npos)
-        {
-            fullPath = "../Content/Prefabs/" + pPrefabName + ".prefab";
-        }
-        else
-        {
-            fullPath = pPrefabName;
-        }
-
+        auto finalPath = Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(pPrefabId);
+        
         auto reader = mSceneContext->GetSerializationFactory()->CreateDeserializer();
-        if (!reader->LoadDocument(fullPath))
+        if (!reader->LoadDocument(finalPath))
         {
-            ZP_CORE_ERROR("Impossible to open or parse the prefab: " + fullPath);
+            ZP_CORE_ERROR("Impossible to open or parse the prefab: " + finalPath);
             return nullptr;
         }
 
         auto actor = new Actor(mSceneContext, *pScene);
-        actor->SetPrefab(pPrefabName);
+        actor->SetPrefab(pPrefabId);
 
         actor->Deserialize(*reader);
 
@@ -162,9 +144,6 @@ namespace Zephyrus::Factory {
 
         return c;
     }
-
-    // TODO : Remove parent when destroying component
-    // TODO : Save parent in prefabs
     
     void PrefabFactory::AddParentToAttach(Component* comp, const std::string& id)
     {

@@ -103,7 +103,7 @@ namespace Zephyrus::ActorComponent
 		inline bool GetIsSelected() const { return mIsSelected; }
 		inline ISceneContext* GetSceneContext() const { return mContext; }
 
-		Component* GetComponentWithId(const std::string pId);
+		Component* GetComponentWithId(const std::string& pId) const;
 
 		// Get the first component of a specific type
 		template<typename  C>

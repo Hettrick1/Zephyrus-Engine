@@ -1,7 +1,7 @@
 {
-    "player": "../Content/Prefabs/DoomMenuPlayer.prefab",
+    "player": "e0f23f80-9847-4cc6-b431-f5c3183c5cb5",
     "actors": [{
-            "prefabName": "CameraActor",
+            "prefabName": "d8d3a28d-ed8c-4600-9301-412946ca5450",
             "uuid": "920d7dda-9073-42cf-a9c5-5164f102afdd",
             "name": "CameraActor",
             "state": "active",
@@ -26,7 +26,7 @@
                     }
                 }]
         }, {
-            "prefabName": "PlayerStart",
+            "prefabName": "af1ccdf6-1462-4ae0-9b0e-74655b8f5133",
             "uuid": "21688c8f-a3f9-4414-8369-3e800d17e0b3",
             "name": "PlayerStart",
             "state": "active",
@@ -65,11 +65,11 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "playerPrefab": "../Content/Prefabs/DoomMenuPlayer.prefab"
+                        "playerPrefab": "e0f23f80-9847-4cc6-b431-f5c3183c5cb5"
                     }
                 }]
         }, {
-            "prefabName": "SkySphereActor",
+            "prefabName": "15aec96c-d799-499c-af47-9c7271e008c2",
             "uuid": "d30420d3-1916-46a6-ad2e-ee8f6f815a25",
             "name": "SkySphereActor",
             "state": "active",

@@ -27,3 +27,6 @@ inline const char* const MAT_DEFAULT_MESH = "443ed7be-dc9d-4992-a3bf-8651b765a05
 inline const char* const MAT_DEFAULT_SPRITE = "7b717918-73eb-4379-ad3f-2f78afe545ce";
 inline const char* const MAT_SKY_BOX = "bb8c892f-e419-492d-836f-7e64002f4a4c";
 inline const char* const MAT_SKY_SHPERE = "4f458241-1b6a-4539-a756-f3f43e0b58ed";
+
+// -------Prefabs---------
+inline const char* const PREF_CAMERA_ACTOR = "d8d3a28d-ed8c-4600-9301-412946ca5450";

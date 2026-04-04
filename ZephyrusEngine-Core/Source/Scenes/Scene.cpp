@@ -10,6 +10,8 @@
 #include "ActorState.h"
 #include "ISceneContext.h"
 #include "PlayerStartComponent.h"
+#include "EngineContentIds.h"
+#include "ISerializationFactory.h"
 
 using Zephyrus::Assets::AssetsManager;
 using Zephyrus::Inputs::InputManager;
@@ -36,28 +38,16 @@ namespace Zephyrus::Scenes {
 	{
 		std::string fullPath = mFilePath;
 
-		std::ifstream file(fullPath);
-
-		if (!file.is_open())
+		auto reader = mContext->GetSerializationFactory()->CreateDeserializer();
+		if (!reader->LoadDocument(fullPath))
 		{
-			ZP_CORE_ERROR("Impossible to open the game map file : " + fullPath);
-		}
-
-		std::stringstream buffer;
-		buffer << file.rdbuf();
-		std::string jsonContent = buffer.str();
-
-		rapidjson::Document doc;
-		doc.Parse(jsonContent.c_str());
-
-		if (doc.HasParseError()) {
-			ZP_CORE_ERROR("Parsing JSON failed !");
+			ZP_CORE_ERROR("Impossible to open or parse the prefab: " + fullPath);
 			return;
 		}
 
-		if (doc.HasMember("player") && doc["player"].IsString())
+		if (auto playerPrefabId = reader->ReadString("player"))
 		{
-			mPlayerRef = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(), doc["player"].GetString());
+			mPlayerRef = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(), *playerPrefabId);
 			if (mPlayerRef)
 			{
 				if (mPlayerStart)
@@ -83,7 +73,7 @@ namespace Zephyrus::Scenes {
 		}
 		else
 		{
-			mPlayerRef = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(),"CameraActor");
+			mPlayerRef = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(),PREF_CAMERA_ACTOR);
 			mPlayerRef->SetPosition(Vector3D(0));
 			mPlayerRef->SetRotation(Quaternion(0, 0, 0, 0));
 			mPlayerRef->SetSize(Vector3D(1));
@@ -196,7 +186,7 @@ namespace Zephyrus::Scenes {
 	{
 		auto writer = Serialization::Json::JsonWriter();
 
-		std::string playerPrefab = "CameraActor";
+		std::string playerPrefab = PREF_CAMERA_ACTOR;
 
 		if (mPlayerStart)
 		{
@@ -232,7 +222,7 @@ namespace Zephyrus::Scenes {
 		{
 			auto writer = Serialization::Json::JsonWriter();
 
-			std::string playerPrefab = "CameraActor";
+			std::string playerPrefab = PREF_CAMERA_ACTOR;
 
 			if (mPlayerStart)
 			{

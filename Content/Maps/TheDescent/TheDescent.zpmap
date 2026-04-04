@@ -1,7 +1,7 @@
 {
-    "player": "../Content/Prefabs/TheDescent/TheDescentPlayerNoPhysics.prefab",
+    "player": "d3a8c81d-be8a-40b1-a0f8-890769c11818",
     "actors": [{
-            "prefabName": "PlayerStart",
+            "prefabName": "af1ccdf6-1462-4ae0-9b0e-74655b8f5133",
             "uuid": "8c9fa016-f234-481a-b8c7-73d97ae06875",
             "name": "PlayerStart",
             "state": "active",
@@ -40,11 +40,11 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "playerPrefab": "../Content/Prefabs/TheDescent/TheDescentPlayerNoPhysics.prefab"
+                        "playerPrefab": "d3a8c81d-be8a-40b1-a0f8-890769c11818"
                     }
                 }]
         }, {
-            "prefabName": "SkyBoxActor",
+            "prefabName": "dc9c03f1-d723-4645-bfce-4125e1fa0dad",
             "uuid": "8ed57745-f613-4778-8406-f6054df518f3",
             "name": "SkyBoxActor",
             "state": "active",
@@ -73,7 +73,7 @@
                     }
                 }]
         }, {
-            "prefabName": "CubeActor",
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
             "uuid": "463e4362-fef6-46e8-b601-347a7dfe8552",
             "name": "Earth",
             "state": "active",
@@ -150,7 +150,7 @@
                     }
                 }]
         }, {
-            "prefabName": "CubeActor",
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
             "uuid": "9f965659-ca4b-4062-b94a-f703488867fc",
             "name": "FirePlanet",
             "state": "active",
@@ -211,7 +211,7 @@
                     }
                 }]
         }, {
-            "prefabName": "CubeActor",
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
             "uuid": "9935f687-bb36-4a7c-b44d-ba46ed8a4ef2",
             "name": "MonkeyPlanet",
             "state": "active",
@@ -272,7 +272,7 @@
                     }
                 }]
         }, {
-            "prefabName": "CubeActor",
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
             "uuid": "fce7a027-d3c7-4f70-a3de-8838e227fc9e",
             "name": "WaterPlanet",
             "state": "active",
@@ -333,7 +333,7 @@
                     }
                 }]
         }, {
-            "prefabName": "CubeActor",
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
             "uuid": "40ab853f-0d28-4608-9553-a3fd4f3f8541",
             "name": "Earth2",
             "state": "active",
@@ -420,7 +420,7 @@
                     }
                 }]
         }, {
-            "prefabName": "AtmosphereActor",
+            "prefabName": "5fe3f128-ef62-46a8-b643-ce517f4e9742",
             "uuid": "6f1537bc-f08b-491b-8f1f-91511ccce6f1",
             "name": "AtmosphereActor",
             "state": "active",

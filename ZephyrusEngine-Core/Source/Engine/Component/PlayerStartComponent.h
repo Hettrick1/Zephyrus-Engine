@@ -12,10 +12,10 @@ namespace Zephyrus::ActorComponent
 	class PlayerStartComponent : public Component
 	{
 	private:
-		std::string mPlayerPrefabName;
+		std::string mPlayerPrefabId;
 	public:
 		PlayerStartComponent(Actor* pOwner, int updateOder = 0);
-		~PlayerStartComponent();
+		~PlayerStartComponent() override;
 
 		void Deserialize(Serialization::IDeserializer& pReader) override;
 		void Serialize(Serialization::ISerializer& pWriter) override;
@@ -26,7 +26,10 @@ namespace Zephyrus::ActorComponent
 
 		static Component* Create(Actor* pOwner) { return new PlayerStartComponent(pOwner); }
 
-		inline void SetPlayerPrefabName(const std::string& pPlayerPrefab) { mPlayerPrefabName = pPlayerPrefab; }
-		inline std::string GetPlayerPrefabName() const { return mPlayerPrefabName; }
+		inline void SetPlayerPrefabName(const std::string& pPlayerPrefabId) { mPlayerPrefabId = pPlayerPrefabId; }
+		inline std::string GetPlayerPrefabName() const
+		{
+			return mPlayerPrefabId;
+		}
 	};
 }

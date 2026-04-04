@@ -327,9 +327,9 @@ namespace Zephyrus::ActorComponent
         mComponentsIds.erase(std::remove(mComponentsIds.begin(), mComponentsIds.end(), pId), mComponentsIds.end());
     }
 
-    Component* Actor::GetComponentWithId(const std::string pId)
+    Component* Actor::GetComponentWithId(const std::string& pId) const
     {
-        if (pId == "")
+        if (pId.empty())
         {
             return nullptr;
         }

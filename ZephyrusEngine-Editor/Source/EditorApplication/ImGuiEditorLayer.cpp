@@ -79,7 +79,7 @@ void ImGuiEditorLayer::InitializePanels(EditorApplication* editor)
     };
 
     mAllPanels[inspectorPanelName] = std::move(inspectorPanel);
-    mAllPanels[prefabPanelName] = std::move(prefabPanel);
+    //mAllPanels[prefabPanelName] = std::move(prefabPanel); -> TODO : Refactor this panel
     mAllPanels[sceneHierarchyName] = std::move(sceneHierarchyPanel);
     mAllPanels[consolePanelName] = std::move(consolePanel);
     mAllPanels[contentBrowserName] = std::move(contentBrowserPanel);

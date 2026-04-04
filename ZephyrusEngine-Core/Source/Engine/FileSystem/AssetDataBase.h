@@ -24,6 +24,7 @@ public:
     void CheckForFiles(const std::filesystem::path& pFilePath);
     std::string GetPathFromID(const std::string& id);
     void UpdatePathFromID(const std::string& id, const std::string& path);
+    std::string CreateMetaFromFile(const std::filesystem::path& pFilePath); // return the new asset id
 
     const std::unordered_map<std::string, std::string>& GetContent() { return mContent; }
     

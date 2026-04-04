@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CameraManager.h"
+
+#include "EngineContentIds.h"
 #include "PrefabFactory.h"
 #include "ISceneContext.h"
 #include "Scene.h"
@@ -92,19 +94,9 @@ void CameraManager::Unload()
      }
      else
      {
-         auto cameraActor = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(), "CameraActor");
+         auto cameraActor = mContext->GetPrefabFactory()->SpawnActorFromPrefab(mContext->GetActiveScene(), PREF_CAMERA_ACTOR);
          mActiveCamera = cameraActor->GetComponentOfType<CameraComponent>();
          mActiveCamera->UpdateMatrices();
          mActiveCamera->RenderScene();
      }
-
-     /*for (auto* cam : mCameraInRenderTargets)
-     {
-         if (cam != mActiveCamera)
-         {
-            cam->UpdateMatrices();
-            cam->RenderScene();
-         }
-     }*/
-     //mContext->GetActiveScene()->EndRender();
  }

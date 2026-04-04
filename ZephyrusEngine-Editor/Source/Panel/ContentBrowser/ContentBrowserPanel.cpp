@@ -27,14 +27,7 @@ ContentBrowserPanel::ContentBrowserPanel(ISceneContext* pSceneContext, const std
     auto database = AssetsManager::GetInstance().GetDatabase();
     for (auto [id, path] : database.GetContent())
     {
-        FileAsset asset;
-        asset.mId = id;
-        asset.mPath = path;
-        asset.mExtension = std::filesystem::path(path).extension().string();
-        asset.mMetaPath = path + ".meta";
-        asset.mType = GetTypeFromExtension(asset.mExtension);
-        
-        mFileAssets.emplace(path, asset);
+        CreateFileAsset(id, path);
     }
     RefreshContentBrowser(mRootDirectory);
 }
@@ -142,6 +135,10 @@ void ContentBrowserPanel::Draw()
                         file << "{}";
                         file.close();
                     }
+
+                    auto id = AssetsManager::GetInstance().GetDatabase().CreateMetaFromFile(newMapPath);
+                    CreateFileAsset(id, newMapPath.make_preferred().string());
+                    mNeedRefresh = true;
                 }
                 ImGui::EndMenu();
             }
@@ -591,6 +588,7 @@ void ContentBrowserPanel::DeleteFileOrDirectory()
     else
     {
         std::filesystem::remove(mSelectedEntry);
+        std::filesystem::remove(mSelectedEntry.string() + ".meta");
     }
     mSelectedEntry.clear();
 }
@@ -619,7 +617,22 @@ void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)
             }
 
             actor->SerializePrefab(newPrefabPath.string());
+            auto id = AssetsManager::GetInstance().GetDatabase().CreateMetaFromFile(newPrefabPath);
+            CreateFileAsset(id, newPrefabPath.make_preferred().string());
+            mNeedRefresh = true;
         }
         ImGui::EndDragDropTarget();
     }
+}
+
+void ContentBrowserPanel::CreateFileAsset(const std::string& id, const std::string& path)
+{
+    FileAsset asset;
+    asset.mId = id;
+    asset.mPath = path;
+    asset.mExtension = std::filesystem::path(path).extension().string();
+    asset.mMetaPath = path + ".meta";
+    asset.mType = GetTypeFromExtension(asset.mExtension);
+        
+    mFileAssets.emplace(path, asset);
 }

@@ -58,6 +58,8 @@ public:
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
 	void DeleteFileOrDirectory();
 	void CreatePrefabFile(const std::string& pFilepath);
+
+	void CreateFileAsset(const std::string& id, const std::string& path);
 	
 	ResetEditorController resetfunc;
 };

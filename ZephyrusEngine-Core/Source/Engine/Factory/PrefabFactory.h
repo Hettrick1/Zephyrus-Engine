@@ -14,8 +14,8 @@ namespace Zephyrus::Factory {
 		explicit PrefabFactory(ISceneContext* pSceneContext, ComponentFactory* pComponentFactory);
 		~PrefabFactory() override = default;
 
-		Actor* SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabName, const Vector3D& pInitialPos = 0, const Vector3D& pInitialRot = 0, const Vector3D& pInitialSize = 1) override;
-		Actor* InitPrefab(Scene* pScene, const std::string& pPrefabName) override;
+		Actor* SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabId, const Vector3D& pInitialPos = 0, const Vector3D& pInitialRot = 0, const Vector3D& pInitialSize = 1) override;
+		Actor* InitPrefab(Scene* pScene, const std::string& pPrefabId) override;
 		std::vector<std::string> GetPrefabFiles(const std::string& folderPath) override;
 		Component* CreateAndAttachComponent(Serialization::IDeserializer& reader, Actor* actor, bool doDeserialize = true) override;
 

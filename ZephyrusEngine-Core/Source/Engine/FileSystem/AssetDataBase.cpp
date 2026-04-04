@@ -42,16 +42,7 @@ void AssetDataBase::RetriveMetaDatas(std::filesystem::path file)
     else
     {
         // metadata don't exist so create the file
-        auto writer = mContext->GetSerializationFactory()->CreateSerializer();
-
-        std::string id = uuids::to_string(uuids::uuid_system_generator{}());
-        
-        writer->WriteString("id", id);
-        writer->WriteInt("version", 1.0);
-        
-        writer->SaveDocument(metaPath.string());
-
-        UpdatePathFromID(id, file.make_preferred().string());
+        CreateMetaFromFile(file);
     }
 }
 
@@ -90,6 +81,24 @@ void AssetDataBase::UpdatePathFromID(const std::string& id, const std::string& p
 
     // TEMP
     mContentTEMP[path] = id;
+}
+
+std::string AssetDataBase::CreateMetaFromFile(const std::filesystem::path& pFilePath)
+{
+    std::filesystem::path filePath = pFilePath;
+    std::filesystem::path metaPath = pFilePath.string() + ".meta";
+    auto writer = mContext->GetSerializationFactory()->CreateSerializer();
+
+    std::string id = uuids::to_string(uuids::uuid_system_generator{}());
+        
+    writer->WriteString("id", id);
+    writer->WriteInt("version", 1.0);
+        
+    writer->SaveDocument(metaPath.string());
+
+    UpdatePathFromID(id, filePath.make_preferred().string());
+
+    return id;
 }
 
 std::string AssetDataBase::GetIdFromPath(const std::string& path)

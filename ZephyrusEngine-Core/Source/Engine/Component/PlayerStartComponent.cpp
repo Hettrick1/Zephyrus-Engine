@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "PlayerStartComponent.h"
+
+#include "AssetsManager.h"
+
 namespace Zephyrus::ActorComponent
 {
 	PlayerStartComponent::PlayerStartComponent(Actor* pOwner, int updateOder)
@@ -14,16 +17,16 @@ namespace Zephyrus::ActorComponent
 	void PlayerStartComponent::Deserialize(Serialization::IDeserializer& pReader)
 	{
 		Component::Deserialize(pReader);
-		if (auto playerPrefabName = pReader.ReadString("playerPrefab"))
+		if (auto playerPrefabId = pReader.ReadString("playerPrefab"))
 		{
-			mPlayerPrefabName = *playerPrefabName;
+			mPlayerPrefabId = *playerPrefabId;
 		}
 	}
 
 	void PlayerStartComponent::Serialize(Serialization::ISerializer& pWriter)
 	{
 		Component::BeginSerialize(pWriter);
-		pWriter.WriteString("playerPrefab", mPlayerPrefabName);
+		pWriter.WriteString("playerPrefab", mPlayerPrefabId);
 		Component::EndSerialize(pWriter);
 	}
 
@@ -34,7 +37,7 @@ namespace Zephyrus::ActorComponent
 	std::vector<PropertyDescriptor> PlayerStartComponent::GetProperties()
 	{
 		return {
-			{ "Player Prefab : ", &mPlayerPrefabName, PropertyType::Prefab }
+			{ "Player Prefab : ", &mPlayerPrefabId, PropertyType::Prefab }
 		};
 	}
 }
