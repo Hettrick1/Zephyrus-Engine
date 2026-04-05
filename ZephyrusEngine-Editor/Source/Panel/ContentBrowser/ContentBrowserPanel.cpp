@@ -9,6 +9,7 @@
 #include "../../EditorUI/ImGuiUtils.h"
 #include "FileAsset.h"
 #include "Utils.h"
+#include "EditorUI/EditorContentIds.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
@@ -24,7 +25,7 @@ using Zephyrus::Assets::AssetsManager;
 ContentBrowserPanel::ContentBrowserPanel(ISceneContext* pSceneContext, const std::string& pName, std::shared_ptr<Zephyrus::Editor::Window::WindowManager> pWindowManager)
     : Panel(pSceneContext, pName), mWindowManager(pWindowManager)
 {
-    auto database = AssetsManager::GetInstance().GetDatabase();
+    auto database = AssetsManager::GetInstance().GetFileDatabase();
     for (auto [id, path] : database.GetContent())
     {
         CreateFileAsset(id, path);
@@ -136,7 +137,7 @@ void ContentBrowserPanel::Draw()
                         file.close();
                     }
 
-                    auto id = AssetsManager::GetInstance().GetDatabase().CreateMetaFromFile(newMapPath);
+                    auto id = AssetsManager::GetInstance().GetFileDatabase().CreateMetaFromFile(newMapPath);
                     CreateFileAsset(id, newMapPath.make_preferred().string());
                     mNeedRefresh = true;
                 }
@@ -492,7 +493,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
     ImVec2 textPos;
     if (asset)
     {
-        myIcon = GetImageFromType(asset->mType, asset->mPath);
+        myIcon = GetImageFromType(asset->mType, asset->mId);
         textPos = ImVec2(startImage.x, startImage.y + 100);
         ImVec2 rectPos = ImVec2(start.x, startImage.y + 95);
         draw_list->AddRect(start, end, ImColor(60, 60, 60, 255), rounding, 0, 2.0f);
@@ -512,7 +513,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
     }
     else
     {
-        myIcon = (ImTextureID)(intptr_t)AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png")->GetHandle();
+        myIcon = (ImTextureID)(intptr_t)AssetsManager::GetInstance().LoadTexture(TEX_FOLDER80_ICON)->GetHandle();
         textPos = ImVec2(start.x + 50 - (ImGui::CalcTextSize(name.c_str()).x * 0.5f), startImage.y + 100);
     }
 
@@ -535,35 +536,35 @@ void ContentBrowserPanel::CreateDragDropSource(const std::string& name, const Co
     }
 }
 
-ImTextureID ContentBrowserPanel::GetImageFromType(const FileType& type, const std::string& filepath)
+ImTextureID ContentBrowserPanel::GetImageFromType(const FileType& type, const std::string& fileId)
 {
     Zephyrus::Assets::ITexture2D* tex;
 
     switch (type)
     {
     case FileType::Image:
-        tex = AssetsManager::GetInstance().LoadTexture(filepath, filepath);
+        tex = AssetsManager::GetInstance().LoadTexture(fileId);
         break;
     case FileType::Font:
-        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/font80.png", "../Content/Sprites/Icons/font80.png");
+        tex = AssetsManager::GetInstance().LoadTexture(TEX_FONT80_ICON);
         break;
     case FileType::Mesh:
-        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/mesh80.png", "../Content/Sprites/Icons/mesh80.png");
+        tex = AssetsManager::GetInstance().LoadTexture(TEX_MESH80_ICON);
         break;
     case FileType::Prefab:
-        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/prefab80.png", "../Content/Sprites/Icons/prefab80.png");
+        tex = AssetsManager::GetInstance().LoadTexture(TEX_PREFAB80_ICON);
         break;
     case FileType::Shader:
-        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/shader80.png", "../Content/Sprites/Icons/shader80.png");
+        tex = AssetsManager::GetInstance().LoadTexture(TEX_SHADER80_ICON);
         break;
     case FileType::Material:
-        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/mat80.png", "../Content/Sprites/Icons/mat80.png");
+        tex = AssetsManager::GetInstance().LoadTexture(TEX_MAT80_ICON);
         break;
     case FileType::Map:
-        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/scene80.png", "../Content/Sprites/Icons/scene80.png");
+        tex = AssetsManager::GetInstance().LoadTexture(TEX_SCENE80_ICON);
         break;
     default:
-        tex = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/Icons/folder80.png", "../Content/Sprites/Icons/folder80.png");
+        tex = AssetsManager::GetInstance().LoadTexture(TEX_FOLDER80_ICON);
         break;
     }
     ImTextureID myIcon = (ImTextureID)(intptr_t)tex->GetHandle();
@@ -614,7 +615,7 @@ void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)
             }
 
             actor->SerializePrefab(newPrefabPath.string());
-            auto id = AssetsManager::GetInstance().GetDatabase().CreateMetaFromFile(newPrefabPath);
+            auto id = AssetsManager::GetInstance().GetFileDatabase().CreateMetaFromFile(newPrefabPath);
             CreateFileAsset(id, newPrefabPath.make_preferred().string());
             mNeedRefresh = true;
         }

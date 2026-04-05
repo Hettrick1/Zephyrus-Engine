@@ -61,7 +61,7 @@ namespace Zephyrus::Scenes {
 
 	void SceneManager::LoadSceneFromFileId(const std::string& pSceneFileId, Zephyrus::Render::IRenderer* pRenderer, bool pCallPostStart)
 	{
-		std::string filepath = Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(pSceneFileId);
+		std::string filepath = Assets::AssetsManager::GetInstance().GetFileDatabase().GetPathFromID(pSceneFileId);
 		SetSceneLoaded(false);
 		mRenderer = pRenderer;
 		if (ActiveScene != nullptr)

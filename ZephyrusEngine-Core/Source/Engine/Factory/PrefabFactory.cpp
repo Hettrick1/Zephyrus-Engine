@@ -16,7 +16,7 @@ namespace Zephyrus::Factory {
     }
     Actor* PrefabFactory::SpawnActorFromPrefab(Scene* pScene, const std::string& pPrefabId, const Vector3D& pInitialPos, const Vector3D& pInitialRot, const Vector3D& pInitialSize)
     {
-        auto finalPath = Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(pPrefabId);
+        auto finalPath = Assets::AssetsManager::GetInstance().GetFileDatabase().GetPathFromID(pPrefabId);
         
         auto reader = mSceneContext->GetSerializationFactory()->CreateDeserializer();
         if (!reader->LoadDocument(finalPath))
@@ -53,7 +53,7 @@ namespace Zephyrus::Factory {
 
     Actor* PrefabFactory::InitPrefab(Scene* pScene, const std::string& pPrefabId)
     {
-        auto finalPath = Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(pPrefabId);
+        auto finalPath = Assets::AssetsManager::GetInstance().GetFileDatabase().GetPathFromID(pPrefabId);
         
         auto reader = mSceneContext->GetSerializationFactory()->CreateDeserializer();
         if (!reader->LoadDocument(finalPath))

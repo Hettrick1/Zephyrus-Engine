@@ -3,6 +3,7 @@
 #include "AssetsManager.h"
 #include "../../EditorUI/ImGuiUtils.h"
 #include "Interface/ITexture2D.h"
+#include "EditorUI/EditorContentIds.h"
 #include <imgui.h> 
 
 #include "EditorApplication/EventSystem/EventSystem.h"
@@ -35,13 +36,13 @@ namespace Zephyrus::Editor::Window
         ImGui::Begin(GetTitle().c_str(), &mIsOpen);
         
         ImGui::PushFont(ZP::UI::gFonts.medium);
-        Zephyrus::Assets::ITexture2D* undoTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/undo20.png", "Sprites/Icons/undo20.png");
+        Zephyrus::Assets::ITexture2D* undoTex = Assets::AssetsManager::GetInstance().LoadTexture(TEX_UNDO20_ICON);
         ImTextureID undoIcon = (ImTextureID)(intptr_t)undoTex->GetHandle();
-        Zephyrus::Assets::ITexture2D* redoTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/redo20.png", "Sprites/Icons/redo20.png");
+        Zephyrus::Assets::ITexture2D* redoTex = Assets::AssetsManager::GetInstance().LoadTexture(TEX_REDO20_ICON);
         ImTextureID redoIcon = (ImTextureID)(intptr_t)redoTex->GetHandle();
-        Zephyrus::Assets::ITexture2D* saveTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/save20.png", "Sprites/Icons/save20.png");
+        Zephyrus::Assets::ITexture2D* saveTex = Assets::AssetsManager::GetInstance().LoadTexture(TEX_SAVE20_ICON);
         ImTextureID saveIcon = (ImTextureID)(intptr_t)saveTex->GetHandle();
-        Zephyrus::Assets::ITexture2D* openTex = Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Icons/open20.png", "Sprites/Icons/open20.png");
+        Zephyrus::Assets::ITexture2D* openTex = Assets::AssetsManager::GetInstance().LoadTexture(TEX_OPEN20_ICON);
         ImTextureID openIcon = (ImTextureID)(intptr_t)openTex->GetHandle();
 
         ImVec2 iconSize(20, 20);
@@ -71,7 +72,7 @@ namespace Zephyrus::Editor::Window
         ImGui::SameLine();
         if (ZP::UI::CustomImageButton("Open", openIcon, btnSize, iconSize))
         {
-            std::filesystem::path path = Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(mMaterialId);
+            std::filesystem::path path = Assets::AssetsManager::GetInstance().GetFileDatabase().GetPathFromID(mMaterialId);
             ShellExecuteA(nullptr, "open", path.make_preferred().string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
         }
 #endif

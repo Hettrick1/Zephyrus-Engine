@@ -14,13 +14,12 @@
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [0, 0, 0],
                 "isSphere" : true,
-                "textures" : ["../Content/Sprites/LakeSkyTexture.png"],
                 "materialInstance": {
                             "baseMaterial": "4f458241-1b6a-4539-a756-f3f43e0b58ed",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/LakeSkyTexture.png"
+                                    "path": "336362f9-20b0-4789-956d-ff04f8f05d07"
                                 }]
                         }
             }

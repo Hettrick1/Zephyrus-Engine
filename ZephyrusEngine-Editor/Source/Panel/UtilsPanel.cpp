@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Interface/ITexture2D.h"
+#include "EditorUI/EditorContentIds.h"
 #include <cstdlib>
 
 #include <filesystem>
@@ -130,7 +131,7 @@ void UtilsPanel::DrawDropDownButton(const ImVec2& pWindowSize)
     popupPos.x = pWindowSize.x * 0.5 - 30;
     popupPos.y = pWindowSize.y + 54.5;
 
-    Zephyrus::Assets::ITexture2D* arrowTex = AssetsManager::GetInstance().LoadTexture("Sprites/Icons/arrowDown.png", "Sprites/Icons/arrowDown.png");
+    Zephyrus::Assets::ITexture2D* arrowTex = AssetsManager::GetInstance().LoadTexture(TEX_ARROWDOWN_ICON);
     mMyIcon = (ImTextureID)(intptr_t)arrowTex->GetHandle();
     ImVec2 iconSize(24, 24);
 
@@ -182,7 +183,7 @@ void UtilsPanel::DrawDropMenuOptions()
 void UtilsPanel::DrawSaveButton(const ImVec2& pWindowSize, const ImVec2& pButtonSize)
 {
     ImGui::SetCursorPos(ImVec2(390.0f, (pWindowSize.y - pButtonSize.y) * 0.5f + (15 * 0.5f)));
-    Zephyrus::Assets::ITexture2D* arrowTex = AssetsManager::GetInstance().LoadTexture("Sprites/Icons/save24.png", "Sprites/Icons/save24.png");
+    Zephyrus::Assets::ITexture2D* arrowTex = AssetsManager::GetInstance().LoadTexture(TEX_SAVE24_ICON);
     ImTextureID myIcon = (ImTextureID)(intptr_t)arrowTex->GetHandle();
 
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.81176f, 0.0f, 1.0f));

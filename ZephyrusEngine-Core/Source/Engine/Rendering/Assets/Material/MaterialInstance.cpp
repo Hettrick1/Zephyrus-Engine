@@ -163,7 +163,7 @@ namespace Zephyrus::Material
 				if (auto tex2D = dynamic_cast<Assets::ITexture2D*>(tex))
 				{
 					writer.WriteString("type", "Texture2D");
-					writer.WriteString("path", tex2D->GetFilePath());
+					writer.WriteString("path", tex2D->GetTextureFileId());
 				}
 				else if (auto cubemap = dynamic_cast<Assets::ICubeMapTexture*>(tex))
 				{
@@ -289,9 +289,10 @@ namespace Zephyrus::Material
 					auto pathOpt = reader.ReadString("path");
 					if (pathOpt.has_value())
 					{
-						auto tex = Assets::AssetsManager::GetInstance().LoadTexture(pathOpt.value(), pathOpt.value());
-						if (tex)
+						if (auto tex = Assets::AssetsManager::GetInstance().LoadTexture(*pathOpt))
+						{
 							mTextureOverrides[name] = tex;
+						}
 					}
 				}
 				else if (type == "Cubemap")

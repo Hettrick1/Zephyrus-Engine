@@ -6,7 +6,7 @@
     "textures": [{
             "name": "albedo",
             "type": "Texture2D",
-            "path": "../Content/Sprites/planks.png"
+            "path": "26780bea-9c4a-45d0-8ba2-4153bb0a5f4f"
         }],
     "vec2Properties": [{
             "name": "uTiling",

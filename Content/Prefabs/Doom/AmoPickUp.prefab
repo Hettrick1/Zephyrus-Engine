@@ -13,13 +13,13 @@
             "properties": {
                 "relativePosition" : [0, 0, 0],
                 "relativeRotation" : [90, 0, 0],
-                "texture" : "Sprites/Doom/amoPu.png",
+                "texture" : "501fdf68-cdd4-46e8-9a54-a46ed1660425",
                 "materialInstance": {
                             "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                    "path": "9108356a-451c-4af9-81e4-95c4e7d8cef4"
                                 }]
                         }
             }

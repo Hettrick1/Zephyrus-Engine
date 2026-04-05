@@ -9,6 +9,7 @@
 #include "ComponentFactory.h"
 #include "Log.h"
 #include "Component.h"
+#include "EngineContentIds.h"
 #include "Interface/ICubeMapTexture.h"
 #include "../../EditorUI/Property.h"
 #include "SceneManager.h"
@@ -361,7 +362,7 @@ bool ComponentPropertyDrawer::SetPropertyTexture(const std::string& pIndex, cons
 		return false;
 	}
 	char buffer[255];
-	strncpy_s(buffer, tex->GetFilePath().c_str(), sizeof(buffer));
+	strncpy_s(buffer, tex->GetTextureFileId().c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0';
 
 	ImGui::Text("Texture : ");
@@ -387,7 +388,7 @@ bool ComponentPropertyDrawer::SetPropertyTexture(const std::string& pIndex, cons
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 		{
 			std::string textureID((const char*)payload->Data, payload->DataSize);
-			Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(textureID, textureID);
+			Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(textureID);
 			if (droppedTex)
 			{
 				prop.Set(droppedTex);
@@ -606,7 +607,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(const std::string& pInde
 			char buffer[128];
 			if (tex)
 			{
-				strncpy_s(buffer, tex->GetFilePath().c_str(), sizeof(buffer));
+				strncpy_s(buffer, tex->GetTextureFileId().c_str(), sizeof(buffer));
 				buffer[sizeof(buffer) - 1] = '\0';
 			}
 			else
@@ -629,7 +630,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTexture2D(const std::string& pInde
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 				{
 					std::string textureID((const char*)payload->Data, payload->DataSize);
-					Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(textureID, textureID);
+					Zephyrus::Assets::ITexture2D* droppedTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(textureID);
 					if (droppedTex)
 					{
 						auto newVec = *textures;
@@ -738,7 +739,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 				if (auto* tex2D = dynamic_cast<Zephyrus::Assets::ITexture2D*>(tex))
 				{
 					char instanceTextureBuffer[256];
-					strncpy_s(instanceTextureBuffer, tex2D->GetFilePath().c_str(), sizeof(instanceTextureBuffer));
+					strncpy_s(instanceTextureBuffer, tex2D->GetTextureFileId().c_str(), sizeof(instanceTextureBuffer));
 					instanceTextureBuffer[sizeof(instanceTextureBuffer) - 1] = '\0';
 
 					if (ImGui::InputText(("##Inst" + name).c_str(), instanceTextureBuffer, sizeof(instanceTextureBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
@@ -768,7 +769,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 						{
 							std::string texID((const char*)payload->Data, payload->DataSize);
-							Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(texID, texID);
+							Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(texID);
 							if (newTex)
 							{
 								auto oldTex = tex2D;
@@ -1602,7 +1603,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 			if (auto* tex2D = dynamic_cast<Zephyrus::Assets::ITexture2D*>(tex))
 			{
 				char buffer[256];
-				strncpy_s(buffer, tex2D->GetFilePath().c_str(), sizeof(buffer));
+				strncpy_s(buffer, tex2D->GetTextureFileId().c_str(), sizeof(buffer));
 				buffer[sizeof(buffer) - 1] = '\0';
 
 				if (ImGui::InputText(("##" + name).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
@@ -1627,7 +1628,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE"))
 					{
 						std::string texID((const char*)payload->Data, payload->DataSize);
-						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(texID, texID);
+						Zephyrus::Assets::ITexture2D* newTex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(texID);
 						if (newTex)
 						{
 							auto newVec = *textures;
@@ -1760,7 +1761,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 			Zephyrus::Assets::ITextureBase* tex = nullptr;
 			if (mTextureType == 0)
 			{
-				tex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(Zephyrus::Assets::AssetsManager::GetInstance().PLACE_HOLDER_TEXTURE_PATH, Zephyrus::Assets::AssetsManager::GetInstance().PLACE_HOLDER_TEXTURE_PATH);
+				tex = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(TEX_UV_MAPPER);
 			}
 			else
 			{
@@ -1768,8 +1769,8 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 				std::string cubemapName;
 				for (int j = 0; j < 6; ++j)
 				{
-					mFilePaths.emplace_back(Zephyrus::Assets::AssetsManager::GetInstance().PLACE_HOLDER_TEXTURE_PATH);
-					cubemapName += Zephyrus::Assets::AssetsManager::GetInstance().PLACE_HOLDER_TEXTURE_PATH;
+					mFilePaths.emplace_back(TEX_UV_MAPPER);
+					cubemapName += TEX_UV_MAPPER;
 				}
 				tex = Zephyrus::Assets::AssetsManager::GetInstance().LoadCubemap(mFilePaths, cubemapName);
 			}

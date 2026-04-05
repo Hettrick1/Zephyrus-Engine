@@ -43,13 +43,13 @@ namespace Zephyrus::Assets {
 		AssetsManager() = default;
 
 		// Loads a texture from file (internal use)
-		ITexture2D* LoadTextureFromFile(const std::string& pFilePath);
+		ITexture2D* LoadTextureFromFile(const std::string& pId);
 		MeshData LoadMeshData(const std::string& pId);
 		IFont* LoadFontFromFile(const std::string& pId);
-		Render::IShader* LoadShaderFromFile(const std::string& pFilePath, Render::ShaderType pType);
-		Render::IShaderProgram* LoadProgramWithShaders(std::vector<Render::IShader*> pShaders);
+		Render::IShader* LoadShaderFromFile(const std::string& pId, Render::ShaderType pType);
+		Render::IShaderProgram* LoadProgramWithShaders(std::vector<Render::IShader*> pShaders) const;
 		ICubeMapTexture* LoadCubemapFromFile(const std::vector<std::string>& pCubePaths);
-		Material::IMaterial* LoadMaterialFromFile(const std::string& pFilePath);
+		Material::IMaterial* LoadMaterialFromFile(const std::string& pMaterialFileId);
 
 		std::map<std::string, ITexture2D*> mTextures = {};
 		std::map<std::string, IMesh*> mMeshes = {};
@@ -60,7 +60,7 @@ namespace Zephyrus::Assets {
 		std::map<std::string, Material::IMaterial*> mMaterials = {};
 		ISceneContext* mContext = {nullptr};
 
-		AssetDataBase database;
+		AssetDataBase mFileDataBase;
 
 	public:
 		AssetsManager(AssetsManager const&) = delete;
@@ -73,13 +73,12 @@ namespace Zephyrus::Assets {
 		const std::string MESH_PATH = "../Content/Meshes/";
 		const std::string FONT_PATH = "../Content/Fonts/";
 		const std::string SHADER_PATH= "../Content/Shaders/";
-		const std::string PLACE_HOLDER_TEXTURE_PATH = "../Content/Sprites/uv_mapper.jpg";
 
 		// Set the context and init asset database
 		void Initialize(ISceneContext* pContext);
 
 		// Loads a texture from file and stores it with the given name
-		ITexture2D* LoadTexture(const std::string& pFilePath, const std::string& pName);
+		ITexture2D* LoadTexture(const std::string& pId, bool pForceReload = false);
 		ITexture2D* GetTexture(const std::string& pName);
 
 		ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths, const std::string& pName);
@@ -98,12 +97,12 @@ namespace Zephyrus::Assets {
 
 		Render::IShaderProgram* LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName);
 
-		Material::IMaterial* LoadMaterial(const std::string& pFileId, bool pForceReleoad = false);
+		Material::IMaterial* LoadMaterial(const std::string& pId, bool pForceReleoad = false);
 		Material::IMaterial* GetMaterial(const std::string& pId);
 
 		std::string GetFullPath(const std::string& pPath, AssetType pType);
 
-		AssetDataBase& GetDatabase() {return database;}
+		AssetDataBase& GetFileDatabase() {return mFileDataBase;}
 
 		// Clears all loaded assets
 		void CleanUp();

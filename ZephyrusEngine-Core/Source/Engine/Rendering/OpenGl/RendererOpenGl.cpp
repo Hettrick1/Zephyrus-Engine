@@ -166,10 +166,10 @@ namespace Zephyrus::Render {
 		return font;
 	}
 
-	Assets::ITexture2D* RendererOpenGl::LoadTexture(const std::string& texturePath)
+	Assets::ITexture2D* RendererOpenGl::LoadTexture(const std::string& texturePath, const std::string& id)
 	{
 		Assets::TextureOpenGL* texture = new Assets::TextureOpenGL();
-		texture->Load(texturePath);
+		texture->Load(texturePath, id);
 		return texture;
 	}
 

@@ -11,13 +11,13 @@ namespace Zephyrus::Assets
 		unsigned int mTextureID{ 0 };
 		int mWidth{ 0 };
 		int mHeight{ 0 };
-		std::string mFilePath{""};
+		std::string mTextureId;
 		TextureType mType{TextureType::Texture2D};
 	public:
 		TextureOpenGL() = default;
 		~TextureOpenGL() override;
 		
-		bool Load(const std::string& pFilename) override;
+		bool Load(const std::string& pFilePath, const std::string& id) override;
 
 		int GetWidth() const override { return mWidth; }
 		int GetHeight() const override { return mHeight; }
@@ -28,7 +28,7 @@ namespace Zephyrus::Assets
 
 		uint64_t GetHandle() const override { return mTextureID; }
 
-		std::string GetFilePath() const override { return mFilePath; }
+		std::string GetTextureFileId() const override { return mTextureId; }
 		TextureType GetType() const override { return mType; }
 		void SetType(TextureType newType) override { mType = newType;}
 	};

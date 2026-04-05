@@ -28,7 +28,7 @@ struct FileAsset
 
     bool Rename(const std::string& newName)
     {
-        auto db= Zephyrus::Assets::AssetsManager::GetInstance().GetDatabase();
+        auto db= Zephyrus::Assets::AssetsManager::GetInstance().GetFileDatabase();
 
         std::string nameWithExtension = newName + mExtension;
         
@@ -46,7 +46,7 @@ struct FileAsset
     }
     bool Move(const std::string& newPath)
     {
-        auto db= Zephyrus::Assets::AssetsManager::GetInstance().GetDatabase();
+        auto db= Zephyrus::Assets::AssetsManager::GetInstance().GetFileDatabase();
         return false;
     }
 };

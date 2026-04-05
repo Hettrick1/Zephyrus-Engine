@@ -24,7 +24,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/uv_mapper.jpg"
+                                    "path": "9108356a-451c-4af9-81e4-95c4e7d8cef4"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -97,7 +97,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268bis.png"
+                                    "path": "ac1c05e7-62a2-4afb-9221-e4fe95b70a2a"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -143,7 +143,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268bis.png"
+                                    "path": "ac1c05e7-62a2-4afb-9221-e4fe95b70a2a"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -189,7 +189,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -235,7 +235,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -281,7 +281,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -327,7 +327,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -373,7 +373,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -419,7 +419,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -465,7 +465,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/091.png"
+                                    "path": "95e33bbf-b7d3-428f-88d4-304dc4d57660"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -511,7 +511,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -557,7 +557,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -603,7 +603,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/268.png"
+                                    "path": "ffc6d45b-fb1a-4f4f-bf89-9162d93bcb50"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -642,14 +642,14 @@
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
-                        "texture": "../Content/Sprites/Doom/amoPu.png",
+                        "texture": "501fdf68-cdd4-46e8-9a54-a46ed1660425",
                         "cullOff": false,
                         "materialInstance": {
                             "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/amoPu.png"
+                                    "path": "501fdf68-cdd4-46e8-9a54-a46ed1660425"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -698,14 +698,14 @@
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
-                        "texture": "../Content/Sprites/Doom/lifePu.png",
+                        "texture": "ef45d0e3-334a-4943-a92a-ebcecb820f60",
                         "cullOff": false,
                         "materialInstance": {
                             "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/lifePu.png"
+                                    "path": "ef45d0e3-334a-4943-a92a-ebcecb820f60"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -754,14 +754,14 @@
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
-                        "texture": "../Content/Sprites/Doom/lifePu.png",
+                        "texture": "ef45d0e3-334a-4943-a92a-ebcecb820f60",
                         "cullOff": false,
                         "materialInstance": {
                             "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/lifePu.png"
+                                    "path": "ef45d0e3-334a-4943-a92a-ebcecb820f60"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -810,14 +810,14 @@
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
-                        "texture": "../Content/Sprites/Doom/armorPu.png",
+                        "texture": "ee740071-4db6-4c5d-a517-d984361a4170",
                         "cullOff": false,
                         "materialInstance": {
                             "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/armorPu.png"
+                                    "path": "ee740071-4db6-4c5d-a517-d984361a4170"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -866,14 +866,14 @@
                         "relativePosition": [0.0, 0.0, -0.5],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [89.999, 0.0, 0.0],
-                        "texture": "../Content/Sprites/Doom/armorPu.png",
+                        "texture": "ee740071-4db6-4c5d-a517-d984361a4170",
                         "cullOff": false,
                         "materialInstance": {
                             "baseMaterial": "7b717918-73eb-4379-ad3f-2f78afe545ce",
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/armorPu.png"
+                                    "path": "ee740071-4db6-4c5d-a517-d984361a4170"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -925,7 +925,7 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "tags": ["enemyFB"],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
+                        "textures": ["45d26e70-f03b-4501-abc2-58af1fc4a066", "783d60ee-de97-40b0-ac23-512221bddd71"],
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -933,7 +933,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                    "path": "45d26e70-f03b-4501-abc2-58af1fc4a066"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -950,7 +950,7 @@
                         "relativeSize": [1.299, 1.299, 1.299],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
+                        "textures": ["017c2e03-589d-4bfa-942f-1f9ef48a6e5f", "23cb5803-fe50-4a98-b51a-98b4415cb095", "23f1e6b3-cf8a-4b79-b1b6-b6c08bad3456", "685f76e3-c3da-4b3f-9be3-5c5df4e4520a", "5ee757e9-624d-444b-a5ae-b05509dddc2b", "b72df671-3cff-44a8-9c9a-98aaaa32cc57", "207c552f-5805-4522-bb8e-904322a621db", "c020591a-e935-40b4-bbbf-2ca7a0ef3593", "178e84b3-7b00-449a-a9d7-7239f8822ec1", "bf9347e5-dc68-49c3-bcae-2cfd3c230c22", "48117d67-793f-49ec-8950-ec0ff0eb3fb7", "15d7670f-33ca-47ff-9288-a8b40a621463", "4f1012f2-3e1c-4605-b4de-96d3d7253967", "fd6b9dd6-6306-4872-b90c-daea32b576e6", "73bb1dcb-a8ad-43f1-9aee-2b4c9b1f4460", "a129889b-0d10-4cd7-a410-801fc50729bc", "b01e1c28-feb4-4c1c-9b12-9381587dd737", "e902376e-c4a3-4638-8963-932f0849ff5e", "9702a9ad-633b-43c1-9fe0-6ea7fb4dff0f", "0385f06f-321e-4a70-a91b-386f8829e0e1", "87f50858-9ac5-4d1a-bd86-0ec27b650027", "a97af031-715f-4e81-9171-f470c27a79b0", "214ce23e-a55c-4915-9285-cc82304f8e55"],
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -958,7 +958,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                    "path": "017c2e03-589d-4bfa-942f-1f9ef48a6e5f"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -1010,7 +1010,7 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "tags": ["enemyFB"],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
+                        "textures": ["45d26e70-f03b-4501-abc2-58af1fc4a066", "783d60ee-de97-40b0-ac23-512221bddd71"],
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -1018,7 +1018,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                    "path": "45d26e70-f03b-4501-abc2-58af1fc4a066"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -1035,7 +1035,7 @@
                         "relativeSize": [1.299, 1.299, 1.299],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
+                        "textures": ["017c2e03-589d-4bfa-942f-1f9ef48a6e5f", "23cb5803-fe50-4a98-b51a-98b4415cb095", "23f1e6b3-cf8a-4b79-b1b6-b6c08bad3456", "685f76e3-c3da-4b3f-9be3-5c5df4e4520a", "5ee757e9-624d-444b-a5ae-b05509dddc2b", "b72df671-3cff-44a8-9c9a-98aaaa32cc57", "207c552f-5805-4522-bb8e-904322a621db", "c020591a-e935-40b4-bbbf-2ca7a0ef3593", "178e84b3-7b00-449a-a9d7-7239f8822ec1", "bf9347e5-dc68-49c3-bcae-2cfd3c230c22", "48117d67-793f-49ec-8950-ec0ff0eb3fb7", "15d7670f-33ca-47ff-9288-a8b40a621463", "4f1012f2-3e1c-4605-b4de-96d3d7253967", "fd6b9dd6-6306-4872-b90c-daea32b576e6", "73bb1dcb-a8ad-43f1-9aee-2b4c9b1f4460", "a129889b-0d10-4cd7-a410-801fc50729bc", "b01e1c28-feb4-4c1c-9b12-9381587dd737", "e902376e-c4a3-4638-8963-932f0849ff5e", "9702a9ad-633b-43c1-9fe0-6ea7fb4dff0f", "0385f06f-321e-4a70-a91b-386f8829e0e1", "87f50858-9ac5-4d1a-bd86-0ec27b650027", "a97af031-715f-4e81-9171-f470c27a79b0", "214ce23e-a55c-4915-9285-cc82304f8e55"],
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -1043,7 +1043,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                    "path": "017c2e03-589d-4bfa-942f-1f9ef48a6e5f"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -1095,7 +1095,7 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "tags": ["enemyFB"],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
+                        "textures": ["45d26e70-f03b-4501-abc2-58af1fc4a066", "783d60ee-de97-40b0-ac23-512221bddd71"],
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -1103,7 +1103,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                    "path": "45d26e70-f03b-4501-abc2-58af1fc4a066"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -1120,7 +1120,7 @@
                         "relativeSize": [1.299, 1.299, 1.299],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
+                        "textures": ["017c2e03-589d-4bfa-942f-1f9ef48a6e5f", "23cb5803-fe50-4a98-b51a-98b4415cb095", "23f1e6b3-cf8a-4b79-b1b6-b6c08bad3456", "685f76e3-c3da-4b3f-9be3-5c5df4e4520a", "5ee757e9-624d-444b-a5ae-b05509dddc2b", "b72df671-3cff-44a8-9c9a-98aaaa32cc57", "207c552f-5805-4522-bb8e-904322a621db", "c020591a-e935-40b4-bbbf-2ca7a0ef3593", "178e84b3-7b00-449a-a9d7-7239f8822ec1", "bf9347e5-dc68-49c3-bcae-2cfd3c230c22", "48117d67-793f-49ec-8950-ec0ff0eb3fb7", "15d7670f-33ca-47ff-9288-a8b40a621463", "4f1012f2-3e1c-4605-b4de-96d3d7253967", "fd6b9dd6-6306-4872-b90c-daea32b576e6", "73bb1dcb-a8ad-43f1-9aee-2b4c9b1f4460", "a129889b-0d10-4cd7-a410-801fc50729bc", "b01e1c28-feb4-4c1c-9b12-9381587dd737", "e902376e-c4a3-4638-8963-932f0849ff5e", "9702a9ad-633b-43c1-9fe0-6ea7fb4dff0f", "0385f06f-321e-4a70-a91b-386f8829e0e1", "87f50858-9ac5-4d1a-bd86-0ec27b650027", "a97af031-715f-4e81-9171-f470c27a79b0", "214ce23e-a55c-4915-9285-cc82304f8e55"],
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -1128,7 +1128,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                    "path": "017c2e03-589d-4bfa-942f-1f9ef48a6e5f"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -1180,7 +1180,7 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "tags": ["enemyFB"],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
+                        "textures": ["45d26e70-f03b-4501-abc2-58af1fc4a066", "783d60ee-de97-40b0-ac23-512221bddd71"],
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -1188,7 +1188,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                    "path": "45d26e70-f03b-4501-abc2-58af1fc4a066"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -1205,7 +1205,7 @@
                         "relativeSize": [1.299, 1.299, 1.299],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
+                        "textures": ["017c2e03-589d-4bfa-942f-1f9ef48a6e5f", "23cb5803-fe50-4a98-b51a-98b4415cb095", "23f1e6b3-cf8a-4b79-b1b6-b6c08bad3456", "685f76e3-c3da-4b3f-9be3-5c5df4e4520a", "5ee757e9-624d-444b-a5ae-b05509dddc2b", "b72df671-3cff-44a8-9c9a-98aaaa32cc57", "207c552f-5805-4522-bb8e-904322a621db", "c020591a-e935-40b4-bbbf-2ca7a0ef3593", "178e84b3-7b00-449a-a9d7-7239f8822ec1", "bf9347e5-dc68-49c3-bcae-2cfd3c230c22", "48117d67-793f-49ec-8950-ec0ff0eb3fb7", "15d7670f-33ca-47ff-9288-a8b40a621463", "4f1012f2-3e1c-4605-b4de-96d3d7253967", "fd6b9dd6-6306-4872-b90c-daea32b576e6", "73bb1dcb-a8ad-43f1-9aee-2b4c9b1f4460", "a129889b-0d10-4cd7-a410-801fc50729bc", "b01e1c28-feb4-4c1c-9b12-9381587dd737", "e902376e-c4a3-4638-8963-932f0849ff5e", "9702a9ad-633b-43c1-9fe0-6ea7fb4dff0f", "0385f06f-321e-4a70-a91b-386f8829e0e1", "87f50858-9ac5-4d1a-bd86-0ec27b650027", "a97af031-715f-4e81-9171-f470c27a79b0", "214ce23e-a55c-4915-9285-cc82304f8e55"],
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -1213,7 +1213,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                    "path": "017c2e03-589d-4bfa-942f-1f9ef48a6e5f"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -1265,7 +1265,7 @@
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "tags": ["enemyFB"],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/Marine/MShoot1.png", "../Content/Sprites/Doom/Marine/MShoot2.png"],
+                        "textures": ["45d26e70-f03b-4501-abc2-58af1fc4a066", "783d60ee-de97-40b0-ac23-512221bddd71"],
                         "animFps": 4.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -1273,7 +1273,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/Marine/MShoot1.png"
+                                    "path": "45d26e70-f03b-4501-abc2-58af1fc4a066"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",
@@ -1290,7 +1290,7 @@
                         "relativeSize": [1.299, 1.299, 1.299],
                         "relativeRotation": [89.999, 0.0, 0.0],
                         "cullOff": false,
-                        "textures": ["../Content/Sprites/Doom/SplashBlood/1_00.png", "../Content/Sprites/Doom/SplashBlood/1_0.png", "../Content/Sprites/Doom/SplashBlood/1_1.png", "../Content/Sprites/Doom/SplashBlood/1_2.png", "../Content/Sprites/Doom/SplashBlood/1_3.png", "../Content/Sprites/Doom/SplashBlood/1_4.png", "../Content/Sprites/Doom/SplashBlood/1_5.png", "../Content/Sprites/Doom/SplashBlood/1_6.png", "../Content/Sprites/Doom/SplashBlood/1_7.png", "../Content/Sprites/Doom/SplashBlood/1_8.png", "../Content/Sprites/Doom/SplashBlood/1_9.png", "../Content/Sprites/Doom/SplashBlood/1_10.png", "../Content/Sprites/Doom/SplashBlood/1_11.png", "../Content/Sprites/Doom/SplashBlood/1_12.png", "../Content/Sprites/Doom/SplashBlood/1_13.png", "../Content/Sprites/Doom/SplashBlood/1_14.png", "../Content/Sprites/Doom/SplashBlood/1_15.png", "../Content/Sprites/Doom/SplashBlood/1_16.png", "../Content/Sprites/Doom/SplashBlood/1_17.png", "../Content/Sprites/Doom/SplashBlood/1_18.png", "../Content/Sprites/Doom/SplashBlood/1_19.png", "../Content/Sprites/Doom/SplashBlood/1_20.png", "../Content/Sprites/Doom/SplashBlood/1_21.png"],
+                        "textures": ["017c2e03-589d-4bfa-942f-1f9ef48a6e5f", "23cb5803-fe50-4a98-b51a-98b4415cb095", "23f1e6b3-cf8a-4b79-b1b6-b6c08bad3456", "685f76e3-c3da-4b3f-9be3-5c5df4e4520a", "5ee757e9-624d-444b-a5ae-b05509dddc2b", "b72df671-3cff-44a8-9c9a-98aaaa32cc57", "207c552f-5805-4522-bb8e-904322a621db", "c020591a-e935-40b4-bbbf-2ca7a0ef3593", "178e84b3-7b00-449a-a9d7-7239f8822ec1", "bf9347e5-dc68-49c3-bcae-2cfd3c230c22", "48117d67-793f-49ec-8950-ec0ff0eb3fb7", "15d7670f-33ca-47ff-9288-a8b40a621463", "4f1012f2-3e1c-4605-b4de-96d3d7253967", "fd6b9dd6-6306-4872-b90c-daea32b576e6", "73bb1dcb-a8ad-43f1-9aee-2b4c9b1f4460", "a129889b-0d10-4cd7-a410-801fc50729bc", "b01e1c28-feb4-4c1c-9b12-9381587dd737", "e902376e-c4a3-4638-8963-932f0849ff5e", "9702a9ad-633b-43c1-9fe0-6ea7fb4dff0f", "0385f06f-321e-4a70-a91b-386f8829e0e1", "87f50858-9ac5-4d1a-bd86-0ec27b650027", "a97af031-715f-4e81-9171-f470c27a79b0", "214ce23e-a55c-4915-9285-cc82304f8e55"],
                         "animFps": 40.0,
                         "isLooping": false,
                         "materialInstance": {
@@ -1298,7 +1298,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "../Content/Sprites/Doom/SplashBlood/1_00.png"
+                                    "path": "017c2e03-589d-4bfa-942f-1f9ef48a6e5f"
                                 }],
                             "vec4Properties": [{
                                     "name": "uTint",

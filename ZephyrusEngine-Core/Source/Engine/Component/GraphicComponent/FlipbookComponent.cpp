@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "AssetsManager.h"
 #include "Interface/ITexture2D.h"
+#include "EngineContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -29,7 +30,7 @@ namespace Zephyrus::ActorComponent
 		Component::OnStart();
 		if (mAnimationTextures.empty())
 		{
-			Assets::ITexture2D* fallbackTexture = AssetsManager::GetInstance().LoadTexture("../Content/Sprites/square.png", "../Content/Sprites/square.png");
+			Assets::ITexture2D* fallbackTexture = AssetsManager::GetInstance().LoadTexture(TEX_SQUARE);
 			SetTexture(fallbackTexture);
 			mAnimationTextures.push_back(fallbackTexture);
 		}
@@ -67,7 +68,7 @@ namespace Zephyrus::ActorComponent
 			{
 				for (auto& element : arr)
 				{
-					Assets::ITexture2D* texture = AssetsManager::GetInstance().LoadTexture(element, element);
+					Assets::ITexture2D* texture = AssetsManager::GetInstance().LoadTexture(element);
 					AddAnimationTexture(texture);
 				}
 				if (!mAnimationTextures.empty())
@@ -96,7 +97,7 @@ namespace Zephyrus::ActorComponent
 		pWriter.BeginArray("textures");
 		for (auto& texture : mAnimationTextures)
 		{
-			pWriter.PushString(texture->GetFilePath());
+			pWriter.PushString(texture->GetTextureFileId());
 		}
 		pWriter.EndArray();
 		pWriter.WriteFloat("animFps", mAnimationFps);

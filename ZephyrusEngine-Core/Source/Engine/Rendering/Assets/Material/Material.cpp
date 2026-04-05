@@ -240,7 +240,7 @@ namespace Zephyrus::Material
 				if (auto tex2D = dynamic_cast<Assets::ITexture2D*>(tex))
 				{
 					writer.WriteString("type", "Texture2D");
-					writer.WriteString("path", tex2D->GetFilePath());
+					writer.WriteString("path", tex2D->GetTextureFileId());
 				}
 				else if (auto cubemap = dynamic_cast<Assets::ICubeMapTexture*>(tex))
 				{
@@ -390,8 +390,7 @@ namespace Zephyrus::Material
 					auto pathOpt = reader.ReadString("path");
 					if (pathOpt.has_value())
 					{
-						auto tex = Assets::AssetsManager::GetInstance().LoadTexture(pathOpt.value(), pathOpt.value());
-						if (tex)
+						if (auto tex = Assets::AssetsManager::GetInstance().LoadTexture(*pathOpt))
 							SetTexture(name, tex);
 					}
 				}
@@ -531,7 +530,7 @@ namespace Zephyrus::Material
 
 	std::string Material::GetFilePath() const
 	{
-		return Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(mMaterialFileId);
+		return Assets::AssetsManager::GetInstance().GetFileDatabase().GetPathFromID(mMaterialFileId);
 	}
 
 	void Material::SetMaterialFileId(const std::string& fileId)
@@ -543,7 +542,7 @@ namespace Zephyrus::Material
 	{
 		Serialization::Json::JsonWriter writer;
 		Serialize(writer);
-		writer.SaveDocument(Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(mMaterialFileId));
+		writer.SaveDocument(Assets::AssetsManager::GetInstance().GetFileDatabase().GetPathFromID(mMaterialFileId));
 
 		for (auto listener : mListeners)
 		{

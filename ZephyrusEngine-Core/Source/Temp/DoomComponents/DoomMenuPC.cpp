@@ -15,8 +15,6 @@ namespace Zephyrus::ActorComponent
 	DoomMenuPC::DoomMenuPC(Actor* pOwner, int pUpdateOrder)
 		: Component(pOwner, "DoomMenuPC", pUpdateOrder)
 	{
-		// InputManager& inputManager = InputManager::Instance();
-		// inputManager.CreateNewBooleanKeyBinding(this, "Play", SDLK_RETURN);
 	}
 
 	DoomMenuPC::~DoomMenuPC()
@@ -36,13 +34,12 @@ namespace Zephyrus::ActorComponent
 	void DoomMenuPC::OnStart()
 	{
 		Component::OnStart();
-		Assets::ITexture2D* damageIndicator = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture("Sprites/Doom/MainMenu.png", "MainMenu");
+		std::string MainMenuPngID = "fd3fe6b2-5870-4d94-8871-f021afc978f7";
+		Assets::ITexture2D* damageIndicator = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(MainMenuPngID);
 		mDoomMenu = new Zephyrus::UI::HudImage(mOwner->GetSceneContext(), damageIndicator, Vector2D(0, 0), 2);
 		mDoomMenu->SetTint(Vector4D(1.0, 1.0, 1.0, 1.0));
 
 		mPressEnter = new Zephyrus::UI::HudText(mOwner->GetSceneContext(), "Press Enter To Begin", Vector2D(0.0f, -800.0f), 1.0f, Vector4D(1.0, 1.0, 1.0, 0.0), Zephyrus::UI::TextAlignment::CENTER);
-
-		//SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
 
 	void DoomMenuPC::OnActionStarted(InputAction* action)

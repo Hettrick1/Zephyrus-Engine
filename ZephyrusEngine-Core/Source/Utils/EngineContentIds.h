@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string_view>
-
 // -------Meshes---------
 inline const char* const MESH_SPHERE_OBJ = "64cd0a92-d909-4bb3-aca8-0cf06467e584";
 inline const char* const MESH_CUBE_OBJ = "d66e8308-7299-4ef6-80d2-be12f7d81604";
@@ -30,3 +28,7 @@ inline const char* const MAT_SKY_SHPERE = "4f458241-1b6a-4539-a756-f3f43e0b58ed"
 
 // -------Prefabs---------
 inline const char* const PREF_CAMERA_ACTOR = "d8d3a28d-ed8c-4600-9301-412946ca5450";
+
+// -------Textures---------
+inline const char* const TEX_UV_MAPPER = "9108356a-451c-4af9-81e4-95c4e7d8cef4";
+inline const char* const TEX_SQUARE = "336809a0-9fa1-4fe9-a4e0-21925a9aab0d";

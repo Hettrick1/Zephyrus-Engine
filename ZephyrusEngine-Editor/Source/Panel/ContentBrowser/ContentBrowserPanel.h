@@ -54,7 +54,7 @@ public:
 	bool IsSubpathOf(const std::filesystem::path &path,const std::filesystem::path &base);
 
 	void CreateDragDropSource(const std::string& name, const ContentBrowserItem&  data);
-	ImTextureID GetImageFromType(const FileType& type, const std::string& filepath);
+	ImTextureID GetImageFromType(const FileType& type, const std::string& fileId);
 	void SetSceneHierarchy(SceneHierarchyPanel* pHierarchy);
 	void DeleteFileOrDirectory();
 	void CreatePrefabFile(const std::string& pFilepath);

@@ -40,6 +40,10 @@ namespace Zephyrus::ActorComponent
 
 	void DoomPlayerComponent::OnStart()
 	{
+
+		// TODO : This is obsolete, we don't load the textures here now, we store it inside the prefab
+		// TODO : This is obsolete, we don't use the texture path anymore
+		
 		Component::OnStart();
 
 		mOwner->GetScene().GetRenderer()->GetDebugRenderer()->SetDrawDebug(false);
@@ -47,9 +51,10 @@ namespace Zephyrus::ActorComponent
 		mGun = mOwner->GetComponentOfType<FlipbookComponent>();
 		ZP_ASSERT(mGun, "FlipbookComponent not found !");
 
-		Assets::ITexture2D* doomHud = AssetsManager::GetInstance().LoadTexture("Sprites/Doom/DoomHud.png", "doomHud");
-		gunIcon = AssetsManager::GetInstance().LoadTexture("Sprites/Doom/DoomHudGunIcon.png", "gunIcon");
-		shotgunIcon = AssetsManager::GetInstance().LoadTexture("Sprites/Doom/DoomHudShotGunIcon.png", "shotgunIcon");
+		Assets::ITexture2D* doomHud = AssetsManager::GetInstance().LoadTexture("Sprites/Doom/DoomHud.png");
+		
+		gunIcon = AssetsManager::GetInstance().LoadTexture("Sprites/Doom/DoomHudGunIcon.png");
+		shotgunIcon = AssetsManager::GetInstance().LoadTexture("Sprites/Doom/DoomHudShotGunIcon.png");
 
 		mGunAnim = {
 			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/gun1.png", "gun1"),
@@ -90,7 +95,7 @@ namespace Zephyrus::ActorComponent
 		mArmorText = new HudText(mOwner->GetSceneContext(), std::to_string(mArmor), Vector2D(840.0f, -930.0f), 1, Vector4D(0.7f, 0, 0, 1), TextAlignment::CENTER);
 		mArmorText->SetDrawOrder(101.0f);
 
-		Assets::ITexture2D* damageIndicator = AssetsManager::GetInstance().LoadTexture("Sprites/Doom/DamageIndicator.png", "DamageIndicator");
+		Assets::ITexture2D* damageIndicator = AssetsManager::GetInstance().LoadTexture("Sprites/Doom/DamageIndicator.png");
 		mDamageIndicatorImage = new HudImage(mOwner->GetSceneContext(), damageIndicator, Vector2D(0, 0), 2);
 		mDamageIndicatorImage->SetDrawOrder(0.0f);
 		mDamageIndicatorImage->SetTint(Vector4D(1.0, 1.0, 1.0, 0.0));

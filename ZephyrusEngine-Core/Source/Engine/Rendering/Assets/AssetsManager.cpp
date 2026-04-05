@@ -19,13 +19,16 @@
 
 namespace Zephyrus::Assets {
 	
-	ITexture2D* AssetsManager::LoadTexture(const std::string& pFilePath, const std::string& pName)
+	ITexture2D* AssetsManager::LoadTexture(const std::string& pId, bool pForceReload)
 	{
-		if (mTextures.find(pName) == mTextures.end()) {
-			mTextures[pName] = LoadTextureFromFile(GetFullPath(pFilePath, AssetType::Texture));
-			return mTextures[pName];
+		// refactor this to only use pID and not the get id from path
+		//std::string idTemp = mFileDataBase.GetIdFromPath(GetFullPath(pId, AssetType::Texture));
+		
+		if (!mTextures.contains(pId) || pForceReload) {
+			mTextures[pId] = LoadTextureFromFile(pId);
+			return mTextures[pId];
 		}
-		return mTextures[pName];
+		return mTextures[pId];
 	}
 
 	ITexture2D* AssetsManager::GetTexture(const std::string& pName)
@@ -68,7 +71,7 @@ namespace Zephyrus::Assets {
 	void AssetsManager::Initialize(ISceneContext* pContext)
 	{
 		mContext = pContext;
-		database.Init(mContext);
+		mFileDataBase.Init(mContext);
 	}
 
 	IMesh* AssetsManager::LoadMesh(const std::string& pId, bool pForceReload)
@@ -216,14 +219,14 @@ namespace Zephyrus::Assets {
 		mMaterials.clear();
 	}
 
-	ITexture2D* AssetsManager::LoadTextureFromFile(const std::string& pFilePath)
+	ITexture2D* AssetsManager::LoadTextureFromFile(const std::string& pId)
 	{
-		return mContext->GetRenderer()->LoadTexture(pFilePath);
+		return mContext->GetRenderer()->LoadTexture(mFileDataBase.GetPathFromID(pId), pId);
 	}
 
 	MeshData AssetsManager::LoadMeshData(const std::string& pId)
 	{
-		std::string path =database.GetPathFromID(pId);
+		std::string path =mFileDataBase.GetPathFromID(pId);
 		MeshData data;
 		data.sourceFileId = pId;
 
@@ -288,15 +291,15 @@ namespace Zephyrus::Assets {
 
 	IFont* AssetsManager::LoadFontFromFile(const std::string& pId)
 	{
-		return mContext->GetRenderer()->LoadFont(database.GetPathFromID(pId), pId);
+		return mContext->GetRenderer()->LoadFont(mFileDataBase.GetPathFromID(pId), pId);
 	}
 
 	Render::IShader* AssetsManager::LoadShaderFromFile(const std::string& pId, ShaderType pType)
 	{
-		return mContext->GetRenderer()->LoadShader(database.GetPathFromID(pId), pId, pType);
+		return mContext->GetRenderer()->LoadShader(mFileDataBase.GetPathFromID(pId), pId, pType);
 	}
 
-	Render::IShaderProgram* AssetsManager::LoadProgramWithShaders(std::vector<Render::IShader*> pShaders)
+	Render::IShaderProgram* AssetsManager::LoadProgramWithShaders(std::vector<Render::IShader*> pShaders) const
 	{
 		return mContext->GetRenderer()->LoadShaderProgram(pShaders);
 	}
@@ -310,7 +313,7 @@ namespace Zephyrus::Assets {
 	{
 		auto mat = mContext->GetRenderer()->CreateMaterial();
 		mat->SetMaterialFileId(pMaterialFileId);
-		std::string filePath = database.GetPathFromID(pMaterialFileId);
+		std::string filePath = mFileDataBase.GetPathFromID(pMaterialFileId);
 		auto reader = mContext->GetSerializationFactory()->CreateDeserializer();
 		if (reader->LoadDocument(filePath))
 		{
@@ -334,6 +337,10 @@ namespace Zephyrus::Assets {
 			if (pPath.find(IMPORT_PATH) == std::string::npos)
 			{
 				newPath = IMPORT_PATH + pPath;
+				if (newPath.find(".png") == std::string::npos && newPath.find(".jpg") == std::string::npos)
+				{
+					newPath = pPath;
+				}
 				break;
 			}
 			newPath = pPath;

@@ -8,19 +8,17 @@ Zephyrus::Assets::TextureOpenGL::~TextureOpenGL()
 	glDeleteTextures(1, &mTextureID);
 }
 
-bool Zephyrus::Assets::TextureOpenGL::Load(const std::string& pFilename)
+bool Zephyrus::Assets::TextureOpenGL::Load(const std::string& pFilePath, const std::string& id)
 {
-	mFilePath = pFilename;
+	mTextureId = id;
 
 	int width, height, channels;
 
-	//stbi_set_flip_vertically_on_load(true);
-
-	unsigned  char* data = stbi_load(pFilename.c_str(), &width, &height, &channels, 0);
+	unsigned  char* data = stbi_load(pFilePath.c_str(), &width, &height, &channels, 0);
 
 	if (!data)
 	{
-		ZP_CORE_ERROR("Failed to load texture file: " + pFilename);
+		ZP_CORE_ERROR("Failed to load texture file: " + pFilePath);
 		return false;
 	}
 	

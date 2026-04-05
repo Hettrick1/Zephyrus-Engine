@@ -6,6 +6,7 @@
 #include "../EditorApplication/EventSystem/EventSystem.h"
 #include "../EditorApplication/EventSystem/Event/SpawnPrefabEvent.h"
 #include "Interface/ITexture2D.h"
+#include "EditorUI/EditorContentIds.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -27,7 +28,7 @@ void PrefabPanel::Draw()
 	Panel::BeginDraw();
 	ImGui::Begin(mName.c_str());
 
-	Zephyrus::Assets::ITexture2D* arrowTex = AssetsManager::GetInstance().LoadTexture("Sprites/Icons/prefab36.png", "Sprites/Icons/prefab36.png");
+	Zephyrus::Assets::ITexture2D* arrowTex = AssetsManager::GetInstance().LoadTexture(TEX_PREFAB36_ICON);
 	ImTextureID myIcon = (ImTextureID)(intptr_t)arrowTex->GetHandle();
 
 	ImVec2 iconSize(36, 36);

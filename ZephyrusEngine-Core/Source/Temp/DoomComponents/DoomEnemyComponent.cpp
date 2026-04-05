@@ -22,55 +22,6 @@ namespace Zephyrus::ActorComponent
 		: Component(pOwner, "DoomEnemyComponent"), mEnemyFb(nullptr), mHealth(100), mShootCouldown(shootCooldown)
 		, mCanShoot(false), mIsDead(false), mSplashBlood(nullptr)
 	{
-		EnemyShootAnim = {
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShoot1.png", "Mshoot1"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShoot2.png", "Mshoot2"),
-		};
-		EnemyDieAnim = {
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShotDie1.png", "MShotDie1"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShotDie2.png", "MShotDie2"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShotDie3.png", "MShotDie3"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShotDie4.png", "MShotDie4"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShotDie5.png", "MShotDie5"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShotDie6.png", "MShotDie6"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MShotDie7.png", "MShotDie7"),
-		};
-		EnemyExplodesAnim = {
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes1.png", "MExplodes1"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes2.png", "MExplodes2"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes3.png", "MExplodes3"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes4.png", "MExplodes4"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes5.png", "MExplodes5"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes6.png", "MExplodes6"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes7.png", "MExplodes7"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes8.png", "MExplodes8"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/Marine/MExplodes9.png", "MExplodes9"),
-		};
-		EnemyDamagesAnim = {
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_00.png", "MDamage0"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_0.png", "MDamage1"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_1.png", "MDamage2"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_2.png", "MDamage3"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_3.png", "MDamage4"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_4.png", "MDamage5"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_5.png", "MDamage6"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_6.png", "MDamage7"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_7.png", "MDamage8"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_8.png", "MDamage9"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_9.png", "MDamage10"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_10.png", "MDamage11"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_11.png", "MDamage12"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_12.png", "MDamage13"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_13.png", "MDamage14"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_14.png", "MDamage15"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_15.png", "MDamage16"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_16.png", "MDamage17"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_17.png", "MDamage18"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_18.png", "MDamage19"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_19.png", "MDamage20"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_20.png", "MDamage21"),
-			AssetsManager::GetInstance().LoadTexture("Sprites/Doom/SplashBlood/1_21.png", "MDamage22"),
-		};
 	}
 
 	DoomEnemyComponent::~DoomEnemyComponent()
