@@ -62,7 +62,7 @@ namespace Zephyrus::Scenes {
 		}
 		if (mTime > 3.0f)
 		{
-			GetAllActors()[0]->GetSceneContext()->LoadSceneWithFile(mNextScene, nullptr, true);
+			mContext->LoadSceneFromFileId(mNextScene, nullptr, true);
 		}
 	}
 

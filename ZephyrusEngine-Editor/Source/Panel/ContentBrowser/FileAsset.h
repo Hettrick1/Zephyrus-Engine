@@ -22,6 +22,7 @@ struct FileAsset
     std::string mId;
     std::string mPath;
     std::string mMetaPath;
+    std::string mFileName;
     std::string mExtension;
     FileType mType;
 

@@ -31,11 +31,12 @@ using Zephyrus::Inputs::InputManager;
 class EditorApplication
 {
 private:
-	std::string mTitle;
+	std::string mProjectName;
 	Window* mEditorWindow{ nullptr };
 	Zephyrus::Scenes::SceneManager* mSceneManager{ nullptr };
 	Zephyrus::Render::IRenderer* mRenderer{ nullptr };
-	std::string mStartUpScene;
+	std::string mEditorConfigFile;
+	std::string mStartMapId;
 	InputManager* mEditorInputManager;
 	bool mIsRunning{true};
 
@@ -44,11 +45,12 @@ private:
 	std::unique_ptr<ImGuiEditorLayer> mImGuiEditorLayer{ nullptr };
 
 public:
-	EditorApplication(const std::string& pTitle, const std::string& pStartupScene);
+	EditorApplication(const std::string& pTitle, const std::string& pEditorConfigFile);
 	~EditorApplication();
 
 	// Initializes the game systems and window
 	void Initialize();
+	void InitializeEditorConfig();
 
 	// Main game loop
 	void Loop();

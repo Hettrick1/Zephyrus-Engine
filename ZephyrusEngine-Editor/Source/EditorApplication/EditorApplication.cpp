@@ -7,9 +7,10 @@
 #include "EditorControllerComponent.h"
 #include "EditorApplication/EventSystem/EventSystem.h"
 #include "HudManager.h"
+#include "ISerializationFactory.h"
 
-EditorApplication::EditorApplication(const std::string& pTitle, const std::string& pStartupScene)
-    : mIsRunning(true), mStartUpScene(pStartupScene), mEditorInputManager(nullptr), mTitle(pTitle)
+EditorApplication::EditorApplication(const std::string& pTitle, const std::string& pEditorConfigFile)
+    : mIsRunning(true), mEditorConfigFile(pEditorConfigFile), mEditorInputManager(nullptr), mProjectName(pTitle)
 {
     Zephyrus::Debug::Log::Init();
     Initialize();
@@ -30,13 +31,11 @@ void EditorApplication::Initialize()
     mRenderer = new Zephyrus::Render::RendererOpenGl();
     mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);
     Zephyrus::Assets::AssetsManager::GetInstance().Initialize(mSceneManager);
+    InitializeEditorConfig();
 
     mImGuiEditorLayer = std::make_unique<ImGuiEditorLayer>();
-    
-    // For now
-    //InputManager::Instance().SetContext(mSceneManager);
 
-    if (mEditorWindow->Open(mTitle) && mRenderer->Initialize(*mEditorWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mEditorWindow))
+    if (mEditorWindow->Open(mProjectName) && mRenderer->Initialize(*mEditorWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mEditorWindow))
     {
         glfwMaximizeWindow(mEditorWindow->GetGlfwWindow());
         mEditorInputManager = new InputManager(mEditorWindow->GetGlfwWindow());
@@ -54,9 +53,27 @@ void EditorApplication::Initialize()
     }
 }
 
+void EditorApplication::InitializeEditorConfig()
+{
+    auto reader = mSceneManager->GetSerializationFactory()->CreateDeserializer();
+
+    if (reader->LoadDocument(mEditorConfigFile))
+    {
+        if (auto projectName = reader->ReadString("projectName"))
+        {
+            mProjectName = *projectName;
+        }
+        if (auto startupMapId = reader->ReadString("startupMapId"))
+        {
+            mStartMapId = *startupMapId;
+        }
+    }
+    
+}
+
 void EditorApplication::Loop()
 {
-    mSceneManager->LoadSceneWithFile(mStartUpScene, mRenderer, false);
+    mSceneManager->LoadSceneFromFileId(mStartMapId, mRenderer, false);
     mSceneManager->SetSceneLoaded(true);
 
     mRenderer->GetHud()->Unload();

@@ -1,7 +1,7 @@
-#include "Game.h"
+#include "GameApplication.h"
 #include <memory>
 
 int main(int argc, char** argv) {
-	std::unique_ptr<Zephyrus::Application::Game> pong = std::make_unique<Zephyrus::Application::Game>("Game", "../Content/Maps/TheDescent/TheDescent.zpmap");
+	std::unique_ptr<Zephyrus::Application::GameApplication> pong = std::make_unique<Zephyrus::Application::GameApplication>("Game", "../Config/Game.config");
 	return 0;
 }

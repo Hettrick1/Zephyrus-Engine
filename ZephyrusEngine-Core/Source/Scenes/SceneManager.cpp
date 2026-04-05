@@ -19,6 +19,14 @@ namespace Zephyrus::Scenes {
 		ActiveScene = nullptr;
 	}
 
+	SceneManager::~SceneManager()
+	{
+		delete mComponentFactory;
+		delete mPrefabFactory;
+		delete mSceneFactory;
+		delete mSerializationFactory;
+	}
+
 	void SceneManager::LoadScene(Scene* pScene, bool pCallPostStart)
 	{
 		mIsSceneLoaded = false;
@@ -51,9 +59,9 @@ namespace Zephyrus::Scenes {
 		SetSceneLoaded(true);
 	}
 
-	void SceneManager::LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer, bool pCallPostStart)
+	void SceneManager::LoadSceneFromFileId(const std::string& pSceneFileId, Zephyrus::Render::IRenderer* pRenderer, bool pCallPostStart)
 	{
-		std::string filepath = pFilePath;
+		std::string filepath = Assets::AssetsManager::GetInstance().GetDatabase().GetPathFromID(pSceneFileId);
 		SetSceneLoaded(false);
 		mRenderer = pRenderer;
 		if (ActiveScene != nullptr)

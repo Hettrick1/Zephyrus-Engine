@@ -273,7 +273,8 @@ namespace Zephyrus::ActorComponent
 			mHealth -= pQuantity;
 			if (mHealth <= 0)
 			{
-				mOwner->GetSceneContext()->LoadSceneWithFile("../Content/Maps/DoomMainMenu.zpmap", nullptr, true);
+				// hardcoded value for main menu
+				mOwner->GetSceneContext()->LoadSceneFromFileId("a9bbd897-6ac8-44c0-bf35-b13ba4a85942", nullptr, true);
 				return;
 			}
 		}

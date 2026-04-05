@@ -289,9 +289,7 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
             }
             else if (item.mAsset->mType == FileType::Map)// load map
             {
-                std::filesystem::path fsPath = item.mPath.lexically_normal();
-                std::string normalizedPath = fsPath.generic_string();
-                mContext->LoadSceneWithFile(normalizedPath, nullptr, false);
+                mContext->LoadSceneFromFileId(item.mAsset->mId, nullptr, false);
                 mContext->SetSceneLoaded(true);
                 mContext->GetRenderer()->GetHud()->Unload();
                 mHierarchy->ResetSelectedActor();
@@ -300,8 +298,7 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
             }
             else if (item.mAsset->mType == FileType::Material)
             {
-                std::filesystem::path fsPath = item.mPath.lexically_normal();
-                std::string fileName = fsPath.filename().string();
+                std::string fileName = item.mAsset->mFileName;
                 std::string id = item.mAsset->mId;
                 mWindowManager->OpenWindow<Zephyrus::Editor::Window::MaterialWindow>(id, fileName);
             }
@@ -627,10 +624,12 @@ void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)
 
 void ContentBrowserPanel::CreateFileAsset(const std::string& id, const std::string& path)
 {
+    auto fsPath = std::filesystem::path(path);
     FileAsset asset;
     asset.mId = id;
     asset.mPath = path;
-    asset.mExtension = std::filesystem::path(path).extension().string();
+    asset.mFileName = fsPath.stem().string();
+    asset.mExtension = fsPath.extension().string();
     asset.mMetaPath = path + ".meta";
     asset.mType = GetTypeFromExtension(asset.mExtension);
         

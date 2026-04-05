@@ -42,6 +42,6 @@ public:
     virtual Zephyrus::Scenes::Scene* GetActiveScene() = 0;
     virtual Zephyrus::Factory::ISerializationFactory* GetSerializationFactory() = 0;
     virtual Zephyrus::Inputs::InputManager* GetInputManager() = 0;
-    virtual void LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer = nullptr, bool pCallPostStart = true) = 0;
+    virtual void LoadSceneFromFileId(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer = nullptr, bool pCallPostStart = true) = 0;
     virtual void SetSceneLoaded(bool pSceneLoaded) = 0;
 };

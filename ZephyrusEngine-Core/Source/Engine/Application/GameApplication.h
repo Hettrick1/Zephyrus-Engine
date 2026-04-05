@@ -18,21 +18,23 @@
 using Zephyrus::Inputs::InputManager;
 
 namespace Zephyrus::Application {
-	class Game
+	class GameApplication
 	{
 	private:
-		std::string mTitle;
+		std::string mProjectName;
 		Window* mGameWindow{ nullptr };
 		Zephyrus::Scenes::SceneManager* mSceneManager{ nullptr };
 		Zephyrus::Render::IRenderer* mRenderer{ nullptr };
-		std::string mStartUpScene;
+		std::string mEditorConfigFile;
+		std::string mStartMapId;
 		bool mIsRunning = true;
 	public:
-		Game(const std::string& pTitle, const std::string& pStartupScene);
-		~Game();
+		GameApplication(const std::string& pTitle, const std::string& pGameConfigFile);
+		~GameApplication();
 
 		// Initializes the game systems and window
 		void Initialize();
+		void InitializeEditorConfig();
 
 		// Main game loop
 		void Loop();

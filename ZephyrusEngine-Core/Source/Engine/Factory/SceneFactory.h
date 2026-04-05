@@ -9,7 +9,7 @@ namespace Zephyrus::Factory {
 		ISceneContext* mSceneContext{ nullptr };
 	public:
 		SceneFactory(ISceneContext* pSceneContext);
-		~SceneFactory() = default;
+		~SceneFactory() override = default;
 		bool PopulateSceneFromFile(Scene* pSceneRef, const std::string& pFilePath) override;
 	};
 }

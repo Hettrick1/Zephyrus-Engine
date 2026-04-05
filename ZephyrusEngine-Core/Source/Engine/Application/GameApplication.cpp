@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Game.h"
+#include "GameApplication.h"
 #include "Log.h"
 #include "RendererOpenGl.h"
 #include "TextRenderer.h"
@@ -15,70 +15,62 @@
 
 
 #include "Material/Material.h"
-#include "Utils/JSONUtils.h"
+#include "ISerializationFactory.h"
 
 
 namespace Zephyrus::Application {
-    Game::Game(const std::string& pTitle, const std::string& pStartupScene)
-        : mIsRunning(true), mStartUpScene(pStartupScene), mTitle(pTitle)
+    GameApplication::GameApplication(const std::string& pTitle, const std::string& pGameConfigFile)
+        : mEditorConfigFile(pGameConfigFile), mProjectName(pTitle)
     {
         Zephyrus::Debug::Log::Init();
-        
-        std::string fullPath = "../Config/Game.config";
-
-        std::ifstream file(fullPath);
-
-        if (!file.is_open())
-        {
-            ZP_CORE_ERROR("Impossible to open the game.config : " + fullPath);
-        }
-
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        std::string jsonContent = buffer.str();
-
-        rapidjson::Document doc;
-        doc.Parse(jsonContent.c_str());
-
-        if (doc.HasParseError()) {
-            ZP_CORE_ERROR("Parsing JSON failed !");
-            return;
-        }
-
-        if (doc.HasMember("gameName") && doc["gameName"].IsString())
-        {
-            mTitle = doc["gameName"].GetString();
-        }
 
         Initialize();
     }
 
-    Game::~Game()
+    GameApplication::~GameApplication()
     {
         delete mSceneManager;
         delete mRenderer;
         delete mGameWindow;
     }
 
-    void Game::Initialize()
+    void GameApplication::Initialize()
     {
         mGameWindow = new Window(1920, 1080, false, true);
         mRenderer = new Zephyrus::Render::RendererOpenGl();
 
         mSceneManager = new Zephyrus::Scenes::SceneManager(mRenderer);
         Assets::AssetsManager::GetInstance().Initialize(mSceneManager);
+        InitializeEditorConfig();
 
-        if (mGameWindow->Open(mTitle) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow)) {
+        if (mGameWindow->Open(mProjectName) && mRenderer->Initialize(*mGameWindow) && Zephyrus::Render::TextRenderer::Instance().Init(*mGameWindow)) {
 #ifdef _DEBUG
-            mSceneManager->LoadSceneWithFile(mStartUpScene, mRenderer);
+            mSceneManager->LoadSceneFromFileId(mStartMapId, mRenderer);
 #else
-            mSceneManager->LoadSplashScreen(new Scenes::SplashScreen(mSceneManager, mStartUpScene), mRenderer);
+            mSceneManager->LoadSplashScreen(new Scenes::SplashScreen(mSceneManager, mStartMapId), mRenderer);
 #endif
             Loop();
         }
     }
 
-    void Game::Loop()
+    void GameApplication::InitializeEditorConfig()
+    {
+        auto reader = mSceneManager->GetSerializationFactory()->CreateDeserializer();
+
+        if (reader->LoadDocument(mEditorConfigFile))
+        {
+            if (auto projectName = reader->ReadString("gameName"))
+            {
+                mProjectName = *projectName;
+            }
+            if (auto startupMapId = reader->ReadString("startupMapId"))
+            {
+                mStartMapId = *startupMapId;
+            }
+        }
+    }
+
+    void GameApplication::Loop()
     {
         while (mIsRunning) {
             Timer::ComputeDeltaTime();
@@ -91,17 +83,17 @@ namespace Zephyrus::Application {
         Close();
     }
 
-    void Game::Update()
+    void GameApplication::Update()
     {
         mSceneManager->Update(Timer::deltaTime);
     }
 
-    void Game::Render()
+    void GameApplication::Render()
     {
         mSceneManager->RenderAll();
     }
 
-    void Game::Input()
+    void GameApplication::Input()
     {
         GLFWwindow* window = mGameWindow->GetGlfwWindow();
         glfwPollEvents();
@@ -115,7 +107,7 @@ namespace Zephyrus::Application {
         mSceneManager->UpdateInput();
     }
 
-    void Game::Close()
+    void GameApplication::Close()
     {
         mSceneManager->Unload();
         mGameWindow->Close();

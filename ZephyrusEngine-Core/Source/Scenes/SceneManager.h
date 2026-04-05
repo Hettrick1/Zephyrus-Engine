@@ -28,11 +28,12 @@ namespace Zephyrus::Scenes
 		SceneManager(Render::IRenderer* pRenderer = nullptr);
 		SceneManager(const SceneManager&) = delete;
 		SceneManager& operator=(const SceneManager&) = delete;
+		~SceneManager() override;
 
 		// Loads the given scene and sets it as the active scene
 		void LoadScene(Scene* pScene, bool pCallPostStart = true);
 		void LoadSplashScreen(Scene* pScene, Zephyrus::Render::IRenderer* pRenderer);
-		void LoadSceneWithFile(const std::string& pFilePath, Zephyrus::Render::IRenderer* pRenderer = nullptr, bool pCallPostStart = true) override;
+		void LoadSceneFromFileId(const std::string& pSceneFileId, Zephyrus::Render::IRenderer* pRenderer = nullptr, bool pCallPostStart = true) override;
 
 		// Starts the active scene with the provided renderer
 		void StartScene();

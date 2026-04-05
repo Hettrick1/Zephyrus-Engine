@@ -14,7 +14,7 @@ namespace Zephyrus::Factory {
 	class ISceneFactory
 	{
 	public:
-		~ISceneFactory() = default;
+		virtual ~ISceneFactory() = default;
 		virtual bool PopulateSceneFromFile(Scene* pSceneRef, const std::string& pFilePath) = 0;
 	};
 }
