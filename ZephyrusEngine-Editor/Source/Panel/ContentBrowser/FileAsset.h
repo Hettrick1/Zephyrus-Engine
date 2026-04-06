@@ -36,12 +36,20 @@ struct FileAsset
         std::filesystem::path newMetaPath = std::filesystem::path(mMetaPath);
         newPath.replace_filename(nameWithExtension);
         newMetaPath = newPath.string() + ".meta";
-        ZP_EDITOR_INFO("Renamed " + mId + newPath.string());
+
+        if (std::filesystem::exists(newMetaPath) && std::filesystem::exists(newPath))
+        {
+            ZP_EDITOR_INFO("Cannot rename, name already taken : " + mId + " - " + newPath.string());
+            return false;
+        }
+        
+        ZP_EDITOR_INFO("Renamed " + mId + " - to - "+ newPath.string());
         db.UpdatePathFromID(mId, newPath.string());
         std::filesystem::rename(mPath, newPath);
         std::filesystem::rename(mMetaPath, newMetaPath);
         mPath = newPath.string();
         mMetaPath = newMetaPath.string();
+        mFileName = newPath.stem().string();
         return true;
     }
     bool Move(const std::string& newPath)

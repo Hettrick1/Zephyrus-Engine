@@ -115,18 +115,20 @@ void ContentBrowserPanel::Draw()
             ImGui::OpenPopup("CreationPopUP");
         }
 
+        bool needOpening = false;
+        
         if (ImGui::BeginPopup("CreationPopUP"))
         {
             if (ImGui::BeginMenu("Add"))
             {
-                if (ImGui::MenuItem("New Map"))
+                if (ImGui::MenuItem("New Scene"))
                 {
-                    std::filesystem::path newMapPath = mCurrentDirectory / "NewMap.zpmap";
+                    std::filesystem::path newMapPath = mCurrentDirectory / "NewScene.zpmap";
 
                     int counter = 1;
                     while (std::filesystem::exists(newMapPath))
                     {
-                        newMapPath = mCurrentDirectory / ("NewMap" + std::to_string(counter) + ".zpmap");
+                        newMapPath = mCurrentDirectory / ("NewScene" + std::to_string(counter) + ".zpmap");
                         counter++;
                     }
 
@@ -141,24 +143,59 @@ void ContentBrowserPanel::Draw()
                     CreateFileAsset(id, newMapPath.make_preferred().string());
                     mNeedRefresh = true;
                 }
+                if (ImGui::MenuItem("New Material"))
+                {
+                    std::filesystem::path newMaterialPath = mCurrentDirectory / "NewMaterial.zpmat";
+
+                    int counter = 1;
+                    while (std::filesystem::exists(newMaterialPath))
+                    {
+                        newMaterialPath = mCurrentDirectory / ("NewMaterial" + std::to_string(counter) + ".zpmat");
+                        counter++;
+                    }
+
+                    std::ofstream file(newMaterialPath);
+                    if (file.is_open())
+                    {
+                        file << "{}";
+                        file.close();
+                    }
+
+                    auto id = AssetsManager::GetInstance().GetFileDatabase().CreateMetaFromFile(newMaterialPath);
+                    CreateFileAsset(id, newMaterialPath.make_preferred().string());
+                    mNeedRefresh = true;
+                }
                 ImGui::EndMenu();
             }
-            if (!mSelectedEntry.empty())
+            if (!mSelectedEntries.empty())
             {
                 if (ImGui::MenuItem("Delete"))
                 {
                     DeleteFileOrDirectory();
                 }
+                if (!mSelectedEntries.empty() && mSelectedEntries[0].mAsset && ImGui::MenuItem("Rename"))
+                {
+                    needOpening = true;
+                }
             }
             ImGui::EndPopup();
         }
 
-        if (!mSelectedEntry.empty() && ImGui::IsKeyPressed(ImGuiKey_Delete) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
+        if (!mSelectedEntries.empty() && ImGui::IsKeyPressed(ImGuiKey_Delete) && ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))
         {
             DeleteFileOrDirectory();
         }
+        if (!mSelectedEntries.empty())
+        {
+            RenameFileAssetPopUp(mSelectedEntries[0], needOpening);
+        }
 
         CreatePrefabFile(mCurrentDirectory.string());
+
+        if (mNeedRefresh)
+        {
+            RefreshContentBrowser(mCurrentDirectory);
+        }
     }
     ImGui::End();
     Panel::EndDraw();
@@ -201,7 +238,7 @@ void ContentBrowserPanel::DrawDirectoryContent()
 
     if (mCurrentDirectory != mRootDirectory)
     {
-        mIsSelected = (mSelectedEntry == mCurrentDirectory.parent_path());
+        mIsSelected = !mSelectedEntries.empty() ? (mSelectedEntries[0].mPath == mCurrentDirectory.parent_path()) : false;
         ContentBrowserItem returnFolder;
         returnFolder.mPath = mCurrentDirectory;
         returnFolder.mIsDirectory = true;
@@ -211,23 +248,18 @@ void ContentBrowserPanel::DrawDirectoryContent()
         {
             if (ImGui::IsItemClicked() || (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()))
             {
-                mSelectedEntry.clear();
+                mSelectedEntries.clear();
             }
         }
 
         if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered())
         {
             mCurrentDirectory = mCurrentDirectory.parent_path();
-            mSelectedEntry.clear();
+            mSelectedEntries.clear();
             mNeedRefresh = true;
         }
 
         ImGui::NextColumn();
-    }
-
-    if (mNeedRefresh)
-    {
-        RefreshContentBrowser(mCurrentDirectory);
     }
     
     for (auto item : mCurrentItemsInFolder)
@@ -241,7 +273,11 @@ void ContentBrowserPanel::DrawDirectoryContent()
 
 void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
 {
-    mIsSelected = (mSelectedEntry == item.mPath);
+    mIsSelected = false;
+    if (!mSelectedEntries.empty())
+    {
+        mIsSelected = mSelectedEntries[0].mPath == item.mPath;
+    }
 
     std::string name = item.mPath.filename().replace_extension("").string();
 
@@ -253,11 +289,12 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
     {
         if (ImGui::IsItemClicked())
         {
-            mSelectedEntry = item.mPath.string();
+            mSelectedEntries.clear();
+            mSelectedEntries.emplace_back(item);
         }
         else if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
         {
-            mSelectedEntry.clear();
+            mSelectedEntries.clear();
         }
     }
 
@@ -266,29 +303,18 @@ void ContentBrowserPanel::DrawItem(ContentBrowserItem& item)
         if (item.mIsDirectory)
         {
             mCurrentDirectory = item.mPath;
-            mSelectedEntry.clear();
+            mSelectedEntries.clear();
             mNeedRefresh = true;
         }
         else // TODO : Create a map and function to open files, if the extension is not found then open with shellexecuteA
         {
-            // ------------ EXAMPLE OF RENAME --------------
-            
-            // auto oldPath = item.asset->mPath;
-            // item.asset->Rename("test");
-            // auto newPath = item.asset->mPath;
-            // auto browserItem = mFileAssets[oldPath];
-            // mFileAssets.erase(oldPath);
-            // mFileAssets[newPath] = browserItem;
-            // mNeedRefresh = true;
-            //RefreshContentBrowser(mCurrentDirectory);
-            
             if (item.mAsset->mType != FileType::Material && item.mAsset->mType != FileType::Map)
             {
 #ifdef _WIN32
                 ShellExecuteA(nullptr, "open", item.mPath.string().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 #endif
             }
-            else if (item.mAsset->mType == FileType::Map)// load map
+            else if (item.mAsset->mType == FileType::Map) // load map
             {
                 mContext->LoadSceneFromFileId(item.mAsset->mId, nullptr, false);
                 mContext->SetSceneLoaded(true);
@@ -373,6 +399,67 @@ bool ContentBrowserPanel::IsSubpathOf(const std::filesystem::path &path,const st
     return !rel.empty() && rel.native()[0] != '.';
 }
 
+bool ContentBrowserPanel::RenameFileAssetPopUp(const ContentBrowserItem& itemToRename, bool needOpening)
+{
+    if (!itemToRename.mAsset)
+    {
+        return false;
+    }
+    if (needOpening)
+    {
+        ImGui::OpenPopup("RenameFileAsset");
+    }
+    
+    auto oldPath = itemToRename.mAsset->mPath;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+    ImGui::SetNextWindowPos(mRenameAssetButtonStart, ImGuiCond_Always);
+
+    if (ImGui::BeginPopup("RenameFileAsset", ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
+    {
+        const char* renameLabel = "##RenameFileAsset";
+		
+        char buffer[64];
+        strncpy_s(buffer, itemToRename.mAsset->mFileName.c_str(), sizeof(buffer));
+        buffer[sizeof(buffer) - 1] = '\0';
+
+        ImGui::SetNextItemWidth(100);
+        ImGui::PushStyleColor(ImGuiCol_FrameBg,        IM_COL32(229, 178, 0, 150));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, IM_COL32(66, 150, 250, 255));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive,  IM_COL32(66, 150, 250, 255));
+		
+        if (ImGui::IsWindowAppearing())
+        {
+            ImGui::SetKeyboardFocusHere();
+        }
+		
+        if (ImGui::InputText(renameLabel, buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+        {
+            if (!itemToRename.mAsset->Rename(buffer))
+            {
+                ImGui::CloseCurrentPopup();
+                return false;
+            }
+            auto newPath = itemToRename.mAsset->mPath;
+            auto FileItem = mFileAssets[oldPath];
+            mFileAssets.erase(oldPath);
+            mFileAssets[newPath] = FileItem;
+            mSelectedEntries.clear();
+            mNeedRefresh = true;
+        }
+
+        if (ImGui::IsItemDeactivated())
+        {
+            ImGui::CloseCurrentPopup();
+        }
+		
+        ImGui::PopStyleColor(3);
+        ImGui::EndPopup();
+    }
+    ImGui::PopStyleVar();
+    return true;
+}
+
 void ContentBrowserPanel::DrawBreadCrumb(float width)
 {
     float startPosX = ImGui::GetCursorPosX();
@@ -425,7 +512,7 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
     ImU32 bgBottomColor;
     float rounding = 8.0f;
     float fontSize = 16.0f;
-
+    
     ImVec2 start = ImGui::GetCursorScreenPos();
     ImVec2 startImage = ImVec2(start.x + 5, start.y + 5);
     ImVec2 endImage = ImVec2(startImage.x + imgSize.x, startImage.y + imgSize.y);
@@ -479,7 +566,12 @@ void ContentBrowserPanel::ImageButton(bool pIsSelected, const ContentBrowserItem
     else if (pIsSelected)
     {
         bgColor = IM_COL32(0, 0, 0, 0);
+        if (!asset)
+        {
+            bgColor = IM_COL32(100, 100, 100, 255);
+        }
         bgBottomColor = IM_COL32(140, 140, 140, 255);
+        mRenameAssetButtonStart = ImVec2(start.x, startImage.y + 100);
     }
     else
     {
@@ -579,16 +671,24 @@ void ContentBrowserPanel::SetSceneHierarchy(SceneHierarchyPanel* pHierarchy)
 
 void ContentBrowserPanel::DeleteFileOrDirectory()
 {
-    if (std::filesystem::is_directory(mSelectedEntry))
+    if (mSelectedEntries.empty())
     {
-        std::filesystem::remove_all(mSelectedEntry);
+        return;
     }
-    else
+    for (auto& entry : mSelectedEntries)
     {
-        std::filesystem::remove(mSelectedEntry);
-        std::filesystem::remove(mSelectedEntry.string() + ".meta");
+        if (std::filesystem::is_directory(entry.mPath))
+        {
+            std::filesystem::remove_all(entry.mPath);
+        }
+        else
+        {
+            std::filesystem::remove(entry.mPath);
+            std::filesystem::remove(entry.mPath.string() + ".meta");
+        }
     }
-    mSelectedEntry.clear();
+    mSelectedEntries.clear();
+    mNeedRefresh = true;
 }
 
 void ContentBrowserPanel::CreatePrefabFile(const std::string& pFilepath)

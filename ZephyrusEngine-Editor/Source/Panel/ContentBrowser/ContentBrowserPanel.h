@@ -34,9 +34,10 @@ private:
 
 	bool mIsSelected{ false };
 	bool mNeedRefresh{ false };
-	std::filesystem::path mSelectedEntry;
+	std::vector<ContentBrowserItem> mSelectedEntries{};
 	bool mShowFullPath{ false };
 	std::vector<std::filesystem::path> mPreviousFoldersInHierarchy;
+	ImVec2 mRenameAssetButtonStart {0.0f, 0.0f};
 
 	void ImageButton(bool pIsSelected, const ContentBrowserItem& file, const std::string& name);
 public:
@@ -52,6 +53,8 @@ public:
 	void DrawBrowserUtils(float width);
 	void DrawBreadCrumb(float width);
 	bool IsSubpathOf(const std::filesystem::path &path,const std::filesystem::path &base);
+
+	bool RenameFileAssetPopUp(const ContentBrowserItem& itemToRename, bool needOpening);
 
 	void CreateDragDropSource(const std::string& name, const ContentBrowserItem&  data);
 	ImTextureID GetImageFromType(const FileType& type, const std::string& fileId);
