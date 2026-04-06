@@ -469,7 +469,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const std::string& pIndex, cons
 		return false;
 	}
 
-	std::vector<std::string> newFaces = cubemap->GetTempFilePath();
+	std::vector<std::string> newFaces = cubemap->GetTempFileIds();
 
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0, 1.0, 0.0, 1.0));
 	ImGui::TextWrapped("All textures must be the same size and have the same format (png, jpeg, ...) ");
@@ -489,7 +489,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const std::string& pIndex, cons
 		if (ImGui::InputText(("##" + label).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 		{
 			newFaces[i] = buffer;
-			cubemap->SetTempFilePath(newFaces);
+			cubemap->SetTempFileIds(newFaces);
 		}
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -497,7 +497,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const std::string& pIndex, cons
 			{
 				std::string textureID((const char*)payload->Data, payload->DataSize);
 				newFaces[i] = textureID;
-				cubemap->SetTempFilePath(newFaces);
+				cubemap->SetTempFileIds(newFaces);
 			}
 			ImGui::EndDragDropTarget();
 		}
@@ -520,7 +520,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const std::string& pIndex, cons
 			ZP_CORE_ERROR("Cubemap creation failed!");
 			return false;
 		}
-		cubemap->SetTempFilePath(cubemap->GetFaceFilePath());
+		cubemap->SetTempFileIds(cubemap->GetFaceFileIds());
 		prop.Set(newCubemap);
 	}
 	return true;
@@ -787,7 +787,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 				}
 				else if (auto* cubemap = dynamic_cast<Zephyrus::Assets::ICubeMapTexture*>(tex))
 				{
-					std::vector<std::string> faces = cubemap->GetTempFilePath();
+					std::vector<std::string> faces = cubemap->GetTempFileIds();
 					for (size_t i = 0; i < 6; i++)
 					{
 						char InstanceCubemapBuffer[128];
@@ -801,7 +801,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 						if (ImGui::InputText(("##FaceInst" + std::to_string(i)).c_str(), InstanceCubemapBuffer, sizeof(InstanceCubemapBuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 						{
 							faces[i] = InstanceCubemapBuffer;
-							cubemap->SetTempFilePath(faces);
+							cubemap->SetTempFileIds(faces);
 						}
 
 						if (ImGui::IsItemHovered())
@@ -815,7 +815,7 @@ bool ComponentPropertyDrawer::SetPropertyMaterialInstance(const std::string& pIn
 							{
 								std::string texID((const char*)payload->Data, payload->DataSize);
 								faces[i] = texID;
-								cubemap->SetTempFilePath(faces);
+								cubemap->SetTempFileIds(faces);
 							}
 							ImGui::EndDragDropTarget();
 						}
@@ -1641,7 +1641,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 			}
 			else if (auto* cubemap = dynamic_cast<Zephyrus::Assets::ICubeMapTexture*>(tex))
 			{
-				std::vector<std::string> faces = cubemap->GetTempFilePath();
+				std::vector<std::string> faces = cubemap->GetTempFileIds();
 				for (size_t j = 0; j < 6; j++)
 				{
 					char buffer[128];
@@ -1655,7 +1655,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 					if (ImGui::InputText(("##Face" + std::to_string(j)).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 					{
 						faces[i] = buffer;
-						cubemap->SetTempFilePath(faces);
+						cubemap->SetTempFileIds(faces);
 					}
 
 					if (ImGui::IsItemHovered())
@@ -1669,7 +1669,7 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 						{
 							std::string texID((const char*)payload->Data, payload->DataSize);
 							faces[j] = texID;
-							cubemap->SetTempFilePath(faces);
+							cubemap->SetTempFileIds(faces);
 						}
 						ImGui::EndDragDropTarget();
 					}

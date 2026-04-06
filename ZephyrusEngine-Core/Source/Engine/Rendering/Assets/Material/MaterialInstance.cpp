@@ -169,7 +169,7 @@ namespace Zephyrus::Material
 				{
 					writer.WriteString("type", "Cubemap");
 					writer.BeginArray("paths");
-					for (auto& facePath : cubemap->GetFaceFilePath())
+					for (auto& facePath : cubemap->GetFaceFileIds())
 						writer.PushString(facePath);
 					writer.EndArray();
 				}

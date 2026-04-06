@@ -67,7 +67,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["Sprites/Doom/skybox/front.png", "Sprites/Doom/skybox/back.png", "Sprites/Doom/skybox/top.png", "Sprites/Doom/skybox/bottom.png", "Sprites/Doom/skybox/left.png", "Sprites/Doom/skybox/right.png"]
+                                    "paths": ["4ef87470-0a00-4650-a802-0538641c828f", "28234a33-9d8a-41d7-9aeb-6a4973ab1ba7", "21053e8f-5f19-4ff1-822b-8215818d3396", "e0f93b50-fede-46a9-aa16-4605ec790692", "423669f1-6e82-483a-bd60-a73fd988dffe", "a5bb39d9-1145-49ca-ab7e-8e6d96e26129"]
                                 }]
                         }
                     }
@@ -97,7 +97,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+                                    "paths": ["a63ef139-0043-4387-b828-2e81e91bb53c", "ad2da672-58ce-4196-89f8-03e7d874597e", "e3dd3340-9286-431d-810b-fc8eabeedb52", "4fc73004-35b6-457a-850e-941e1b48dba2", "68310d1d-daeb-4c7b-b12c-a18322b04ab3", "74ed6cc6-06aa-495c-93d5-63c71622f347"]
                                 }]
                         }
                     }
@@ -127,7 +127,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+                                    "paths": ["a63ef139-0043-4387-b828-2e81e91bb53c", "ad2da672-58ce-4196-89f8-03e7d874597e", "e3dd3340-9286-431d-810b-fc8eabeedb52", "4fc73004-35b6-457a-850e-941e1b48dba2", "68310d1d-daeb-4c7b-b12c-a18322b04ab3", "74ed6cc6-06aa-495c-93d5-63c71622f347"]
                                 }],
                             "vec4Properties": [{
                                     "name": "bottomColor",
@@ -173,7 +173,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+                                    "paths": ["a63ef139-0043-4387-b828-2e81e91bb53c", "ad2da672-58ce-4196-89f8-03e7d874597e", "e3dd3340-9286-431d-810b-fc8eabeedb52", "4fc73004-35b6-457a-850e-941e1b48dba2", "68310d1d-daeb-4c7b-b12c-a18322b04ab3", "74ed6cc6-06aa-495c-93d5-63c71622f347"]
                                 }],
                             "vec4Properties": [{
                                     "name": "highColor",
@@ -234,7 +234,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+                                    "paths": ["a63ef139-0043-4387-b828-2e81e91bb53c", "ad2da672-58ce-4196-89f8-03e7d874597e", "e3dd3340-9286-431d-810b-fc8eabeedb52", "4fc73004-35b6-457a-850e-941e1b48dba2", "68310d1d-daeb-4c7b-b12c-a18322b04ab3", "74ed6cc6-06aa-495c-93d5-63c71622f347"]
                                 }],
                             "vec4Properties": [{
                                     "name": "highColor",
@@ -295,7 +295,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/CubeMap/nx1.png", "../Content/Sprites/CubeMap/px1.png", "../Content/Sprites/CubeMap/py1.png", "../Content/Sprites/CubeMap/ny1.png", "../Content/Sprites/CubeMap/nz1.png", "../Content/Sprites/CubeMap/pz1.png"]
+                                    "paths": ["38084c0f-e4cb-4292-9ac5-c7b7419476a1", "8356918b-34e1-4b89-9174-4abf94a5b754", "1bf26d6f-5b38-4f4c-833f-280a018defc1", "6239efa0-35b6-4216-b106-e6000d5a2626", "ce636def-d045-4611-9587-98b46649e987", "15d766d1-ab4f-41d6-9a9d-aca12453d398"]
                                 }],
                             "vec4Properties": [{
                                     "name": "highColor",
@@ -356,7 +356,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/CubeMap/noisePlanetE.png", "../Content/Sprites/CubeMap/noisePlanetW.png", "../Content/Sprites/CubeMap/noisePlanetT.png", "../Content/Sprites/CubeMap/noisePlanetB.png", "../Content/Sprites/CubeMap/noisePlanetS.png", "../Content/Sprites/CubeMap/noisePlanetN.png"]
+                                    "paths": ["0f2c2516-c067-455c-a808-0326a5d55b98", "8438a327-f6d2-44e9-9bb1-110fe6e81e5e", "adda84cd-1304-4699-92df-a1823440b181", "db2496f9-68e2-418c-94cf-3e9c3bbad41e", "542b57e4-e024-4a9e-a976-c7610a28d008", "54780b04-9754-479a-8fd8-74b98f3bc638"]
                                 }],
                             "vec4Properties": [{
                                     "name": "highColor",
@@ -407,7 +407,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["../Content/Sprites/CubeMap/noisePlanetE.png", "../Content/Sprites/CubeMap/noisePlanetW.png", "../Content/Sprites/CubeMap/noisePlanetT.png", "../Content/Sprites/CubeMap/noisePlanetB.png", "../Content/Sprites/CubeMap/noisePlanetS.png", "../Content/Sprites/CubeMap/noisePlanetN.png"]
+                                    "paths": ["0f2c2516-c067-455c-a808-0326a5d55b98", "8438a327-f6d2-44e9-9bb1-110fe6e81e5e", "adda84cd-1304-4699-92df-a1823440b181", "db2496f9-68e2-418c-94cf-3e9c3bbad41e", "542b57e4-e024-4a9e-a976-c7610a28d008", "54780b04-9754-479a-8fd8-74b98f3bc638"]
                                 }],
                             "vec4Properties": [{
                                     "name": "bottomColor",

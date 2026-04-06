@@ -21,9 +21,6 @@ namespace Zephyrus::Assets {
 	
 	ITexture2D* AssetsManager::LoadTexture(const std::string& pId, bool pForceReload)
 	{
-		// refactor this to only use pID and not the get id from path
-		//std::string idTemp = mFileDataBase.GetIdFromPath(GetFullPath(pId, AssetType::Texture));
-		
 		if (!mTextures.contains(pId) || pForceReload) {
 			mTextures[pId] = LoadTextureFromFile(pId);
 			return mTextures[pId];
@@ -31,21 +28,21 @@ namespace Zephyrus::Assets {
 		return mTextures[pId];
 	}
 
-	ITexture2D* AssetsManager::GetTexture(const std::string& pName)
+	ITexture2D* AssetsManager::GetTexture(const std::string& pId)
 	{
-		if (mTextures.find(pName) == mTextures.end()) {
+		if (!mTextures.contains(pId)) {
 			std::ostringstream loadError;
-			loadError << "Texture " << pName << " does not exists in assets manager\n";
+			loadError << "Texture " << pId << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
 			return nullptr;
 		}
-		return mTextures[pName];
+		return mTextures[pId];
 	}
 
-	ICubeMapTexture* AssetsManager::LoadCubemap(const std::vector<std::string>& pCubePaths, const std::string& pName)
+	ICubeMapTexture* AssetsManager::LoadCubemap(const std::vector<std::string>& pCubeIds, const std::string& pName, bool pForceReload)
 	{
-		if (mCubemaps.find(pName) == mCubemaps.end()) {
-			mCubemaps[pName] = LoadCubemapFromFile(pCubePaths);
+		if (!mCubemaps.contains(pName) || pForceReload) {
+			mCubemaps[pName] = LoadCubemapFromFile(pCubeIds);
 			return mCubemaps[pName];
 		}
 		return mCubemaps[pName];
@@ -53,7 +50,7 @@ namespace Zephyrus::Assets {
 
 	ICubeMapTexture* AssetsManager::GetCubemap(const std::string& pName)
 	{
-		if (mCubemaps.find(pName) == mCubemaps.end()) {
+		if (!mCubemaps.contains(pName)) {
 			std::ostringstream loadError;
 			loadError << "Cubemap " << pName << " does not exists in assets manager\n";
 			ZP_CORE_ERROR(loadError.str());
@@ -76,9 +73,6 @@ namespace Zephyrus::Assets {
 
 	IMesh* AssetsManager::LoadMesh(const std::string& pId, bool pForceReload)
 	{
-		// refactor this to only use pID and not the get id from path
-		//std::string idTemp = database.GetIdFromPath(GetFullPath(pId, AssetType::Mesh));
-		
 		if (!mMeshes.contains(pId) || pForceReload) {
 			auto data = LoadMeshData(pId);
 			mMeshes[pId] = mContext->GetRenderer()->LoadMeshFromData(data);
@@ -120,7 +114,6 @@ namespace Zephyrus::Assets {
 
 	Render::IShader* AssetsManager::LoadShader(const std::string& pId, Render::ShaderType pType, bool pForceReload)
 	{
-		//std::string idTemp = database.GetIdFromPath(GetFullPath(pId, AssetType::Shader));
 		if (!mShaders.contains(pId) || pForceReload) {
 			mShaders[pId] = LoadShaderFromFile(pId, pType);
 			return mShaders[pId];
@@ -138,9 +131,9 @@ namespace Zephyrus::Assets {
 		return mShaders[pId];
 	}
 
-	Render::IShaderProgram* AssetsManager::LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName)
+	Render::IShaderProgram* AssetsManager::LoadShaderProgram(const std::vector<Render::IShader*>& pShaders, const std::string& pName, bool pForceReload)
 	{
-		if (mShaderPrograms.find(pName) == mShaderPrograms.end()) {
+		if (!mShaderPrograms.contains(pName) || pForceReload) {
 			mShaderPrograms[pName] = LoadProgramWithShaders(pShaders);
 			return mShaderPrograms[pName];
 		}
@@ -149,7 +142,6 @@ namespace Zephyrus::Assets {
 
 	Material::IMaterial* AssetsManager::LoadMaterial(const std::string& pId, bool pForceReleoad)
 	{
-		//std::string idTemp = database.GetIdFromPath(pId);
 		if (!mMaterials.contains(pId) || pForceReleoad) {
 			mMaterials[pId] = LoadMaterialFromFile(pId);
 			return mMaterials[pId];
@@ -178,6 +170,15 @@ namespace Zephyrus::Assets {
 			}
 		}
 		mTextures.clear();
+		for (auto& iter : mCubemaps)
+		{
+			if (iter.second)
+			{
+				delete iter.second;
+				iter.second = nullptr;
+			}
+		}
+		mCubemaps.clear();
 		for (auto& iter : mMeshes)
 		{
 			if (iter.second)
@@ -299,14 +300,14 @@ namespace Zephyrus::Assets {
 		return mContext->GetRenderer()->LoadShader(mFileDataBase.GetPathFromID(pId), pId, pType);
 	}
 
-	Render::IShaderProgram* AssetsManager::LoadProgramWithShaders(std::vector<Render::IShader*> pShaders) const
+	Render::IShaderProgram* AssetsManager::LoadProgramWithShaders(const std::vector<Render::IShader*>& pShaders) const
 	{
 		return mContext->GetRenderer()->LoadShaderProgram(pShaders);
 	}
 
-	ICubeMapTexture* AssetsManager::LoadCubemapFromFile(const std::vector<std::string>& pCubePaths)
-	{
-		return mContext->GetRenderer()->LoadCubemap(pCubePaths);
+	ICubeMapTexture* AssetsManager::LoadCubemapFromFile(const std::vector<std::string>& pCubeIds) const
+	{		
+		return mContext->GetRenderer()->LoadCubemap(pCubeIds);
 	}
 
 	Material::IMaterial* AssetsManager::LoadMaterialFromFile(const std::string& pMaterialFileId)
@@ -326,71 +327,71 @@ namespace Zephyrus::Assets {
 		return mat;
 	}
 
-	std::string AssetsManager::GetFullPath(const std::string& pPath, AssetType pType)
-	{
-		// TODO : Refactor this
-		std::string newPath;
-		switch (pType)
-		{
-		case AssetType::Texture:
-		{
-			if (pPath.find(IMPORT_PATH) == std::string::npos)
-			{
-				newPath = IMPORT_PATH + pPath;
-				if (newPath.find(".png") == std::string::npos && newPath.find(".jpg") == std::string::npos)
-				{
-					newPath = pPath;
-				}
-				break;
-			}
-			newPath = pPath;
-			break;
-		}
-		case AssetType::Mesh:
-		{
-			if (pPath.find(MESH_PATH) == std::string::npos)
-			{
-				newPath = MESH_PATH + pPath;
-				if (newPath.find(".obj") == std::string::npos)
-				{
-					newPath = pPath;
-				}
-				break;
-			}
-			newPath = pPath;
-			break;
-		}
-		case AssetType::Font:
-		{
-			if (pPath.find(FONT_PATH) == std::string::npos)
-			{
-				newPath = FONT_PATH + pPath;
-				break;
-			}
-			newPath = pPath;
-			break;
-		}
-		case AssetType::Shader:
-		{
-			if (pPath.find(SHADER_PATH) == std::string::npos)
-			{
-				newPath = SHADER_PATH + pPath;
-				if (newPath.find(".obj") == std::string::npos)
-				{
-					newPath = pPath;
-				}
-				break;
-			}
-			newPath = pPath;
-			break;
-		}
-		default:
-		{
-			newPath = pPath;
-			break;
-		}
-		}
-		return newPath;
-		//return pPath;
-	}
+	// std::string AssetsManager::GetFullPath(const std::string& pPath, AssetType pType)
+	// {
+	// 	// TODO : Refactor this
+	// 	std::string newPath;
+	// 	switch (pType)
+	// 	{
+	// 	case AssetType::Texture:
+	// 	{
+	// 		if (pPath.find(IMPORT_PATH) == std::string::npos)
+	// 		{
+	// 			newPath = IMPORT_PATH + pPath;
+	// 			if (newPath.find(".png") == std::string::npos && newPath.find(".jpg") == std::string::npos)
+	// 			{
+	// 				newPath = pPath;
+	// 			}
+	// 			break;
+	// 		}
+	// 		newPath = pPath;
+	// 		break;
+	// 	}
+	// 	case AssetType::Mesh:
+	// 	{
+	// 		if (pPath.find(MESH_PATH) == std::string::npos)
+	// 		{
+	// 			newPath = MESH_PATH + pPath;
+	// 			if (newPath.find(".obj") == std::string::npos)
+	// 			{
+	// 				newPath = pPath;
+	// 			}
+	// 			break;
+	// 		}
+	// 		newPath = pPath;
+	// 		break;
+	// 	}
+	// 	case AssetType::Font:
+	// 	{
+	// 		if (pPath.find(FONT_PATH) == std::string::npos)
+	// 		{
+	// 			newPath = FONT_PATH + pPath;
+	// 			break;
+	// 		}
+	// 		newPath = pPath;
+	// 		break;
+	// 	}
+	// 	case AssetType::Shader:
+	// 	{
+	// 		if (pPath.find(SHADER_PATH) == std::string::npos)
+	// 		{
+	// 			newPath = SHADER_PATH + pPath;
+	// 			if (newPath.find(".obj") == std::string::npos)
+	// 			{
+	// 				newPath = pPath;
+	// 			}
+	// 			break;
+	// 		}
+	// 		newPath = pPath;
+	// 		break;
+	// 	}
+	// 	default:
+	// 	{
+	// 		newPath = pPath;
+	// 		break;
+	// 	}
+	// 	}
+	// 	return newPath;
+	// 	//return pPath;
+	// }
 }

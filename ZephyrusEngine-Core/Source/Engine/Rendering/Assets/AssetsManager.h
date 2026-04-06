@@ -47,8 +47,8 @@ namespace Zephyrus::Assets {
 		MeshData LoadMeshData(const std::string& pId);
 		IFont* LoadFontFromFile(const std::string& pId);
 		Render::IShader* LoadShaderFromFile(const std::string& pId, Render::ShaderType pType);
-		Render::IShaderProgram* LoadProgramWithShaders(std::vector<Render::IShader*> pShaders) const;
-		ICubeMapTexture* LoadCubemapFromFile(const std::vector<std::string>& pCubePaths);
+		Render::IShaderProgram* LoadProgramWithShaders(const std::vector<Render::IShader*>& pShaders) const;
+		ICubeMapTexture* LoadCubemapFromFile(const std::vector<std::string>& pCubeIds) const;
 		Material::IMaterial* LoadMaterialFromFile(const std::string& pMaterialFileId);
 
 		std::map<std::string, ITexture2D*> mTextures = {};
@@ -79,9 +79,9 @@ namespace Zephyrus::Assets {
 
 		// Loads a texture from file and stores it with the given name
 		ITexture2D* LoadTexture(const std::string& pId, bool pForceReload = false);
-		ITexture2D* GetTexture(const std::string& pName);
+		ITexture2D* GetTexture(const std::string& pId);
 
-		ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubePaths, const std::string& pName);
+		ICubeMapTexture* LoadCubemap(const std::vector<std::string>& pCubeIds, const std::string& pName, bool pForceReload = false);
 		ICubeMapTexture* GetCubemap(const std::string& pName);
 
 		// Loads a mesh from file and stores it with the given name
@@ -95,12 +95,12 @@ namespace Zephyrus::Assets {
 		Render::IShader* LoadShader(const std::string& pId, Render::ShaderType pType, bool pForceReload = false);
 		Render::IShader* GetShader(const std::string& pId);
 
-		Render::IShaderProgram* LoadShaderProgram(std::vector<Render::IShader*> pShaders, const std::string& pName);
+		Render::IShaderProgram* LoadShaderProgram(const std::vector<Render::IShader*>& pShaders, const std::string& pName, bool pForceReload = false);
 
 		Material::IMaterial* LoadMaterial(const std::string& pId, bool pForceReleoad = false);
 		Material::IMaterial* GetMaterial(const std::string& pId);
 
-		std::string GetFullPath(const std::string& pPath, AssetType pType);
+		//std::string GetFullPath(const std::string& pPath, AssetType pType);
 
 		AssetDataBase& GetFileDatabase() {return mFileDataBase;}
 

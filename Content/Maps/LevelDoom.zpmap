@@ -67,7 +67,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Cubemap",
-                                    "paths": ["Sprites/Doom/skybox/front.png", "Sprites/Doom/skybox/back.png", "Sprites/Doom/skybox/top.png", "Sprites/Doom/skybox/bottom.png", "Sprites/Doom/skybox/left.png", "Sprites/Doom/skybox/right.png"]
+                                    "paths": ["4ef87470-0a00-4650-a802-0538641c828f", "28234a33-9d8a-41d7-9aeb-6a4973ab1ba7", "21053e8f-5f19-4ff1-822b-8215818d3396", "e0f93b50-fede-46a9-aa16-4605ec790692", "423669f1-6e82-483a-bd60-a73fd988dffe", "a5bb39d9-1145-49ca-ab7e-8e6d96e26129"]
                                 }]
                         }
                     }

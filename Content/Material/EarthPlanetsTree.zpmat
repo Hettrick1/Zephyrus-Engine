@@ -9,11 +9,11 @@
     "textures": [{
             "name": "albedo",
             "type": "Cubemap",
-            "paths": ["../Content/Sprites/CubeMap/nx.png", "../Content/Sprites/CubeMap/px.png", "../Content/Sprites/CubeMap/py.png", "../Content/Sprites/CubeMap/ny.png", "../Content/Sprites/CubeMap/nz.png", "../Content/Sprites/CubeMap/pz.png"]
+            "paths": ["a63ef139-0043-4387-b828-2e81e91bb53c", "ad2da672-58ce-4196-89f8-03e7d874597e", "e3dd3340-9286-431d-810b-fc8eabeedb52", "4fc73004-35b6-457a-850e-941e1b48dba2", "68310d1d-daeb-4c7b-b12c-a18322b04ab3", "74ed6cc6-06aa-495c-93d5-63c71622f347"]
         }],
     "vec4Properties": [{
             "name": "bottomColor",
-            "value": [0.029, 0.28, 0.029, 1.0]
+            "value": [0.028, 0.28, 0.028, 1.0]
         }, {
             "name": "topColor",
             "value": [0.23, 0.68, 0.23, 1.0]

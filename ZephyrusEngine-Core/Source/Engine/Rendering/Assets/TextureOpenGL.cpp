@@ -52,7 +52,9 @@ bool Zephyrus::Assets::TextureOpenGL::Load(const std::string& pFilePath, const s
 		ZP_INFO("Texture load failed");
 		return false;
 	}
-
+	
+	ZP_LOAD("Loaded GL texture 2D : " + pFilePath);
+	
 	return true;
 }
 

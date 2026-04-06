@@ -6,27 +6,26 @@
 #include "Log.h"
 
 namespace Zephyrus::Assets {
-	bool CubemapTextureOpenGL::Load(const std::vector<std::string>& pCubePaths)
+	bool CubemapTextureOpenGL::Load(const std::vector<std::string>& pCubeIds)
 	{
 		int width = 0, height = 0, channels = 0;
 
 		glGenTextures(1, &mTextureId);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureId);
 
-		mTempFacePaths = pCubePaths;
-		mCubeFacePaths = pCubePaths;
+		mTempFaceIds = pCubeIds;
+		mCubeFaceIds = pCubeIds;
 
 		stbi_set_flip_vertically_on_load(false);
 
-		for (unsigned int i = 0; i < pCubePaths.size(); i++) // retrieve the skybox textures
+		for (unsigned int i = 0; i < pCubeIds.size(); i++)
 		{
-
-			std::string path = AssetsManager::GetInstance().GetFullPath(mCubeFacePaths[i], AssetType::Texture);
+			std::string path = AssetsManager::GetInstance().GetFileDatabase().GetPathFromID(mCubeFaceIds[i]);
 
 			unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 			if (!data)
 			{
-				ZP_CORE_ERROR("Failed to load cubemap face: " + mCubeFacePaths[i]);
+				ZP_CORE_ERROR("Failed to load cubemap face: " + mCubeFaceIds[i]);
 				return false;
 			}
 			mWidth  = width;
@@ -40,7 +39,7 @@ namespace Zephyrus::Assets {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, data);
 			stbi_image_free(data);
 
-			ZP_LOAD("Loaded GL texture : " + AssetsManager::GetInstance().IMPORT_PATH + mCubeFacePaths[i]);
+			ZP_LOAD("Loaded GL texture : " + path);
 		}
 
 		// Setting some image parameters

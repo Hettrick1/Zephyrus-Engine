@@ -11,9 +11,9 @@ namespace Zephyrus::Assets
 		virtual ~ICubeMapTexture() = default;
 
 		virtual bool Load(const std::vector<std::string>& pCubePaths) = 0;
-		virtual inline std::vector<std::string> GetFaceFilePath() const = 0;
-		virtual void SetTempFilePath(const std::vector<std::string>& pFilePath) = 0;
-		virtual std::vector<std::string> GetTempFilePath() const = 0;
+		virtual inline std::vector<std::string> GetFaceFileIds() const = 0;
+		virtual void SetTempFileIds(const std::vector<std::string>& pFilePath) = 0;
+		virtual std::vector<std::string> GetTempFileIds() const = 0;
 	};
 
 }
