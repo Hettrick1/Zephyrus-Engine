@@ -11,6 +11,28 @@
 
 namespace Zephyrus::Physics
 {
+    struct CustomConvexResultCallback : public btCollisionWorld::ClosestConvexResultCallback {
+        std::vector<Zephyrus::ActorComponent::Actor*> mIgnoreActors;
+
+        CustomConvexResultCallback(const btVector3& pFrom, const btVector3& pTo, const std::vector<Zephyrus::ActorComponent::Actor*>& pIgnore)
+            : btCollisionWorld::ClosestConvexResultCallback(pFrom, pTo), mIgnoreActors(pIgnore) {}
+
+        virtual bool needsCollision(btBroadphaseProxy* proxy) const override {
+            if (!btCollisionWorld::ClosestConvexResultCallback::needsCollision(proxy))
+                return false;
+
+            btCollisionObject* obj = static_cast<btCollisionObject*>(proxy->m_clientObject);
+            if (!obj) return false;
+
+            auto* actor = static_cast<Zephyrus::ActorComponent::Actor*>(obj->getUserPointer());
+            for (auto* ignore : mIgnoreActors) {
+                if (actor == ignore) return false;
+            }
+
+            return !(obj->getCollisionFlags() & btCollisionObject::CF_NO_CONTACT_RESPONSE);
+        }
+    };
+
     PhysicWorld::PhysicWorld()
     {
         mBroadphase = new btDbvtBroadphase();
@@ -130,6 +152,51 @@ namespace Zephyrus::Physics
             pOutHit.Distance = (pOutHit.HitPoint - pStart).Length();
             return true;
         }
+        return false;
+    }
+
+    bool PhysicWorld::BoxTrace(const Vector3D& pStart, const Vector3D& pEnd, const Vector3D& pHalfExtents, HitResult& pOutHit, std::vector<Actor*> pIgnoreActors)
+    {
+        pOutHit.Reset();
+
+        btBoxShape boxShape(btVector3(pHalfExtents.x, pHalfExtents.y, pHalfExtents.z));
+
+        btTransform startTrans, endTrans;
+        startTrans.setIdentity();
+        startTrans.setOrigin(btVector3(pStart.x, pStart.y, pStart.z));
+
+        
+        endTrans.setIdentity();
+        if (pStart == pEnd)
+        {
+            endTrans.setOrigin(btVector3(pEnd.x + 0.01f, pEnd.y + 0.01f, pEnd.z + 0.01f));
+        }
+        else
+        {
+            endTrans.setOrigin(btVector3(pEnd.x, pEnd.y, pEnd.z));
+        }
+
+        CustomConvexResultCallback callback(startTrans.getOrigin(), endTrans.getOrigin(), pIgnoreActors);
+
+        callback.m_collisionFilterGroup = btBroadphaseProxy::DefaultFilter;
+        callback.m_collisionFilterMask = btBroadphaseProxy::AllFilter;
+
+        mWorld->convexSweepTest(&boxShape, startTrans, endTrans, callback, mWorld->getDispatchInfo().m_allowedCcdPenetration);
+
+        if (callback.hasHit()) {
+            pOutHit.HasHit = true;
+            pOutHit.HitPoint = Zephyrus::Physics::FromBtVec3(callback.m_hitPointWorld);
+            pOutHit.Normal = Zephyrus::Physics::FromBtVec3(callback.m_hitNormalWorld);
+
+            if (callback.m_hitCollisionObject && callback.m_hitCollisionObject->getUserPointer()) {
+                pOutHit.HitActor = static_cast<Actor*>(callback.m_hitCollisionObject->getUserPointer());
+            }
+
+            float totalDistance = (pEnd - pStart).Length();
+            pOutHit.Distance = callback.m_closestHitFraction * totalDistance;
+            return true;
+        }
+
         return false;
     }
 

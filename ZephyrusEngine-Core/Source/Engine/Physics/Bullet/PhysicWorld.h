@@ -7,7 +7,7 @@
 #include <vector>
 namespace Zephyrus::Physics
 {
-    struct CustomRayResultCallback : public btCollisionWorld::ClosestRayResultCallback {
+       struct CustomRayResultCallback : public btCollisionWorld::ClosestRayResultCallback {
         Zephyrus::ActorComponent::Actor* mIgnoreActor;
 
         CustomRayResultCallback(const btVector3& pFrom, const btVector3& pTo, Zephyrus::ActorComponent::Actor* pIgnore)
@@ -74,6 +74,7 @@ namespace Zephyrus::Physics
         void RemoveCollider(BulletColliderComponent* pCollider);
 
         bool LineTrace(const Vector3D& pStart, const Vector3D& pEnd, HitResult& pOutHit, Actor* pIgnoreActor = nullptr);
+        bool BoxTrace(const Vector3D& pStart, const Vector3D& pEnd, const Vector3D& pExtents, HitResult& pOutHit, std::vector<Actor*>pIgnoreActors);
 
         btDiscreteDynamicsWorld* GetWorld() { return mWorld; }
     };
