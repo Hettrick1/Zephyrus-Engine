@@ -33,12 +33,13 @@ namespace Zephyrus::ActorComponent
 				mOwner->GetSceneContext()->GetNavGridManager()->ComputeGrid();
 			};
 
-		const bool condition = mGridSize.x > 0 && mGridSize.y > 0 && mNodeSize > 0;
+		const bool condition = mGridSize.x > 0 && mGridSize.y > 0 && mAgentWidth > 0 && mAgentHeight > 0;
 
 		return
 		{
 			{ "Grid Size : ", &mGridSize, PropertyType::Vec2},
-			{ "Node Size : ", &mNodeSize, PropertyType::Float},
+			{ "Agent Width : ", &mAgentWidth, PropertyType::Float},
+			{ "Agent Height : ", &mAgentHeight, PropertyType::Float},
 			{ "Compute Grid : ", nullptr, PropertyType::Button, Callback(computeCallback, "Compute") | Condition(condition)}
 		};
 	}

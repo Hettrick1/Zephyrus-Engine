@@ -9,7 +9,8 @@ namespace Zephyrus::ActorComponent
 	{
 	private:
 		Vector2D mGridSize{ 100.0f, 100.0f };
-		float mNodeSize = 1.0f;
+		float mAgentWidth = 0.8f;
+		float mAgentHeight = 1.5f;
 	public:
 		NavGridVolumeComponent(Actor* pOwner);
 		virtual ~NavGridVolumeComponent() override;

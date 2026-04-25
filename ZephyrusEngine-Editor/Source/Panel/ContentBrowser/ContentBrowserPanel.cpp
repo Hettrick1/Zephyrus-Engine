@@ -10,12 +10,13 @@
 #include "FileAsset.h"
 #include "Utils.h"
 #include "EditorUI/EditorContentIds.h"
+
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
+#endif
 
 #include <algorithm>
-#endif
 
 std::filesystem::path ContentBrowserPanel::mRootDirectory = "../Content";
 std::filesystem::path ContentBrowserPanel::mCurrentDirectory = mRootDirectory;
@@ -231,6 +232,8 @@ void ContentBrowserPanel::DrawDirectoryTree(const std::string& folderPath)
 void ContentBrowserPanel::DrawDirectoryContent()
 {
     int columns = ImGui::GetContentRegionAvail().x / 120;
+    columns = std::max<int>(1, columns);
+    
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10, 10));
 
     // TODO : USE TABLES

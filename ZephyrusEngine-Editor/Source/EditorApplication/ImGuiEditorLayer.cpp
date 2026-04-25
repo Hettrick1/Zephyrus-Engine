@@ -31,7 +31,7 @@ void ImGuiEditorLayer::InitializeImGui(GLFWwindow* glfw3Window)
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-
+    
     ImGui::StyleColorsDark();
 
     ZP::UI::gFonts.small = io.Fonts->AddFontFromFileTTF("../Content/Fonts/Roboto/static/Roboto-SemiBold.ttf", 16.0f);

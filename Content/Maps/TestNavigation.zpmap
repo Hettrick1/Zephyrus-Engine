@@ -1,0 +1,92 @@
+{
+    "player": "d3a8c81d-be8a-40b1-a0f8-890769c11818",
+    "actors": [{
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
+            "uuid": "10a95e96-3e5b-4bc3-826c-496fa40be0a5",
+            "name": "CubeActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [100.0, 100.0, 1.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
+                        "materialInstance": {
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "319058bf-7981-4e5b-996a-f8ce75eded69"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [100.0, 100.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }]
+        }, {
+            "prefabName": "af1ccdf6-1462-4ae0-9b0e-74655b8f5133",
+            "uuid": "15833ebc-b46b-401b-a9f1-6d074aebdf1e",
+            "name": "PlayerStart",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 3.134],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "64cd0a92-d909-4bb3-aca8-0cf06467e584",
+                        "materialInstance": {
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "9108356a-451c-4af9-81e4-95c4e7d8cef4"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [1.0, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "PlayerStartComponent",
+                    "componentId": "PlayerStartComponent1",
+                    "componentName": "PlayerStartComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "playerPrefab": "d3a8c81d-be8a-40b1-a0f8-890769c11818"
+                    }
+                }]
+        }]
+}
