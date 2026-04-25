@@ -53,6 +53,7 @@ ComponentPropertyDrawer::ComponentPropertyDrawer()
 	mPropertySetters[PropertyType::ArrayMatVector4D] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayVector4D(i, p, lw, iw); };
 	mPropertySetters[PropertyType::ArrayMatTextureBase] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyArrayTextureBase(i, p, lw, iw); };
 	mPropertySetters[PropertyType::TextureBase] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyTextureBase(i, p, lw, iw); };
+	mPropertySetters[PropertyType::Button] = [this](const std::string& i, const PropertyDescriptor& p, float lw, float iw) { return SetPropertyButton(i, p, lw, iw); };
 }
 
 void ComponentPropertyDrawer::DrawProperty(const std::string& pIndex, const PropertyDescriptor& property, Zephyrus::ActorComponent::Component* activeComponent)
@@ -510,7 +511,7 @@ bool ComponentPropertyDrawer::SetPropertyCubemap(const std::string& pIndex, cons
 	if (ImGui::Button("Create Texture Map"))
 	{
 		std::string name;
-		for (auto face : newFaces)
+		for (auto& face : newFaces)
 		{
 			name += face;
 		}
@@ -1803,28 +1804,28 @@ bool ComponentPropertyDrawer::SetPropertyArrayTextureBase(const std::string& pIn
 bool ComponentPropertyDrawer::SetPropertyTextureBase(const std::string& pIndex, const PropertyDescriptor& pProperty,
 	const float& pLabelWidth, const float& pInputWidth)
 {
-	// auto prop = MakeUndoableProperty<Zephyrus::Assets::ITextureBase*>(pProperty, mActiveComponent);
-	// Zephyrus::Assets::ITextureBase* texVar = static_cast<Zephyrus::Assets::ITextureBase*>(prop.getter());
-	//
-	// const char* items[]{"Texture 2D", "Cubemap"};
-	// int SelectedItem = 0;
-	// if ()
-	// SelectedItem = static_cast<int>(texVar->GetType());
-	// if (ImGui::Combo("Type", &SelectedItem, items, IM_ARRAYSIZE(items)))
-	// {
-	// 	texVar->SetType(static_cast<Zephyrus::Assets::TextureType>(SelectedItem));
-	// }
-	//
-	// ImGui::SameLine();
-	//
-	// switch (texVar->GetType())
-	// {
-	// case Zephyrus::Assets::TextureType::Texture2D :
-	// 	return SetPropertyTexture(pIndex, pProperty, pLabelWidth, pInputWidth);
-	// case Zephyrus::Assets::TextureType::Cubemap :
-	// 	return SetPropertyCubemap(pIndex, pProperty, pLabelWidth, pInputWidth);
-	// }
 	return false;
+}
+
+bool ComponentPropertyDrawer::SetPropertyButton(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth)
+{
+	if (Zephyrus::PropertyFlags::HasFlag(pProperty.metadata.flags, Zephyrus::PropertyFlags::Callback))
+	{
+		std::string propertyName = pProperty.name;
+		std::string id = pProperty.metadata.callbackName + "##Button " + pIndex;
+		ImGui::Text(propertyName.c_str());
+		ImGui::SameLine(pLabelWidth);
+		if (ImGui::Button(id.c_str(), ImVec2(pInputWidth, 0)))
+		{
+			pProperty.metadata.buttonCallback();
+		}
+	}
+	else
+	{
+		return false;
+	}
+	
+	return true;
 }
 
 bool ComponentPropertyDrawer::SetPropertyShader(const std::string& pIndex, const PropertyDescriptor& pProperty,

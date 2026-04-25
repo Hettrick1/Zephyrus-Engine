@@ -222,6 +222,15 @@ namespace Zephyrus::Scenes {
 		return nullptr;
 	}
 
+	Zephyrus::AI::NavGridManager* SceneManager::GetNavGridManager()
+	{
+		if (ActiveScene)
+		{
+			return ActiveScene->GetNavGridManager();
+		}
+		return nullptr;
+	}
+
 	void SceneManager::SetSceneLoaded(bool pSceneLoaded)
 	{
 		mIsSceneLoaded = pSceneLoaded;

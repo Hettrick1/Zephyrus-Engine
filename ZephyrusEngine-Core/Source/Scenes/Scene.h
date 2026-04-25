@@ -7,6 +7,7 @@
 #include "Physics/Bullet/PhysicsDebugRenderer.h"
 #include "CameraManager.h"
 #include "InputManager.h"
+#include "AI/NavGridManager.h"
 #include "Temp/DoomComponents/DoomMenuPC.h"
 
 namespace Zephyrus::ActorComponent
@@ -48,6 +49,7 @@ namespace Zephyrus::Scenes {
 		PhysicsDebugRenderer* mDebugRenderer{ nullptr };
 		CameraManager* mCameraManager{ nullptr };
 		Inputs::InputManager* mInputManager{ nullptr };
+		AI::NavGridManager* mNavGridManager{ nullptr };
 		
 	public:
 		Scene(ISceneContext* pContext, std::string pTitle = "Scene");
@@ -87,6 +89,7 @@ namespace Zephyrus::Scenes {
 		inline PhysicWorld* GetPhysicWorld() const { return mPhysicWorld; }
 		inline PhysicsDebugRenderer* GetPhysicDebugRenderer() const { return mDebugRenderer; }
 		inline CameraManager* GetCameraManager() const { return mCameraManager; }
+		inline AI::NavGridManager* GetNavGridManager() const { return mNavGridManager; }
 		inline bool GetSceneLoaded() const { return mIsSceneLoaded; }
 		inline InputManager* GetInputManager() const { return mInputManager; }
 	public:

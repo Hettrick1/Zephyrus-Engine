@@ -70,6 +70,7 @@ private:
 	bool SetPropertyArrayVector4D(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyArrayTextureBase(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 	bool SetPropertyTextureBase(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
+	bool SetPropertyButton(const std::string& pIndex, const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth);
 
 private:
 	bool SetPropertyShader(const std::string& pIndex,const PropertyDescriptor& pProperty, const float& pLabelWidth, const float& pInputWidth, Zephyrus::Render::ShaderType pType);

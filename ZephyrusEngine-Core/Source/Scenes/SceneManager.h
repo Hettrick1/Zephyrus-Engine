@@ -63,6 +63,7 @@ namespace Zephyrus::Scenes
 		Zephyrus::Scenes::Scene* GetActiveScene() override;
 		Zephyrus::Factory::ISerializationFactory* GetSerializationFactory() override;
 		Zephyrus::Inputs::InputManager* GetInputManager() override;
+		virtual Zephyrus::AI::NavGridManager* GetNavGridManager() override;
 		void SetSceneLoaded(bool pSceneLoaded) override;
 	};
 }

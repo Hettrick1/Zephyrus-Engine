@@ -34,6 +34,7 @@ enum class PropertyType
     ArrayMatVector4D,
     ArrayMatTextureBase,
     TextureBase,
+    Button,
 };
 
 struct PropertyDescriptor {

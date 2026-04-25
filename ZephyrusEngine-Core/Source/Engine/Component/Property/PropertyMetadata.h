@@ -2,6 +2,7 @@
 
 #include "PropertyFlags.h"
 #include <string>
+#include <functional>
 
 namespace Zephyrus
 {
@@ -27,6 +28,9 @@ namespace Zephyrus
 
         std::string trueValue;
         std::string falseValue;
+
+        std::function<void()> buttonCallback;
+        std::string callbackName;
     };
 
     inline PropertyMetadata operator|(PropertyMetadata a, const PropertyMetadata& b) {
@@ -138,6 +142,15 @@ namespace Zephyrus
         m.flags |= PropertyFlags::Condition;
         m.flags |= showBehavior;
         m.condition = condition;
+        return m;
+    }
+
+    inline PropertyMetadata Callback(std::function<void()> callback, const std::string CallbackName = "")
+    {
+        PropertyMetadata m;
+        m.flags |= PropertyFlags::Callback;
+        m.buttonCallback = callback;
+        m.callbackName = CallbackName;
         return m;
     }
 
