@@ -86,6 +86,9 @@ namespace Zephyrus::Application {
     void GameApplication::Update()
     {
         mSceneManager->Update(Timer::deltaTime);
+#ifdef _DEBUG
+        mSceneManager->DebugUpdate();
+#endif
     }
 
     void GameApplication::Render()

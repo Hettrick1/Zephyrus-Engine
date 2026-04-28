@@ -17,13 +17,18 @@ namespace Zephyrus::Render {
 	private:
 		Render::IShader* mDebugVertex{ nullptr };
 		Render::IShader* mDebugFragment{ nullptr };
-		Render::IShaderProgram* mDebugShaderProgram;
+		Render::IShaderProgram* mDebugShaderProgram{ nullptr };
 		Matrix4DRow mView, mProj;
-		Window* mWindow;
-		std::vector<Zephyrus::Debug::DebugLine*> mLines;
+		Window* mWindow{ nullptr };
+		std::vector<Zephyrus::Debug::DebugLine> mLines;
+		std::vector<float> mLinesVertices;
+		std::vector<Matrix4DRow> mBoxes;
 		GLuint mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
-		bool mDrawDebug = false, mDrawLines = false, mDrawBoxes = false, mDrawSelected = false;
+		bool mDrawDebug = true, mDrawLines = true, mDrawBoxes = true, mDrawSelected = false;
 
+		/// Draws a debug box using the given min/max points and world transform.
+		void DrawDebugBoxes();
+		
 	public:
 		DebugRenderer();
 		~DebugRenderer();
@@ -35,11 +40,10 @@ namespace Zephyrus::Render {
 
 		void Draw(IRenderer& pRenderer);
 
-		void AddDebugLine(Zephyrus::Debug::DebugLine* pLine);
-		void RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine);
-
-		/// Draws a debug box using the given min/max points and world transform.
-		void DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, const Matrix4DRow& pWorldTransform);
+		void AddDebugLine(Zephyrus::Debug::DebugLine pLine);
+		
+		void AddDebugBox(const Matrix4DRow& pWorldTransform);
+		void RemoveDebugBox(const Matrix4DRow& pWorldTransform);
 
 		void DrawSelectedBox(const Matrix4DRow& pWorldTransform);
 

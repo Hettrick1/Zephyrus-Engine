@@ -42,6 +42,7 @@ namespace Zephyrus::Scenes {
 		if (mRenderer != nullptr)
 		{
 			ActiveScene->SetRenderer(mRenderer);
+			mRenderer->SetPhysicsWorldForDebug(ActiveScene->GetPhysicWorld());
 			ActiveScene->Start();
 			if (pCallPostStart)
 			{
@@ -55,6 +56,7 @@ namespace Zephyrus::Scenes {
 		ActiveScene = pScene;
 		SetSceneLoaded(false);
 		ActiveScene->SetRenderer(pRenderer);
+		mRenderer->SetPhysicsWorldForDebug(ActiveScene->GetPhysicWorld());
 		ActiveScene->Start();
 		SetSceneLoaded(true);
 	}
@@ -81,6 +83,7 @@ namespace Zephyrus::Scenes {
 			ActiveScene->SetFilePath(filepath);
 			mSceneFactory->PopulateSceneFromFile(ActiveScene, filepath);
 			ActiveScene->Start();
+			mRenderer->SetPhysicsWorldForDebug(ActiveScene->GetPhysicWorld());
 			ActiveScene->GetPhysicWorld()->Update(1);
 			if (pCallPostStart)
 			{
@@ -107,6 +110,11 @@ namespace Zephyrus::Scenes {
 	{
 		SetSceneLoaded(true); // TODO : move this in the loadscene when we have the new input system, this will solve a random crash
 		ActiveScene->Update(pDetltaTime);
+	}
+
+	void SceneManager::DebugUpdate()
+	{
+		ActiveScene->DebugUpdate();
 	}
 
 	void SceneManager::RenderAll()

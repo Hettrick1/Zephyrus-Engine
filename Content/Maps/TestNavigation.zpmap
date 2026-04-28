@@ -6,7 +6,7 @@
             "name": "CubeActor",
             "state": "active",
             "transform": {
-                "position": [0.0, 0.0, 0.0],
+                "position": [0.0, 0.0, -1.508],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [100.0, 100.0, 1.0]
             },
@@ -28,7 +28,7 @@
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
-                                    "value": [100.0, 100.0]
+                                    "value": [800.0, 800.0]
                                 }]
                         }
                     }
@@ -42,7 +42,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "isQuery": false,
                         "ignoreSelf": true,
-                        "halfExtents": [1.0, 1.0, 1.0]
+                        "halfExtents": [100.0, 100.0, 1.0]
                     }
                 }]
         }, {
@@ -51,7 +51,7 @@
             "name": "PlayerStart",
             "state": "active",
             "transform": {
-                "position": [0.0, 0.0, 3.134],
+                "position": [0.0, 0.0, 1.945],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -86,6 +86,71 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "playerPrefab": "d3a8c81d-be8a-40b1-a0f8-890769c11818"
+                    }
+                }]
+        }, {
+            "prefabName": "a57b3e61-8d3a-4b52-90ed-870228fb29f4",
+            "uuid": "59f7a597-b754-4bb4-bcdc-bf67ba082049",
+            "name": "NavGridVolume",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 0.0, 1.128],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [16.0, 16.0, 1.5]
+            },
+            "components": [{
+                    "type": "NavGridVolumeComponent",
+                    "componentId": "NavGridVolumeComponent1",
+                    "componentName": "NavGridVolumeComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0]
+                    }
+                }]
+        }, {
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
+            "uuid": "c753c0a9-dade-4ca5-bd25-f0cd7d2ac0b3",
+            "name": "CubeActor",
+            "state": "active",
+            "transform": {
+                "position": [4.734, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
+                        "materialInstance": {
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "9108356a-451c-4af9-81e4-95c4e7d8cef4"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [1.0, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 1.0]
                     }
                 }]
         }]

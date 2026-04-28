@@ -8,7 +8,6 @@ using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::Render {
 	DebugRenderer::DebugRenderer()
 		: mDebugBoxVbo(0), mDebugBoxVao(0), mDebugLineVbo(0), mDebugLineVao(0)
-		, mDrawDebug(false), mDrawLines(true), mDrawBoxes(true)
 	{
 	}
 
@@ -77,15 +76,8 @@ namespace Zephyrus::Render {
 
 	void DebugRenderer::Unload()
 	{
-		for (auto& line : mLines)
-		{
-			if (line)
-			{
-				delete line;
-				line = nullptr;
-			}
-		}
 		mLines.clear();
+		mLinesVertices.clear();
 	}
 
 	void DebugRenderer::Draw(IRenderer& pRenderer)
@@ -97,40 +89,80 @@ namespace Zephyrus::Render {
 			mDebugShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
 		}
 		if (mDrawDebug) {
-			if (mDrawLines)
+			if (mDrawLines && !mLinesVertices.empty())
 			{
-				for (auto& line : mLines) // DEBUG ONLY
-				{
-					DrawDebugLine(line->Start, line->End, line->Hit);
-				}
-				mLines.clear();
+				glBindVertexArray(mDebugLineVao);
+				glBindBuffer(GL_ARRAY_BUFFER, mDebugLineVbo);
+
+				glBufferData(GL_ARRAY_BUFFER, mLinesVertices.size() * sizeof(float), mLinesVertices.data(), GL_DYNAMIC_DRAW);
+
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+				glEnableVertexAttribArray(0);
+
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				
+				glBindVertexArray(mDebugLineVao);
+				mDebugShaderProgram->Use();
+        
+				auto wt = Matrix4DRow::Identity;
+				mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
+				mDebugShaderProgram->setVector3f("uColor", Vector3D(1.0f, 0.7f, 0.0f));
+				glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(mLinesVertices.size() / 3));
+				glBindVertexArray(0);
+				mLinesVertices.clear();
+				
+				// for (auto& line : mLines) // DEBUG ONLY
+				// {
+				// 	DrawDebugLine(line->Start, line->End, line->Hit);
+				// }
+				 mLines.clear();
+			}
+			if (mDrawBoxes)
+			{
+				DrawDebugBoxes();
+				mBoxes.clear();
 			}
 		}
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	void DebugRenderer::AddDebugLine(Zephyrus::Debug::DebugLine* pLine)
+	void DebugRenderer::AddDebugLine(Zephyrus::Debug::DebugLine pLine)
 	{
 		mLines.push_back(pLine);
+		mLinesVertices.push_back(pLine.Start.x);
+		mLinesVertices.push_back(pLine.Start.y);
+		mLinesVertices.push_back(pLine.Start.z);
+
+		mLinesVertices.push_back(pLine.End.x);
+		mLinesVertices.push_back(pLine.End.y);
+		mLinesVertices.push_back(pLine.End.z);
 	}
 
-	void DebugRenderer::RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine)
+	void DebugRenderer::AddDebugBox(const Matrix4DRow& pWorldTransform)
 	{
-		std::vector<Zephyrus::Debug::DebugLine*>::iterator dl;
-		dl = std::find(mLines.begin(), mLines.end(), pLine);
-		mLines.erase(dl);
+		mBoxes.push_back(pWorldTransform);
 	}
 
-	void DebugRenderer::DrawDebugBox(const Vector3D& pMin, const Vector3D& pMax, const Matrix4DRow& pWorldTransform)
+	void DebugRenderer::RemoveDebugBox(const Matrix4DRow& pWorldTransform)
 	{
+		std::erase(mBoxes, pWorldTransform);
+	}
+
+	void DebugRenderer::DrawDebugBoxes()
+	{
+		if (mBoxes.empty())
+			return;
+			
 		glBindVertexArray(mDebugBoxVao);
-
 		mDebugShaderProgram->Use();
-		Matrix4DRow wt = pWorldTransform;
-		mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
-		mDebugShaderProgram->setVector3f("uColor", Vector3D(0, 1, 0));
+		for (const auto& box : mBoxes)
+		{
+			Matrix4DRow wt = box;
+			mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
+			mDebugShaderProgram->setVector3f("uColor", Vector3D(0, 1, 0));
 
-		glDrawArrays(GL_LINES, 0, 24);
+			glDrawArrays(GL_LINES, 0, 24);
+		}
 	}
 
 	void DebugRenderer::DrawSelectedBox(const Matrix4DRow& pWorldTransform)

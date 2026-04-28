@@ -1,4 +1,4 @@
-#include "SceneHierarchyPanel.h"
+ #include "SceneHierarchyPanel.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "DebugRenderer.h"
@@ -27,7 +27,17 @@ void SceneHierarchyPanel::Draw()
 	ImGui::Begin(mName.c_str());
 
 	auto actors = mContext->GetActiveScene()->GetAllActors();
+	if (!actors.empty() && mLastNbOfActors < actors.size() && mLastNbOfActors != 0)
+	{
+		selected = static_cast<int>(actors.size() - 1);
+		selected = std::max(0, selected);
+	}
 
+	if (mLastNbOfActors != actors.size())
+	{
+		mLastNbOfActors = static_cast<unsigned>(actors.size());
+	}
+	
 	for (int i = 0; i < actors.size(); i++)
 	{
 		char label[32];
@@ -81,14 +91,16 @@ void SceneHierarchyPanel::Draw()
 void SceneHierarchyPanel::ResetSelectedActor()
 {
 	auto actors = mContext->GetActiveScene()->GetAllActors();
-	if(actors.size() > 0)
+	if(!actors.empty())
 	{
 		mSelectedActor = actors[0];
 		selected = 0;
+		mLastNbOfActors = 0;
 	}
 	else
 	{
 		mSelectedActor = nullptr;
+		mLastNbOfActors = 0;
 	}
 }
 

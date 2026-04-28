@@ -22,11 +22,12 @@ namespace Zephyrus::Physics
         Render::IShader* mDebugVertex{ nullptr };
         Render::IShader* mDebugFragment{ nullptr };
         Render::IShaderProgram* mDebugShaderProgram{ nullptr };
-        Matrix4DRow mProj;
-        ISceneContext* mContext{ nullptr };
+        PhysicWorld* mWorld{ nullptr };
     public:
-        PhysicsDebugRenderer(ISceneContext* pContext);
+        PhysicsDebugRenderer();
 
+        void SetWorld(PhysicWorld* pWorld);
+        
         void drawLine(const btVector3& from, const btVector3& to, const btVector3& color) override;
 
         void drawContactPoint(const btVector3&, const btVector3&, btScalar, int, const btVector3&) override {}
@@ -34,9 +35,9 @@ namespace Zephyrus::Physics
         void draw3dText(const btVector3&, const char*) override {}
         void setDebugMode(int debugMode) override { mDebugMode = debugMode; }
         int getDebugMode() const override { return mDebugMode; }
+        
+        void DrawDebug(const Matrix4DRow& view, const Matrix4DRow& projection);
 
-        void SetProjectionMatrix(const Matrix4DRow& pProj);
-
-        void FlushDraw(Zephyrus::ActorComponent::CameraComponent* cam = nullptr);
+        void FlushDraw(const Matrix4DRow& view, const Matrix4DRow& projection);
     };
 }

@@ -40,6 +40,7 @@ namespace Zephyrus::Scenes
 		void PostStartScene();
 
 		void Update(float pDetltaTime);
+		void DebugUpdate();
 		void RenderAll();
 
 		void BeginRender();

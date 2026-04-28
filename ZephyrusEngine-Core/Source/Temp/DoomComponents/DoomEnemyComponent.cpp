@@ -159,8 +159,8 @@ namespace Zephyrus::ActorComponent
 				Vector3D end = start + dir * range;
 				HitResult hit;
 				mOwner->GetScene().GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
-				Zephyrus::Debug::DebugLine* line = new Zephyrus::Debug::DebugLine(start, end, hit);
-				mOwner->GetScene().GetRenderer()->AddDebugLine(line);
+				Zephyrus::Debug::DebugLine line = Debug::DebugLine(start, end, hit);
+				mOwner->GetScene().GetRenderer()->GetDebugRenderer()->AddDebugLine(line);
 				if (hit.HitActor != nullptr && hit.HitActor->HasTag("Player"))
 				{
 					playerRef->GetComponentOfType<DoomPlayerComponent>()->TakeDamages(damages);

@@ -96,9 +96,6 @@ namespace Zephyrus::Render {
 		virtual void AddSkySphere(SkySphereComponent* pSkySphere) = 0;
 		virtual void RemoveSkySphere(SkySphereComponent* pSkySphere) = 0;
 
-		virtual void AddDebugLine(Zephyrus::Debug::DebugLine* pLine) {} // DEBUG PURPOSE ONLY
-		virtual void RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine) {} // DEBUG PURPOSE ONLY
-
 		virtual void SetSpriteShaderProgram(IShaderProgram* pShaderProgram) {}
 		virtual void SetViewMatrix(const Matrix4DRow& pViewMatrix) {}
 		virtual void SetProjMatrix(const Matrix4DRow& pProjMatrix) {}
@@ -128,6 +125,8 @@ namespace Zephyrus::Render {
 		virtual void SetCameraPosition(const Vector3D& pPosition) = 0;
 		virtual void AddAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) = 0;
 		virtual void RemoveAtmosphereComponent(AtmosphereComponent* pAtmosphereComponent) = 0;
+		
+		virtual void SetPhysicsWorldForDebug(Physics::PhysicWorld* pWorld) = 0;
 
 		virtual Window* GetWindow() const = 0;
 		

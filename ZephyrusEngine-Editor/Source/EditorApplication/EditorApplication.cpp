@@ -97,7 +97,9 @@ void EditorApplication::Update()
     mImGuiEditorLayer->UpdatePanels(this);
     auto world = mSceneManager->GetPhysicsWorld();
     world->Update(0);
-    //EventSystem::Update();
+#ifdef _DEBUG
+    mSceneManager->DebugUpdate();
+#endif
 }
 
 void EditorApplication::Render()

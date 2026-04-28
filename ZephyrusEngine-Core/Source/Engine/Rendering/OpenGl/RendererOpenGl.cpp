@@ -20,6 +20,8 @@
 #include "EngineContentIds.h"
 #include <algorithm>
 
+#include "Bullet/PhysicsDebugRenderer.h"
+
 using Zephyrus::Assets::AssetsManager;
 namespace Zephyrus::Render {
 	RendererOpenGl::RendererOpenGl()
@@ -37,6 +39,7 @@ namespace Zephyrus::Render {
 		}
 		delete mHud;
 		delete mDebugRenderer;
+		delete mPhysicsDebugRenderer;
 	}
 
 	bool RendererOpenGl::Initialize(Window& pWindow)
@@ -50,11 +53,7 @@ namespace Zephyrus::Render {
 			return false;
 		}
 		glGetError();
-
-		// if (IMG_Init(IMG_INIT_PNG) == 0)
-		// {
-		// 	ZP_CORE_ERROR("Failed to initialize SDL_Image");
-		// }
+		
 		mSpriteVertexShader = AssetsManager::GetInstance().LoadShader(SH_HUD_IMAGE_VERT, ShaderType::VERTEX);
 		mSpriteFragmentShader = AssetsManager::GetInstance().LoadShader(SH_HUD_IMAGE_FRAG, ShaderType::FRAGMENT);
 		mSpriteShaderProgramTemp = AssetsManager::GetInstance().LoadShaderProgram({ mSpriteVertexShader, mSpriteFragmentShader }, "simpleSpriteSP");
@@ -74,6 +73,7 @@ namespace Zephyrus::Render {
 		mHud = new HudManager();
 		mDebugRenderer = new DebugRenderer();
 		mDebugRenderer->Initialize(*mWindow);
+		mPhysicsDebugRenderer = new Physics::PhysicsDebugRenderer();
 
 		mFrameUBO.Initialize();
 		
@@ -104,6 +104,7 @@ namespace Zephyrus::Render {
 		DrawSkySphere();
 		DrawMeshes();
 		mDebugRenderer->Draw(*this);
+		mPhysicsDebugRenderer->DrawDebug(mView, mProj);
 		DrawSprites();
 		DrawHud();
 		if (mSelectedActor)
@@ -251,16 +252,6 @@ namespace Zephyrus::Render {
 		mSelectedActor = pSelectedActor;
 	}
 
-	void RendererOpenGl::AddDebugLine(Zephyrus::Debug::DebugLine* pLine)
-	{
-		mDebugRenderer->AddDebugLine(pLine);
-	}
-
-	void RendererOpenGl::RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine)
-	{
-		mDebugRenderer->RemoveDebugLine(pLine);
-	}
-
 	void RendererOpenGl::SetViewMatrix(const Matrix4DRow& pViewMatrix)
 	{
 		mView = pViewMatrix;
@@ -315,27 +306,11 @@ namespace Zephyrus::Render {
 		glDrawArrays(GL_TRIANGLES, 0, mSkySphereComponents[0]->GetMesh()->GetVertexCount());
 	}
 
-	// void RendererOpenGl::DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const
-	// {
-	// 	if (mSpriteShaderProgram == nullptr)
-	// 	{
-	// 		return;
-	// 	}
-	// 	mSpriteShaderProgram->Use();
-	// 	pTexture->Bind();
-	// 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	// }
-
-	void RendererOpenGl::DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform)
-	{
-		mDebugRenderer->DrawDebugBox(pMin, pMax, pWorldTransform);
-	}
-
 	void RendererOpenGl::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit)
 	{
 		mDebugRenderer->DrawDebugLine(pStart, pEnd, pHit);
 	}
-
+	
 	void RendererOpenGl::DrawSkySphere()
 	{
 		if (!mSkySphereComponents.empty()) {
@@ -439,5 +414,10 @@ namespace Zephyrus::Render {
 	void RendererOpenGl::SetWireFrameMode(bool pWireframe)
 	{
 		mWireFrameMode = pWireframe;
+	}
+
+	void RendererOpenGl::SetPhysicsWorldForDebug(Physics::PhysicWorld* pWorld)
+	{
+		mPhysicsDebugRenderer->SetWorld(pWorld);
 	}
 }

@@ -35,17 +35,23 @@ namespace Zephyrus::ActorComponent
 
 		const bool condition = mGridSize.x > 0 && mGridSize.y > 0 && mAgentWidth > 0 && mAgentHeight > 0;
 
+		const Vector3D newSize = Vector3D((mAgentWidth) * mGridSize.x, (mAgentWidth) * mGridSize.y, mAgentHeight);
+		mOwner->SetSize(newSize);
+		
 		return
 		{
 			{ "Grid Size : ", &mGridSize, PropertyType::Vec2},
 			{ "Agent Width : ", &mAgentWidth, PropertyType::Float},
 			{ "Agent Height : ", &mAgentHeight, PropertyType::Float},
-			{ "Compute Grid : ", nullptr, PropertyType::Button, Callback(computeCallback, "Compute") | Condition(condition)}
+			{ "Compute Grid : ", nullptr, PropertyType::Button, Callback(computeCallback, "Compute") | Condition(condition)},
+			{ "Show line trace : ", &mShowLines, PropertyType::Bool},
 		};
 	}
 
 	void NavGridVolumeComponent::OnStart()
 	{
+		const Vector3D newSize = Vector3D((mAgentWidth + 0.2f) * mGridSize.x, (mAgentWidth + 0.2f) * mGridSize.y, mAgentHeight);
+		mOwner->SetSize(newSize);
 	}
 
 	void NavGridVolumeComponent::Update()

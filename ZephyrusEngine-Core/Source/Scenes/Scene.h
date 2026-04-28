@@ -46,7 +46,6 @@ namespace Zephyrus::Scenes {
 		Actor* mPlayerStart{ nullptr };
 		bool mSaved{ true };
 		PhysicWorld* mPhysicWorld{ nullptr };
-		PhysicsDebugRenderer* mDebugRenderer{ nullptr };
 		CameraManager* mCameraManager{ nullptr };
 		Inputs::InputManager* mInputManager{ nullptr };
 		AI::NavGridManager* mNavGridManager{ nullptr };
@@ -57,6 +56,7 @@ namespace Zephyrus::Scenes {
 		virtual void Start(); // Initializes the scene with the given renderer
 		virtual void PostStart();
 		virtual void Update(float pDetltaTime); // Updates the scene and its actors
+		virtual void DebugUpdate();
 		virtual void Render();
 		virtual void Inputs();
 		void SetSceneLoaded(bool pSceneLoaded);
@@ -87,7 +87,6 @@ namespace Zephyrus::Scenes {
 		inline void SetIsSaved(const bool& pSaved) { mSaved = pSaved; }
 		inline bool GetIsSaved() const { return mSaved; }
 		inline PhysicWorld* GetPhysicWorld() const { return mPhysicWorld; }
-		inline PhysicsDebugRenderer* GetPhysicDebugRenderer() const { return mDebugRenderer; }
 		inline CameraManager* GetCameraManager() const { return mCameraManager; }
 		inline AI::NavGridManager* GetNavGridManager() const { return mNavGridManager; }
 		inline bool GetSceneLoaded() const { return mIsSceneLoaded; }

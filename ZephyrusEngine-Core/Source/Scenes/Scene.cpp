@@ -19,12 +19,10 @@ using Zephyrus::Inputs::InputManager;
 namespace Zephyrus::Scenes {
 	Scene::Scene(ISceneContext* pContext, std::string pTitle)
 		: mContext{ pContext }, mTitle{ pTitle }, mIsUpdatingActor{ false }, 
-		mRenderer{ nullptr }, mPhysicWorld{ new PhysicWorld() }, mDebugRenderer{ new PhysicsDebugRenderer(pContext) },
+		mRenderer{ nullptr }, mPhysicWorld{ new PhysicWorld() },
 		mCameraManager{ new CameraManager(pContext) }, mInputManager{ new InputManager(pContext->GetRenderer()->GetWindow()->GetGlfwWindow()) },
-		mNavGridManager{new AI::NavGridManager()}
+		mNavGridManager{new AI::NavGridManager(pContext)}
 	{
-		mDebugRenderer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
-		mPhysicWorld->GetWorld()->setDebugDrawer(mDebugRenderer);
 	}
 
 	void Scene::Start()
@@ -90,6 +88,11 @@ namespace Zephyrus::Scenes {
 		UpdateAllActors();
 	}
 
+	void Scene::DebugUpdate()
+	{
+		mNavGridManager->UpdateDebug();
+	}
+
 	void Scene::Render()
 	{
 		mCameraManager->RenderActiveCamera();
@@ -149,8 +152,6 @@ namespace Zephyrus::Scenes {
 		mCameraManager->Unload();
 		delete mCameraManager;
 		mCameraManager = nullptr;
-		delete mDebugRenderer;
-		mDebugRenderer = nullptr;
 		delete mPhysicWorld;
 		mPhysicWorld = nullptr;
 		delete mInputManager;
@@ -177,8 +178,6 @@ namespace Zephyrus::Scenes {
 		mCameraManager->Unload();
 		delete mCameraManager;
 		mCameraManager = nullptr;
-		delete mDebugRenderer;
-		mDebugRenderer = nullptr;
 		delete mPhysicWorld;
 		mPhysicWorld = nullptr;
 		delete mInputManager;

@@ -8,9 +8,10 @@ namespace Zephyrus::ActorComponent
 	class NavGridVolumeComponent : public Component
 	{
 	private:
-		Vector2D mGridSize{ 100.0f, 100.0f };
+		Vector2D mGridSize{ 20.0f, 20.0f };
 		float mAgentWidth = 0.8f;
 		float mAgentHeight = 1.5f;
+		bool mShowLines = true;
 	public:
 		NavGridVolumeComponent(Actor* pOwner);
 		virtual ~NavGridVolumeComponent() override;
@@ -24,5 +25,12 @@ namespace Zephyrus::ActorComponent
 		void OnStart() override;
 		void Update() override;
 		void OnEnd() override;
+		
+		Vector2D GetGridSize() const { return mGridSize; }
+		Vector2D GetAgentSize() const { return Vector2D{ mAgentWidth, mAgentHeight }; }
+		float GetAgentWidth() const { return mAgentWidth; }
+		float GetAgentHeight() const { return mAgentHeight; }
+		
+		bool GetShowLines() const { return mShowLines; }
 	};
 }

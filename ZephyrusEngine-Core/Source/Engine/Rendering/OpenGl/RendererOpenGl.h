@@ -10,6 +10,11 @@
 #include "Interface/IRenderTarget.h"
 #include "FrameUboOpenGL.h"
 
+namespace Zephyrus::Physics
+{
+	class PhysicsDebugRenderer;
+}
+
 namespace Zephyrus::ActorComponent {
 	class Actor;
 }
@@ -33,7 +38,6 @@ namespace Zephyrus::Render {
 		Window* mWindow{ nullptr };
 		VertexArrayOpenGL* mFullscreenQuadVAO{ nullptr };
 		VertexArrayOpenGL* mVAO{ nullptr };
-		//SDL_GLContext mContext{ nullptr };
 		std::vector<SpriteComponent*> mSprites;
 		std::vector<MeshComponent*> mMeshes;
 		IShaderProgram* mSpriteShaderProgram{ nullptr };
@@ -47,6 +51,7 @@ namespace Zephyrus::Render {
 		IShaderProgram* mFullscreenShaderProgram{ nullptr };
 		HudManager* mHud{ nullptr };
 		DebugRenderer* mDebugRenderer{ nullptr };
+		Physics::PhysicsDebugRenderer* mPhysicsDebugRenderer{ nullptr };
 		bool mWireFrameMode;
 		std::vector<SkySphereComponent*> mSkySphereComponents;
 		Actor* mSelectedActor{ nullptr };
@@ -92,10 +97,6 @@ namespace Zephyrus::Render {
 
 		void SetSelectedActor(Actor* pSelectedActor) override;
 
-		// Adds a debug line to the debug renderer
-		void AddDebugLine(Zephyrus::Debug::DebugLine* pLine) override;
-		void RemoveDebugLine(Zephyrus::Debug::DebugLine* pLine) override;
-
 		// Sets the view matrix for rendering
 		void SetViewMatrix(const Matrix4DRow& pViewMatrix) override;
 		void SetProjMatrix(const Matrix4DRow& pProjMatrix) override;
@@ -104,11 +105,7 @@ namespace Zephyrus::Render {
 		void DrawMesh(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const override;
 		void DrawSkyBox(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const override;
 		void DrawSkySphere(Material::MaterialInstance& pMaterial, Assets::IMesh* pMesh, const Matrix4DRow& pWorldTransform) const override;
-
-		// Draws a sprite for the given actor with the specified parameters
-		//void DrawSprite(Actor& pActor, Assets::ITexture2D* pTexture, Rectangle2D pRect, Vector2D pOrigin, IRenderer::Flip pFlipMethod) const override;
-		// Draws a debug box using min/max points and a world transform
-		void DrawDebugBox(Vector3D& pMin, Vector3D& pMax, Matrix4DRow pWorldTransform) override;
+		
 		// Draws a debug line between two points with hit information
 		void DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit) override;
 
@@ -146,6 +143,8 @@ namespace Zephyrus::Render {
 			mAtmosphereComponents.erase(std::remove(mAtmosphereComponents.begin(), mAtmosphereComponents.end(), pAtmosphereComponent), mAtmosphereComponents.end());
 		}
 
+		void SetPhysicsWorldForDebug(Physics::PhysicWorld* pWorld) override;
+		
 		Window* GetWindow() const override {return mWindow; }
 	};
 }

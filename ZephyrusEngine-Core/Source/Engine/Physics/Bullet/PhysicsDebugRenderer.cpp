@@ -9,8 +9,8 @@ using Zephyrus::Assets::AssetsManager;
 
 namespace Zephyrus::Physics
 {
-    PhysicsDebugRenderer::PhysicsDebugRenderer(ISceneContext* pContext)
-        : mDebugMode{ DBG_DrawWireframe }, mContext(pContext)
+    PhysicsDebugRenderer::PhysicsDebugRenderer()
+        : mDebugMode{ DBG_DrawWireframe }
     {
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
@@ -26,7 +26,13 @@ namespace Zephyrus::Physics
         mDebugVertex = AssetsManager::GetInstance().LoadShader(SH_DEBUG_VERT, ShaderType::VERTEX);
         mDebugFragment = AssetsManager::GetInstance().LoadShader(SH_DEBUG_FRAG, ShaderType::FRAGMENT);
         mDebugShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
-        mProj = Matrix4DRow::CreatePerspectiveFOV(70, 1920, 1080, 0.1f, 10000000);
+    }
+
+    void PhysicsDebugRenderer::SetWorld(PhysicWorld* pWorld)
+    {
+        mWorld = pWorld;
+        setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+        mWorld->GetWorld()->setDebugDrawer(this);
     }
 
     void PhysicsDebugRenderer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
@@ -40,37 +46,30 @@ namespace Zephyrus::Physics
         mLines.push_back(to.z());
     }
 
-    void PhysicsDebugRenderer::SetProjectionMatrix(const Matrix4DRow& pProj)
+    void PhysicsDebugRenderer::DrawDebug(const Matrix4DRow& view, const Matrix4DRow& projection)
     {
-        mProj = pProj;
+        if (!mWorld) return;
+        glEnable(GL_DEPTH_TEST);
+        mWorld->GetWorld()->debugDrawWorld();
+        FlushDraw(view, projection);
+        glDisable(GL_DEPTH_TEST);
     }
 
-    void PhysicsDebugRenderer::FlushDraw(Zephyrus::ActorComponent::CameraComponent* cam)
+    void PhysicsDebugRenderer::FlushDraw(const Matrix4DRow& view, const Matrix4DRow& projection)
     {
-        if (mLines.empty()) return;
+        if (mLines.empty() || !mWorld) return;
 
-        glLineWidth(4);
+        glLineWidth(3);
 
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, mLines.size() * sizeof(float), mLines.data(), GL_DYNAMIC_DRAW);
 
         glBindVertexArray(vao);
         mDebugShaderProgram->Use();
-        Matrix4DRow mView;
-        if (cam == nullptr)
-        {
-            auto camera = mContext->GetCameraManager()->GetActiveCamera();
-            mView = camera->GetViewMatrix();
-            mProj = camera->GetProjMatrix();
-        }
-        else
-        {
-            mView = cam->GetViewMatrix();
-            mProj = cam->GetProjMatrix();
-        }
+        
         auto wt = Matrix4DRow::Identity;
         mDebugShaderProgram->setVector3f("uColor", Vector3D(0.0, 1.0, 0));
-        mDebugShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
+        mDebugShaderProgram->setMatrix4Row("uViewProj", view * projection);
         mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
         glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(mLines.size() / 3));
         glBindVertexArray(0);
