@@ -42,6 +42,10 @@ namespace Zephyrus::AI
 		int gridHalfSizeX = static_cast<int>(navVolume->GetGridSize().x * 0.5f);
 		int gridHalfSizeY = static_cast<int>(navVolume->GetGridSize().y * 0.5f);
 		
+		auto debugRenderer = mContext->GetRenderer()->GetDebugRenderer();
+
+		debugRenderer->FlushDebugElements();
+
 		for (int x = -gridHalfSizeX; x < gridHalfSizeX; ++x)
 		{
 			for (int y = -gridHalfSizeY; y < gridHalfSizeY; ++y)
@@ -58,18 +62,26 @@ namespace Zephyrus::AI
 				// (il sera bloqué sur les cotés et ca causerait un bug)
 				
 				Vector2D posXY = Vector2D(navVolume->GetWorldPosition().x + StoredNodeSize.x + (x * StoredNodeSize.x * 2), navVolume->GetWorldPosition().y + StoredNodeSize.y + (y * StoredNodeSize.y * 2));
-				
+
 				HitResult hit;
 				const Vector3D startPos = Vector3D(posXY.x, posXY.y, navVolume->GetWorldPosition().z + 10);
 				const Vector3D endPos = Vector3D(posXY.x, posXY.y, navVolume->GetWorldPosition().z - 10);
 				mContext->GetPhysicsWorld()->LineTrace(startPos, endPos, hit);
+
+				if (hit.Normal.z < 0.7)
+					continue;
+
 				Debug::DebugLine line = Debug::DebugLine(startPos, endPos, hit);
+				mContext->GetRenderer()->GetDebugRenderer()->AddDebugLine(line);
 				mDebugLines.push_back(line);
 
 				GridNode node = GridNode();
 				node.isWalkable = true;
 				node.nodePosition = Vector3D(posXY.x, posXY.y, hit.HitPoint.z);
 				GridCoord coord = GridCoord(node.nodePosition.x, node.nodePosition.y);
+				Debug::DebugBox box = Debug::DebugBox(node.nodePosition, 0.1f, hit);
+				debugRenderer->AddDebugBox(box);
+				mDebugNodePosition.push_back(box);
 				mGrid[coord].push_back(node);
 			}
 		}
@@ -81,30 +93,35 @@ namespace Zephyrus::AI
 			return;
 		
 		auto debugRenderer = mContext->GetRenderer()->GetDebugRenderer();
-		
 		auto navVolume = mVolumeComponents[0];
-		
-		for (const  auto& [coords, nodes] : mGrid)
+
+		if (!navVolume->GetShowLines() && mPreviousShowLines)
 		{
-			for (const auto& nodeY : nodes)
-			{
-				if (!nodeY.isWalkable)
-				{
-					return;
-				}
-				Matrix4DRow wt;
-				wt = Matrix4DRow::CreateScale(Vector3D(0.2, 0.2, 0.2));
-				wt *= Matrix4DRow::CreateTranslation(nodeY.nodePosition);
-				debugRenderer->AddDebugBox(wt);
-			}	
+			debugRenderer->FlushDebugLines();
+			mPreviousShowLines = false;
 		}
-		
-		if (mDebugLines.empty() || !navVolume->GetShowLines())
-			return;
-		
-		for (auto& line : mDebugLines)
+		if (navVolume->GetShowLines() && !mPreviousShowLines && !mDebugLines.empty())
 		{
-			mContext->GetRenderer()->GetDebugRenderer()->AddDebugLine(line);
+			for (const auto& line : mDebugLines)
+			{
+				mContext->GetRenderer()->GetDebugRenderer()->AddDebugLine(line);
+			}
+			mPreviousShowLines = true;
+		}
+
+		if (!navVolume->GetShowNodePosition() && mPreviousShowNodePosition)
+		{
+			debugRenderer->FlushDebugBoxes();
+			mPreviousShowNodePosition = false;
+		}
+
+		if (navVolume->GetShowNodePosition() && !mPreviousShowNodePosition && !mDebugNodePosition.empty())
+		{
+			for (const auto& box : mDebugNodePosition)
+			{
+				debugRenderer->AddDebugBox(box);
+			}
+			mPreviousShowNodePosition = true;
 		}
 	}
 }

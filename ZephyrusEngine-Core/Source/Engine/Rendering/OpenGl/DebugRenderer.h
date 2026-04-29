@@ -22,12 +22,19 @@ namespace Zephyrus::Render {
 		Window* mWindow{ nullptr };
 		std::vector<Zephyrus::Debug::DebugLine> mLines;
 		std::vector<float> mLinesVertices;
-		std::vector<Matrix4DRow> mBoxes;
-		GLuint mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
+		std::vector<Zephyrus::Debug::DebugBox> mBoxes;
+		std::vector<Zephyrus::Debug::DebugBox> mBoxesLastFrame;
+		std::vector<float> mBoxesVertices;
+		std::vector<Matrix4DRow> mBoxesWithMatrices;
+		GLuint mDebugBoxForMatricesVao, mDebugBoxForMatricesVbo, mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
+		
 		bool mDrawDebug = true, mDrawLines = true, mDrawBoxes = true, mDrawSelected = false;
 
+		bool mNeedRecomputeBoxesBuffer = true;
+		bool mNeedRecomputeLinesBuffer = true;
+
 		/// Draws a debug box using the given min/max points and world transform.
-		void DrawDebugBoxes();
+		void DrawDebugBoxesWithMatrices();
 		
 	public:
 		DebugRenderer();
@@ -40,10 +47,9 @@ namespace Zephyrus::Render {
 
 		void Draw(IRenderer& pRenderer);
 
-		void AddDebugLine(Zephyrus::Debug::DebugLine pLine);
-		
+		void AddDebugLine(const Zephyrus::Debug::DebugLine& pLine);
 		void AddDebugBox(const Matrix4DRow& pWorldTransform);
-		void RemoveDebugBox(const Matrix4DRow& pWorldTransform);
+		void AddDebugBox(const Zephyrus::Debug::DebugBox& pBox);
 
 		void DrawSelectedBox(const Matrix4DRow& pWorldTransform);
 
@@ -53,6 +59,10 @@ namespace Zephyrus::Render {
 		/// Sets the view matrix for debug rendering.
 		void SetViewMatrix(const Matrix4DRow& pViewMatrix);
 		void SetProjMatrix(const Matrix4DRow& pProjMatrix);
+
+		void FlushDebugElements();
+		void FlushDebugLines();
+		void FlushDebugBoxes();
 
 		void SetDrawDebug(bool pDraw);
 		void SetDrawLines(bool pDraw);

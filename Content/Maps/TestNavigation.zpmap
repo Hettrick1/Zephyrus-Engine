@@ -51,7 +51,7 @@
             "name": "PlayerStart",
             "state": "active",
             "transform": {
-                "position": [0.0, 0.0, 1.945],
+                "position": [0.0, 0.0, 7.783],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -151,6 +151,51 @@
                         "isQuery": false,
                         "ignoreSelf": true,
                         "halfExtents": [1.0, 1.0, 1.0]
+                    }
+                }]
+        }, {
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
+            "uuid": "05696737-d43b-46cb-86b4-bc20d5b6a0b2",
+            "name": "CubeActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, 3.467, 0.0],
+                "rotation": [-60.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 4.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
+                        "materialInstance": {
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "9108356a-451c-4af9-81e4-95c4e7d8cef4"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [4.0, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 4.0]
                     }
                 }]
         }]

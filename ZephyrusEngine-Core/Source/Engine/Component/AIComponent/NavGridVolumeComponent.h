@@ -12,6 +12,7 @@ namespace Zephyrus::ActorComponent
 		float mAgentWidth = 0.8f;
 		float mAgentHeight = 1.5f;
 		bool mShowLines = true;
+		bool mShowNodePos = true;
 	public:
 		NavGridVolumeComponent(Actor* pOwner);
 		virtual ~NavGridVolumeComponent() override;
@@ -32,5 +33,6 @@ namespace Zephyrus::ActorComponent
 		float GetAgentHeight() const { return mAgentHeight; }
 		
 		bool GetShowLines() const { return mShowLines; }
+		bool GetShowNodePosition() const { return mShowNodePos; }
 	};
 }

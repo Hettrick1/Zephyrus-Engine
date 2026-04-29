@@ -7,16 +7,18 @@ using Zephyrus::Assets::AssetsManager;
 
 namespace Zephyrus::Render {
 	DebugRenderer::DebugRenderer()
-		: mDebugBoxVbo(0), mDebugBoxVao(0), mDebugLineVbo(0), mDebugLineVao(0)
+		: mDebugBoxForMatricesVbo(0), mDebugBoxForMatricesVao(0), mDebugBoxVbo(0), mDebugBoxVao(0), mDebugLineVbo(0), mDebugLineVao(0)
 	{
 	}
 
 	DebugRenderer::~DebugRenderer()
 	{
-		glDeleteBuffers(1, &mDebugBoxVbo);
-		glDeleteVertexArrays(1, &mDebugBoxVao);
+		glDeleteBuffers(1, &mDebugBoxForMatricesVbo);
+		glDeleteVertexArrays(1, &mDebugBoxForMatricesVao);
 		glDeleteBuffers(1, &mDebugLineVbo);
 		glDeleteVertexArrays(1, &mDebugLineVao);
+		glDeleteBuffers(1, &mDebugBoxVbo);
+		glDeleteVertexArrays(1, &mDebugBoxVao);
 	}
 
 	void DebugRenderer::Initialize(Window& pWindow)
@@ -28,28 +30,14 @@ namespace Zephyrus::Render {
 		mDebugShaderProgram = AssetsManager::GetInstance().LoadShaderProgram({ mDebugVertex, mDebugFragment }, "debugSP");
 		mView = Matrix4DRow::CreateLookAt(Vector3D(0, 0, 5), Vector3D::unitX, Vector3D::unitZ);
 		mProj = Matrix4DRow::CreatePerspectiveFOV(70.0f, pWindow.GetDimensions().x, pWindow.GetDimensions().y, 0.01f, 10000.0f);
-		GLfloat vertices[] = {
-			-0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,   0.5f,  0.5f, -0.5f,
-			 0.5f,  0.5f, -0.5f,  -0.5f,  0.5f, -0.5f,
-			-0.5f,  0.5f, -0.5f,  -0.5f, -0.5f, -0.5f,
+		
+		// debug box for matrices Buffers
+		glGenVertexArrays(1, &mDebugBoxForMatricesVao);
+		glGenBuffers(1, &mDebugBoxForMatricesVbo);
 
-			-0.5f, -0.5f,  0.5f,   0.5f, -0.5f,  0.5f,
-			 0.5f, -0.5f,  0.5f,   0.5f,  0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,  -0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f,  -0.5f, -0.5f,  0.5f,
-
-			-0.5f, -0.5f, -0.5f,  -0.5f, -0.5f,  0.5f,
-			 0.5f, -0.5f, -0.5f,   0.5f, -0.5f,  0.5f,
-			 0.5f,  0.5f, -0.5f,   0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f, -0.5f,  -0.5f,  0.5f,  0.5f
-		};
-		glGenVertexArrays(1, &mDebugBoxVao);
-		glGenBuffers(1, &mDebugBoxVbo);
-
-		glBindVertexArray(mDebugBoxVao);
-		glBindBuffer(GL_ARRAY_BUFFER, mDebugBoxVbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBindVertexArray(mDebugBoxForMatricesVao);
+		glBindBuffer(GL_ARRAY_BUFFER, mDebugBoxForMatricesVbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Debug::BoxVertices), Debug::BoxVertices, GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 		glEnableVertexAttribArray(0);
@@ -65,7 +53,23 @@ namespace Zephyrus::Render {
 		glBindVertexArray(mDebugLineVao);
 		glBindBuffer(GL_ARRAY_BUFFER, mDebugLineVbo);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6, nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+		glEnableVertexAttribArray(0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		
+		// Debug box Buffers
+
+		glGenVertexArrays(1, &mDebugBoxVao);
+		glGenBuffers(1, &mDebugBoxVbo);
+
+		glBindVertexArray(mDebugBoxVao);
+		glBindBuffer(GL_ARRAY_BUFFER, mDebugBoxVbo);
+
+		glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 		glEnableVertexAttribArray(0);
@@ -91,15 +95,19 @@ namespace Zephyrus::Render {
 		if (mDrawDebug) {
 			if (mDrawLines && !mLinesVertices.empty())
 			{
-				glBindVertexArray(mDebugLineVao);
-				glBindBuffer(GL_ARRAY_BUFFER, mDebugLineVbo);
+				if (mNeedRecomputeLinesBuffer)
+				{
+					glBindVertexArray(mDebugLineVao);
+					glBindBuffer(GL_ARRAY_BUFFER, mDebugLineVbo);
 
-				glBufferData(GL_ARRAY_BUFFER, mLinesVertices.size() * sizeof(float), mLinesVertices.data(), GL_DYNAMIC_DRAW);
+					glBufferData(GL_ARRAY_BUFFER, mLinesVertices.size() * sizeof(float), mLinesVertices.data(), GL_DYNAMIC_DRAW);
 
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
-				glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+					glEnableVertexAttribArray(0);
 
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
+					mNeedRecomputeLinesBuffer = false;
+				}
 				
 				glBindVertexArray(mDebugLineVao);
 				mDebugShaderProgram->Use();
@@ -109,24 +117,44 @@ namespace Zephyrus::Render {
 				mDebugShaderProgram->setVector3f("uColor", Vector3D(1.0f, 0.7f, 0.0f));
 				glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(mLinesVertices.size() / 3));
 				glBindVertexArray(0);
-				mLinesVertices.clear();
-				
-				// for (auto& line : mLines) // DEBUG ONLY
-				// {
-				// 	DrawDebugLine(line->Start, line->End, line->Hit);
-				// }
-				 mLines.clear();
 			}
 			if (mDrawBoxes)
 			{
-				DrawDebugBoxes();
-				mBoxes.clear();
+				DrawDebugBoxesWithMatrices();
+				
+				if (mBoxes.empty())
+				{
+					return;
+				}
+				if (mNeedRecomputeBoxesBuffer)
+				{
+					glBindVertexArray(mDebugBoxVao);
+					glBindBuffer(GL_ARRAY_BUFFER, mDebugBoxVbo);
+
+					glBufferData(GL_ARRAY_BUFFER, mBoxesVertices.size() * sizeof(float), mBoxesVertices.data(), GL_DYNAMIC_DRAW);
+
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+					glEnableVertexAttribArray(0);
+
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
+					mNeedRecomputeBoxesBuffer = false;
+				}
+
+				glBindVertexArray(mDebugBoxVao);
+				mDebugShaderProgram->Use();
+    
+				auto wt = Matrix4DRow::Identity;
+				mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
+				mDebugShaderProgram->setVector3f("uColor", Vector3D(0.0f, 1.0f, 0.0f));
+				glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(mBoxesVertices.size() / 3));
+				glBindVertexArray(0);
+				mBoxesLastFrame = mBoxes;
 			}
 		}
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	void DebugRenderer::AddDebugLine(Zephyrus::Debug::DebugLine pLine)
+	void DebugRenderer::AddDebugLine(const Zephyrus::Debug::DebugLine& pLine)
 	{
 		mLines.push_back(pLine);
 		mLinesVertices.push_back(pLine.Start.x);
@@ -140,22 +168,24 @@ namespace Zephyrus::Render {
 
 	void DebugRenderer::AddDebugBox(const Matrix4DRow& pWorldTransform)
 	{
-		mBoxes.push_back(pWorldTransform);
+		mBoxesWithMatrices.push_back(pWorldTransform);
 	}
 
-	void DebugRenderer::RemoveDebugBox(const Matrix4DRow& pWorldTransform)
+	void DebugRenderer::AddDebugBox(const Zephyrus::Debug::DebugBox& pBox)
 	{
-		std::erase(mBoxes, pWorldTransform);
+		mBoxes.push_back(pBox);
+		auto v = pBox.getBoxVertices();
+		mBoxesVertices.insert(mBoxesVertices.end(), v.begin(), v.end());
 	}
 
-	void DebugRenderer::DrawDebugBoxes()
+	void DebugRenderer::DrawDebugBoxesWithMatrices()
 	{
-		if (mBoxes.empty())
+		if (mBoxesWithMatrices.empty())
 			return;
 			
-		glBindVertexArray(mDebugBoxVao);
+		glBindVertexArray(mDebugBoxForMatricesVao);
 		mDebugShaderProgram->Use();
-		for (const auto& box : mBoxes)
+		for (const auto& box : mBoxesWithMatrices)
 		{
 			Matrix4DRow wt = box;
 			mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
@@ -167,9 +197,8 @@ namespace Zephyrus::Render {
 
 	void DebugRenderer::DrawSelectedBox(const Matrix4DRow& pWorldTransform)
 	{
-		//glDisable(GL_DEPTH_TEST);
 		glLineWidth(2);
-		glBindVertexArray(mDebugBoxVao);
+		glBindVertexArray(mDebugBoxForMatricesVao);
 
 		mDebugShaderProgram->Use();
 
@@ -185,7 +214,6 @@ namespace Zephyrus::Render {
 
 		glDrawArrays(GL_LINES, 0, 24);
 		glLineWidth(4);
-		//glEnable(GL_DEPTH_TEST);
 	}
 
 	void DebugRenderer::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit)
@@ -225,7 +253,7 @@ namespace Zephyrus::Render {
 
 			mDebugShaderProgram->setVector3f("uColor", Vector3D(1, 1, 0));
 
-			glBindVertexArray(mDebugBoxVao);
+			glBindVertexArray(mDebugBoxForMatricesVao);
 			glDrawArrays(GL_LINES, 0, 24);
 		}
 	}
@@ -238,6 +266,32 @@ namespace Zephyrus::Render {
 	void DebugRenderer::SetProjMatrix(const Matrix4DRow& pProjMatrix)
 	{
 		mProj = pProjMatrix;
+	}
+
+	void DebugRenderer::FlushDebugElements()
+	{
+		mBoxes.clear();
+		mBoxesVertices.clear();
+		mBoxesWithMatrices.clear();
+		mLines.clear();
+		mLinesVertices.clear();
+		mNeedRecomputeBoxesBuffer = true;
+		mNeedRecomputeLinesBuffer = true;
+	}
+
+	void DebugRenderer::FlushDebugLines()
+	{
+		mLines.clear();
+		mLinesVertices.clear();
+		mNeedRecomputeLinesBuffer = true;
+	}
+
+	void DebugRenderer::FlushDebugBoxes()
+	{
+		mBoxes.clear();
+		mBoxesVertices.clear();
+		mBoxesWithMatrices.clear();
+		mNeedRecomputeBoxesBuffer = true;
 	}
 
 	void DebugRenderer::SetDrawDebug(bool pDraw)

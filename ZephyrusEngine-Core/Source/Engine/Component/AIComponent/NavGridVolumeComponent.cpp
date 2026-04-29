@@ -45,6 +45,7 @@ namespace Zephyrus::ActorComponent
 			{ "Agent Height : ", &mAgentHeight, PropertyType::Float},
 			{ "Compute Grid : ", nullptr, PropertyType::Button, Callback(computeCallback, "Compute") | Condition(condition)},
 			{ "Show line trace : ", &mShowLines, PropertyType::Bool},
+			{ "Show position : ", &mShowNodePos, PropertyType::Bool},
 		};
 	}
 

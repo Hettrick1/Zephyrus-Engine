@@ -2,6 +2,7 @@
 
 #include "Component/AIComponent/NavGridVolumeComponent.h"
 #include "Vector3D.h"
+#include "Debug/DebugLine.h"
 #include <vector>
 #include <map>
 
@@ -42,7 +43,11 @@ namespace Zephyrus::AI
 		Vector3D StoredNodeSize;
 		
 		std::vector<Debug::DebugLine> mDebugLines;
+		std::vector<Debug::DebugBox> mDebugNodePosition;
 		
+		bool mPreviousShowLines = true;
+		bool mPreviousShowNodePosition = true;
+
 		ISceneContext* mContext;
 	public:
 		explicit NavGridManager(ISceneContext* context);

@@ -17,6 +17,8 @@ namespace Zephyrus::Physics
         Zephyrus::ActorComponent::BulletColliderComponent* HitCollider = nullptr;
         float Distance = 0;
 
+        friend auto operator<=>(const HitResult& a, const HitResult& b) = default;
+        
         inline void Reset() {
             HasHit = 0;
             HitPoint = Vector3D::zero;

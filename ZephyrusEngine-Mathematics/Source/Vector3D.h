@@ -21,10 +21,7 @@ struct Vector3D
 		return &x;
 	}
 
-	/*btVector3 ToBulletVec3() const
-	{
-		return btVector3(x, y, z);
-	}*/
+	friend auto operator<=>(const Vector3D& a, const Vector3D& b)= default;
 
 	// Vector addition (a + b)
 	friend Vector3D operator+(const Vector3D& a, const Vector3D& b)
