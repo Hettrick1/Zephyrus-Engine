@@ -69,5 +69,10 @@ namespace zpMaths
         float power_of_10 = static_cast<float>(std::pow(10, precision));
         return std::round(x * power_of_10) / power_of_10;
     }
+    inline bool NearlyEquals(float a, float b, float epsilon = 0.001f)
+    {
+        auto diff = a - b;
+        return (diff < epsilon) && (-diff < epsilon);
+    }
 
 }

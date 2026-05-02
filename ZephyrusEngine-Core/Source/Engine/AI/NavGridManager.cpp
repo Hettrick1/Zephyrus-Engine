@@ -27,7 +27,7 @@ namespace Zephyrus::AI
 		int x;
 		int y;
 
-		friend auto operator<=>(const GridCoord& lhs, const GridCoord& rhs) = default;
+		friend auto operator<=>(const GridCoord& lhs, const GridCoord& rhs) noexcept = default;
 	};
 
 	struct NavGridManager::Impl
@@ -38,7 +38,7 @@ namespace Zephyrus::AI
 		}
 
 		std::vector<ActorComponent::NavGridVolumeComponent*> mVolumeComponents;
-		std::map<GridCoord, std::vector<GridNode>> mGrid;
+		std::map<GridCoord, GridNode> mGrid;
 		Vector3D StoredNodeSize;
 
 		std::vector<Debug::DebugLine> mDebugLines;
@@ -49,11 +49,15 @@ namespace Zephyrus::AI
 		bool mPreviousShowNodePosition = true;
 		bool mPreviousShowAgentCollision = true;
 
+		float mMaxSlopeDeg = 35.1f;
+
 		ISceneContext* mContext;
 
 		void _SetLineTraceVisibility(Render::DebugRenderer& debugRenderer, bool visibility);
 		void _SetNodePositionVisibility(Render::DebugRenderer& debugRenderer, bool visibility);
 		void _SetAgentCollisionVisibility(Render::DebugRenderer& debugRenderer, bool visibility);
+
+		void _CheckForNeighbors(Render::DebugRenderer& debugRenderer, float cellSizeX, float cellSizeY, const GridCoord& coords, GridNode& node);
 	};
 
 	NavGridManager::NavGridManager(ISceneContext* context)
@@ -89,6 +93,11 @@ namespace Zephyrus::AI
 		// work around for now it is to let the physic world know if I moved a cube i.e.
 		mImpl->mContext->GetPhysicsWorld()->Update(0.01f);
 		auto navVolume = mImpl->mVolumeComponents[0];
+		mImpl->mPreviousShowLines = navVolume->GetShowLines();
+		mImpl->mPreviousShowAgentCollision = navVolume->GetShowAgentCollision();
+		mImpl->mPreviousShowNodePosition = navVolume->GetShowNodePosition();
+
+
 		mImpl->StoredNodeSize = Vector3D(navVolume->GetGridSize().x / navVolume->GetNumberOfPoints().x, navVolume->GetGridSize().y / navVolume->GetNumberOfPoints().y, navVolume->GetGridSize().z);
 		
 		int gridNumberOfPointsX = static_cast<int>(navVolume->GetNumberOfPoints().x * 0.5f);
@@ -157,9 +166,15 @@ namespace Zephyrus::AI
 					debugRenderer->AddDebugBox(box);
 				}
 				mImpl->mDebugNodePosition.push_back(box);
-				mImpl->mGrid[coord].push_back(node);
+				mImpl->mGrid[coord] = node;
 			}
 		}
+
+		for (auto& [coord, node] : mImpl->mGrid)
+		{
+			mImpl->_CheckForNeighbors(*debugRenderer, mImpl->StoredNodeSize.x, mImpl->StoredNodeSize.y, coord, node);
+		}
+
 	}
 	
 	void NavGridManager::UpdateDebug()
@@ -241,6 +256,61 @@ namespace Zephyrus::AI
 				debugRenderer.AddDebugBox(box);
 			}
 			mPreviousShowAgentCollision = true;
+		}
+	}
+	void NavGridManager::Impl::_CheckForNeighbors(Render::DebugRenderer& debugRenderer, float cellSizeX, float cellSizeY ,const GridCoord& coords, GridNode& node)
+	{
+		const int dirs[8][2] =
+		{
+			{1, 0}, {0, 1}, {-1, 0}, {0, -1},
+			{1, 1}, {-1, -1}, {1, -1}, {-1, 1},
+		};
+		for (auto dir : dirs)
+		{
+			auto nextCoord = coords;
+			nextCoord.x += dir[0] * cellSizeX * 2;
+			nextCoord.y += dir[1] * cellSizeY * 2;
+			if (!mGrid.contains(nextCoord))
+			{
+				continue;
+			}
+			auto neighbor = mGrid[nextCoord];
+
+			Vector3D direction = node.nodePosition - neighbor.nodePosition;
+
+			Vector3D upDirection = Vector3D::unitZ;
+
+			float riseMagnitude = Vector3D::Dot(direction, upDirection);
+
+			Vector3D riseVector = riseMagnitude * upDirection;
+
+			float runMagnitude = (direction - riseVector).Length();
+
+			float angleDegrees = zpMaths::ToDeg(zpMaths::ATan2(riseMagnitude, runMagnitude));
+
+			if (zpMaths::Abs(angleDegrees) >= mMaxSlopeDeg)
+				continue;
+
+			HitResult hit; 
+
+			if (node.nodePosition.z > neighbor.nodePosition.z)
+				continue;
+
+			const float height = node.nodePosition.z + 0.2f;
+			const Vector3D startHit = Vector3D(node.nodePosition.x, node.nodePosition.y, height);
+			const Vector3D endHit = Vector3D(neighbor.nodePosition.x * 0.9f, neighbor.nodePosition.y * 0.9f, height);
+
+			mContext->GetPhysicsWorld()->LineTrace(startHit, endHit, hit);
+			
+			if (hit.HasHit && zpMaths::Abs(hit.Normal.z) < 0.7)
+				continue;
+
+			node.neighbors.push_back(&neighbor);
+
+			const Vector3D startPos = Vector3D(node.nodePosition.x, node.nodePosition.y, node.nodePosition.z + 0.2f);
+			const Vector3D endPos = Vector3D(neighbor.nodePosition.x, neighbor.nodePosition.y, neighbor.nodePosition.z + 0.2f);
+			Debug::DebugLine line = Debug::DebugLine(startPos, endPos, hit);
+			debugRenderer.AddDebugLine(line);
 		}
 	}
 }
