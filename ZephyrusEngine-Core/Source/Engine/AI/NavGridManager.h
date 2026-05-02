@@ -12,43 +12,10 @@ namespace Zephyrus::AI
 	
 	class NavGridManager
 	{
-		struct GridNode
-		{
-			GridNode() = default;
-			~GridNode() = default;
-			Vector3D nodePosition = Vector3D::zero;
-			bool isWalkable = true;
-			
-			std::vector<GridNode*> neighbors; 
-			
-			float gCost = 0.0f;
-			float hCost= 0.0f;
-			GridNode* parent = nullptr;
-		};
-		
-		struct GridCoord
-		{
-			GridCoord(int x, int y) : x(x), y(y) {}
-			~GridCoord() = default;
-			int x;
-			int y;
-			
-			friend auto operator<=>(const GridCoord& lhs, const GridCoord& rhs) = default;
-		};
-	
-		
 	private:
-		std::vector<ActorComponent::NavGridVolumeComponent*> mVolumeComponents;
-		std::map<GridCoord, std::vector<GridNode>> mGrid;
-		Vector3D StoredNodeSize;
-		
-		std::vector<Debug::DebugLine> mDebugLines;
-		std::vector<Debug::DebugBox> mDebugNodePosition;
-		
-		bool mPreviousShowLines = true;
-		bool mPreviousShowNodePosition = true;
+		struct Impl;
+		std::unique_ptr<Impl> mImpl;
 
-		ISceneContext* mContext;
 	public:
 		explicit NavGridManager(ISceneContext* context);
 		~NavGridManager();

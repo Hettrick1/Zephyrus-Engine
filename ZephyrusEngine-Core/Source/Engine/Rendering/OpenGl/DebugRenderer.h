@@ -6,7 +6,6 @@
 #include "Window.h"
 #include "Matrix4DRow.h"
 #include "DebugLine.h"
-#include "glew.h"
 
 /**
  * @brief Renders debug visualizations such as colliders and lines for debugging purposes.
@@ -23,18 +22,19 @@ namespace Zephyrus::Render {
 		std::vector<Zephyrus::Debug::DebugLine> mLines;
 		std::vector<float> mLinesVertices;
 		std::vector<Zephyrus::Debug::DebugBox> mBoxes;
-		std::vector<Zephyrus::Debug::DebugBox> mBoxesLastFrame;
 		std::vector<float> mBoxesVertices;
 		std::vector<Matrix4DRow> mBoxesWithMatrices;
-		GLuint mDebugBoxForMatricesVao, mDebugBoxForMatricesVbo, mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
-		
-		bool mDrawDebug = true, mDrawLines = true, mDrawBoxes = true, mDrawSelected = false;
+		std::vector<Matrix4DRow> mPersistantBoxes;
+		unsigned mDebugBoxForMatricesVao, mDebugBoxForMatricesVbo, mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
+
+		bool mDrawDebug = true, mDrawLines = true, mDrawBoxes = true, mDrawSelected = false, mDrawPersistantDebug = true;
 
 		bool mNeedRecomputeBoxesBuffer = true;
 		bool mNeedRecomputeLinesBuffer = true;
 
 		/// Draws a debug box using the given min/max points and world transform.
 		void DrawDebugBoxesWithMatrices();
+		void DrawDebugBoxes();
 		
 	public:
 		DebugRenderer();
@@ -50,6 +50,9 @@ namespace Zephyrus::Render {
 		void AddDebugLine(const Zephyrus::Debug::DebugLine& pLine);
 		void AddDebugBox(const Matrix4DRow& pWorldTransform);
 		void AddDebugBox(const Zephyrus::Debug::DebugBox& pBox);
+
+		void AddPersistantDebugBox(const Matrix4DRow& pWorldTransform);
+		void RemovePersistantDebugBox(const Matrix4DRow& pWorldTransform);
 
 		void DrawSelectedBox(const Matrix4DRow& pWorldTransform);
 

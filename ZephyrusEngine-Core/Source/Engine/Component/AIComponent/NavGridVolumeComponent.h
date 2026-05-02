@@ -2,17 +2,16 @@
 
 #include "Component.h"
 #include "IRenderer.h"
+#include <memory>
 
 namespace Zephyrus::ActorComponent
 {
 	class NavGridVolumeComponent : public Component
 	{
 	private:
-		Vector2D mGridSize{ 20.0f, 20.0f };
-		float mAgentWidth = 0.8f;
-		float mAgentHeight = 1.5f;
-		bool mShowLines = true;
-		bool mShowNodePos = true;
+		struct Impl;
+		std::unique_ptr<Impl> mImpl;
+
 	public:
 		NavGridVolumeComponent(Actor* pOwner);
 		virtual ~NavGridVolumeComponent() override;
@@ -22,17 +21,17 @@ namespace Zephyrus::ActorComponent
 
 		static Component* Create(Actor* pOwner) { return new NavGridVolumeComponent(pOwner); }
 		virtual std::vector<PropertyDescriptor> GetProperties() override;
+		
+		Vector3D GetGridSize() const;
+		Vector2D GetAgentSize() const;
+		float GetAgentWidth() const;
+		float GetAgentHeight() const;
+		Vector2D GetNumberOfPoints() const;
+		
+		bool GetShowLines() const;
+		bool GetShowNodePosition() const;
+		bool GetShowAgentCollision() const;
 
-		void OnStart() override;
-		void Update() override;
-		void OnEnd() override;
-		
-		Vector2D GetGridSize() const { return mGridSize; }
-		Vector2D GetAgentSize() const { return Vector2D{ mAgentWidth, mAgentHeight }; }
-		float GetAgentWidth() const { return mAgentWidth; }
-		float GetAgentHeight() const { return mAgentHeight; }
-		
-		bool GetShowLines() const { return mShowLines; }
-		bool GetShowNodePosition() const { return mShowNodePos; }
+
 	};
 }

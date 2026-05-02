@@ -2,6 +2,7 @@
 #include "DebugRenderer.h"
 #include "AssetsManager.h"
 #include "EngineContentIds.h"
+#include "glew.h"
 
 using Zephyrus::Assets::AssetsManager;
 
@@ -87,6 +88,7 @@ namespace Zephyrus::Render {
 	void DebugRenderer::Draw(IRenderer& pRenderer)
 	{
 		glEnable(GL_DEPTH_TEST);
+		glLineWidth(3);
 		if (mDrawSelected || mDrawDebug)
 		{
 			mDebugShaderProgram->Use();
@@ -122,33 +124,28 @@ namespace Zephyrus::Render {
 			{
 				DrawDebugBoxesWithMatrices();
 				
-				if (mBoxes.empty())
-				{
-					return;
-				}
-				if (mNeedRecomputeBoxesBuffer)
-				{
-					glBindVertexArray(mDebugBoxVao);
-					glBindBuffer(GL_ARRAY_BUFFER, mDebugBoxVbo);
+				DrawDebugBoxes();
+			}
+		}
+		if (mDrawPersistantDebug)
+		{
+			if (mPersistantBoxes.empty())
+				return;
 
-					glBufferData(GL_ARRAY_BUFFER, mBoxesVertices.size() * sizeof(float), mBoxesVertices.data(), GL_DYNAMIC_DRAW);
+			glBindVertexArray(mDebugBoxForMatricesVao); 
+			glLineWidth(2);
+			mDebugShaderProgram->Use();
+			for (const auto& box : mPersistantBoxes)
+			{
+				Matrix4DRow wt = box;
 
-					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-					glEnableVertexAttribArray(0);
-
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-					mNeedRecomputeBoxesBuffer = false;
-				}
-
-				glBindVertexArray(mDebugBoxVao);
-				mDebugShaderProgram->Use();
-    
-				auto wt = Matrix4DRow::Identity;
+				wt = Matrix4DRow::CreateScale(box.GetScale() * 2);
+				wt *= Matrix4DRow::CreateFromQuaternion(box.GetRotation());
+				wt *= Matrix4DRow::CreateTranslation(box.GetTranslation());
 				mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
-				mDebugShaderProgram->setVector3f("uColor", Vector3D(0.0f, 1.0f, 0.0f));
-				glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(mBoxesVertices.size() / 3));
-				glBindVertexArray(0);
-				mBoxesLastFrame = mBoxes;
+				mDebugShaderProgram->setVector3f("uColor", Vector3D(0, 0, 1));
+
+				glDrawArrays(GL_LINES, 0, 24);
 			}
 		}
 		glDisable(GL_DEPTH_TEST);
@@ -164,6 +161,7 @@ namespace Zephyrus::Render {
 		mLinesVertices.push_back(pLine.End.x);
 		mLinesVertices.push_back(pLine.End.y);
 		mLinesVertices.push_back(pLine.End.z);
+		mNeedRecomputeLinesBuffer = true;
 	}
 
 	void DebugRenderer::AddDebugBox(const Matrix4DRow& pWorldTransform)
@@ -176,6 +174,17 @@ namespace Zephyrus::Render {
 		mBoxes.push_back(pBox);
 		auto v = pBox.getBoxVertices();
 		mBoxesVertices.insert(mBoxesVertices.end(), v.begin(), v.end());
+		mNeedRecomputeBoxesBuffer = true;
+	}
+
+	void DebugRenderer::AddPersistantDebugBox(const Matrix4DRow& pWorldTransform)
+	{
+		mPersistantBoxes.push_back(pWorldTransform);
+	}
+
+	void DebugRenderer::RemovePersistantDebugBox(const Matrix4DRow& pWorldTransform)
+	{
+		std::erase(mPersistantBoxes, pWorldTransform);
 	}
 
 	void DebugRenderer::DrawDebugBoxesWithMatrices()
@@ -188,11 +197,46 @@ namespace Zephyrus::Render {
 		for (const auto& box : mBoxesWithMatrices)
 		{
 			Matrix4DRow wt = box;
+
+			wt = Matrix4DRow::CreateScale(box.GetScale() * 2);
+			wt *= Matrix4DRow::CreateFromQuaternion(box.GetRotation());
+			wt *= Matrix4DRow::CreateTranslation(box.GetTranslation());
+
 			mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
 			mDebugShaderProgram->setVector3f("uColor", Vector3D(0, 1, 0));
 
 			glDrawArrays(GL_LINES, 0, 24);
 		}
+	}
+
+	void DebugRenderer::DrawDebugBoxes()
+	{
+		if (mBoxes.empty())
+		{
+			return;
+		}
+		if (mNeedRecomputeBoxesBuffer)
+		{
+			glBindVertexArray(mDebugBoxVao);
+			glBindBuffer(GL_ARRAY_BUFFER, mDebugBoxVbo);
+
+			glBufferData(GL_ARRAY_BUFFER, mBoxesVertices.size() * sizeof(float), mBoxesVertices.data(), GL_DYNAMIC_DRAW);
+
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			mNeedRecomputeBoxesBuffer = false;
+		}
+
+		glBindVertexArray(mDebugBoxVao);
+		mDebugShaderProgram->Use();
+
+		auto wt = Matrix4DRow::Identity;
+		mDebugShaderProgram->setMatrix4Row("uWorldTransform", wt);
+		mDebugShaderProgram->setVector3f("uColor", Vector3D(0.0f, 1.0f, 0.0f));
+		glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(mBoxesVertices.size() / 3));
+		glBindVertexArray(0);
 	}
 
 	void DebugRenderer::DrawSelectedBox(const Matrix4DRow& pWorldTransform)

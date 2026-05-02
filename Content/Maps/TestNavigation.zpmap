@@ -51,7 +51,7 @@
             "name": "PlayerStart",
             "state": "active",
             "transform": {
-                "position": [0.0, 0.0, 7.783],
+                "position": [0.0, 0.0, 7.782],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -96,7 +96,7 @@
             "transform": {
                 "position": [0.0, 0.0, 1.128],
                 "rotation": [0.0, 0.0, 0.0],
-                "size": [16.0, 16.0, 1.5]
+                "size": [1.0, 1.0, 1.0]
             },
             "components": [{
                     "type": "NavGridVolumeComponent",
@@ -105,7 +105,11 @@
                     "properties": {
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [0.0, 0.0, 0.0]
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "gridSize": [20.0, 20.0, 10.0],
+                        "nbOfPoints": 10.0,
+                        "agentWidth": 0.8,
+                        "agentHeight": 1.5
                     }
                 }]
         }, {
