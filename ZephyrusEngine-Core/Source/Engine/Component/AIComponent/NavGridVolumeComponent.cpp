@@ -103,6 +103,11 @@ namespace Zephyrus::ActorComponent
 		};
 	}
 
+	void NavGridVolumeComponent::OnStart()
+	{
+		//mOwner->GetSceneContext()->GetNavGridManager()->ComputeGrid();
+	}
+
 	Vector3D NavGridVolumeComponent::GetGridSize() const { return mImpl->mGridSize; }
 	Vector2D NavGridVolumeComponent::GetAgentSize() const { return Vector2D{ mImpl->mAgentWidth, mImpl->mAgentHeight }; }
 	float NavGridVolumeComponent::GetAgentWidth() const { return mImpl->mAgentWidth; }

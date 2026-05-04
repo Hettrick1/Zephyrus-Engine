@@ -133,7 +133,7 @@ namespace Zephyrus::AI
 				if (hit.Normal.z < 0.7)
 					continue;
 
-				Debug::DebugLine line = Debug::DebugLine(startPos, endPos, hit);
+				Debug::DebugLine line = Debug::DebugLine(startPos, endPos, hit, Vector3D(0.0f, 1.0f, 0.0f));
 				if (navVolume->GetShowLines())
 				{
 					mImpl->mContext->GetRenderer()->GetDebugRenderer()->AddDebugLine(line);
@@ -149,7 +149,7 @@ namespace Zephyrus::AI
 				if (mImpl->mContext->GetPhysicsWorld()->BoxTrace(startPos2, endPos2, extents2, hit2, actorsToIgnore))
 					continue;
 		
-				Debug::DebugBox box1 = Debug::DebugBox(startPos2, extents2, hit2);
+				Debug::DebugBox box1 = Debug::DebugBox(startPos2, extents2, hit2, Vector3D(1.0f, 1.0f, 0.0f));
 				if (navVolume->GetShowAgentCollision())
 				{
 					mImpl->mContext->GetRenderer()->GetDebugRenderer()->AddDebugBox(box1);
@@ -160,7 +160,7 @@ namespace Zephyrus::AI
 				node.isWalkable = true;
 				node.nodePosition = Vector3D(posXY.x, posXY.y, hit.HitPoint.z);
 				GridCoord coord = GridCoord(node.nodePosition.x, node.nodePosition.y);
-				Debug::DebugBox box = Debug::DebugBox(node.nodePosition, 0.1f, hit);
+				Debug::DebugBox box = Debug::DebugBox(node.nodePosition, 0.1f, hit, Vector3D(0.0f, 0.0f, 1.0f));
 				if (navVolume->GetShowNodePosition())
 				{
 					debugRenderer->AddDebugBox(box);

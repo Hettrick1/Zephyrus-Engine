@@ -10,6 +10,7 @@ inline const char* const FONT_CHOPSIC = "e78f83ba-6c78-4127-822c-85bf41549fdc";
 
 // -------Shaders---------
 inline const char* const SH_DEBUG_VERT = "9bb9ecd9-d25e-483b-8f1f-eaf6d4982c46";
+inline const char* const SH_DEBUG_VERTEX_COLOR_VERT = "626fde0f-b542-4a15-9690-82067d69e099";
 inline const char* const SH_DEBUG_FRAG = "9f1056ab-e9d3-4039-b51e-ee5c6a89b03d";
 inline const char* const SH_SPLASH_SCREEN_VERT = "c8c36b6b-30ef-41b1-9239-4309df27cb2c";
 inline const char* const SH_SPLASH_SCREEN_FRAG = "495e92d8-4872-468f-9735-43d2ae02750e";

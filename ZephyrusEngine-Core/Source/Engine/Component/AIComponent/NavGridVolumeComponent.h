@@ -22,6 +22,8 @@ namespace Zephyrus::ActorComponent
 		static Component* Create(Actor* pOwner) { return new NavGridVolumeComponent(pOwner); }
 		virtual std::vector<PropertyDescriptor> GetProperties() override;
 		
+		void OnStart() override;
+
 		Vector3D GetGridSize() const;
 		Vector2D GetAgentSize() const;
 		float GetAgentWidth() const;

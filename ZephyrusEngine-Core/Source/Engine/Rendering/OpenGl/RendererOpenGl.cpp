@@ -308,7 +308,8 @@ namespace Zephyrus::Render {
 
 	void RendererOpenGl::DrawDebugLine(const Vector3D& pStart, const Vector3D& pEnd, const HitResult& pHit)
 	{
-		mDebugRenderer->DrawDebugLine(pStart, pEnd, pHit);
+		ZP_CORE_ERROR("This function has been deprecated. Use AddDebugLine instead in the debug renderer.");
+		return;
 	}
 	
 	void RendererOpenGl::DrawSkySphere()
