@@ -15,7 +15,7 @@ namespace Zephyrus::ActorComponent
 		float mAgentHeight = 1.5f;
 		bool mShowLines = true;
 		bool mShowNodePos = true;
-		bool mShowAgentCollision = true;
+		bool mShowAgentCollision = false;
 		Matrix4DRow mWorldTransformBackup;
 	};
 
@@ -105,7 +105,7 @@ namespace Zephyrus::ActorComponent
 
 	void NavGridVolumeComponent::OnStart()
 	{
-		//mOwner->GetSceneContext()->GetNavGridManager()->ComputeGrid();
+		mOwner->GetSceneContext()->GetNavGridManager()->ComputeGrid();
 	}
 
 	Vector3D NavGridVolumeComponent::GetGridSize() const { return mImpl->mGridSize; }
