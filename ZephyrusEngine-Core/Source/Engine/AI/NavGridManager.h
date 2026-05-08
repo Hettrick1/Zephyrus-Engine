@@ -10,6 +10,23 @@ namespace Zephyrus::AI
 {
 	class Zephyrus::ActorComponent::NavGridVolumeComponent;
 	
+	struct GridNode
+	{
+		GridNode() = default;
+		~GridNode() = default;
+		Vector3D nodePosition = Vector3D::zero;
+		bool isWalkable = true;
+
+		unsigned gridX = 0u;
+		unsigned gridY = 0u;
+
+		std::vector<GridNode*> neighbors;
+
+		float gCost = 0.0f;
+		float hCost = 0.0f;
+		GridNode* parent = nullptr;
+	};
+
 	class NavGridManager
 	{
 	private:
@@ -27,6 +44,8 @@ namespace Zephyrus::AI
 		// For now it uses a list of component to handle the case where I added a component before deleting the old one
 		void ComputeGrid();
 		
+		GridNode* GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation);
+
 		void UpdateDebug();
 	};
 }

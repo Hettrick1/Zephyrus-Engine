@@ -6,23 +6,6 @@
 
 namespace Zephyrus::AI
 {
-	struct GridNode
-	{
-		GridNode() = default;
-		~GridNode() = default;
-		Vector3D nodePosition = Vector3D::zero;
-		bool isWalkable = true;
-
-		unsigned gridX = 0u;
-		unsigned gridY = 0u;
-
-		std::vector<GridNode*> neighbors;
-
-		float gCost = 0.0f;
-		float hCost = 0.0f;
-		GridNode* parent = nullptr;
-	};
-
 	struct NavGridManager::Impl
 	{
 		explicit NavGridManager::Impl(ISceneContext* context)
@@ -201,6 +184,52 @@ namespace Zephyrus::AI
 			mImpl->_CheckForNeighbors(*debugRenderer, mImpl->StoredNodeSize.x, mImpl->StoredNodeSize.y, node);
 		}
 
+	}
+
+	GridNode* NavGridManager::GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation)
+	{
+		auto gridRelativePosition = pWorldLocation - mImpl->mGridOrigin;
+		GridNode* nearestNode = nullptr;
+
+		int centerX = static_cast<int>(gridRelativePosition.x / (mImpl->StoredNodeSize.x * 2));
+		int centerY = static_cast<int>(gridRelativePosition.y / (mImpl->StoredNodeSize.y * 2));
+
+		centerX = zpMaths::Clamp(centerX, 0, static_cast<int>(mImpl->mNumPointsX - 1));
+		centerY = zpMaths::Clamp(centerY, 0, static_cast<int>(mImpl->mNumPointsY - 1));
+
+		int nodeIndex = centerY * mImpl->mNumPointsX + centerX;
+		nearestNode = &mImpl->mGrid[nodeIndex];
+
+		GridNode* startNode = &mImpl->mGrid[centerY * mImpl->mNumPointsX + centerX];
+		if (startNode && startNode->isWalkable) {
+			return startNode;
+		}
+
+		int maxRadius = std::max(mImpl->mNumPointsX, mImpl->mNumPointsY);
+
+		for (int radius = 1; radius < maxRadius; ++radius) {
+			for (int y = -radius; y <= radius; ++y) {
+				for (int x = -radius; x <= radius; ++x) {
+
+					if (std::abs(x) != radius && std::abs(y) != radius) continue;
+
+					int testX = centerX + x;
+					int testY = centerY + y;
+
+					if (testX >= 0 && testX < (int)mImpl->mNumPointsX &&
+						testY >= 0 && testY < (int)mImpl->mNumPointsY) {
+
+						GridNode* testNode = &mImpl->mGrid[testY * mImpl->mNumPointsX + testX];
+						if (testNode && testNode->isWalkable) {
+							return testNode;
+						}
+					}
+				}
+			}
+			if (radius > 10) break;
+		}
+
+		return nullptr;
 	}
 	
 	void NavGridManager::UpdateDebug()

@@ -80,6 +80,7 @@ namespace Zephyrus::Scenes {
 		mPlayerRef->Start();
 		mCameraManager->OnPlay();
 		mInputManager->SetPriority();
+		mNavGridManager->ComputeGrid();
 	}
 
 	void Scene::Update(float pDetltaTime)
@@ -146,7 +147,6 @@ namespace Zephyrus::Scenes {
 			mAllActors.pop_back();
 		}
 		mActors.clear();
-		//InputManager::Instance().Unload();
 		mRenderer->Unload();
 		AssetsManager::GetInstance().CleanUp();
 		mCameraManager->Unload();
@@ -173,7 +173,6 @@ namespace Zephyrus::Scenes {
 			mAllActors.pop_back();
 		}
 		mActors.clear();
-		//InputManager::Instance().Unload();
 		mRenderer->Unload();
 		mCameraManager->Unload();
 		delete mCameraManager;

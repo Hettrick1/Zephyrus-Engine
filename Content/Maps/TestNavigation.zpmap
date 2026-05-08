@@ -1,5 +1,5 @@
 {
-    "player": "d3a8c81d-be8a-40b1-a0f8-890769c11818",
+    "player": "7ecc9083-0c64-45b6-ade3-83d7a8e568a8",
     "actors": [{
             "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
             "uuid": "10a95e96-3e5b-4bc3-826c-496fa40be0a5",
@@ -85,7 +85,7 @@
                         "relativePosition": [0.0, 0.0, 0.0],
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
-                        "playerPrefab": "d3a8c81d-be8a-40b1-a0f8-890769c11818"
+                        "playerPrefab": "7ecc9083-0c64-45b6-ade3-83d7a8e568a8"
                     }
                 }]
         }, {

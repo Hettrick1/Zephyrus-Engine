@@ -20,6 +20,7 @@
 #include "Temp/TheDescentComponents/TheDescentPC.h"
 #include "Temp/TheDescentComponents/TheDescentPCNoPhysics.h"
 #include "Temp/TheDescentComponents/TheDescentPlayer.h"
+#include "Temp/ProjectResearch/ProjectResearchControllerComponent.h"
 #include "RotatingComponent.h"
 #include "AIComponent/NavGridVolumeComponent.h"
 
@@ -44,6 +45,7 @@ using Zephyrus::ActorComponent::TheDescentPC;
 using Zephyrus::ActorComponent::TheDescentPlayer;
 using Zephyrus::ActorComponent::TheDescentPCNoPhysics;
 using Zephyrus::ActorComponent::NavGridVolumeComponent;
+using Zephyrus::ActorComponent::ProjectResearchControllerComponent;
 
 namespace Zephyrus::Factory {
 	ComponentFactory::ComponentFactory()
@@ -80,6 +82,7 @@ namespace Zephyrus::Factory {
 		Register("TheDescentPCNoPhysics", TheDescentPCNoPhysics::Create);
 		Register("RotatingComponent", RotatingComponent::Create);
 		Register("NavGridVolumeComponent", NavGridVolumeComponent::Create);
+		Register("ProjectResearchControllerComponent", ProjectResearchControllerComponent::Create);
     }
 
     Component* ComponentFactory::Create(const std::string& pName, Actor* pOwner)

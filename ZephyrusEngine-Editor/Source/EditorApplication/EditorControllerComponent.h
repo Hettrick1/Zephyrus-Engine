@@ -33,10 +33,6 @@ namespace Zephyrus::ActorComponent {
 	public:
 		EditorControllerComponent(Actor* pOwner, int pUpdateOrder = 100);
 
-		void OnActionStarted(InputAction* pAction) override;
-		void OnActionTriggered(InputAction* pAction) override;
-		void OnActionEnded(InputAction* pAction) override;
-
 		void OnStart() override;
 
 		void Update() override;
