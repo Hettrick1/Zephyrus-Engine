@@ -24,7 +24,7 @@
                             "textures": [{
                                     "name": "albedo",
                                     "type": "Texture2D",
-                                    "path": "319058bf-7981-4e5b-996a-f8ce75eded69"
+                                    "path": "50c94986-fb68-4c40-8c2e-cc4c10734136"
                                 }],
                             "vec2Properties": [{
                                     "name": "uTiling",
@@ -200,6 +200,51 @@
                         "isQuery": false,
                         "ignoreSelf": true,
                         "halfExtents": [1.0, 1.0, 4.0]
+                    }
+                }]
+        }, {
+            "prefabName": "c8b9bae3-14eb-441e-bc51-341ead1f9324",
+            "uuid": "f33710a4-fde4-49e7-94b6-52fe6eb7e4f0",
+            "name": "CubeActor",
+            "state": "active",
+            "transform": {
+                "position": [0.0, -5.243, 0.863],
+                "rotation": [0.063, -89.98, -20.028],
+                "size": [1.0, 1.0, 12.0]
+            },
+            "components": [{
+                    "type": "MeshComponent",
+                    "componentId": "MeshComponent1",
+                    "componentName": "MeshComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "mesh": "d66e8308-7299-4ef6-80d2-be12f7d81604",
+                        "materialInstance": {
+                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
+                            "textures": [{
+                                    "name": "albedo",
+                                    "type": "Texture2D",
+                                    "path": "9108356a-451c-4af9-81e4-95c4e7d8cef4"
+                                }],
+                            "vec2Properties": [{
+                                    "name": "uTiling",
+                                    "value": [12.0, 1.0]
+                                }]
+                        }
+                    }
+                }, {
+                    "type": "CubeColliderComponent",
+                    "componentId": "CubeColliderComponent1",
+                    "componentName": "CubeColliderComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "isQuery": false,
+                        "ignoreSelf": true,
+                        "halfExtents": [1.0, 1.0, 12.0]
                     }
                 }]
         }]

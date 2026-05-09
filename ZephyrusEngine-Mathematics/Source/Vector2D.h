@@ -103,8 +103,13 @@ struct Vector2D
 		if (temp.y < min.y) temp.y = min.y;
 		if (temp.y > max.y) temp.y = max.y;
 	}
-	inline float Distance(Vector2D& vec) {
+
+	inline float Distance(const Vector2D& vec) const {
 		return sqrt((x - vec.x) * (x - vec.x) + (y - vec.y) * (y - vec.y));
+	}
+
+	inline float DistanceSquared(const Vector2D& vec) const {
+		return (x - vec.x) * (x - vec.x) + (y - vec.y) * (y - vec.y);
 	}
 
 	inline bool Equals(Vector2D& right, float acceptance) {

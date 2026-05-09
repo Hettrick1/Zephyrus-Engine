@@ -22,9 +22,19 @@ namespace Zephyrus::AI
 
 		std::vector<GridNode*> neighbors;
 
-		float gCost = 0.0f;
-		float hCost = 0.0f;
+		float g = 0.0f;
+		float h = 0.0f;
+		float f = 0.0f;
+		float weight = 1.0f;
+
+		bool isClosed = false;
+
 		GridNode* parent = nullptr;
+
+		float GetDistance(GridNode* from)
+		{
+			return nodePosition.DistanceSquared(from->nodePosition);
+		}
 	};
 
 	class NavGridManager
@@ -45,6 +55,8 @@ namespace Zephyrus::AI
 		void ComputeGrid();
 		
 		GridNode* GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation);
+
+		std::vector<GridNode*> GetShortestPath(GridNode* startNode, GridNode* targetNode);
 
 		void UpdateDebug();
 	};

@@ -65,4 +65,18 @@ namespace Zephyrus::Debug
 		Vector3D Color;
 		HitResult Hit;
 	};
+
+	struct PersistantDebugBox
+	{
+		PersistantDebugBox(const Matrix4DRow& pMatrix, const Vector3D& pColor = Vector3D::unitY, unsigned pLineWidth = 1)
+			: WorldTransform(pMatrix), Color(pColor), LineWidth(pLineWidth)
+		{
+		}
+
+		friend auto operator<=>(const PersistantDebugBox& a, const PersistantDebugBox& b) = default;
+
+		Matrix4DRow WorldTransform;
+		Vector3D Color;
+		unsigned LineWidth;
+	};
 }

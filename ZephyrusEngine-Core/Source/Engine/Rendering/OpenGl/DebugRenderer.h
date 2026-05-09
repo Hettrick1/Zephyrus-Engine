@@ -28,12 +28,12 @@ namespace Zephyrus::Render {
 
 		void Draw(IRenderer& pRenderer);
 
-		void AddDebugLine(const Zephyrus::Debug::DebugLine& pLine);
+		void AddDebugLine(const Zephyrus::Debug::DebugLine& pLine, int index = -1);
 		void AddDebugBox(const Matrix4DRow& pWorldTransform);
-		void AddDebugBox(const Zephyrus::Debug::DebugBox& pBox);
+		void AddDebugBox(const Zephyrus::Debug::DebugBox& pBox, int index = -1);
 
-		void AddPersistantDebugBox(const Matrix4DRow& pWorldTransform);
-		void RemovePersistantDebugBox(const Matrix4DRow& pWorldTransform);
+		void AddPersistantDebugBox(const Zephyrus::Debug::PersistantDebugBox& pBox);
+		void RemovePersistantDebugBox(const Zephyrus::Debug::PersistantDebugBox& pBox);
 
 		void DrawSelectedBox(const Matrix4DRow& pWorldTransform);
 
@@ -42,8 +42,8 @@ namespace Zephyrus::Render {
 		void SetProjMatrix(const Matrix4DRow& pProjMatrix);
 
 		void FlushDebugElements();
-		void FlushDebugLines();
-		void FlushDebugBoxes();
+		void FlushDebugLines(int index = -1);
+		void FlushDebugBoxes(int index = -1);
 
 		void SetDrawDebug(bool pDraw);
 		void SetDrawLines(bool pDraw);

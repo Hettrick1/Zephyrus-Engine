@@ -13,7 +13,7 @@ namespace Zephyrus::ActorComponent
 		Vector2D mNumberOfPoint = { 20.0f, 20.0f };
 		float mAgentWidth = 0.8f;
 		float mAgentHeight = 1.5f;
-		bool mShowLines = true;
+		bool mShowLines = false;
 		bool mShowNodePos = true;
 		bool mShowAgentCollision = false;
 		Matrix4DRow mWorldTransformBackup;
@@ -23,13 +23,6 @@ namespace Zephyrus::ActorComponent
 		: Component(pOwner, "NavGridVolumeComponent"), mImpl(std::make_unique<Impl>())
 	{
 		mOwner->GetSceneContext()->GetNavGridManager()->AddVolumeComponent(this);
-
-		Matrix4DRow wt;
-		wt = Matrix4DRow::CreateScale(mImpl->mGridSize);
-		wt *= Matrix4DRow::CreateTranslation(GetWorldPosition());
-
-		mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox(wt);
-		mImpl->mWorldTransformBackup = wt;
 	}
 
 	NavGridVolumeComponent::~NavGridVolumeComponent()
@@ -57,6 +50,13 @@ namespace Zephyrus::ActorComponent
 		{
 			mImpl->mAgentHeight = *agentHeight;
 		}
+
+		Matrix4DRow wt;
+		wt = Matrix4DRow::CreateScale(mImpl->mGridSize * 2.0f);
+		wt *= Matrix4DRow::CreateTranslation(GetWorldPosition());
+
+		mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox({ wt, Vector3D(0.0, 0.0, 1.0) });
+		mImpl->mWorldTransformBackup = wt;
 	}
 
 	void NavGridVolumeComponent::Serialize(Serialization::ISerializer& pWriter)
@@ -80,13 +80,13 @@ namespace Zephyrus::ActorComponent
 		
 		Matrix4DRow wt;
 
-		wt = Matrix4DRow::CreateScale(mImpl->mGridSize);
+		wt = Matrix4DRow::CreateScale(mImpl->mGridSize * 2.0f);
 		wt *= Matrix4DRow::CreateTranslation(GetWorldPosition());
 
 		if (wt != mImpl->mWorldTransformBackup)
 		{
 			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->RemovePersistantDebugBox(mImpl->mWorldTransformBackup);
-			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox(wt);
+			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox({ wt, Vector3D(0.0, 0.0, 1.0) });
 			mImpl->mWorldTransformBackup = wt;
 		}
 

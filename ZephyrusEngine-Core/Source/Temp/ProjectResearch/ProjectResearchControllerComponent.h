@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "IActionListener.h"
 #include "HudImage.h"
+#include "../../Engine/AI/NavGridManager.h"
 
 using Zephyrus::Inputs::IActionListener;
 using Zephyrus::Inputs::InputAction;
@@ -32,6 +33,9 @@ namespace Zephyrus::ActorComponent {
         float mMouseSensitivity = 0.1f;
 
         InputManager* mInputManager{ nullptr };
+
+        Zephyrus::AI::GridNode* mStartingNode{ nullptr };
+        Zephyrus::AI::GridNode* mEndNode{ nullptr };
     public:
         ProjectResearchControllerComponent(Actor* pOwner, int pUpdateOrder = 100);
 

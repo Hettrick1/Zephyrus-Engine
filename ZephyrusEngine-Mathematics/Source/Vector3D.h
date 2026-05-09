@@ -149,6 +149,26 @@ struct Vector3D
 		return temp;
 	}
 
+	inline Vector2D xy()
+	{
+		return Vector2D(x, y);
+	}
+
+	inline Vector3D AddZ(float zOffset)
+	{
+		return Vector3D(x, y, z + zOffset);
+	}
+
+	inline Vector3D AddX(float xOffset)
+	{
+		return Vector3D(x + xOffset, y, z);
+	}
+
+	inline Vector3D AddY(float yOffset)
+	{
+		return Vector3D(x, y + yOffset, z);
+	}
+
 	friend Vector3D Normalize(Vector3D temp) { 
 		return temp / temp.Length(); 
 	}
@@ -179,6 +199,10 @@ struct Vector3D
 
 	inline float Distance(Vector3D& vec) const {
 		return sqrt(((*this).x - vec.x) * ((*this).x - vec.x) + ((*this).y - vec.y) * ((*this).y - vec.y) + ((*this).z - vec.z) * ((*this).z - vec.z));
+	}
+
+	inline float DistanceSquared(Vector3D& vec) const {
+		return ((*this).x - vec.x) * ((*this).x - vec.x) + ((*this).y - vec.y) * ((*this).y - vec.y) + ((*this).z - vec.z) * ((*this).z - vec.z);
 	}
 
 	static float Distance(const Vector3D& a, const Vector3D& b) {

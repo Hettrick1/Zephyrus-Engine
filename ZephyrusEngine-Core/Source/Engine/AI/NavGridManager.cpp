@@ -33,11 +33,20 @@ namespace Zephyrus::AI
 
 		ISceneContext* mContext;
 
+		int mNodeEdgesDebugLinesIndex = 1;
+		int mNodePositionDebugBoxIndex = 1;
+		int mAgentSizeDebugBoxIndex = 2;
+
+
+		std::vector<GridNode*> mOpenList;
+
 		void _SetLineTraceVisibility(Render::DebugRenderer& debugRenderer, bool visibility);
 		void _SetNodePositionVisibility(Render::DebugRenderer& debugRenderer, bool visibility);
 		void _SetAgentCollisionVisibility(Render::DebugRenderer& debugRenderer, bool visibility);
 
 		void _CheckForNeighbors(Render::DebugRenderer& debugRenderer, float cellSizeX, float cellSizeY, GridNode& node);
+
+		std::vector<GridNode*> RetraceShortestPath(GridNode* End);
 	};
 
 	NavGridManager::NavGridManager(ISceneContext* context)
@@ -153,7 +162,7 @@ namespace Zephyrus::AI
 				Debug::DebugBox box1 = Debug::DebugBox(startPos2, extents2, hit2, Vector3D(1.0f, 1.0f, 0.0f));
 				if (navVolume->GetShowAgentCollision())
 				{
-					mImpl->mContext->GetRenderer()->GetDebugRenderer()->AddDebugBox(box1);
+					mImpl->mContext->GetRenderer()->GetDebugRenderer()->AddDebugBox(box1, mImpl->mAgentSizeDebugBoxIndex);
 				}
 				mImpl->mDebugAgentCollision.push_back(box1);
 
@@ -170,7 +179,7 @@ namespace Zephyrus::AI
 				Debug::DebugBox box = Debug::DebugBox(node.nodePosition, 0.1f, hit, Vector3D(0.0f, 0.0f, 1.0f));
 				if (navVolume->GetShowNodePosition())
 				{
-					debugRenderer->AddDebugBox(box);
+					debugRenderer->AddDebugBox(box, mImpl->mNodePositionDebugBoxIndex);
 				}
 				mImpl->mDebugNodePosition.push_back(box);
 				mImpl->mGrid.emplace_back(node);
@@ -231,6 +240,90 @@ namespace Zephyrus::AI
 
 		return nullptr;
 	}
+
+	std::vector<GridNode*> NavGridManager::GetShortestPath(GridNode* startNode, GridNode* targetNode)
+	{
+		if (!startNode || !targetNode) 
+			return {};
+
+		for (auto& node : mImpl->mGrid) 
+		{
+			node.g = zpMaths::INFINITY_POS;
+			node.f = zpMaths::INFINITY_POS;
+			node.parent = nullptr;
+			node.isClosed = false;
+		}
+
+		mImpl->mOpenList.clear();
+
+		startNode->g = 0;
+		startNode->h = startNode->GetDistance(targetNode);
+		startNode->f = startNode->h;
+
+		mImpl->mOpenList.push_back(startNode);
+
+		GridNode* closestNode = startNode;
+		float minH = startNode->h;
+
+		while (!mImpl->mOpenList.empty()) 
+		{
+			// search for the smallest f
+			int indexTemp = 0;
+			for (int i = 1; i < mImpl->mOpenList.size(); i++) {
+				if (mImpl->mOpenList[i]->f < mImpl->mOpenList[indexTemp]->f) 
+				{
+					indexTemp = i;
+				}
+			}
+
+			GridNode* currentNode = mImpl->mOpenList[indexTemp];
+
+			// save the current node if it is the closest to the target point for now
+			if (currentNode->h < minH) {
+				minH = currentNode->h;
+				closestNode = currentNode;
+			}
+
+			// if the current node is also the target we stop the search
+			if (currentNode == targetNode) 
+			{
+				return mImpl->RetraceShortestPath(currentNode);
+			}
+
+			// the current node can no longer be in the open list
+			mImpl->mOpenList.erase(mImpl->mOpenList.begin() + indexTemp);
+			currentNode->isClosed = true;
+
+			// check the neighbors and calculate their ghf
+			for (GridNode* neighbor : currentNode->neighbors) 
+			{
+				// already processed
+				if (neighbor->isClosed)
+					continue;
+
+				float tentativeG = currentNode->g + (currentNode->GetDistance(neighbor) * currentNode->weight);
+
+				// the new g is lower than the one we had
+				if (tentativeG < neighbor->g) 
+				{
+					neighbor->parent = currentNode;
+					neighbor->g = tentativeG;
+					neighbor->h = neighbor->GetDistance(targetNode);
+					neighbor->f = neighbor->g + neighbor->h;
+
+					// first time that we visit this node
+					if (std::find(mImpl->mOpenList.begin(), mImpl->mOpenList.end(), neighbor) == mImpl->mOpenList.end()) 
+					{
+						mImpl->mOpenList.push_back(neighbor);
+					}
+				}
+			}
+		}
+
+		// target node unreachable, return the path till the closest node found
+		ZP_EDITOR_WARN("Target unreachable. Pathfinding to closest possible node.");
+		return mImpl->RetraceShortestPath(closestNode);
+	}
 	
 	void NavGridManager::UpdateDebug()
 	{
@@ -249,14 +342,14 @@ namespace Zephyrus::AI
 	{
 		if (!visibility && mPreviousShowLines)
 		{
-			debugRenderer.FlushDebugLines();
+			debugRenderer.FlushDebugLines(mNodeEdgesDebugLinesIndex);
 			mPreviousShowLines = false;
 		}
 		if (visibility && !mPreviousShowLines && !mDebugLines.empty())
 		{
 			for (const auto& line : mDebugLines)
 			{
-				debugRenderer.AddDebugLine(line);
+				debugRenderer.AddDebugLine(line, mNodeEdgesDebugLinesIndex);
 			}
 			mPreviousShowLines = true;
 		}
@@ -266,23 +359,15 @@ namespace Zephyrus::AI
 	{
 		if (!visibility && mPreviousShowNodePosition)
 		{
-			debugRenderer.FlushDebugBoxes();
+			debugRenderer.FlushDebugBoxes(mNodeEdgesDebugLinesIndex);
 			mPreviousShowNodePosition = false;
-			if (mPreviousShowAgentCollision)
-			{
-				for (const auto& box : mDebugAgentCollision)
-				{
-					debugRenderer.AddDebugBox(box);
-				}
-				mPreviousShowAgentCollision = true;
-			}
 		}
 
 		if (visibility && !mPreviousShowNodePosition && !mDebugNodePosition.empty())
 		{
 			for (const auto& box : mDebugNodePosition)
 			{
-				debugRenderer.AddDebugBox(box);
+				debugRenderer.AddDebugBox(box, mNodeEdgesDebugLinesIndex);
 			}
 			mPreviousShowNodePosition = true;
 		}
@@ -292,23 +377,15 @@ namespace Zephyrus::AI
 	{
 		if (!visibility && mPreviousShowAgentCollision)
 		{
-			debugRenderer.FlushDebugBoxes();
+			debugRenderer.FlushDebugBoxes(mAgentSizeDebugBoxIndex);
 			mPreviousShowAgentCollision = false;
-			if (mPreviousShowNodePosition)
-			{
-				for (const auto& box : mDebugNodePosition)
-				{
-					debugRenderer.AddDebugBox(box);
-				}
-				mPreviousShowNodePosition = true;
-			}
 		}
 
 		if (visibility && !mPreviousShowAgentCollision && !mDebugAgentCollision.empty())
 		{
 			for (const auto& box : mDebugAgentCollision)
 			{
-				debugRenderer.AddDebugBox(box);
+				debugRenderer.AddDebugBox(box, mAgentSizeDebugBoxIndex);
 			}
 			mPreviousShowAgentCollision = true;
 		}
@@ -325,7 +402,6 @@ namespace Zephyrus::AI
 			int nx = node.gridX + dir[0];
 			int ny = node.gridY + dir[1];
 
-			// Vérification des limites de la grille (plus d'erreurs de float !)
 			if (nx >= 0 && nx < mNumPointsX && ny >= 0 && ny < mNumPointsY) {
 				int neighborIndex = ny * mNumPointsX + nx;
 				GridNode& neighbor = mGrid[neighborIndex];
@@ -349,10 +425,6 @@ namespace Zephyrus::AI
 					continue;
 
 				HitResult hit;
-
-				if (node.nodePosition.z > neighbor.nodePosition.z)
-					continue;
-
 				const float height = node.nodePosition.z + 0.2f;
 				const Vector3D startHit = Vector3D(node.nodePosition.x, node.nodePosition.y, height);
 				const Vector3D endHit = Vector3D(neighbor.nodePosition.x * 0.9f, neighbor.nodePosition.y * 0.9f, height);
@@ -367,8 +439,24 @@ namespace Zephyrus::AI
 				const Vector3D startPos = Vector3D(node.nodePosition.x, node.nodePosition.y, node.nodePosition.z + 0.2f);
 				const Vector3D endPos = Vector3D(neighbor.nodePosition.x, neighbor.nodePosition.y, neighbor.nodePosition.z + 0.2f);
 				Debug::DebugLine line = Debug::DebugLine(startPos, endPos, hit, Vector3D(1.0f, 0.7f, 0.0f));
-				debugRenderer.AddDebugLine(line);
+				if (mVolumeComponents[0]->GetShowLines())
+				{
+					debugRenderer.AddDebugLine(line, mNodeEdgesDebugLinesIndex);
+					mDebugLines.push_back(line);
+				}
 			}
 		}
+	}
+	std::vector<GridNode*> NavGridManager::Impl::RetraceShortestPath(GridNode* End)
+	{
+		std::vector<GridNode*> pathNode;
+		GridNode* temp = End;
+		while (temp != nullptr)
+		{
+			pathNode.push_back(temp);
+			temp = temp->parent;
+		}
+		std::reverse(pathNode.begin(), pathNode.end());
+		return pathNode;
 	}
 }

@@ -10,10 +10,10 @@
 #include "CameraComponent.h"
 
 #include "../../Engine/Physics/Bullet/PhysicWorld.h"
-#include "../../Engine/AI/NavGridManager.h"
 #include "../../Engine/Rendering/OpenGl/DebugRenderer.h"
 #include "../../Engine/Rendering/Assets/AssetsManager.h"
 #include "../../Engine/UI/HudElement/HudImage.h"
+#include "../../Engine/UI/HudElement/HudText.h"
 
 namespace Zephyrus::ActorComponent {
 	ProjectResearchControllerComponent::ProjectResearchControllerComponent(Actor* pOwner, int pUpdateOrder)
@@ -65,9 +65,9 @@ namespace Zephyrus::ActorComponent {
 			upDown.BindKeyValue(GLFW_KEY_SPACE, 1.0f);
 			upDown.BindKeyValue(GLFW_KEY_LEFT_SHIFT, -1.0f);
 
-			std::string MainMenuPngID = "7387b94d-0c8a-4b75-83b7-da36a90f77f5";
+			std::string MainMenuPngID = "e89d92d8-11f6-47a6-a6d8-48c8486cd80d";
 			Assets::ITexture2D* damageIndicator = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(MainMenuPngID);
-			mCrossHair = new Zephyrus::UI::HudImage(mOwner->GetSceneContext(), damageIndicator, Vector2D(0, 0), 0.5);
+			mCrossHair = new Zephyrus::UI::HudImage(mOwner->GetSceneContext(), damageIndicator, Vector2D(0, 0), 0.03);
 			mCrossHair->SetTint(Vector4D(1.0, 1.0, 1.0, 1.0));
 		}
 	}
@@ -120,10 +120,9 @@ namespace Zephyrus::ActorComponent {
 		auto up = Vector3D::unitZ;
 		mOwner->GetTransformComponent().Translate(up * direction * mSpeed * Timer::deltaTime);
 	}
+
 	void ProjectResearchControllerComponent::SelectNode()
 	{
-		ZP_CORE_INFO("SELECTING");
-
 		auto direction = mOwner->GetTransformComponent().Forward();
 		auto start = GetWorldPosition();
 		auto end = start + direction * 1000;
@@ -132,14 +131,54 @@ namespace Zephyrus::ActorComponent {
 
 		if (mOwner->GetSceneContext()->GetPhysicsWorld()->LineTrace(start, end, hit))
 		{
+			if (mStartingNode && mEndNode)
+			{
+				Matrix4DRow box1 = Matrix4DRow::CreateTranslation(mStartingNode->nodePosition);
+				box1 *= Matrix4DRow::CreateScale(1.0);
+				Vector3D color1 = Vector3D(1.0, 0.0, 1.0);
+				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->RemovePersistantDebugBox({ box1, color1, 3 });
+
+				Matrix4DRow box2 = Matrix4DRow::CreateTranslation(mEndNode->nodePosition);
+				box2 *= Matrix4DRow::CreateScale(1.0);
+				Vector3D color2 = Vector3D(0.0, 0.5, 1.0);
+				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->RemovePersistantDebugBox({ box2, color2, 3 });
+
+				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugLines(2);
+
+				mStartingNode = nullptr;
+				mEndNode = nullptr;
+			}
+
 			auto node = mOwner->GetSceneContext()->GetNavGridManager()->GetNearestNodeFromWorldPosition(hit.HitPoint);
+
+			const bool SettingStartingNode = !mStartingNode;
+
+			if (SettingStartingNode)
+			{
+				mStartingNode = node;
+			}
+
+			if (!SettingStartingNode)
+			{
+				mEndNode = node;
+
+				auto path = mOwner->GetSceneContext()->GetNavGridManager()->GetShortestPath(mStartingNode, mEndNode);
+				for (auto node : path)
+				{
+					if (node->parent)
+					{
+						auto line = Debug::DebugLine(node->nodePosition.AddZ(0.2f), node->parent->nodePosition.AddZ(0.2f));
+						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugLine(line, 2);
+					}
+				}
+			}
 
 			Matrix4DRow box = Matrix4DRow::CreateTranslation(node->nodePosition);
 			box *= Matrix4DRow::CreateScale(1.0);
 
-			ZP_CORE_INFO("CREATING A BOX");
+			Vector3D color = SettingStartingNode ? Vector3D(1.0, 0.0, 1.0) : Vector3D(0.0, 0.5, 1.0);
 
-			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugBox(box);
+			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox({ box, color, 3 });
 		}
 	}
 }
