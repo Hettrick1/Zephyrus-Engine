@@ -30,6 +30,9 @@ namespace Zephyrus::Debug
 			: Start(pStart), End(pEnd), Hit(pHit), Color(pColor)
 		{
 		}
+
+		friend auto operator<=>(const DebugLine& a, const DebugLine& b) = default;
+
 		Vector3D Start;
 		Vector3D End;
 		Vector3D Color;
@@ -54,7 +57,7 @@ namespace Zephyrus::Debug
 		
 		friend auto operator<=>(const DebugBox& a, const DebugBox& b) = default;
 		
-		std::vector<float> getBoxVertices() const
+		std::vector<float> GetBoxVertices() const
 		{
 			return Vertices;
 		}
@@ -78,5 +81,87 @@ namespace Zephyrus::Debug
 		Matrix4DRow WorldTransform;
 		Vector3D Color;
 		unsigned LineWidth;
+	};
+
+	struct Debug2DArrow
+	{
+		Debug2DArrow(Vector3D pStart, Vector3D pEnd, const Vector3D& pColor = Vector3D::unitX, float pArrowSize = 2.0f)
+			: Start(pStart), End(pEnd), Color(pColor), ArrowSize(pArrowSize)
+		{
+			LineVertices.push_back(Start.x);
+			LineVertices.push_back(Start.y);
+			LineVertices.push_back(Start.z);
+
+			LineVertices.push_back(Color.x);
+			LineVertices.push_back(Color.y);
+			LineVertices.push_back(Color.z);
+
+			LineVertices.push_back(End.x);
+			LineVertices.push_back(End.y);
+			LineVertices.push_back(End.z);
+
+			LineVertices.push_back(Color.x);
+			LineVertices.push_back(Color.y);
+			LineVertices.push_back(Color.z);
+
+			Vector3D dir = Vector3D::Normalize(Start - End);
+			Vector3D tempUp = Vector3D(0, 0, 1);
+			if (zpMaths::Abs(Vector3D::Dot(dir, tempUp)) > 0.99f) {
+				tempUp = Vector3D(0, 1, 0);
+			}
+
+			Vector3D right = Vector3D::Normalize(Vector3D::Cross(dir, tempUp));
+			Vector3D up = Vector3D::Normalize(Vector3D::Cross(right, dir));
+
+			Vector3D arrowBase = End + (dir * 0.25 * ArrowSize) + (dir * 0.1);
+
+			Vector3D v1 = arrowBase + (right * 0.125 * ArrowSize);
+			Vector3D v2 = arrowBase - (right * 0.125 * ArrowSize);
+
+			TriangleVertices.push_back(End.x + (dir.x * 0.1));
+			TriangleVertices.push_back(End.y + (dir.y * 0.1));
+			TriangleVertices.push_back(End.z + (dir.z * 0.1));
+
+			TriangleVertices.push_back(Color.x);
+			TriangleVertices.push_back(Color.y);
+			TriangleVertices.push_back(Color.z);
+
+			TriangleVertices.push_back(v1.x);
+			TriangleVertices.push_back(v1.y);
+			TriangleVertices.push_back(v1.z);
+
+			TriangleVertices.push_back(Color.x);
+			TriangleVertices.push_back(Color.y);
+			TriangleVertices.push_back(Color.z);
+
+			TriangleVertices.push_back(v2.x);
+			TriangleVertices.push_back(v2.y);
+			TriangleVertices.push_back(v2.z);
+
+			TriangleVertices.push_back(Color.x);
+			TriangleVertices.push_back(Color.y);
+			TriangleVertices.push_back(Color.z);
+		}
+
+		friend auto operator<=>(const Debug2DArrow& a, const Debug2DArrow& b) = default;
+
+		std::vector<float> LineVertices;
+		std::vector<float> TriangleVertices;
+
+		Vector3D Start;
+		Vector3D End;
+		Vector3D Color;
+
+		float ArrowSize;
+
+		std::vector<float> GetLineVertices() const
+		{
+			return LineVertices;
+		}
+
+		std::vector<float> GetTriangleVertices() const
+		{
+			return TriangleVertices; 
+		}
 	};
 }

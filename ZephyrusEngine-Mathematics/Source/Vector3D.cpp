@@ -37,8 +37,6 @@ void Vector3D::Normalize()
 	z /= len;
 }
 
-
-
 Vector3D Vector3D::Transform(Vector3D& vec, Matrix4D& mat, float w)
 {
 	Vector3D retVal;

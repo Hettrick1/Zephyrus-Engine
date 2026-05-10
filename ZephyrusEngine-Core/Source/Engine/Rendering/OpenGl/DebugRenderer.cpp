@@ -17,21 +17,31 @@ namespace Zephyrus::Render {
 		Render::IShader* mDebugFragment{ nullptr };
 		Render::IShaderProgram* mDebugShaderProgram{ nullptr };
 		Render::IShaderProgram* mDebugVertexColorShaderProgram{ nullptr };
-		Matrix4DRow mView, mProj;
+		Matrix4DRow mView = Matrix4DRow::Identity;
+		Matrix4DRow mProj = Matrix4DRow::Identity;
 		std::unordered_map<unsigned, std::vector<float>> mLinesVertices;
 		std::unordered_map<unsigned, std::vector<float>> mBoxesVertices;
+		std::unordered_map<unsigned, std::vector<float>> mArrowLinesVertices;
+		std::unordered_map<unsigned, std::vector<float>> mArrowTrianglesVertices;
+
 		std::vector<Matrix4DRow> mBoxesWithMatrices; // deprecated
+
 		std::vector<Zephyrus::Debug::PersistantDebugBox> mPersistantBoxes;
 
 		unsigned mNbOfLineVertices = 0;
 		unsigned mNbOfBoxVertices = 0;
 
-		unsigned mDebugBoxForMatricesVao, mDebugBoxForMatricesVbo, mDebugBoxVao, mDebugBoxVbo, mDebugLineVao, mDebugLineVbo;
+		unsigned mNbOfArrowLineVertices = 0;
+		unsigned mNbOfArrowTriangleVertices = 0;
+
+		unsigned mDebugBoxForMatricesVao = 0, mDebugBoxForMatricesVbo = 0, mDebugBoxVao = 0, mDebugBoxVbo = 0, mDebugLineVao = 0, mDebugLineVbo = 0;
+		unsigned mDebugArrowLineVao = 0, mDebugArrowLineVbo = 0, mDebugArrowTriangleVao = 0, mDebugArrowTriangleVbo = 0;
 
 		bool mDrawDebug = true, mDrawLines = true, mDrawBoxes = true, mDrawSelected = false, mDrawPersistantDebug = true;
 
 		bool mNeedRecomputeBoxesBuffer = true;
 		bool mNeedRecomputeLinesBuffer = true;
+		bool mNeedRecomputeArrowBuffer = true;
 
 		void Initialize(const Window& pWindow);
 		void DeleteBuffers();
@@ -40,6 +50,7 @@ namespace Zephyrus::Render {
 		void FlushDebugElements();
 		void FlushDebugLines(int index = -1);
 		void FlushDebugBoxes(int index = -1);
+		void FlushDebugArrows(int index = -1);
 
 		void SetUniforms(const Matrix4DRow& pWorldTransform, const Vector3D& color);
 
@@ -47,6 +58,8 @@ namespace Zephyrus::Render {
 		void DrawDebugBoxesWithMatrices();
 		void DrawDebugBoxes();
 		void DrawDebugLines();
+
+		void DrawDebugArrow();
 
 		void DrawDebug();
 	};
@@ -111,6 +124,42 @@ namespace Zephyrus::Render {
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
+
+		// Debug arrow lines Buffers
+
+		glGenVertexArrays(1, &mDebugArrowLineVao);
+		glGenBuffers(1, &mDebugArrowLineVbo);
+
+		glBindVertexArray(mDebugArrowLineVao);
+		glBindBuffer(GL_ARRAY_BUFFER, mDebugArrowLineVbo);
+
+		glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(sizeof(GLfloat) * 3));
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		// Debug arrow triangle Buffers
+
+		glGenVertexArrays(1, &mDebugArrowTriangleVao);
+		glGenBuffers(1, &mDebugArrowTriangleVbo);
+
+		glBindVertexArray(mDebugArrowTriangleVao);
+		glBindBuffer(GL_ARRAY_BUFFER, mDebugArrowTriangleVbo);
+
+		glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(sizeof(GLfloat) * 3));
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 	}
 
 	void DebugRenderer::Impl::DeleteBuffers()
@@ -121,6 +170,10 @@ namespace Zephyrus::Render {
 		glDeleteVertexArrays(1, &mDebugLineVao);
 		glDeleteBuffers(1, &mDebugBoxVbo);
 		glDeleteVertexArrays(1, &mDebugBoxVao);
+		glDeleteBuffers(1, &mDebugArrowLineVbo);
+		glDeleteVertexArrays(1, &mDebugArrowLineVao);
+		glDeleteBuffers(1, &mDebugArrowTriangleVbo);
+		glDeleteVertexArrays(1, &mDebugArrowTriangleVao);
 	}
 
 	void DebugRenderer::Impl::Unload()
@@ -181,6 +234,34 @@ namespace Zephyrus::Render {
 		}
 		mBoxesVertices[index].clear();
 		mNeedRecomputeBoxesBuffer = true;
+	}
+
+	void DebugRenderer::Impl::FlushDebugArrows(int index)
+	{
+		if (index < 0)
+		{
+			for (auto vector : mArrowLinesVertices)
+			{
+				vector.second.clear();
+			}
+			for (auto vector : mArrowTrianglesVertices)
+			{
+				vector.second.clear();
+			}
+			mArrowLinesVertices.clear();
+			mArrowTrianglesVertices.clear();
+
+			mNeedRecomputeArrowBuffer = true;
+			return;
+		}
+		if (!mArrowLinesVertices.contains(index) || !mArrowTrianglesVertices.contains(index))
+		{
+			ZP_CORE_WARN("Trying to flush non existing debug arrows.");
+			return;
+		}
+		mArrowLinesVertices[index].clear();
+		mArrowTrianglesVertices[index].clear();
+		mNeedRecomputeArrowBuffer = true;
 	}
 
 	void DebugRenderer::Impl::SetUniforms(const Matrix4DRow& worldTransform, const Vector3D& color)
@@ -262,6 +343,71 @@ namespace Zephyrus::Render {
 		glBindVertexArray(0);
 	}
 
+	void DebugRenderer::Impl::DrawDebugArrow()
+	{
+		if (mNeedRecomputeArrowBuffer)
+		{
+			glBindVertexArray(mDebugArrowLineVao);
+			glBindBuffer(GL_ARRAY_BUFFER, mDebugArrowLineVbo);
+
+			std::vector<float> LineVertices;
+			for (auto vector : mArrowLinesVertices)
+			{
+				LineVertices.insert(LineVertices.end(), vector.second.begin(), vector.second.end());
+			}
+
+			mNbOfArrowLineVertices = static_cast<unsigned>(LineVertices.size() / 6);
+
+			glBufferData(GL_ARRAY_BUFFER, LineVertices.size() * sizeof(float), LineVertices.data(), GL_DYNAMIC_DRAW);
+
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(sizeof(GLfloat) * 3));
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+			glBindVertexArray(mDebugArrowTriangleVao);
+
+			glBindBuffer(GL_ARRAY_BUFFER, mDebugArrowTriangleVbo);
+
+			std::vector<float> TriangleVertices;
+			for (auto vector : mArrowTrianglesVertices)
+			{
+				TriangleVertices.insert(TriangleVertices.end(), vector.second.begin(), vector.second.end());
+			}
+
+			mNbOfArrowTriangleVertices = static_cast<unsigned>(TriangleVertices.size() / 6);
+
+			glBufferData(GL_ARRAY_BUFFER, TriangleVertices.size() * sizeof(float), TriangleVertices.data(), GL_DYNAMIC_DRAW);
+
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(sizeof(GLfloat) * 3));
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			mNeedRecomputeArrowBuffer = false;
+		}
+
+		glBindVertexArray(mDebugArrowLineVao);
+		mDebugVertexColorShaderProgram->Use();
+
+		auto wt = Matrix4DRow::Identity;
+		mDebugVertexColorShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
+		mDebugVertexColorShaderProgram->setMatrix4Row("uWorldTransform", wt);
+		glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(mNbOfArrowLineVertices));
+		glBindVertexArray(0);
+
+		glBindVertexArray(mDebugArrowTriangleVao);
+		mDebugVertexColorShaderProgram->Use();
+
+		mDebugVertexColorShaderProgram->setMatrix4Row("uViewProj", mView * mProj);
+		mDebugVertexColorShaderProgram->setMatrix4Row("uWorldTransform", wt);
+		glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(mNbOfArrowTriangleVertices));
+		glBindVertexArray(0);
+	}
+
 	void DebugRenderer::Impl::DrawDebug()
 	{
 		glEnable(GL_DEPTH_TEST);
@@ -298,6 +444,9 @@ namespace Zephyrus::Render {
 				glDrawArrays(GL_LINES, 0, 24);
 			}
 		}
+
+		DrawDebugArrow();
+
 		glDisable(GL_DEPTH_TEST);
 	}
 
@@ -394,9 +543,27 @@ namespace Zephyrus::Render {
 		}
 		auto& vector = mImpl->mBoxesVertices[vectorIndex];
 
-		auto v = pBox.getBoxVertices();
+		auto v = pBox.GetBoxVertices();
 		vector.insert(vector.end(), v.begin(), v.end());
 		mImpl->mNeedRecomputeBoxesBuffer = true;
+	}
+
+	void DebugRenderer::AddDebugArrow(const Zephyrus::Debug::Debug2DArrow& pBox, int index)
+	{
+		unsigned vectorIndex = 0;
+		if (index > 0)
+		{
+			vectorIndex = index;
+		}
+		auto& vectorLine = mImpl->mArrowLinesVertices[vectorIndex];
+		auto v1 = pBox.GetLineVertices();
+		vectorLine.insert(vectorLine.end(), v1.begin(), v1.end());
+
+		auto& vectorTriangle = mImpl->mArrowTrianglesVertices[vectorIndex];
+		auto v2 = pBox.GetTriangleVertices();
+		vectorTriangle.insert(vectorTriangle.end(), v2.begin(), v2.end());
+
+		mImpl->mNeedRecomputeArrowBuffer = true;
 	}
 
 	void DebugRenderer::AddPersistantDebugBox(const Zephyrus::Debug::PersistantDebugBox& pBox)
@@ -451,6 +618,11 @@ namespace Zephyrus::Render {
 	void DebugRenderer::FlushDebugBoxes(int index)
 	{
 		mImpl->FlushDebugBoxes(index);
+	}
+
+	void DebugRenderer::FlushDebugArrows(int index)
+	{
+		mImpl->FlushDebugArrows(index);
 	}
 
 	void DebugRenderer::SetDrawDebug(bool pDraw)

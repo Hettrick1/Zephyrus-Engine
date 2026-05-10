@@ -16,7 +16,7 @@ namespace Zephyrus::ActorComponent
 		bool mShowLines = false;
 		bool mShowNodePos = true;
 		bool mShowAgentCollision = false;
-		Matrix4DRow mWorldTransformBackup;
+		Debug::PersistantDebugBox mDebugBoxBackup = Debug::PersistantDebugBox(Matrix4DRow::Identity, Vector3D(0.0, 0.0, 1.0));
 	};
 
 	NavGridVolumeComponent::NavGridVolumeComponent(Actor* pOwner)
@@ -28,7 +28,7 @@ namespace Zephyrus::ActorComponent
 	NavGridVolumeComponent::~NavGridVolumeComponent()
 	{
 		mOwner->GetSceneContext()->GetNavGridManager()->RemoveVolumeComponent(this);
-		mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->RemovePersistantDebugBox(mImpl->mWorldTransformBackup);
+		mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->RemovePersistantDebugBox(mImpl->mDebugBoxBackup);
 	}
 
 	void NavGridVolumeComponent::Deserialize(Serialization::IDeserializer& pReader)
@@ -55,8 +55,10 @@ namespace Zephyrus::ActorComponent
 		wt = Matrix4DRow::CreateScale(mImpl->mGridSize * 2.0f);
 		wt *= Matrix4DRow::CreateTranslation(GetWorldPosition());
 
-		mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox({ wt, Vector3D(0.0, 0.0, 1.0) });
-		mImpl->mWorldTransformBackup = wt;
+		Debug::PersistantDebugBox box = Debug::PersistantDebugBox(wt, Vector3D(0.0, 0.0, 1.0));
+
+		mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox(box);
+		mImpl->mDebugBoxBackup = box;
 	}
 
 	void NavGridVolumeComponent::Serialize(Serialization::ISerializer& pWriter)
@@ -83,11 +85,13 @@ namespace Zephyrus::ActorComponent
 		wt = Matrix4DRow::CreateScale(mImpl->mGridSize * 2.0f);
 		wt *= Matrix4DRow::CreateTranslation(GetWorldPosition());
 
-		if (wt != mImpl->mWorldTransformBackup)
+		Debug::PersistantDebugBox box = Debug::PersistantDebugBox(wt, Vector3D(0.0, 0.0, 1.0));
+
+		if (box != mImpl->mDebugBoxBackup)
 		{
-			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->RemovePersistantDebugBox(mImpl->mWorldTransformBackup);
-			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox({ wt, Vector3D(0.0, 0.0, 1.0) });
-			mImpl->mWorldTransformBackup = wt;
+			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->RemovePersistantDebugBox(mImpl->mDebugBoxBackup);
+			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox(box);
+			mImpl->mDebugBoxBackup = box;
 		}
 
 		return

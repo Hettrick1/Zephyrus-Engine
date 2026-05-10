@@ -143,7 +143,7 @@ namespace Zephyrus::ActorComponent {
 				Vector3D color2 = Vector3D(0.0, 0.5, 1.0);
 				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->RemovePersistantDebugBox({ box2, color2, 3 });
 
-				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugLines(2);
+				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugArrows(2);
 
 				mStartingNode = nullptr;
 				mEndNode = nullptr;
@@ -165,10 +165,10 @@ namespace Zephyrus::ActorComponent {
 				auto path = mOwner->GetSceneContext()->GetNavGridManager()->GetShortestPath(mStartingNode, mEndNode);
 				for (auto node : path)
 				{
-					if (node->parent)
+					if (node->parent) // starting from the second node
 					{
-						auto line = Debug::DebugLine(node->nodePosition.AddZ(0.2f), node->parent->nodePosition.AddZ(0.2f));
-						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugLine(line, 2);
+						auto line = Debug::Debug2DArrow(node->parent->nodePosition.AddZ(0.2f), node->nodePosition.AddZ(0.2f));
+						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugArrow(line, 2);
 					}
 				}
 			}

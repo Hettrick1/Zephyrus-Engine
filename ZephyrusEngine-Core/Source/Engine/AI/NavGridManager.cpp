@@ -23,17 +23,17 @@ namespace Zephyrus::AI
 		unsigned mNumPointsY = 0;
 		Vector3D mGridOrigin;
 
-		std::vector<Debug::DebugLine> mDebugLines;
+		std::vector<Debug::Debug2DArrow> mDebugArrows;
 		std::vector<Debug::DebugBox> mDebugNodePosition;
 		std::vector<Debug::DebugBox> mDebugAgentCollision;
 
-		bool mPreviousShowLines = true;
+		bool mPreviousShowArrow = true;
 		bool mPreviousShowNodePosition = true;
 		bool mPreviousShowAgentCollision = true;
 
 		ISceneContext* mContext;
 
-		int mNodeEdgesDebugLinesIndex = 1;
+		int mNodeEdgesDebugArrowIndex = 1;
 		int mNodePositionDebugBoxIndex = 1;
 		int mAgentSizeDebugBoxIndex = 2;
 
@@ -75,13 +75,13 @@ namespace Zephyrus::AI
 	void NavGridManager::ComputeGrid()
 	{
 		ZP_EDITOR_INFO("Computing the grid");
-		mImpl->mDebugLines.clear();
+		mImpl->mDebugArrows.clear();
 		mImpl->mDebugNodePosition.clear();
 		mImpl->mDebugAgentCollision.clear();
 		// work around for now it is to let the physic world know if I moved a cube i.e.
 		mImpl->mContext->GetPhysicsWorld()->Update(0.01f);
 		auto navVolume = mImpl->mVolumeComponents[0];
-		mImpl->mPreviousShowLines = navVolume->GetShowLines();
+		mImpl->mPreviousShowArrow = navVolume->GetShowLines();
 		mImpl->mPreviousShowAgentCollision = navVolume->GetShowAgentCollision();
 		mImpl->mPreviousShowNodePosition = navVolume->GetShowNodePosition();
 
@@ -192,7 +192,6 @@ namespace Zephyrus::AI
 				continue;
 			mImpl->_CheckForNeighbors(*debugRenderer, mImpl->StoredNodeSize.x, mImpl->StoredNodeSize.y, node);
 		}
-
 	}
 
 	GridNode* NavGridManager::GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation)
@@ -340,18 +339,18 @@ namespace Zephyrus::AI
 
 	void NavGridManager::Impl::_SetLineTraceVisibility(Render::DebugRenderer& debugRenderer, bool visibility)
 	{
-		if (!visibility && mPreviousShowLines)
+		if (!visibility && mPreviousShowArrow)
 		{
-			debugRenderer.FlushDebugLines(mNodeEdgesDebugLinesIndex);
-			mPreviousShowLines = false;
+			debugRenderer.FlushDebugLines(mNodeEdgesDebugArrowIndex);
+			mPreviousShowArrow = false;
 		}
-		if (visibility && !mPreviousShowLines && !mDebugLines.empty())
+		if (visibility && !mPreviousShowArrow && !mDebugArrows.empty())
 		{
-			for (const auto& line : mDebugLines)
+			for (const auto& arrow : mDebugArrows)
 			{
-				debugRenderer.AddDebugLine(line, mNodeEdgesDebugLinesIndex);
+				debugRenderer.AddDebugArrow(arrow, mNodeEdgesDebugArrowIndex);
 			}
-			mPreviousShowLines = true;
+			mPreviousShowArrow = true;
 		}
 	}
 
@@ -359,7 +358,7 @@ namespace Zephyrus::AI
 	{
 		if (!visibility && mPreviousShowNodePosition)
 		{
-			debugRenderer.FlushDebugBoxes(mNodeEdgesDebugLinesIndex);
+			debugRenderer.FlushDebugBoxes(mNodeEdgesDebugArrowIndex);
 			mPreviousShowNodePosition = false;
 		}
 
@@ -367,7 +366,7 @@ namespace Zephyrus::AI
 		{
 			for (const auto& box : mDebugNodePosition)
 			{
-				debugRenderer.AddDebugBox(box, mNodeEdgesDebugLinesIndex);
+				debugRenderer.AddDebugBox(box, mNodeEdgesDebugArrowIndex);
 			}
 			mPreviousShowNodePosition = true;
 		}
@@ -436,13 +435,13 @@ namespace Zephyrus::AI
 
 				node.neighbors.push_back(&neighbor);
 
-				const Vector3D startPos = Vector3D(node.nodePosition.x, node.nodePosition.y, node.nodePosition.z + 0.2f);
-				const Vector3D endPos = Vector3D(neighbor.nodePosition.x, neighbor.nodePosition.y, neighbor.nodePosition.z + 0.2f);
-				Debug::DebugLine line = Debug::DebugLine(startPos, endPos, hit, Vector3D(1.0f, 0.7f, 0.0f));
+				const Vector3D startPos = Vector3D(node.nodePosition.x, node.nodePosition.y, node.nodePosition.z + 0.1f);
+				const Vector3D endPos = Vector3D(neighbor.nodePosition.x, neighbor.nodePosition.y, neighbor.nodePosition.z + 0.1f);
+				Debug::Debug2DArrow arrow = Debug::Debug2DArrow(startPos, endPos, Vector3D(1.0f, 0.7f, 0.0f));
 				if (mVolumeComponents[0]->GetShowLines())
 				{
-					debugRenderer.AddDebugLine(line, mNodeEdgesDebugLinesIndex);
-					mDebugLines.push_back(line);
+					debugRenderer.AddDebugArrow(arrow, mNodeEdgesDebugArrowIndex);
+					mDebugArrows.push_back(arrow);
 				}
 			}
 		}

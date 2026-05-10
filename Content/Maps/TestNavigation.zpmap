@@ -208,8 +208,8 @@
             "name": "CubeActor",
             "state": "active",
             "transform": {
-                "position": [0.0, -5.243, 0.863],
-                "rotation": [0.063, -89.98, -20.028],
+                "position": [0.0, -5.243, 0.862],
+                "rotation": [0.061, -89.972, -20.024],
                 "size": [1.0, 1.0, 12.0]
             },
             "components": [{

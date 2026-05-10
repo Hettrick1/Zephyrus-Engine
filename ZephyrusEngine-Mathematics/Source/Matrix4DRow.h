@@ -38,6 +38,8 @@ public:
 		return true;
 	}
 
+	friend auto operator<=>(const Matrix4DRow& a, const Matrix4DRow& b) = default;
+
 	// difference
 	bool operator!=(const Matrix4DRow& other) const
 	{

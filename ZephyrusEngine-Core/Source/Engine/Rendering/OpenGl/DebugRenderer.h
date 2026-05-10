@@ -31,6 +31,7 @@ namespace Zephyrus::Render {
 		void AddDebugLine(const Zephyrus::Debug::DebugLine& pLine, int index = -1);
 		void AddDebugBox(const Matrix4DRow& pWorldTransform);
 		void AddDebugBox(const Zephyrus::Debug::DebugBox& pBox, int index = -1);
+		void AddDebugArrow(const Zephyrus::Debug::Debug2DArrow& pBox, int index = -1);
 
 		void AddPersistantDebugBox(const Zephyrus::Debug::PersistantDebugBox& pBox);
 		void RemovePersistantDebugBox(const Zephyrus::Debug::PersistantDebugBox& pBox);
@@ -44,6 +45,7 @@ namespace Zephyrus::Render {
 		void FlushDebugElements();
 		void FlushDebugLines(int index = -1);
 		void FlushDebugBoxes(int index = -1);
+		void FlushDebugArrows(int index = -1);
 
 		void SetDrawDebug(bool pDraw);
 		void SetDrawLines(bool pDraw);
