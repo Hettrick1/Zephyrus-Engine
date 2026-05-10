@@ -169,7 +169,7 @@ namespace Zephyrus::Physics
         endTrans.setIdentity();
         if (pStart == pEnd)
         {
-            endTrans.setOrigin(btVector3(pEnd.x + 0.01f, pEnd.y + 0.01f, pEnd.z + 0.01f));
+            endTrans.setOrigin(btVector3(pEnd.x, pEnd.y, pEnd.z + 0.01f));
         }
         else
         {
@@ -198,6 +198,52 @@ namespace Zephyrus::Physics
         }
 
         return false;
+    }
+
+    bool PhysicWorld::BoxOverlap(const Vector3D& pLocation, const Vector3D& pHalfExtents, HitResult& pOutHit, std::vector<Actor*> pIgnoreActors)
+    {
+        pOutHit.Reset();
+
+        btBoxShape boxShape(btVector3(pHalfExtents.x, pHalfExtents.y, pHalfExtents.z));
+        btCollisionObject tempObj;
+
+        btTransform trans;
+        trans.setIdentity();
+        trans.setOrigin(btVector3(pLocation.x, pLocation.y, pLocation.z));
+        tempObj.setWorldTransform(trans);
+        tempObj.setCollisionShape(&boxShape);
+
+        struct BoxContactCallback : public btCollisionWorld::ContactResultCallback {
+            HitResult& result;
+            const std::vector<Actor*>& ignoreList;
+            bool hitFound = false;
+
+            BoxContactCallback(HitResult& res, const std::vector<Actor*>& ignore)
+                : result(res), ignoreList(ignore) {
+            }
+
+            virtual btScalar addSingleResult(btManifoldPoint& cp,
+                const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
+                const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1) override
+            {
+                btCollisionObject* obj = (btCollisionObject*)colObj1Wrap->getCollisionObject();
+                Actor* actor = static_cast<Actor*>(obj->getUserPointer());
+
+                for (auto* a : ignoreList) if (a == actor) return 1.0f;
+
+                hitFound = true;
+                result.HasHit = true;
+                result.HitPoint = FromBtVec3(cp.getPositionWorldOnB());
+                result.Normal = FromBtVec3(cp.m_normalWorldOnB);
+                result.HitActor = actor;
+                return 0.0f;
+            }
+        };
+
+        BoxContactCallback callback(pOutHit, pIgnoreActors);
+        mWorld->contactTest(&tempObj, callback);
+
+        return callback.hitFound;
     }
 
     void PhysicWorld::Unload()

@@ -99,13 +99,13 @@ namespace Zephyrus::ActorComponent
 					if (mImpl->mCurrentNodeTarget != mImpl->mPath.back())
 					{
 						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugLines(5);
-						++mImpl->mNodeIndex;
+						mImpl->mNodeIndex++;
 						mImpl->mCurrentNodeTarget = mImpl->mPath[mImpl->mNodeIndex];
 						auto line = Debug::DebugLine(mImpl->mCurrentNodeTarget->nodePosition.AddZ(0.6f), mImpl->mCurrentNodeTarget->nodePosition, {}, Vector3D(1, 1, 0));
 						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugLine(line, 5);
 						return;
 					}		
-					if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(mOwner->GetPosition(), 0.0001f))
+					if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(mOwner->GetPosition(), 0.01f))
 					{
 						mImpl->mShouldMove = false;
 					}

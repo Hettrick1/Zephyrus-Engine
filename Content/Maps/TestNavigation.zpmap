@@ -108,7 +108,7 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "gridSize": [20.0, 20.0, 10.0],
                         "nbOfPoints": [40.0, 40.0],
-                        "agentWidth": 0.8,
+                        "agentWidth": 0.4,
                         "agentHeight": 1.5
                     }
                 }]

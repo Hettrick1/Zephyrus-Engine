@@ -152,7 +152,8 @@ struct Vector3D
 	inline bool NearlyEquals(const Vector3D& other, float epsilon = 0.00001)
 	{
 		auto diff = *this - other;
-		return (diff < epsilon) && (-diff < epsilon);
+		const bool returnValue = (std::abs(diff.x) < epsilon && std::abs(diff.y) < epsilon && std::abs(diff.z) < epsilon);
+		return returnValue;
 	}
 
 	inline Vector2D xy()

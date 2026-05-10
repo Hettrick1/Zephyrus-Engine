@@ -139,12 +139,11 @@ namespace Zephyrus::AI
 				}
 
 				HitResult hit2;
-				const Vector3D startPos2 = Vector3D(hit.HitPoint.x, hit.HitPoint.y, hit.HitPoint.z + navVolume->GetAgentHeight() * 0.5);
-				const Vector3D endPos2 = startPos;
+				Vector3D startPos2 = Vector3D(hit.HitPoint.x, hit.HitPoint.y, hit.HitPoint.z + navVolume->GetAgentHeight() + 0.4f);
 				const Vector3D extents2 = Vector3D(navVolume->GetAgentWidth(), navVolume->GetAgentWidth(), navVolume->GetAgentHeight());
 				const std::vector<Actor*> actorsToIgnore = { hit.HitActor };
 
-				if (mImpl->mContext->GetPhysicsWorld()->BoxTrace(startPos2, endPos2, extents2, hit2, actorsToIgnore))
+				if (mImpl->mContext->GetPhysicsWorld()->BoxOverlap(startPos2, extents2, hit2, actorsToIgnore))
 				{
 					GridNode node = GridNode();
 					node.isWalkable = false;
@@ -156,15 +155,16 @@ namespace Zephyrus::AI
 					node.gridX = x;
 					node.gridY = y;
 					mImpl->mGrid.emplace_back(node);
+
+					Debug::DebugBox box1 = Debug::DebugBox(startPos2, extents2, hit2, Vector3D(1.0f, 1.0f, 0.0f));
+					if (navVolume->GetShowAgentCollision())
+					{
+						mImpl->mContext->GetRenderer()->GetDebugRenderer()->AddDebugBox(box1, mImpl->mAgentSizeDebugBoxIndex);
+					}
+					mImpl->mDebugAgentCollision.push_back(box1);
+
 					continue;
 				}
-		
-				Debug::DebugBox box1 = Debug::DebugBox(startPos2, extents2, hit2, Vector3D(1.0f, 1.0f, 0.0f));
-				if (navVolume->GetShowAgentCollision())
-				{
-					mImpl->mContext->GetRenderer()->GetDebugRenderer()->AddDebugBox(box1, mImpl->mAgentSizeDebugBoxIndex);
-				}
-				mImpl->mDebugAgentCollision.push_back(box1);
 
 				GridNode node = GridNode();
 				node.isWalkable = true;

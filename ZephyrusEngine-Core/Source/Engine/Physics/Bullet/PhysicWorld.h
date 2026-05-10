@@ -75,6 +75,7 @@ namespace Zephyrus::Physics
 
         bool LineTrace(const Vector3D& pStart, const Vector3D& pEnd, HitResult& pOutHit, Actor* pIgnoreActor = nullptr);
         bool BoxTrace(const Vector3D& pStart, const Vector3D& pEnd, const Vector3D& pExtents, HitResult& pOutHit, std::vector<Actor*>pIgnoreActors);
+        bool BoxOverlap(const Vector3D& pLocation, const Vector3D& pHalfExtents, HitResult& pOutHit, std::vector<Actor*> pIgnoreActors);
 
         btDiscreteDynamicsWorld* GetWorld() { return mWorld; }
     };
