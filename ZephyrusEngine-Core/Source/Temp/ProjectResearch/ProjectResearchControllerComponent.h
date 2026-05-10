@@ -61,7 +61,8 @@ namespace Zephyrus::ActorComponent {
         void Move(Vector2D delta);
         void UpDown(float direction);
 
-        void SelectNode();
+        void SelectPath();
+        void SelectNodeAndSendToAI();
     };
 }
 

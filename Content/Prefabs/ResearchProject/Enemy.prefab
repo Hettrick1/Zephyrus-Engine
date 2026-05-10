@@ -1,0 +1,55 @@
+{
+    "name": "Enemy",
+    "state": "active",
+    "actorTags": ["AI"],
+    "transform": {
+        "position": [7.892, -3.987, 0.0],
+        "rotation": [0.0, 0.0, 0.0],
+        "size": [1.0, 1.0, 1.0]
+    },
+    "components": [{
+            "type": "AiControllerComponent",
+            "componentId": "AiControllerComponent1",
+            "componentName": "AiControllerComponent",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0]
+            }
+        }, {
+            "type": "MeshComponent",
+            "componentId": "MeshComponent1",
+            "componentName": "MeshComponent",
+            "properties": {
+                "relativePosition": [0.0, 0.0, -0.4],
+                "relativeSize": [0.25, 0.25, 0.25],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "mesh": "759f7527-573b-4887-9d7a-5ed276e8e8c0",
+                "materialInstance": {
+                    "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
+                    "textures": [{
+                            "name": "albedo",
+                            "type": "Texture2D",
+                            "path": "10243814-8634-4196-89f7-92403bac5370"
+                        }],
+                    "vec2Properties": [{
+                            "name": "uTiling",
+                            "value": [1.0, 1.0]
+                        }]
+                }
+            }
+        }, {
+            "type": "CapsuleColliderComponent",
+            "componentId": "CapsuleColliderComponent1",
+            "componentName": "CapsuleColliderComponent",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.649],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "isQuery": false,
+                "ignoreSelf": true,
+                "radius": 0.5,
+                "height": 1.299
+            }
+        }]
+}

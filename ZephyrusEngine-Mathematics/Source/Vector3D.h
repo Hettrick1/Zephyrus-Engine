@@ -149,6 +149,12 @@ struct Vector3D
 		return temp;
 	}
 
+	inline bool NearlyEquals(const Vector3D& other, float epsilon = 0.00001)
+	{
+		auto diff = *this - other;
+		return (diff < epsilon) && (-diff < epsilon);
+	}
+
 	inline Vector2D xy()
 	{
 		return Vector2D(x, y);

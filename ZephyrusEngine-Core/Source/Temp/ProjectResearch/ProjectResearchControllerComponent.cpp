@@ -14,6 +14,8 @@
 #include "../../Engine/Rendering/Assets/AssetsManager.h"
 #include "../../Engine/UI/HudElement/HudImage.h"
 #include "../../Engine/UI/HudElement/HudText.h"
+#include "../../Scenes/Scene.h"
+#include "../../Engine/Component/AIComponent/AiControllerComponent.h"
 
 namespace Zephyrus::ActorComponent {
 	ProjectResearchControllerComponent::ProjectResearchControllerComponent(Actor* pOwner, int pUpdateOrder)
@@ -46,11 +48,18 @@ namespace Zephyrus::ActorComponent {
 			camera.IsMouseAxis = true;
 			camera.OnTriggered = [this](Vector2D delta) { Rotate(delta); };
 
-			auto& click = mInputManager->CreateBool("Click");
-			click.BindMouseButton(GLFW_MOUSE_BUTTON_1);
-			click.OnStarted = [this]()
+			auto& RightClick = mInputManager->CreateBool("RightClick");
+			RightClick.BindMouseButton(GLFW_MOUSE_BUTTON_2);
+			RightClick.OnStarted = [this]()
 				{
-					SelectNode();
+					SelectPath();
+				};
+
+			auto& LeftClick = mInputManager->CreateBool("LeftClick");
+			LeftClick.BindMouseButton(GLFW_MOUSE_BUTTON_1);
+			LeftClick.OnStarted = [this]()
+				{
+					SelectNodeAndSendToAI();
 				};
 
 			auto& move = mInputManager->CreateAxis2D("Move");
@@ -121,7 +130,7 @@ namespace Zephyrus::ActorComponent {
 		mOwner->GetTransformComponent().Translate(up * direction * mSpeed * Timer::deltaTime);
 	}
 
-	void ProjectResearchControllerComponent::SelectNode()
+	void ProjectResearchControllerComponent::SelectPath()
 	{
 		auto direction = mOwner->GetTransformComponent().Forward();
 		auto start = GetWorldPosition();
@@ -179,6 +188,32 @@ namespace Zephyrus::ActorComponent {
 			Vector3D color = SettingStartingNode ? Vector3D(1.0, 0.0, 1.0) : Vector3D(0.0, 0.5, 1.0);
 
 			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddPersistantDebugBox({ box, color, 3 });
+		}
+	}
+	void ProjectResearchControllerComponent::SelectNodeAndSendToAI()
+	{
+		auto direction = mOwner->GetTransformComponent().Forward();
+		auto start = GetWorldPosition();
+		auto end = start + direction * 1000;
+
+		HitResult hit;
+
+		mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugBoxes(5);
+
+		if (mOwner->GetSceneContext()->GetPhysicsWorld()->LineTrace(start, end, hit))
+		{
+			auto actors = mOwner->GetScene().GetAllActors();
+			for (auto& actor : actors)
+			{
+				if (actor->HasTag("AI"))
+				{
+					auto aiController = actor->GetComponentOfType<AiControllerComponent>();
+					aiController->SetTarget(hit.HitPoint);
+				}
+			}
+			auto node = mOwner->GetSceneContext()->GetNavGridManager()->GetNearestNodeFromWorldPosition(hit.HitPoint);
+			Debug::DebugBox box = Debug::DebugBox(node->nodePosition, Vector3D(0.25), hit, Vector3D(0.0, 0.5, 1.0));
+			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugBox(box, 5);
 		}
 	}
 }
