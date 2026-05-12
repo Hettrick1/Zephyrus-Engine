@@ -3,6 +3,7 @@
 #include "AI/NavGridManager.h"
 #include "DebugRenderer.h"
 #include "Physics/Bullet/PhysicWorld.h"
+#include "Physics/Bullet/bulletConversion.h"
 #include "Timer.h"
 
 namespace Zephyrus::ActorComponent
@@ -84,27 +85,48 @@ namespace Zephyrus::ActorComponent
 				auto direction = mImpl->mCurrentNodeTarget->nodePosition - mOwner->GetPosition();
 				direction.Normalize();
 
-				auto rb = mOwner->GetRigidBody();
-				if (rb && rb->GetRigidBody())
-				{
-					btRigidBody* body = rb->GetRigidBody();
-					body->activate(true);
-
-					btVector3 vel = body->getLinearVelocity();
-					btVector3 target(direction.x * 10.0f, direction.y * 10.0f, vel.z());
-					float factor = 0.3f;
-					btVector3 smoothVel = vel.lerp(target, factor);
-					body->setLinearVelocity(smoothVel);
-				}
-
-				//mOwner->GetTransformComponent().Translate(direction * 2.0f * Timer::deltaTime);
+				Vector3D groundNormal(0, 0, 1);
 
 				auto startPos = mOwner->GetPosition();
 				auto endPos = mOwner->GetPosition().AddZ(-mOwner->GetSize().z);
 				HitResult hit;
-				mOwner->GetSceneContext()->GetPhysicsWorld()->LineTrace(startPos, endPos, hit, {mOwner});
+				mOwner->GetSceneContext()->GetPhysicsWorld()->LineTrace(startPos, endPos, hit, { mOwner });
+				auto line = Debug::DebugLine(startPos, endPos, {}, Vector3D(1, 0, 0));
+				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugLine(line, 5);
 
-				if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.01f))
+				if (hit.HasHit) {
+					groundNormal = hit.Normal;
+				}
+
+				auto rb = mOwner->GetRigidBody();
+				if (rb && mImpl->mShouldMove) // chut on ne regarde pas cette implementation hasardeuse qui date
+				{
+					btRigidBody* body = rb->GetRigidBody();
+					body->activate(true);
+
+					float maxSpeed = 5.0f;
+					btVector3 desiredDir = btVector3(direction.x, direction.y, 0).normalize();
+
+					btVector3 slopeDir = desiredDir - (desiredDir.dot(Physics::ToBtVec3(groundNormal)) * Physics::ToBtVec3(groundNormal));
+					slopeDir.normalize();
+
+					float speed = 5.0f;
+					btVector3 targetVelocity = slopeDir * speed;
+
+					btVector3 currentVel = body->getLinearVelocity();
+
+					float accelerationTime = 0.1f;
+					btVector3 steeringForce = (targetVelocity - currentVel) / accelerationTime;
+
+					float maxForce = 50.0f;
+					if (steeringForce.length2() > maxForce * maxForce) {
+						steeringForce = steeringForce.normalize() * maxForce;
+					}
+
+					body->applyCentralForce(steeringForce);
+				}
+
+				if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.1f))
 				{
 					if (mImpl->mCurrentNodeTarget != mImpl->mPath.back())
 					{
@@ -115,9 +137,12 @@ namespace Zephyrus::ActorComponent
 						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugLine(line, 5);
 						return;
 					}		
-					if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(mOwner->GetPosition(), 0.01f))
+					if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.3f))
 					{
 						mImpl->mShouldMove = false;
+						btRigidBody* body = rb->GetRigidBody();
+						body->activate(true);
+						body->setLinearVelocity(btVector3(0, 0, 0));
 					}
 				}
 			}

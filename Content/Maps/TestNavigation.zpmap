@@ -107,7 +107,7 @@
                         "relativeSize": [1.0, 1.0, 1.0],
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "gridSize": [20.0, 20.0, 10.0],
-                        "nbOfPoints": [60.0, 40.0],
+                        "nbOfPoints": [50.0, 40.0],
                         "agentWidth": 0.4,
                         "agentHeight": 1.5
                     }
@@ -255,7 +255,7 @@
             "actorTags": ["AI"],
             "transform": {
                 "position": [13.387, -4.717, -0.006],
-                "rotation": [-0.0, -0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
             "components": [{
@@ -312,81 +312,9 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "bodyType": "dynamic",
                         "mass": 1.0,
-                        "friction": 0.5,
+                        "friction": 10.0,
                         "restitution": 0.5,
-                        "lockAngles": [1.0, 1.0, 1.0],
-                        "lockAxes": [1.0, 1.0, 1.0],
-                        "useGravity": true
-                    }
-                }]
-        }, {
-            "prefabName": "da90a96c-47ca-4539-8243-def599482b9c",
-            "uuid": "1f2ebd39-6939-4030-8518-c8a50959c114",
-            "name": "Enemy",
-            "state": "active",
-            "actorTags": ["AI"],
-            "transform": {
-                "position": [-7.823, 1.968, -0.006],
-                "rotation": [-0.0, 0.0, -0.0],
-                "size": [1.0, 1.0, 1.0]
-            },
-            "components": [{
-                    "type": "AiControllerComponent",
-                    "componentId": "AiControllerComponent1",
-                    "componentName": "AiControllerComponent",
-                    "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
-                        "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [0.0, 0.0, 0.0]
-                    }
-                }, {
-                    "type": "MeshComponent",
-                    "componentId": "MeshComponent1",
-                    "componentName": "MeshComponent",
-                    "properties": {
-                        "relativePosition": [0.0, 0.0, -0.4],
-                        "relativeSize": [0.25, 0.25, 0.25],
-                        "relativeRotation": [0.0, 0.0, 0.0],
-                        "mesh": "759f7527-573b-4887-9d7a-5ed276e8e8c0",
-                        "materialInstance": {
-                            "baseMaterial": "443ed7be-dc9d-4992-a3bf-8651b765a054",
-                            "textures": [{
-                                    "name": "albedo",
-                                    "type": "Texture2D",
-                                    "path": "10243814-8634-4196-89f7-92403bac5370"
-                                }],
-                            "vec2Properties": [{
-                                    "name": "uTiling",
-                                    "value": [1.0, 1.0]
-                                }]
-                        }
-                    }
-                }, {
-                    "type": "CapsuleColliderComponent",
-                    "componentId": "CapsuleColliderComponent1",
-                    "componentName": "CapsuleColliderComponent",
-                    "properties": {
-                        "relativePosition": [0.0, 0.0, 0.648],
-                        "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [0.0, 0.0, 0.0],
-                        "isQuery": false,
-                        "ignoreSelf": true,
-                        "radius": 0.5,
-                        "height": 1.299
-                    }
-                }, {
-                    "type": "RigidbodyComponent",
-                    "componentId": "RigidbodyComponent1",
-                    "componentName": "RigidbodyComponent",
-                    "properties": {
-                        "relativePosition": [0.0, 0.0, 0.0],
-                        "relativeSize": [1.0, 1.0, 1.0],
-                        "relativeRotation": [0.0, 0.0, 0.0],
-                        "bodyType": "dynamic",
-                        "mass": 1.0,
-                        "friction": 0.5,
-                        "restitution": 0.5,
-                        "lockAngles": [1.0, 1.0, 1.0],
+                        "lockAngles": [0.0, 0.0, 1.0],
                         "lockAxes": [1.0, 1.0, 1.0],
                         "useGravity": true
                     }
