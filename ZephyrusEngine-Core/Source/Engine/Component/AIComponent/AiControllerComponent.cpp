@@ -2,6 +2,7 @@
 #include "AiControllerComponent.h"
 #include "AI/NavGridManager.h"
 #include "DebugRenderer.h"
+#include "Physics/Bullet/PhysicWorld.h"
 #include "Timer.h"
 
 namespace Zephyrus::ActorComponent
@@ -59,7 +60,6 @@ namespace Zephyrus::ActorComponent
 				mImpl->mPath.clear();
 				mImpl->mCurrentNodeTarget = nullptr;
 				mImpl->mNodeIndex = 0;
-				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugArrows(2);
 				auto startNode = mOwner->GetSceneContext()->GetNavGridManager()->GetNearestNodeFromWorldPosition(mOwner->GetPosition());
 				auto endNode = mOwner->GetSceneContext()->GetNavGridManager()->GetNearestNodeFromWorldPosition(mImpl->mTarget.value());
 				if (startNode == endNode || !startNode || !endNode)
@@ -68,14 +68,6 @@ namespace Zephyrus::ActorComponent
 					return;
 				}
 				mImpl->mPath = mOwner->GetSceneContext()->GetNavGridManager()->GetShortestPath(startNode, endNode);
-				for (auto node : mImpl->mPath)
-				{
-					if (node->parent) // starting from the second node
-					{
-						auto line = Debug::Debug2DArrow(node->parent->nodePosition.AddZ(0.2f), node->nodePosition.AddZ(0.2f));
-						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugArrow(line, 2);
-					}
-				}
 
 				if (mImpl->mPath.empty())
 					return;
@@ -92,9 +84,27 @@ namespace Zephyrus::ActorComponent
 				auto direction = mImpl->mCurrentNodeTarget->nodePosition - mOwner->GetPosition();
 				direction.Normalize();
 
-				mOwner->GetTransformComponent().Translate(direction * 2.0f * Timer::deltaTime);
+				auto rb = mOwner->GetRigidBody();
+				if (rb && rb->GetRigidBody())
+				{
+					btRigidBody* body = rb->GetRigidBody();
+					body->activate(true);
 
-				if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(mOwner->GetPosition(), 0.01f))
+					btVector3 vel = body->getLinearVelocity();
+					btVector3 target(direction.x * 10.0f, direction.y * 10.0f, vel.z());
+					float factor = 0.3f;
+					btVector3 smoothVel = vel.lerp(target, factor);
+					body->setLinearVelocity(smoothVel);
+				}
+
+				//mOwner->GetTransformComponent().Translate(direction * 2.0f * Timer::deltaTime);
+
+				auto startPos = mOwner->GetPosition();
+				auto endPos = mOwner->GetPosition().AddZ(-mOwner->GetSize().z);
+				HitResult hit;
+				mOwner->GetSceneContext()->GetPhysicsWorld()->LineTrace(startPos, endPos, hit, {mOwner});
+
+				if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.01f))
 				{
 					if (mImpl->mCurrentNodeTarget != mImpl->mPath.back())
 					{

@@ -2,6 +2,7 @@
 #include "NavGridManager.h"
 
 #include "DebugRenderer.h"
+#include "Scenes/Scene.h"
 #include "Bullet/PhysicWorld.h"
 
 namespace Zephyrus::AI
@@ -121,7 +122,8 @@ namespace Zephyrus::AI
 				HitResult hit;
 				const Vector3D startPos = Vector3D(posXY.x, posXY.y, navVolume->GetWorldPosition().z + mImpl->StoredNodeSize.z);
 				const Vector3D endPos = Vector3D(posXY.x, posXY.y, navVolume->GetWorldPosition().z - mImpl->StoredNodeSize.z);
-				mImpl->mContext->GetPhysicsWorld()->LineTrace(startPos, endPos, hit);
+				auto ignoreActors = mImpl->mContext->GetActiveScene()->GetAllActorsWithTag("AI");
+				mImpl->mContext->GetPhysicsWorld()->LineTrace(startPos, endPos, hit, ignoreActors);
 
 				if (hit.Normal.z < 0.7)
 				{
@@ -141,7 +143,8 @@ namespace Zephyrus::AI
 				HitResult hit2;
 				Vector3D startPos2 = Vector3D(hit.HitPoint.x, hit.HitPoint.y, hit.HitPoint.z + navVolume->GetAgentHeight() + 0.4f);
 				const Vector3D extents2 = Vector3D(navVolume->GetAgentWidth(), navVolume->GetAgentWidth(), navVolume->GetAgentHeight());
-				const std::vector<Actor*> actorsToIgnore = { hit.HitActor };
+				std::vector<Actor*> actorsToIgnore = { hit.HitActor };
+				actorsToIgnore.insert(actorsToIgnore.end(), ignoreActors.begin(), ignoreActors.end());
 
 				if (mImpl->mContext->GetPhysicsWorld()->BoxOverlap(startPos2, extents2, hit2, actorsToIgnore))
 				{

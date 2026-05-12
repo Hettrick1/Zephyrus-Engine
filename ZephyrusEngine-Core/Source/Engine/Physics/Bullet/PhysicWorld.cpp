@@ -11,28 +11,6 @@
 
 namespace Zephyrus::Physics
 {
-    struct CustomConvexResultCallback : public btCollisionWorld::ClosestConvexResultCallback {
-        std::vector<Zephyrus::ActorComponent::Actor*> mIgnoreActors;
-
-        CustomConvexResultCallback(const btVector3& pFrom, const btVector3& pTo, const std::vector<Zephyrus::ActorComponent::Actor*>& pIgnore)
-            : btCollisionWorld::ClosestConvexResultCallback(pFrom, pTo), mIgnoreActors(pIgnore) {}
-
-        virtual bool needsCollision(btBroadphaseProxy* proxy) const override {
-            if (!btCollisionWorld::ClosestConvexResultCallback::needsCollision(proxy))
-                return false;
-
-            btCollisionObject* obj = static_cast<btCollisionObject*>(proxy->m_clientObject);
-            if (!obj) return false;
-
-            auto* actor = static_cast<Zephyrus::ActorComponent::Actor*>(obj->getUserPointer());
-            for (auto* ignore : mIgnoreActors) {
-                if (actor == ignore) return false;
-            }
-
-            return !(obj->getCollisionFlags() & btCollisionObject::CF_NO_CONTACT_RESPONSE);
-        }
-    };
-
     PhysicWorld::PhysicWorld()
     {
         mBroadphase = new btDbvtBroadphase();
@@ -128,13 +106,49 @@ namespace Zephyrus::Physics
         std::erase(mColliders, pCollider);
     }
 
-    bool PhysicWorld::LineTrace(const Vector3D& pStart, const Vector3D& pEnd, HitResult& pOutHit, Actor* pIgnoreActor)
+    bool PhysicWorld::LineTrace(const Vector3D& pStart, const Vector3D& pEnd, HitResult& pOutHit, std::vector<Zephyrus::ActorComponent::Actor*> pIgnoreActors)
     {
+        struct CustomRayResultCallback : public btCollisionWorld::ClosestRayResultCallback {
+            std::vector<Zephyrus::ActorComponent::Actor*> mIgnoreActors;
+
+            CustomRayResultCallback(const btVector3& pFrom, const btVector3& pTo, std::vector<Zephyrus::ActorComponent::Actor*> pIgnoreActors)
+                : btCollisionWorld::ClosestRayResultCallback(pFrom, pTo), mIgnoreActors(pIgnoreActors) {}
+
+            virtual bool needsCollision(btBroadphaseProxy* proxy) const override
+            {
+                if (!btCollisionWorld::ClosestRayResultCallback::needsCollision(proxy))
+                    return false;
+
+                btCollisionObject* obj = static_cast<btCollisionObject*>(proxy->m_clientObject);
+                if (!obj) return false;
+
+                if (std::find(mIgnoreActors.begin(), mIgnoreActors.end(), static_cast<Zephyrus::ActorComponent::Actor*>(obj->getUserPointer())) != mIgnoreActors.end())
+                    return false;
+
+                if (obj->getCollisionFlags() & btCollisionObject::CF_NO_CONTACT_RESPONSE)
+                    return false;
+
+                return true;
+            }
+
+            btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override {
+                const btCollisionObject* obj = rayResult.m_collisionObject;
+                if (obj && obj->getUserPointer()) {
+                    Zephyrus::ActorComponent::Actor* actor = static_cast<Zephyrus::ActorComponent::Actor*>(obj->getUserPointer());
+                    if (std::find(mIgnoreActors.begin(), mIgnoreActors.end(), actor) != mIgnoreActors.end()) 
+                    {
+                        return 1.0f;
+                    }
+                }
+                return ClosestRayResultCallback::addSingleResult(rayResult, normalInWorldSpace);
+            }
+        };
+
         pOutHit.Reset();
 
         CustomRayResultCallback rayCallback(btVector3(pStart.x, pStart.y, pStart.z),
             btVector3(pEnd.x, pEnd.y, pEnd.z),
-            pIgnoreActor);
+            pIgnoreActors);
 
         mWorld->rayTest(rayCallback.m_rayFromWorld, rayCallback.m_rayToWorld, rayCallback);
 
@@ -157,6 +171,28 @@ namespace Zephyrus::Physics
 
     bool PhysicWorld::BoxTrace(const Vector3D& pStart, const Vector3D& pEnd, const Vector3D& pHalfExtents, HitResult& pOutHit, std::vector<Actor*> pIgnoreActors)
     {
+        struct CustomConvexResultCallback : public btCollisionWorld::ClosestConvexResultCallback {
+            std::vector<Zephyrus::ActorComponent::Actor*> mIgnoreActors;
+
+            CustomConvexResultCallback(const btVector3& pFrom, const btVector3& pTo, const std::vector<Zephyrus::ActorComponent::Actor*>& pIgnore)
+                : btCollisionWorld::ClosestConvexResultCallback(pFrom, pTo), mIgnoreActors(pIgnore) {}
+
+            virtual bool needsCollision(btBroadphaseProxy* proxy) const override {
+                if (!btCollisionWorld::ClosestConvexResultCallback::needsCollision(proxy))
+                    return false;
+
+                btCollisionObject* obj = static_cast<btCollisionObject*>(proxy->m_clientObject);
+                if (!obj) return false;
+
+                auto* actor = static_cast<Zephyrus::ActorComponent::Actor*>(obj->getUserPointer());
+                for (auto* ignore : mIgnoreActors) {
+                    if (actor == ignore) return false;
+                }
+
+                return !(obj->getCollisionFlags() & btCollisionObject::CF_NO_CONTACT_RESPONSE);
+            }
+        };
+
         pOutHit.Reset();
 
         btBoxShape boxShape(btVector3(pHalfExtents.x, pHalfExtents.y, pHalfExtents.z));
@@ -202,6 +238,50 @@ namespace Zephyrus::Physics
 
     bool PhysicWorld::BoxOverlap(const Vector3D& pLocation, const Vector3D& pHalfExtents, HitResult& pOutHit, std::vector<Actor*> pIgnoreActors)
     {
+        struct BoxContactCallback : public btCollisionWorld::ContactResultCallback {
+            HitResult& mResult;
+            const std::vector<Actor*>& mIgnoreActors;
+            bool mHitFound = false;
+
+            BoxContactCallback(HitResult& res, const std::vector<Actor*>& ignore)
+                : mResult(res), mIgnoreActors(ignore) {
+            }
+
+            virtual bool needsCollision(btBroadphaseProxy* proxy) const override
+            {
+                if (!btCollisionWorld::ContactResultCallback::needsCollision(proxy))
+                    return false;
+
+                btCollisionObject* obj = static_cast<btCollisionObject*>(proxy->m_clientObject);
+                if (!obj) return false;
+
+                if (std::find(mIgnoreActors.begin(), mIgnoreActors.end(), static_cast<Zephyrus::ActorComponent::Actor*>(obj->getUserPointer())) != mIgnoreActors.end())
+                    return false;
+
+                if (obj->getCollisionFlags() & btCollisionObject::CF_NO_CONTACT_RESPONSE)
+                    return false;
+
+                return true;
+            }
+
+            virtual btScalar addSingleResult(btManifoldPoint& cp,
+                const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
+                const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1) override
+            {
+                btCollisionObject* obj = (btCollisionObject*)colObj1Wrap->getCollisionObject();
+                Actor* actor = static_cast<Actor*>(obj->getUserPointer());
+
+                for (auto* a : mIgnoreActors) if (a == actor) return 1.0f;
+
+                mHitFound = true;
+                mResult.HasHit = true;
+                mResult.HitPoint = FromBtVec3(cp.getPositionWorldOnB());
+                mResult.Normal = FromBtVec3(cp.m_normalWorldOnB);
+                mResult.HitActor = actor;
+                return 0.0f;
+            }
+        };
+
         pOutHit.Reset();
 
         btBoxShape boxShape(btVector3(pHalfExtents.x, pHalfExtents.y, pHalfExtents.z));
@@ -213,37 +293,10 @@ namespace Zephyrus::Physics
         tempObj.setWorldTransform(trans);
         tempObj.setCollisionShape(&boxShape);
 
-        struct BoxContactCallback : public btCollisionWorld::ContactResultCallback {
-            HitResult& result;
-            const std::vector<Actor*>& ignoreList;
-            bool hitFound = false;
-
-            BoxContactCallback(HitResult& res, const std::vector<Actor*>& ignore)
-                : result(res), ignoreList(ignore) {
-            }
-
-            virtual btScalar addSingleResult(btManifoldPoint& cp,
-                const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
-                const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1) override
-            {
-                btCollisionObject* obj = (btCollisionObject*)colObj1Wrap->getCollisionObject();
-                Actor* actor = static_cast<Actor*>(obj->getUserPointer());
-
-                for (auto* a : ignoreList) if (a == actor) return 1.0f;
-
-                hitFound = true;
-                result.HasHit = true;
-                result.HitPoint = FromBtVec3(cp.getPositionWorldOnB());
-                result.Normal = FromBtVec3(cp.m_normalWorldOnB);
-                result.HitActor = actor;
-                return 0.0f;
-            }
-        };
-
         BoxContactCallback callback(pOutHit, pIgnoreActors);
         mWorld->contactTest(&tempObj, callback);
 
-        return callback.hitFound;
+        return callback.mHitFound;
     }
 
     void PhysicWorld::Unload()

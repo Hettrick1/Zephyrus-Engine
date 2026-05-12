@@ -33,7 +33,7 @@ namespace Zephyrus::AI
 
 		float GetDistance(GridNode* from)
 		{
-			return nodePosition.DistanceSquared(from->nodePosition);
+			return nodePosition.Distance(from->nodePosition);
 		}
 	};
 

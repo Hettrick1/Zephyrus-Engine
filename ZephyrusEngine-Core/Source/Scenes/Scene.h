@@ -79,6 +79,8 @@ namespace Zephyrus::Scenes {
 
 		Actor* GetActorWithID(const std::string& pID);
 
+		std::vector<Actor*> GetAllActorsWithTag(const std::string& tag) const;
+
 
 		inline Actor* GetPlayerRef() const { return mPlayerRef; }
 

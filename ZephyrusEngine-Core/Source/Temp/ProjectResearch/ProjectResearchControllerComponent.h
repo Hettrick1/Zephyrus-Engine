@@ -16,6 +16,10 @@ namespace Zephyrus::Inputs
     class Axis2DAction;
 }
 
+namespace Zephyrus::UI
+{
+    class HudText;
+}
 using Zephyrus::Inputs::InputManager;
 using Zephyrus::Inputs::BooleanActions;
 using Zephyrus::Inputs::Axis2DAction;
@@ -36,6 +40,8 @@ namespace Zephyrus::ActorComponent {
 
         Zephyrus::AI::GridNode* mStartingNode{ nullptr };
         Zephyrus::AI::GridNode* mEndNode{ nullptr };
+
+        UI::HudText* mFpsText = nullptr;
     public:
         ProjectResearchControllerComponent(Actor* pOwner, int pUpdateOrder = 100);
 
@@ -65,6 +71,3 @@ namespace Zephyrus::ActorComponent {
         void SelectNodeAndSendToAI();
     };
 }
-
-
-#pragma once

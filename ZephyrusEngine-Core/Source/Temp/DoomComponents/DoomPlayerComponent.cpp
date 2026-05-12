@@ -178,7 +178,7 @@ namespace Zephyrus::ActorComponent
 			start.z -= 0.0f;
 			Vector3D end = start + cam->GetWorldTransform().GetYAxis() * range;
 			HitResult hit;
-			mOwner->GetScene().GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
+			mOwner->GetScene().GetPhysicWorld()->LineTrace(start, end, hit, { mOwner });
 			Zephyrus::Debug::DebugLine line = Debug::DebugLine(start, end, hit);
 			mOwner->GetScene().GetRenderer()->GetDebugRenderer()->AddDebugLine(line);
 			UseAmo(pAmoQuantity);
@@ -209,14 +209,13 @@ namespace Zephyrus::ActorComponent
 				randomAngle = zpMaths::RandomRange(-spreadAngle, spreadAngle);
 				float randomRadians = zpMaths::ToRad(randomAngle);
 
-				// Cr�ation d'une matrice de rotation autour de l'axe Z (vertical)
 				Matrix4DRow rotation = Matrix4DRow::CreateRotationZ(randomRadians);
 				Vector3D dir = rotation.TransformVector(baseDirection);
 				dir.Normalize();
 
 				Vector3D end = start + dir * range;
 				HitResult hit;
-				mOwner->GetScene().GetPhysicWorld()->LineTrace(start, end, hit, mOwner);
+				mOwner->GetScene().GetPhysicWorld()->LineTrace(start, end, hit, { mOwner });
 				Zephyrus::Debug::DebugLine line = Debug::DebugLine(start, end, hit);
 				mOwner->GetScene().GetRenderer()->GetDebugRenderer()->AddDebugLine(line);
 				if (hit.HitActor != nullptr && hit.HitActor->HasTag("Enemy"))

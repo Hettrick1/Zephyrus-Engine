@@ -326,4 +326,14 @@ namespace Zephyrus::Scenes {
 		}
 		return nullptr;
 	}
+	std::vector<Actor*> Scene::GetAllActorsWithTag(const std::string& tag) const
+	{
+		std::vector<Actor*> actorsWithTag;
+		for (auto actor : mAllActors)
+		{
+			if (actor->HasTag(tag))
+				actorsWithTag.push_back(actor);
+		}
+		return actorsWithTag;
+	}
 }

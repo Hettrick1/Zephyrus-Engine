@@ -78,12 +78,16 @@ namespace Zephyrus::ActorComponent {
 			Assets::ITexture2D* damageIndicator = Zephyrus::Assets::AssetsManager::GetInstance().LoadTexture(MainMenuPngID);
 			mCrossHair = new Zephyrus::UI::HudImage(mOwner->GetSceneContext(), damageIndicator, Vector2D(0, 0), 0.03);
 			mCrossHair->SetTint(Vector4D(1.0, 1.0, 1.0, 1.0));
+
+			mFpsText = new UI::HudText(mOwner->GetSceneContext(), "AAAAAAAAA", Vector2D(-1900.0f, 1000.0f), 0.5f, Vector4D(1, 0, 1, 1));
+			mFpsText->SetDrawOrder(101.0f);
 		}
 	}
 
 	void ProjectResearchControllerComponent::Update()
 	{
 		Component::Update();
+		mFpsText->SetText("Fps : " + std::to_string(Timer::mFPS));
 	}
 
 	void ProjectResearchControllerComponent::SetMovementSpeed(float pSpeed)
@@ -202,6 +206,7 @@ namespace Zephyrus::ActorComponent {
 
 		if (mOwner->GetSceneContext()->GetPhysicsWorld()->LineTrace(start, end, hit))
 		{
+			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugArrows(2);
 			auto actors = mOwner->GetScene().GetAllActors();
 			for (auto& actor : actors)
 			{
@@ -209,8 +214,22 @@ namespace Zephyrus::ActorComponent {
 				{
 					auto aiController = actor->GetComponentOfType<AiControllerComponent>();
 					aiController->SetTarget(hit.HitPoint);
+
+					auto endNode = mOwner->GetSceneContext()->GetNavGridManager()->GetNearestNodeFromWorldPosition(hit.HitPoint);
+					auto startNode = mOwner->GetSceneContext()->GetNavGridManager()->GetNearestNodeFromWorldPosition(actor->GetPosition());
+
+					auto path = mOwner->GetSceneContext()->GetNavGridManager()->GetShortestPath(startNode, endNode);
+					for (auto node : path)
+					{
+						if (node->parent) // starting from the second node
+						{
+							auto line = Debug::Debug2DArrow(node->parent->nodePosition.AddZ(0.2f), node->nodePosition.AddZ(0.2f));
+							mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugArrow(line, 2);
+						}
+					}
 				}
 			}
+
 			auto node = mOwner->GetSceneContext()->GetNavGridManager()->GetNearestNodeFromWorldPosition(hit.HitPoint);
 			Debug::DebugBox box = Debug::DebugBox(node->nodePosition, Vector3D(0.25), hit, Vector3D(0.0, 0.5, 1.0));
 			mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugBox(box, 5);
