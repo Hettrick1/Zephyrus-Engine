@@ -20,6 +20,9 @@ namespace Zephyrus::ActorComponent
 
 		bool mRecomputePath = false;
 		bool mShouldMove = true;
+
+		float mLastDistance = 0.0f;
+		bool mNeedPreciseMovements = false;
 	};
 
 	AiControllerComponent::AiControllerComponent(Actor* pOwner)
@@ -73,6 +76,7 @@ namespace Zephyrus::ActorComponent
 				if (mImpl->mPath.empty())
 					return;
 				mImpl->mCurrentNodeTarget = mImpl->mPath[mImpl->mNodeIndex];
+				mImpl->mLastDistance = mOwner->GetPosition().DistanceSquared(mImpl->mCurrentNodeTarget->nodePosition);
 				mImpl->mShouldMove = true;
 				mImpl->mRecomputePath = false;
 			}
@@ -99,7 +103,12 @@ namespace Zephyrus::ActorComponent
 				}
 
 				auto rb = mOwner->GetRigidBody();
-				if (rb && mImpl->mShouldMove) // chut on ne regarde pas cette implementation hasardeuse qui date
+				if (!rb)
+				{
+					return;
+				}
+
+				if (mImpl->mShouldMove) // chut on ne regarde pas cette implementation hasardeuse qui date
 				{
 					btRigidBody* body = rb->GetRigidBody();
 					body->activate(true);
@@ -126,24 +135,44 @@ namespace Zephyrus::ActorComponent
 					body->applyCentralForce(steeringForce);
 				}
 
-				if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.1f))
+				float distance = mImpl->mCurrentNodeTarget->nodePosition.DistanceSquared(hit.HitPoint);
+				float factor = 0.35f;
+
+				bool goNext = mImpl->mNeedPreciseMovements ? mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.1f) : distance < mImpl->mLastDistance * factor;
+
+				if (mImpl->mCurrentNodeTarget != mImpl->mPath.back() && goNext)
 				{
-					if (mImpl->mCurrentNodeTarget != mImpl->mPath.back())
+					mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugLines(5);
+					mImpl->mNodeIndex++;
+
+					auto nextNode = mImpl->mPath[mImpl->mNodeIndex];
+					auto nextNextNode = nextNode;
+					if (mImpl->mNodeIndex + 1 < mImpl->mPath.size())
 					{
-						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugLines(5);
-						mImpl->mNodeIndex++;
-						mImpl->mCurrentNodeTarget = mImpl->mPath[mImpl->mNodeIndex];
-						auto line = Debug::DebugLine(mImpl->mCurrentNodeTarget->nodePosition.AddZ(0.6f), mImpl->mCurrentNodeTarget->nodePosition, {}, Vector3D(1, 1, 0));
-						mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugLine(line, 5);
-						return;
-					}		
-					if (mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.3f))
-					{
-						mImpl->mShouldMove = false;
-						btRigidBody* body = rb->GetRigidBody();
-						body->activate(true);
-						body->setLinearVelocity(btVector3(0, 0, 0));
+						nextNextNode = mImpl->mPath[mImpl->mNodeIndex + 1];
 					}
+
+					if (nextNextNode->nodePosition.z > hit.HitPoint.z)
+					{
+						mImpl->mNeedPreciseMovements = true;
+					}
+					else
+					{
+						mImpl->mNeedPreciseMovements = false;
+					}
+					mImpl->mCurrentNodeTarget = nextNode;
+					mImpl->mLastDistance = mImpl->mCurrentNodeTarget->nodePosition.DistanceSquared(hit.HitPoint);
+					auto line = Debug::DebugLine(mImpl->mCurrentNodeTarget->nodePosition.AddZ(0.6f), mImpl->mCurrentNodeTarget->nodePosition, {}, Vector3D(1, 1, 0));
+					mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugLine(line, 5);
+					return;	
+				}
+				else if (mImpl->mCurrentNodeTarget == mImpl->mPath.back() && mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.5f))
+				{
+					mImpl->mShouldMove = false;
+					btRigidBody* body = rb->GetRigidBody();
+					body->activate(true);
+					body->setLinearVelocity(btVector3(0, 0, 0));
+					body->activate(false);
 				}
 			}
 		}

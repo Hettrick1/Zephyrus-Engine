@@ -13,7 +13,7 @@ namespace Zephyrus::ActorComponent
 		Vector2D mNumberOfPoint = { 20.0f, 20.0f };
 		float mAgentWidth = 0.8f;
 		float mAgentHeight = 1.5f;
-		bool mShowLines = false;
+		bool mShowNodeConnections = false;
 		bool mShowNodePos = true;
 		bool mShowAgentCollision = false;
 		Debug::PersistantDebugBox mDebugBoxBackup = Debug::PersistantDebugBox(Matrix4DRow::Identity, Vector3D(0.0, 0.0, 1.0));
@@ -50,6 +50,18 @@ namespace Zephyrus::ActorComponent
 		{
 			mImpl->mAgentHeight = *agentHeight;
 		}
+		if (auto showNodeConnections = pReader.ReadBool("showNodeConnections"))
+		{
+			mImpl->mShowNodeConnections = *showNodeConnections;
+		}
+		if (auto showNodePosition = pReader.ReadBool("showNodePosition"))
+		{
+			mImpl->mShowNodePos = *showNodePosition;
+		}
+		if (auto showAgentCollision = pReader.ReadBool("showAgentCollision"))
+		{
+			mImpl->mShowAgentCollision = *showAgentCollision;
+		}
 
 		Matrix4DRow wt;
 		wt = Matrix4DRow::CreateScale(mImpl->mGridSize * 2.0f);
@@ -68,6 +80,9 @@ namespace Zephyrus::ActorComponent
 		pWriter.WriteVector2D("nbOfPoints", mImpl->mNumberOfPoint);
 		pWriter.WriteFloat("agentWidth", mImpl->mAgentWidth);
 		pWriter.WriteFloat("agentHeight", mImpl->mAgentHeight);
+		pWriter.WriteBool("showNodeConnections", mImpl->mShowNodeConnections);
+		pWriter.WriteBool("showNodePosition", mImpl->mShowNodePos);
+		pWriter.WriteBool("showAgentCollision", mImpl->mShowAgentCollision);
 		Component::EndSerialize(pWriter);
 	}
 
@@ -101,7 +116,7 @@ namespace Zephyrus::ActorComponent
 			{ "Agent Width : ", &mImpl->mAgentWidth, PropertyType::Float},
 			{ "Agent Height : ", &mImpl->mAgentHeight, PropertyType::Float},
 			{ "Compute Grid : ", nullptr, PropertyType::Button, Callback(computeCallback, "Compute") | Condition(condition)},
-			{ "Show line trace : ", &mImpl->mShowLines, PropertyType::Bool},
+			{ "Show line trace : ", &mImpl->mShowNodeConnections, PropertyType::Bool},
 			{ "Show position : ", &mImpl->mShowNodePos, PropertyType::Bool},
 			{ "Show Agent loc : ", &mImpl->mShowAgentCollision, PropertyType::Bool},
 		};
@@ -118,7 +133,7 @@ namespace Zephyrus::ActorComponent
 	float NavGridVolumeComponent::GetAgentHeight() const { return mImpl->mAgentHeight; }
 	Vector2D NavGridVolumeComponent::GetNumberOfPoints() const { return mImpl->mNumberOfPoint; }
 
-	bool NavGridVolumeComponent::GetShowLines() const { return mImpl->mShowLines; }
+	bool NavGridVolumeComponent::GetShowLines() const { return mImpl->mShowNodeConnections; }
 	bool NavGridVolumeComponent::GetShowNodePosition() const { return mImpl->mShowNodePos; }
 	bool NavGridVolumeComponent::GetShowAgentCollision() const { return mImpl->mShowAgentCollision; }
 }
