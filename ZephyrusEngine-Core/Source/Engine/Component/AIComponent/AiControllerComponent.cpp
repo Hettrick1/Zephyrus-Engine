@@ -61,6 +61,7 @@ namespace Zephyrus::ActorComponent
 		{
 			if (mImpl->mRecomputePath)
 			{
+				mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugBoxes(10);
 				mImpl->mPath.clear();
 				mImpl->mCurrentNodeTarget = nullptr;
 				mImpl->mNodeIndex = 0;
@@ -73,8 +74,20 @@ namespace Zephyrus::ActorComponent
 				}
 				mImpl->mPath = mOwner->GetSceneContext()->GetNavGridManager()->GetShortestPath(startNode, endNode);
 
+				mOwner->GetSceneContext()->GetNavGridManager()->SmoothPath(mImpl->mPath);
+
 				if (mImpl->mPath.empty())
+				{
+					ZP_WARN("Path Empty");
 					return;
+				}
+
+				for (auto node : mImpl->mPath)
+				{
+					Debug::DebugBox box = Debug::DebugBox(node->nodePosition, Vector3D(0.25), {}, Vector3D(1.0, 0.5, 0.0));
+					mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->AddDebugBox(box, 10);
+				}
+
 				mImpl->mCurrentNodeTarget = mImpl->mPath[mImpl->mNodeIndex];
 				mImpl->mLastDistance = mOwner->GetPosition().DistanceSquared(mImpl->mCurrentNodeTarget->nodePosition);
 				mImpl->mShouldMove = true;
@@ -113,7 +126,6 @@ namespace Zephyrus::ActorComponent
 					btRigidBody* body = rb->GetRigidBody();
 					body->activate(true);
 
-					float maxSpeed = 5.0f;
 					btVector3 desiredDir = btVector3(direction.x, direction.y, 0).normalize();
 
 					btVector3 slopeDir = desiredDir - (desiredDir.dot(Physics::ToBtVec3(groundNormal)) * Physics::ToBtVec3(groundNormal));
@@ -128,7 +140,8 @@ namespace Zephyrus::ActorComponent
 					btVector3 steeringForce = (targetVelocity - currentVel) / accelerationTime;
 
 					float maxForce = 50.0f;
-					if (steeringForce.length2() > maxForce * maxForce) {
+					if (steeringForce.length2() > maxForce * maxForce) 
+					{
 						steeringForce = steeringForce.normalize() * maxForce;
 					}
 
@@ -140,7 +153,7 @@ namespace Zephyrus::ActorComponent
 
 				bool goNext = mImpl->mNeedPreciseMovements ? mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.1f) : distance < mImpl->mLastDistance * factor;
 
-				if (mImpl->mCurrentNodeTarget != mImpl->mPath.back() && goNext)
+				if (mImpl->mCurrentNodeTarget != mImpl->mPath.back() && mImpl->mCurrentNodeTarget->nodePosition.NearlyEquals(hit.HitPoint, 0.1f))
 				{
 					mOwner->GetSceneContext()->GetRenderer()->GetDebugRenderer()->FlushDebugLines(5);
 					mImpl->mNodeIndex++;

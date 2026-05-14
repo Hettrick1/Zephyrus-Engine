@@ -57,6 +57,7 @@ namespace Zephyrus::AI
 		GridNode* GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation);
 
 		std::vector<GridNode*> GetShortestPath(GridNode* startNode, GridNode* targetNode);
+		void SmoothPath(std::vector<GridNode*>& inOutPath);
 
 		void UpdateDebug();
 	};

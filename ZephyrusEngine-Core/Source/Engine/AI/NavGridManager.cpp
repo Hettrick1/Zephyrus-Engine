@@ -46,6 +46,9 @@ namespace Zephyrus::AI
 		void _SetAgentCollisionVisibility(Render::DebugRenderer& debugRenderer, bool visibility);
 
 		void _CheckForNeighbors(Render::DebugRenderer& debugRenderer, float cellSizeX, float cellSizeY, GridNode& node);
+		GridNode* _GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation);
+		std::vector<GridNode*> _GetNodesUnderLine(Vector2D iStart, Vector2D iEnd);
+		bool _IsLineOfWalkClear(GridNode* start, GridNode* end);
 
 		std::vector<GridNode*> RetraceShortestPath(GridNode* End);
 	};
@@ -199,48 +202,7 @@ namespace Zephyrus::AI
 
 	GridNode* NavGridManager::GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation)
 	{
-		auto gridRelativePosition = pWorldLocation - mImpl->mGridOrigin;
-		GridNode* nearestNode = nullptr;
-
-		int centerX = static_cast<int>(gridRelativePosition.x / (mImpl->StoredNodeSize.x * 2));
-		int centerY = static_cast<int>(gridRelativePosition.y / (mImpl->StoredNodeSize.y * 2));
-
-		centerX = zpMaths::Clamp(centerX, 0, static_cast<int>(mImpl->mNumPointsX - 1));
-		centerY = zpMaths::Clamp(centerY, 0, static_cast<int>(mImpl->mNumPointsY - 1));
-
-		int nodeIndex = centerY * mImpl->mNumPointsX + centerX;
-		nearestNode = &mImpl->mGrid[nodeIndex];
-
-		GridNode* startNode = &mImpl->mGrid[centerY * mImpl->mNumPointsX + centerX];
-		if (startNode && startNode->isWalkable) {
-			return startNode;
-		}
-
-		int maxRadius = std::max(mImpl->mNumPointsX, mImpl->mNumPointsY);
-
-		for (int radius = 1; radius < maxRadius; ++radius) {
-			for (int y = -radius; y <= radius; ++y) {
-				for (int x = -radius; x <= radius; ++x) {
-
-					if (std::abs(x) != radius && std::abs(y) != radius) continue;
-
-					int testX = centerX + x;
-					int testY = centerY + y;
-
-					if (testX >= 0 && testX < (int)mImpl->mNumPointsX &&
-						testY >= 0 && testY < (int)mImpl->mNumPointsY) {
-
-						GridNode* testNode = &mImpl->mGrid[testY * mImpl->mNumPointsX + testX];
-						if (testNode && testNode->isWalkable) {
-							return testNode;
-						}
-					}
-				}
-			}
-			if (radius > 10) break;
-		}
-
-		return nullptr;
+		return mImpl->_GetNearestNodeFromWorldPosition(pWorldLocation);
 	}
 
 	std::vector<GridNode*> NavGridManager::GetShortestPath(GridNode* startNode, GridNode* targetNode)
@@ -325,6 +287,24 @@ namespace Zephyrus::AI
 		// target node unreachable, return the path till the closest node found
 		ZP_EDITOR_WARN("Target unreachable. Pathfinding to closest possible node.");
 		return mImpl->RetraceShortestPath(closestNode);
+	}
+
+	void NavGridManager::SmoothPath(std::vector<GridNode*>& inOutPath)
+	{
+		if (inOutPath.size() < 3) return;
+
+		int current = 0;
+		while (current + 2 < inOutPath.size()) {
+			GridNode* start = inOutPath[current];
+			GridNode* lookAhead = inOutPath[current + 2];
+
+			if (mImpl->_IsLineOfWalkClear(start, lookAhead)) {
+				inOutPath.erase(inOutPath.begin() + current + 1);
+			}
+			else {
+				current++;
+			}
+		}
 	}
 	
 	void NavGridManager::UpdateDebug()
@@ -449,6 +429,126 @@ namespace Zephyrus::AI
 			}
 		}
 	}
+
+	GridNode* NavGridManager::Impl::_GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation)
+	{
+		auto gridRelativePosition = pWorldLocation - mGridOrigin;
+		GridNode* nearestNode = nullptr;
+
+		int centerX = static_cast<int>(gridRelativePosition.x / (StoredNodeSize.x * 2));
+		int centerY = static_cast<int>(gridRelativePosition.y / (StoredNodeSize.y * 2));
+
+		centerX = zpMaths::Clamp(centerX, 0, static_cast<int>(mNumPointsX - 1));
+		centerY = zpMaths::Clamp(centerY, 0, static_cast<int>(mNumPointsY - 1));
+
+		int nodeIndex = centerY * mNumPointsX + centerX;
+		nearestNode = &mGrid[nodeIndex];
+
+		GridNode* startNode = &mGrid[centerY * mNumPointsX + centerX];
+		if (startNode && startNode->isWalkable) {
+			return startNode;
+		}
+
+		int maxRadius = std::max(mNumPointsX, mNumPointsY);
+
+		for (int radius = 1; radius < maxRadius; ++radius) {
+			for (int y = -radius; y <= radius; ++y) {
+				for (int x = -radius; x <= radius; ++x) {
+
+					if (std::abs(x) != radius && std::abs(y) != radius) continue;
+
+					int testX = centerX + x;
+					int testY = centerY + y;
+
+					if (testX >= 0 && testX < (int)mNumPointsX &&
+						testY >= 0 && testY < (int)mNumPointsY) {
+
+						GridNode* testNode = &mGrid[testY * mNumPointsX + testX];
+						if (testNode && testNode->isWalkable) {
+							return testNode;
+						}
+					}
+				}
+			}
+			if (radius > 10) break;
+		}
+
+		return nullptr;
+	}
+
+	std::vector<GridNode*> NavGridManager::Impl::_GetNodesUnderLine(Vector2D pStart, Vector2D pEnd)
+	{
+		std::vector<GridNode*> nodes;
+
+		float nodeSizeX = StoredNodeSize.x * 2.0f;
+		float nodeSizeY = StoredNodeSize.y * 2.0f;
+
+		int x = static_cast<int>(std::floor((pStart.x - mGridOrigin.x) / nodeSizeX));
+		int y = static_cast<int>(std::floor((pStart.y - mGridOrigin.y) / nodeSizeY));
+		int x2 = static_cast<int>(std::floor((pEnd.x - mGridOrigin.x) / nodeSizeX));
+		int y2 = static_cast<int>(std::floor((pEnd.y - mGridOrigin.y) / nodeSizeY));
+
+		x = zpMaths::Clamp(x, 0, (int)mNumPointsX - 1);
+		y = zpMaths::Clamp(y, 0, (int)mNumPointsY - 1);
+		x2 = zpMaths::Clamp(x2, 0, (int)mNumPointsX - 1);
+		y2 = zpMaths::Clamp(y2, 0, (int)mNumPointsY - 1);
+
+		int dx = abs(x2 - x);
+		int dy = abs(y2 - y);
+		int sx = (x < x2) ? 1 : -1;
+		int sy = (y < y2) ? 1 : -1;
+		int err = dx - dy;
+
+		while (true)
+		{
+			int index = y * mNumPointsX + x;
+
+			if (index >= 0 && index < (int)mGrid.size())
+			{
+				nodes.push_back(&mGrid[index]);
+
+				Debug::DebugBox box(mGrid[index].nodePosition, 0.15f);
+				mContext->GetRenderer()->GetDebugRenderer()->AddDebugBox(box, 10);
+			}
+
+			if (x == x2 && y == y2) break;
+
+			int e2 = 2 * err;
+			if (e2 > -dy)
+			{
+				err -= dy;
+				x += sx;
+			}
+			if (e2 < dx)
+			{
+				err += dx;
+				y += sy;
+			}
+		}
+
+		return nodes;
+	}
+
+	bool NavGridManager::Impl::_IsLineOfWalkClear(GridNode* start, GridNode* end)
+	{
+		auto nodesUnderLine = _GetNodesUnderLine(start->nodePosition.xy(), end->nodePosition.xy());
+
+		for (size_t i = 0; i < nodesUnderLine.size(); ++i)
+		{
+			float diffHeight = 0.0f;
+			if (i > 0)
+			{
+				diffHeight = nodesUnderLine[i]->nodePosition.z - nodesUnderLine[i - 1]->nodePosition.z;
+			}
+
+			if (!nodesUnderLine[i] || !nodesUnderLine[i]->isWalkable || zpMaths::Abs(diffHeight) > 0.3f)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	std::vector<GridNode*> NavGridManager::Impl::RetraceShortestPath(GridNode* End)
 	{
 		std::vector<GridNode*> pathNode;
