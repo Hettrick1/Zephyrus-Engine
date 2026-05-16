@@ -1,15 +1,20 @@
 #pragma once
 
-#include "Component/AIComponent/NavGridVolumeComponent.h"
 #include "Vector3D.h"
 #include "Debug/DebugLine.h"
 #include <vector>
 #include <map>
 
+namespace Zephyrus::ActorComponent
+{
+	class NavGridModifierComponent;
+	class NavGridVolumeComponent;
+}
+
+class ISceneContext;
+
 namespace Zephyrus::AI
 {
-	class Zephyrus::ActorComponent::NavGridVolumeComponent;
-	
 	struct GridNode
 	{
 		GridNode() = default;
@@ -46,9 +51,12 @@ namespace Zephyrus::AI
 	public:
 		explicit NavGridManager(ISceneContext* context);
 		~NavGridManager();
-
+		
 		void AddVolumeComponent(ActorComponent::NavGridVolumeComponent* pComponent);
 		void RemoveVolumeComponent(ActorComponent::NavGridVolumeComponent* pComponent);
+
+		void AddModifierComponent(ActorComponent::NavGridModifierComponent* pComponent);
+		void RemoveModifierComponent(ActorComponent::NavGridModifierComponent* pComponent);
 
 		// it will compute only one grid, the first one in the component list. 
 		// For now it uses a list of component to handle the case where I added a component before deleting the old one

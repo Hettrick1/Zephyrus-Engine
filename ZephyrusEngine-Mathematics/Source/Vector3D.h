@@ -176,6 +176,21 @@ struct Vector3D
 		return Vector3D(x, y + yOffset, z);
 	}
 
+	inline Vector3D RemoveZ()
+	{
+		return Vector3D(x, y, 0.0f);
+	}
+
+	inline Vector3D RemoveX()
+	{
+		return Vector3D(0.0f, y, z);
+	}
+
+	inline Vector3D RemoveY()
+	{
+		return Vector3D(x, 0.0f, z);
+	}
+
 	friend Vector3D Normalize(Vector3D temp) { 
 		return temp / temp.Length(); 
 	}

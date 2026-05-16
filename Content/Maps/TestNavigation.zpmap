@@ -252,12 +252,12 @@
                 }]
         }, {
             "prefabName": "da90a96c-47ca-4539-8243-def599482b9c",
-            "uuid": "59728475-abc0-428f-bcf1-515ca0d93776",
+            "uuid": "9efba6fb-3958-496f-a8fd-d33393be871d",
             "name": "Enemy",
             "state": "active",
             "actorTags": ["AI"],
             "transform": {
-                "position": [13.387, -4.717, -0.006],
+                "position": [-7.635, 4.164, -0.006],
                 "rotation": [0.0, 0.0, 0.0],
                 "size": [1.0, 1.0, 1.0]
             },
@@ -315,11 +315,55 @@
                         "relativeRotation": [0.0, 0.0, 0.0],
                         "bodyType": "dynamic",
                         "mass": 1.0,
-                        "friction": 1.0,
+                        "friction": 0.5,
                         "restitution": 0.5,
-                        "lockAngles": [0.0, 0.0, 0.0],
+                        "lockAngles": [0.0, 0.0, 1.0],
                         "lockAxes": [1.0, 1.0, 1.0],
                         "useGravity": true
+                    }
+                }]
+        }, {
+            "prefabName": "125ef2db-322d-4351-a2e0-de96534f5c53",
+            "uuid": "bbfc7d8d-7aa6-432d-bd25-3f67457e4970",
+            "name": "ModifierVolume",
+            "state": "active",
+            "transform": {
+                "position": [16.177, 14.956, 0.824],
+                "rotation": [0.0, 0.0, 45.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "NavGridModifierComponent",
+                    "componentId": "NavGridModifierComponent1",
+                    "componentName": "NavGridModifierComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "volumeSize": [10.0, 10.0, 10.0],
+                        "weight": 2.0
+                    }
+                }]
+        }, {
+            "prefabName": "125ef2db-322d-4351-a2e0-de96534f5c53",
+            "uuid": "4616e743-15c4-4611-84d8-0935454df316",
+            "name": "ModifierVolume",
+            "state": "active",
+            "transform": {
+                "position": [-12.498, 10.802, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "size": [1.0, 1.0, 1.0]
+            },
+            "components": [{
+                    "type": "NavGridModifierComponent",
+                    "componentId": "NavGridModifierComponent1",
+                    "componentName": "NavGridModifierComponent",
+                    "properties": {
+                        "relativePosition": [0.0, 0.0, 0.0],
+                        "relativeSize": [1.0, 1.0, 1.0],
+                        "relativeRotation": [0.0, 0.0, 0.0],
+                        "volumeSize": [4.0, 4.0, 5.0],
+                        "weight": 4.0
                     }
                 }]
         }]

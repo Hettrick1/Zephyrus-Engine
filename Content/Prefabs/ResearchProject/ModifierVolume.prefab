@@ -1,0 +1,20 @@
+{
+    "name": "ModifierVolume",
+    "state": "active",
+    "transform": {
+        "position": [0.0, 14.785, 0.0],
+        "rotation": [0.0, 0.0, 0.0],
+        "size": [1.0, 1.0, 1.0]
+    },
+    "components": [{
+            "type": "NavGridModifierComponent",
+            "componentId": "NavGridModifierComponent1",
+            "componentName": "NavGridModifierComponent",
+            "properties": {
+                "relativePosition": [0.0, 0.0, 0.0],
+                "relativeSize": [1.0, 1.0, 1.0],
+                "relativeRotation": [0.0, 0.0, 0.0],
+                "gridSize": [5.0, 5.0, 5.0]
+            }
+        }]
+}

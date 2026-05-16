@@ -5,6 +5,10 @@
 #include "Scenes/Scene.h"
 #include "Bullet/PhysicWorld.h"
 
+#include "ISceneContext.h"
+#include "Component/AIComponent/NavGridVolumeComponent.h"
+#include "Component/AIComponent/NavGridModifierComponent.h"
+
 namespace Zephyrus::AI
 {
 	struct NavGridManager::Impl
@@ -15,6 +19,7 @@ namespace Zephyrus::AI
 		}
 
 		std::vector<ActorComponent::NavGridVolumeComponent*> mVolumeComponents;
+		std::vector<ActorComponent::NavGridModifierComponent*> mModifierComponents;
 		std::vector<GridNode> mGrid;
 		Vector3D StoredNodeSize;
 
@@ -49,6 +54,7 @@ namespace Zephyrus::AI
 		GridNode* _GetNearestNodeFromWorldPosition(const Vector3D& pWorldLocation);
 		std::vector<GridNode*> _GetNodesUnderLine(Vector2D iStart, Vector2D iEnd);
 		bool _IsLineOfWalkClear(GridNode* start, GridNode* end);
+		float _GetWeightFromPosition(const Vector3D& pos) const;
 
 		std::vector<GridNode*> RetraceShortestPath(GridNode* End);
 	};
@@ -72,9 +78,23 @@ namespace Zephyrus::AI
 			mImpl->mVolumeComponents.emplace_back(pComponent);
 		}
 	}
+
 	void NavGridManager::RemoveVolumeComponent(ActorComponent::NavGridVolumeComponent* pComponent)
 	{
 		std::erase(mImpl->mVolumeComponents, pComponent);
+	}
+
+	void NavGridManager::AddModifierComponent(ActorComponent::NavGridModifierComponent* pComponent)
+	{
+		if (std::ranges::find(mImpl->mModifierComponents.begin(), mImpl->mModifierComponents.end(), pComponent) == mImpl->mModifierComponents.end())
+		{
+			mImpl->mModifierComponents.emplace_back(pComponent);
+		}
+	}
+
+	void NavGridManager::RemoveModifierComponent(ActorComponent::NavGridModifierComponent* pComponent)
+	{
+		std::erase(mImpl->mModifierComponents, pComponent);
 	}
 	void NavGridManager::ComputeGrid()
 	{
@@ -178,11 +198,30 @@ namespace Zephyrus::AI
 				nodePos.x += (x * mImpl->StoredNodeSize.x * 2) + mImpl->StoredNodeSize.x;
 				nodePos.y += (y * mImpl->StoredNodeSize.y * 2) + mImpl->StoredNodeSize.y;
 				nodePos.z = hit.HitPoint.z;
+
+				const float weight = mImpl->_GetWeightFromPosition(nodePos);
+
+				Vector3D color = Vector3D(0.0f, 0.0f, 1.0f);
+
+				if (weight > 1.0f && weight <= 3.0f)
+				{
+					color = Vector3D(1.0f, 1.0f, 0.0f);
+				}
+				else if (weight > 3.0f && weight <= 5.0f)
+				{
+					color = Vector3D(1.0f, 0.5f, 0.0f);
+				}
+				else if(weight > 5.0f)
+				{
+					color = Vector3D(1.0f, 0.0f, 0.0f);
+				}
+
 				node.nodePosition = nodePos;
 				node.gridX = x;
 				node.gridY = y;
+				node.weight = weight;
 
-				Debug::DebugBox box = Debug::DebugBox(node.nodePosition, 0.1f, hit, Vector3D(0.0f, 0.0f, 1.0f));
+				Debug::DebugBox box = Debug::DebugBox(node.nodePosition, 0.1f, hit, color);
 				if (navVolume->GetShowNodePosition())
 				{
 					debugRenderer->AddDebugBox(box, mImpl->mNodePositionDebugBoxIndex);
@@ -536,17 +575,36 @@ namespace Zephyrus::AI
 		for (size_t i = 0; i < nodesUnderLine.size(); ++i)
 		{
 			float diffHeight = 0.0f;
+			float diffWeight = 0.0f;
 			if (i > 0)
 			{
 				diffHeight = nodesUnderLine[i]->nodePosition.z - nodesUnderLine[i - 1]->nodePosition.z;
+				diffWeight = nodesUnderLine[i]->weight - nodesUnderLine[i - 1]->weight;
 			}
 
-			if (!nodesUnderLine[i] || !nodesUnderLine[i]->isWalkable || zpMaths::Abs(diffHeight) > 0.3f)
+			if (!nodesUnderLine[i] || !nodesUnderLine[i]->isWalkable || zpMaths::Abs(diffHeight) > 0.3f || zpMaths::Abs(diffWeight) != 0.0f)
 			{
 				return false;
 			}
 		}
 		return true;
+	}
+
+	float NavGridManager::Impl::_GetWeightFromPosition(const Vector3D& pos) const
+	{
+		float weight = 1.0f;
+		for (auto modifier : mModifierComponents)
+		{
+			if (modifier->IsPointInsideVolume(pos))
+			{
+				const float tempWeight = modifier->GetWeight();
+				if (weight < tempWeight)
+				{
+					weight = tempWeight;
+				}
+			}
+		}
+		return weight;
 	}
 
 	std::vector<GridNode*> NavGridManager::Impl::RetraceShortestPath(GridNode* End)

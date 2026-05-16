@@ -23,6 +23,7 @@
 #include "Temp/ProjectResearch/ProjectResearchControllerComponent.h"
 #include "RotatingComponent.h"
 #include "AIComponent/NavGridVolumeComponent.h"
+#include "AIComponent/NavGridModifierComponent.h"
 #include "AIComponent/AiControllerComponent.h"
 
 
@@ -47,6 +48,7 @@ using Zephyrus::ActorComponent::TheDescentPC;
 using Zephyrus::ActorComponent::TheDescentPlayer;
 using Zephyrus::ActorComponent::TheDescentPCNoPhysics;
 using Zephyrus::ActorComponent::NavGridVolumeComponent;
+using Zephyrus::ActorComponent::NavGridModifierComponent;
 using Zephyrus::ActorComponent::ProjectResearchControllerComponent;
 using Zephyrus::ActorComponent::AiControllerComponent;
 
@@ -85,6 +87,7 @@ namespace Zephyrus::Factory {
 		Register("TheDescentPCNoPhysics", TheDescentPCNoPhysics::Create);
 		Register("RotatingComponent", RotatingComponent::Create);
 		Register("NavGridVolumeComponent", NavGridVolumeComponent::Create);
+		Register("NavGridModifierComponent", NavGridModifierComponent::Create);
 		Register("ProjectResearchControllerComponent", ProjectResearchControllerComponent::Create);
 		Register("AiControllerComponent", AiControllerComponent::Create);
     }
