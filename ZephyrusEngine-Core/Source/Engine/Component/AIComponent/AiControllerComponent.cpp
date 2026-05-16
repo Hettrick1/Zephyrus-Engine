@@ -89,6 +89,15 @@ namespace Zephyrus::ActorComponent
 				}
 
 				mImpl->mCurrentNodeTarget = mImpl->mPath[mImpl->mNodeIndex];
+				if (mImpl->mPath.size() > 1)
+				{
+					const auto dir1 = mImpl->mPath[mImpl->mNodeIndex + 1]->nodePosition.RemoveZ() - mImpl->mCurrentNodeTarget->nodePosition.RemoveZ();
+					const auto dir2 = mOwner->GetPosition().RemoveZ() - mImpl->mCurrentNodeTarget->nodePosition.RemoveZ();
+					if (Vector3D::Dot(dir1, dir2) > 0.0)
+					{
+						mImpl->mCurrentNodeTarget = mImpl->mPath[mImpl->mNodeIndex + 1];
+					}
+				}
 				mImpl->mLastDistance = mOwner->GetPosition().DistanceSquared(mImpl->mCurrentNodeTarget->nodePosition);
 				mImpl->mShouldMove = true;
 				mImpl->mRecomputePath = false;
