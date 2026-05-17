@@ -522,94 +522,51 @@ namespace Zephyrus::AI
 		float nodeSizeX = StoredNodeSize.x * 2.0f;
 		float nodeSizeY = StoredNodeSize.y * 2.0f;
 
-		int x1 = static_cast<int>(std::floor((pStart.x - mGridOrigin.x) / nodeSizeX));
-		int y1 = static_cast<int>(std::floor((pStart.y - mGridOrigin.y) / nodeSizeY));
+		int x = static_cast<int>(std::floor((pStart.x - mGridOrigin.x) / nodeSizeX));
+		int y = static_cast<int>(std::floor((pStart.y - mGridOrigin.y) / nodeSizeY));
 		int x2 = static_cast<int>(std::floor((pEnd.x - mGridOrigin.x) / nodeSizeX));
 		int y2 = static_cast<int>(std::floor((pEnd.y - mGridOrigin.y) / nodeSizeY));
 
-		x1 = zpMaths::Clamp(x1, 0, (int)mNumPointsX - 1);
-		y1 = zpMaths::Clamp(y1, 0, (int)mNumPointsY - 1);
+		x = zpMaths::Clamp(x, 0, (int)mNumPointsX - 1);
+		y = zpMaths::Clamp(y, 0, (int)mNumPointsY - 1);
 		x2 = zpMaths::Clamp(x2, 0, (int)mNumPointsX - 1);
 		y2 = zpMaths::Clamp(y2, 0, (int)mNumPointsY - 1);
 
+		int dx = abs(x2 - x);
+		int dy = abs(y2 - y);
+		int sx = (x < x2) ? 1 : -1;
+		int sy = (y < y2) ? 1 : -1;
+		int err = dx - dy;
 
-		int i;
-		int ystep, xstep;
-		int error;
-		int errorprev;
-		int y = y1, x = x1;
-		int ddy, ddx;
-		int dx = x2 - x1;
-		int dy = y2 - y1;
+		// this is actually a mix between supercover and bresenham algorithm.
+		// but after some tests, this algorithm works better than the real supercover one.
+		// so I'm gonna stick to this one
 
-		nodes.push_back(&mGrid[y * mNumPointsX + x]);
-		if (dy < 0) 
+		while (true)
 		{
-			ystep = -1;
-			dy = -dy;
-		}
-		else
-			ystep = 1;
-		if (dx < 0) 
-		{
-			xstep = -1;
-			dx = -dx;
-		}
-		else
-			xstep = 1;
-		ddy = 2 * dy;
-		ddx = 2 * dx;
-		if (ddx >= ddy) 
-		{
-			errorprev = error = dx;
-			for (i = 0; i < dx; i++) 
+			int index = y * mNumPointsX + x;
+
+			if (index >= 0 && index < (int)mGrid.size())
 			{
-				x += xstep;
-				error += ddy;
-				if (error > ddx) 
-				{
-					y += ystep;
-					error -= ddx;
-					if (error + errorprev < ddx)
-						nodes.push_back(&mGrid[(y - ystep) * mNumPointsX + x]);
-					else if (error + errorprev > ddx)
-						nodes.push_back(&mGrid[y * mNumPointsX + (x - xstep)]);
-					else 
-					{
-						nodes.push_back(&mGrid[(y - ystep) * mNumPointsX + x]);
-						nodes.push_back(&mGrid[y * mNumPointsX + (x - xstep)]);
-					}
-				}
-				nodes.push_back(&mGrid[y * mNumPointsX + x]);
-				errorprev = error;
-			}
-		}
-		else {
-			errorprev = error = dy;
-			for (i = 0; i < dy; i++) {
-				y += ystep;
-				error += ddx;
-				if (error > ddy) {
-					x += xstep;
-					error -= ddy;
-					if (error + errorprev < ddy)
-						nodes.push_back(&mGrid[y * mNumPointsX + (x - xstep)]);
-					else if (error + errorprev > ddy)
-						nodes.push_back(&mGrid[(y - ystep) * mNumPointsX + x]);
-					else {
-						nodes.push_back(&mGrid[y * mNumPointsX + (x - xstep)]);
-						nodes.push_back(&mGrid[(y - ystep) * mNumPointsX + x]);
-					}
-				}
-				nodes.push_back(&mGrid[y * mNumPointsX + x]);
-				errorprev = error;
-			}
-		}
+				nodes.push_back(&mGrid[index]);
 
-		for (auto node : nodes)
-		{
-			Debug::DebugBox box(node->nodePosition, 0.15f);
-			mContext->GetRenderer()->GetDebugRenderer()->AddDebugBox(box, 10);
+				Debug::DebugBox box(mGrid[index].nodePosition, 0.15f);
+				mContext->GetRenderer()->GetDebugRenderer()->AddDebugBox(box, 10);
+			}
+
+			if (x == x2 && y == y2) break;
+
+			int e2 = 2 * err;
+			if (e2 > -dy)
+			{
+				err -= dy;
+				x += sx;
+			}
+			if (e2 < dx)
+			{
+				err += dx;
+				y += sy;
+			}
 		}
 
 		return nodes;
